@@ -1,6 +1,6 @@
 # AP2020 - Sharif university of technology - Team 1
 
-# Table of contents
+## Table of contents
 * [Credits](#Credits)
 
 ## Credits
