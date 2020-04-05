@@ -8,3 +8,4 @@
 | :-: | :-: | :-: |
 |Parsa Mohammadian|98102284|parsa2820@gmail.com|
 |Mohammadhossein Kashani Jabbari|98105987|h.kashani2001@gmail.com|
+|Arian Yazdanparast|98110095|arian.expert@gmail.com|
