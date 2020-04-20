@@ -1,5 +1,5 @@
 package model;
 
 public interface Requestable {
-    void setStatus(boolean isApproved);
+    void setStatus(Status status);
 }
