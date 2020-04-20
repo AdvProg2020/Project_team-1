@@ -77,13 +77,31 @@ public class SuperMarket {
         return null;
     }
 
-    public static void getAccountByUserAndPassword(String user, String password){
+    public static boolean isThereAnyAccountWithThisUserAndPassword(String user, String password){
         for (SimpleAccount account : allAccounts) {
-            if (account.getFirstName())
+            if (checkPassword(account,user) && checkUser(account , user)){
+                return true;
+            }
         }
+        return false;
     }
 
-    public static void getAccountsByUserName()
+    public static SimpleAccount getAccountByUserAndPassword(String user, String password){
+        for (SimpleAccount account : allAccounts) {
+            if (checkPassword(account,user) && checkUser(account , user)){
+                return account;
+            }
+        }
+        return null;
+    }
+
+    public static Boolean checkPassword(SimpleAccount account, String user){
+        return account.getUsername().equals(user);
+    }
+
+    public static Boolean checkUser(SimpleAccount account, String password){
+        return account.isPasswordCorrect(password);
+    }
 
 
 
