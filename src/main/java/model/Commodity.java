@@ -17,8 +17,8 @@ public class Commodity implements Requestable{
     private ArrayList<String> categorySpecifications;
     private String description;
     private ArrayList<Comment> allComments;
-    private int averageScore;
-    private int totalScores;
+    private double averageScore;
+    private double totalScores;
     private int numberOfScores;
 
     public Commodity(int commodityId,Status status, String brand, String name, int price,
@@ -64,8 +64,11 @@ public class Commodity implements Requestable{
         this.price = price;
     }
 
-    public void setAverageScore(int averageScore) {
-        this.averageScore = averageScore;
+    public void updateAverageScore(double score) {
+        this.numberOfScores++;
+        this.totalScores += score;
+        this.averageScore = totalScores/numberOfScores;
+
     }
 
     public void setTotalScores(int totalScores) {
@@ -128,7 +131,7 @@ public class Commodity implements Requestable{
         return allComments;
     }
 
-    public int getAverageScore() {
+    public double getAverageScore() {
         return averageScore;
     }
 

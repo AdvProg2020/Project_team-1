@@ -8,7 +8,7 @@ public class Comment implements Requestable{
     private String title;
     private String string;
     private boolean isABuyer;
-    private boolean isApproved;
+    private Status status;
 
     public Comment(SimpleAccount account, Commodity commodity, String title, String string, boolean isABuyer) {
         this.account = account;
@@ -16,11 +16,11 @@ public class Comment implements Requestable{
         this.title = title;
         this.string = string;
         this.isABuyer = isABuyer;
-        this.isApproved = false;
+        this.status = Status.UNDER_CHECKING_FOR_CREATE;
     }
 
-    public void setStatus(boolean isApproved) {
-        this.isApproved = isApproved;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public SimpleAccount getAccount() {
@@ -39,7 +39,5 @@ public class Comment implements Requestable{
         return isABuyer;
     }
 
-    public boolean isApproved() {
-        return isApproved;
-    }
+    public Status getStatus (){return status;}
 }
