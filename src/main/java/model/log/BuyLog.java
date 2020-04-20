@@ -1,4 +1,4 @@
-package model.Log;
+package model.log;
 
 import model.Commodity;
 

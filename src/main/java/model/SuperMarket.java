@@ -1,6 +1,6 @@
 package model;
 
-import model.Log.TransactionLog;
+import model.log.TransactionLog;
 import model.account.SimpleAccount;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ public class SuperMarket {
     private static ArrayList<Category> allCategory = new ArrayList<Category>();
     private static ArrayList<Commodity> allCommodities = new ArrayList<Commodity>();
     private static ArrayList<Score> allScores = new ArrayList<Score>();
-    private static ArrayList<Request> allRequests= new ArrayList<String>();
+    private static ArrayList<Request> allRequests= new ArrayList<Request>();
     private static ArrayList<SimpleAccount> allAccounts = new ArrayList<SimpleAccount>();
 
     public static ArrayList<SimpleAccount> getAllAccounts(){
@@ -33,31 +33,57 @@ public class SuperMarket {
         return allScores;
     }
 
-    public static ArrayList<String> getAllRequests(){
-
+    public static ArrayList<Request> getAllRequests(){
+        return allRequests;
     }
 
 
 
-    public static void updateAllRequest(){
+    public static void addRequest(Request request){
+        allRequests.add(request);
     }
 
-    public static void updateAllLogs(){
+    public static void addLog(TransactionLog transactionLog){
+        allLogs.add(transactionLog);
     }
-    public static void updateAllCategory(){
+    public static void addCategory(Category category){
+        allCategory.add(category);
     }
-    public static void updateAllCommodities(){
+    public static void addCommodities(Commodity commodity){
+        allCommodities.add(commodity);
     }
-    public static void updateAlLScore(){
+    public static void addScore(Score score){
+        allScores.add(score);
     }
     public static Commodity getCommodityByName(String name){
+        for (Commodity commodity : allCommodities) {
+            if (commodity.getName().equals(name))
+                return commodity;
+        }
+        return null;
     }
     public static Commodity getCommodityById(int commodityId){
+        for (Commodity commodity : allCommodities) {
+            if (commodity.getCommodityId() == commodityId)
+                return commodity;
+        }
+        return null;
     }
     public static TransactionLog getLogByLogId(int logId){
+        for (TransactionLog log : allLogs) {
+            if (log.getLogId() == logId)
+                return log;
+        }
+        return null;
     }
+
     public static void getAccountByUserAndPassword(String user, String password){
+        for (SimpleAccount account : allAccounts) {
+            if (account.getFirstName())
+        }
     }
+
+    public static void getAccountsByUserName()
 
 
 
