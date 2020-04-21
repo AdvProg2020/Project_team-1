@@ -5,12 +5,15 @@ import model.SuperMarket;
 import model.filter.Filter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
+import static model.Commodity.Comparators.*;
 
 public class ProductsMenu implements CommandProcess {
 
     private ArrayList<Filter> currentFilters = new ArrayList<Filter>();
     private static ArrayList<Commodity> filteredCommodities = (ArrayList<Commodity>) SuperMarket.getAllCommodities().clone();
-
+    private String currentSort;
 
     public static void addFilteredCommodities(Commodity commodity) {
         filteredCommodities.add(commodity);
@@ -47,21 +50,26 @@ public class ProductsMenu implements CommandProcess {
     }
 
     public void sort(String sort) {
+        this.currentSort = sort;
+        if (sort.equals("price")) {
+            Collections.sort(SuperMarket.getAllCommodities(), price);
+            return;
+        }
+        if (sort.equals("Number of visits")){
+            Collections.sort(SuperMarket.getAllCommodities(), numberOfVisits);
+            return;
+        }
+        if (sort.equals("Average score")){
+            Collections.sort(SuperMarket.getAllCommodities(), score);
+            return;
+        }
     }
 
     public void disableSort() {
+        this.currentSort = "Number of visits";
+        Collections.sort(SuperMarket.getAllCommodities(), numberOfVisits);
     }
 
-    public void currentSort() {
-    }
-
-    private void sortByPrice() {
-
-    }
-
-    private void sortByScore() {
-
-    }
 
     @Override
     public void commandProcessor(String command) {

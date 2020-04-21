@@ -4,8 +4,9 @@ import model.account.SimpleAccount;
 import model.field.Field;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
-public class Commodity implements Requestable{
+public class Commodity implements Requestable {
     private int commodityId;
     private Status status;
     private String brand;
@@ -21,8 +22,9 @@ public class Commodity implements Requestable{
     private double averageScore;
     private double totalScores;
     private int numberOfScores;
+    private int numberOfVisits;
 
-    public Commodity(int commodityId,Status status, String brand, String name, int price,
+    public Commodity(int commodityId, Status status, String brand, String name, int price,
                      SimpleAccount seller, Boolean isCommodityAvailable, Category category, ArrayList<Field> categorySpecifications,
                      String description, int averageScore, int amount) {
         this.commodityId = commodityId;
@@ -38,7 +40,12 @@ public class Commodity implements Requestable{
         this.allComments = new ArrayList<Comment>();
         this.averageScore = averageScore;
         this.inventory = amount;
+        this.numberOfVisits = 0;
         SuperMarket.getAllCommodities().add(this);
+    }
+
+    public void increaseNumberOfVisits(){
+        numberOfVisits++;
     }
 
     public int getCommodityId() {
@@ -68,7 +75,7 @@ public class Commodity implements Requestable{
     public void updateAverageScore(double score) {
         this.numberOfScores++;
         this.totalScores += score;
-        this.averageScore = totalScores/numberOfScores;
+        this.averageScore = totalScores / numberOfScores;
 
     }
 
@@ -136,4 +143,30 @@ public class Commodity implements Requestable{
         return averageScore;
     }
 
+    public static class Comparators {
+
+        public static Comparator<Commodity> price = new Comparator<Commodity>() {
+            @Override
+            public int compare(Commodity o1, Commodity o2) {
+                return o1.price - o2.price;
+            }
+        };
+        public static Comparator<Commodity> score  = new Comparator<Commodity>() {
+            @Override
+            public int compare(Commodity o1, Commodity o2) {
+                if ( o1.getAverageScore() > o2.getAverageScore())
+                    return 1;
+                else
+                    return -1;
+            }
+        };
+        public static Comparator<Commodity> numberOfVisits = new Comparator<Commodity>() {
+            @Override
+            public int compare(Commodity o1, Commodity o2) {
+                return o1.numberOfVisits - o2.numberOfVisits;
+            }
+        };
+    }
 }
+
+
