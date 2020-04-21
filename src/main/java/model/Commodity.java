@@ -1,6 +1,7 @@
 package model;
 
 import model.account.SimpleAccount;
+import model.field.Field;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class Commodity implements Requestable{
     private SimpleAccount seller;
     private Boolean isCommodityAvailable;
     private Category category;
-    private ArrayList<String> categorySpecifications;
+    private ArrayList<Field> categorySpecifications;
     private String description;
     private ArrayList<Comment> allComments;
     private double averageScore;
@@ -22,7 +23,7 @@ public class Commodity implements Requestable{
     private int numberOfScores;
 
     public Commodity(int commodityId,Status status, String brand, String name, int price,
-                     SimpleAccount seller, Boolean isCommodityAvailable, Category category, ArrayList<String> categorySpecifications,
+                     SimpleAccount seller, Boolean isCommodityAvailable, Category category, ArrayList<Field> categorySpecifications,
                      String description, int averageScore, int amount) {
         this.commodityId = commodityId;
         this.status = status;
@@ -48,7 +49,7 @@ public class Commodity implements Requestable{
         isCommodityAvailable = commodityAvailable;
     }
 
-    public void setCategorySpecifications(ArrayList<String> categorySpecifications) {
+    public void setCategorySpecifications(ArrayList<Field> categorySpecifications) {
         this.categorySpecifications = categorySpecifications;
     }
 
@@ -119,7 +120,7 @@ public class Commodity implements Requestable{
         return category;
     }
 
-    public ArrayList<String> getCategorySpecifications() {
+    public ArrayList<Field> getCategorySpecifications() {
         return categorySpecifications;
     }
 
