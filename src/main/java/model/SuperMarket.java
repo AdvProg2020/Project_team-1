@@ -6,6 +6,7 @@ import model.account.SimpleAccount;
 import java.util.ArrayList;
 
 public class SuperMarket {
+    private static SimpleAccount onlineAccount;
     private static ArrayList<TransactionLog> allLogs = new ArrayList<TransactionLog>();
     private static ArrayList<Category> allCategory = new ArrayList<Category>();
     private static ArrayList<Commodity> allCommodities = new ArrayList<Commodity>();
@@ -37,7 +38,9 @@ public class SuperMarket {
         return allRequests;
     }
 
-
+    public static void addAccount(SimpleAccount account){
+        allAccounts.add(account);
+    }
 
     public static void addRequest(Request request){
         allRequests.add(request);
@@ -103,6 +106,13 @@ public class SuperMarket {
         return account.isPasswordCorrect(password);
     }
 
+    public static void setOnlineAccount(SimpleAccount onlineAccount) {
+        SuperMarket.onlineAccount = onlineAccount;
+    }
+
+    public static SimpleAccount getOnlineAccount() {
+        return onlineAccount;
+    }
 
 
 }

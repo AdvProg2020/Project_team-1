@@ -1,6 +1,6 @@
 package model.field;
 
-public class NumericalField extends Field{
+public class  NumericalField extends Field{
     private int value;
 
     public NumericalField(String title, int value) {
