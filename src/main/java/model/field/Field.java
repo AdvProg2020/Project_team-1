@@ -6,4 +6,5 @@ public abstract class Field {
     public Field(String title) {
         this.title = title;
     }
+
 }
