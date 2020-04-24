@@ -28,7 +28,7 @@ public class OptionalFilter implements Filter {
     }
 
     @Override
-    public boolean isCommodityMatchs(Commodity commodity) {
+    public boolean isCommodityMatches(Commodity commodity) {
         OptionalField optionalField = (OptionalField)commodity.getCategorySpecifications().get(correspondingFieldNumber);
         return acceptableOptions.contains(optionalField.getValue());
     }

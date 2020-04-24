@@ -28,7 +28,7 @@ public class NumericalFilter implements Filter {
     }
 
     @Override
-    public boolean isCommodityMatchs(Commodity commodity) {
+    public boolean isCommodityMatches(Commodity commodity) {
         NumericalField numericalField = (NumericalField) commodity.getCategorySpecifications().get(correspondingFieldNumber);
         return rangeStart < numericalField.getValue() && numericalField.getValue() < rangeEnd;
     }
