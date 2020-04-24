@@ -1,7 +1,7 @@
 package model.account;
 
 import model.Commodity;
-import model.Sale;
+import model.Off;
 import model.log.SellLog;
 
 import java.util.ArrayList;
@@ -11,14 +11,14 @@ public class BusinessAccount extends SimpleAccount{
     private String businessName;
     private ArrayList<SellLog> sellLogs;
     private ArrayList<Commodity> commodities;
-    private ArrayList<Sale> sales;
+    private ArrayList<Off> offs;
 
     public BusinessAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password, String businessName) throws Exception {
         super(username, firstName, lastName, email, phoneNumber, password);
         changeBusinessName(businessName);
         sellLogs = new ArrayList<SellLog>();
         commodities = new ArrayList<Commodity>();
-        sales = new ArrayList<Sale>();
+        offs = new ArrayList<Off>();
     }
 
     public ArrayList<SellLog> getSellLogs() {
@@ -37,12 +37,12 @@ public class BusinessAccount extends SimpleAccount{
         commodities.add(commodity);
     }
 
-    public ArrayList<Sale> getSales() {
-        return sales;
+    public ArrayList<Off> getOffs() {
+        return offs;
     }
 
-    public void addSale(Sale sale) {
-        sales.add(sale);
+    public void addSale(Off off) {
+        offs.add(off);
     }
 
     public String getBusinessName() {
