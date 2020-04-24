@@ -3,18 +3,18 @@ package model.account;
 import org.mindrot.jbcrypt.BCrypt;
 
 public abstract class SimpleAccount {
-    private final String VALID_USERNAME = "^\\w{4,10}$";
-    private final String VALID_FIRST_NAME_AND_LAST_NAME = "^[a-zA-z ]$";
-    private final String VALID_EMAIL = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
-    private final String VALID_PHONE_NUMBER = "^(/+98|98|0)\\d{10}$";
-    private final String VALID_PASSWORD = "^.{4,8}$";
+    protected final String VALID_USERNAME = "^\\w{4,10}$";
+    protected final String VALID_FIRST_NAME_AND_LAST_NAME = "^[a-zA-z ]$";
+    protected final String VALID_EMAIL = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+    protected final String VALID_PHONE_NUMBER = "^(/+98|98|0)\\d{10}$";
+    protected final String VALID_PASSWORD = "^.{4,8}$";
     // Todo test password strength
-    private String username;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private String hashedPassword;
+    protected String username;
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String phoneNumber;
+    protected String hashedPassword;
 
     public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password) throws Exception {
         changeUsername(username);
@@ -100,7 +100,7 @@ public abstract class SimpleAccount {
         }
     }
 
-    private String hashPassword(String password) {
+    protected String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }
