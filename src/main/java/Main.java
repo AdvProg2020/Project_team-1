@@ -1,5 +1,5 @@
 public class Main {
-    public static void method(String[] args) throws Throwable{
+    public static void method(String[] args) throws Throwable {
 
     }
 }

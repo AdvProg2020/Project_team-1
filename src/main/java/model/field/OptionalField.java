@@ -1,6 +1,6 @@
 package model.field;
 
-public class OptionalField extends Field{
+public class OptionalField extends Field {
     private String value;
 
     public OptionalField(String title, String value) {

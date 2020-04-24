@@ -20,10 +20,6 @@ public class BuyLog extends TransactionLog {
         this.isCommodityDelivered = isCommodityDelivered;
     }
 
-    public void setCommodityDelivered(Boolean commodityDelivered) {
-        isCommodityDelivered = commodityDelivered;
-    }
-
     public int getPayedMoney() {
         return payedMoney;
     }
@@ -38,5 +34,9 @@ public class BuyLog extends TransactionLog {
 
     public Boolean getCommodityDelivered() {
         return isCommodityDelivered;
+    }
+
+    public void setCommodityDelivered(Boolean commodityDelivered) {
+        isCommodityDelivered = commodityDelivered;
     }
 }

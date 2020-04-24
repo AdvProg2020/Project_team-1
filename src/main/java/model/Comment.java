@@ -2,7 +2,7 @@ package model;
 
 import model.account.SimpleAccount;
 
-public class Comment implements Requestable{
+public class Comment implements Requestable {
     private SimpleAccount account;
     private Commodity commodity;
     private String title;
@@ -17,10 +17,6 @@ public class Comment implements Requestable{
         this.string = string;
         this.isABuyer = isABuyer;
         this.status = Status.UNDER_CHECKING_FOR_CREATE;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public SimpleAccount getAccount() {
@@ -39,5 +35,11 @@ public class Comment implements Requestable{
         return isABuyer;
     }
 
-    public Status getStatus (){return status;}
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

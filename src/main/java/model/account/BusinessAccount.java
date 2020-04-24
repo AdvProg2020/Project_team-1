@@ -2,16 +2,19 @@ package model.account;
 
 import model.Commodity;
 import model.Off;
+import model.Requestable;
+import model.Status;
 import model.log.SellLog;
 
 import java.util.ArrayList;
 
-public class BusinessAccount extends SimpleAccount{
+public class BusinessAccount extends SimpleAccount implements Requestable {
     private final String VALID_BUSINESS_NAME = "^\\w{4,20}$";
     private String businessName;
     private ArrayList<SellLog> sellLogs;
     private ArrayList<Commodity> commodities;
     private ArrayList<Off> offs;
+    private Status status;
 
     public BusinessAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password, String businessName) throws Exception {
         super(username, firstName, lastName, email, phoneNumber, password);
@@ -19,6 +22,11 @@ public class BusinessAccount extends SimpleAccount{
         sellLogs = new ArrayList<SellLog>();
         commodities = new ArrayList<Commodity>();
         offs = new ArrayList<Off>();
+        this.status = Status.UNDER_CHECKING_FOR_CREATE;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public ArrayList<SellLog> getSellLogs() {

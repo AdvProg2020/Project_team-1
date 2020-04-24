@@ -42,7 +42,7 @@ public abstract class SimpleAccount {
     }
 
     public void changeFirstName(String firstName) throws Exception {
-        if (firstName.matches(VALID_FIRST_NAME_AND_LAST_NAME)){
+        if (firstName.matches(VALID_FIRST_NAME_AND_LAST_NAME)) {
             this.firstName = firstName;
         } else {
             throw new Exception("Invalid first name. First name just contain alphabetical characters.");
@@ -54,7 +54,7 @@ public abstract class SimpleAccount {
     }
 
     public void changeLastName(String lastName) throws Exception {
-        if (lastName.matches(VALID_FIRST_NAME_AND_LAST_NAME)){
+        if (lastName.matches(VALID_FIRST_NAME_AND_LAST_NAME)) {
             this.lastName = lastName;
         } else {
             throw new Exception("Invalid last name. Last name just contain alphabetical characters.");
@@ -66,7 +66,7 @@ public abstract class SimpleAccount {
     }
 
     public void changeEmail(String email) throws Exception {
-        if (email.matches(VALID_EMAIL)){
+        if (email.matches(VALID_EMAIL)) {
             this.email = email;
         } else {
             throw new Exception("Invalid email address.");
@@ -78,7 +78,7 @@ public abstract class SimpleAccount {
     }
 
     public void changePhoneNumber(String phoneNumber) throws Exception {
-        if (phoneNumber.matches(VALID_PHONE_NUMBER)){
+        if (phoneNumber.matches(VALID_PHONE_NUMBER)) {
             this.phoneNumber = phoneNumber;
         } else {
             throw new Exception("Invalid Iran phone number.");

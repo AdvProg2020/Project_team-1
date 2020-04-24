@@ -18,7 +18,7 @@ public class Off {
         this.owner = owner;
         this.startTime = startTime;
         this.endTime = endTime;
-        if (0 < discountPercent && discountPercent < 100){
+        if (0 < discountPercent && discountPercent < 100) {
             this.discountPercent = discountPercent;
         } else {
             throw new Exception("Invalid discount percent. Discount percent should be in range 1 to 99.");

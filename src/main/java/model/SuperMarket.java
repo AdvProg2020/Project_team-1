@@ -1,7 +1,7 @@
 package model;
 
-import model.log.TransactionLog;
 import model.account.SimpleAccount;
+import model.log.TransactionLog;
 
 import java.util.ArrayList;
 
@@ -113,12 +113,12 @@ public class SuperMarket {
         return account.isPasswordCorrect(password);
     }
 
-    public static void setOnlineAccount(SimpleAccount onlineAccount) {
-        SuperMarket.onlineAccount = onlineAccount;
-    }
-
     public static SimpleAccount getOnlineAccount() {
         return onlineAccount;
+    }
+
+    public static void setOnlineAccount(SimpleAccount onlineAccount) {
+        SuperMarket.onlineAccount = onlineAccount;
     }
 
 

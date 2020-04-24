@@ -5,7 +5,7 @@ import model.field.Field;
 
 import java.util.ArrayList;
 
-public class Commodity implements Requestable{
+public class Commodity implements Requestable {
     private int commodityId;
     private Status status;
     private String brand;
@@ -22,7 +22,7 @@ public class Commodity implements Requestable{
     private double totalScores;
     private int numberOfScores;
 
-    public Commodity(int commodityId,Status status, String brand, String name, int price,
+    public Commodity(int commodityId, Status status, String brand, String name, int price,
                      SimpleAccount seller, Boolean isCommodityAvailable, Category category,
                      ArrayList<Field> categorySpecifications, String description, int averageScore, int amount) {
         this.commodityId = commodityId;
@@ -45,30 +45,10 @@ public class Commodity implements Requestable{
         return commodityId;
     }
 
-    public void setCommodityAvailable(Boolean commodityAvailable) {
-        isCommodityAvailable = commodityAvailable;
-    }
-
-    public void setCategorySpecifications(ArrayList<Field> categorySpecifications) {
-        this.categorySpecifications = categorySpecifications;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public void updateAverageScore(double score) {
         this.numberOfScores++;
         this.totalScores += score;
-        this.averageScore = totalScores/numberOfScores;
+        this.averageScore = totalScores / numberOfScores;
 
     }
 
@@ -78,10 +58,6 @@ public class Commodity implements Requestable{
 
     public void setNumberOfScores(int numberOfScores) {
         this.numberOfScores = numberOfScores;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public int getInventory() {
@@ -96,6 +72,10 @@ public class Commodity implements Requestable{
         return status;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public String getBrand() {
         return brand;
     }
@@ -104,8 +84,16 @@ public class Commodity implements Requestable{
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getPrice() {
         return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public SimpleAccount getSeller() {
@@ -116,6 +104,10 @@ public class Commodity implements Requestable{
         return isCommodityAvailable;
     }
 
+    public void setCommodityAvailable(Boolean commodityAvailable) {
+        isCommodityAvailable = commodityAvailable;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -124,8 +116,16 @@ public class Commodity implements Requestable{
         return categorySpecifications;
     }
 
+    public void setCategorySpecifications(ArrayList<Field> categorySpecifications) {
+        this.categorySpecifications = categorySpecifications;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public ArrayList<Comment> getAllComments() {

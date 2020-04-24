@@ -1,7 +1,6 @@
 package model.filter;
 
 import model.Commodity;
-import model.field.Field;
 import model.field.NumericalField;
 
 public class NumericalFilter implements Filter {

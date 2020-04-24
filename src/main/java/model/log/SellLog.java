@@ -12,7 +12,7 @@ public class SellLog extends TransactionLog {
     private Boolean isCommodityDelivered;
 
     public SellLog(int logId, Date date, int receivedMoney, int deductedMoneyOnSale, ArrayList<Commodity> soledCommodities, String buyerName, Boolean isCommodityDelivered) {
-        super(logId, date , soledCommodities);
+        super(logId, date, soledCommodities);
         this.receivedMoney = receivedMoney;
         this.deductedMoneyOnSale = deductedMoneyOnSale;
         this.buyerName = buyerName;

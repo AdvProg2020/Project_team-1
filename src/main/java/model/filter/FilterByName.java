@@ -5,15 +5,15 @@ import model.Commodity;
 public class FilterByName implements Filter {
     private String commodityName;
 
+    public FilterByName(String commodityName) {
+        this.commodityName = commodityName;
+    }
+
     public String getCommodityName() {
         return commodityName;
     }
 
     public void setCommodityName(String commodityName) {
-        this.commodityName = commodityName;
-    }
-
-    public FilterByName(String commodityName) {
         this.commodityName = commodityName;
     }
 

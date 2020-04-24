@@ -2,7 +2,6 @@ package model.filter;
 
 import model.Commodity;
 import model.field.OptionalField;
-import sun.jvm.hotspot.types.Field;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class OptionalFilter implements Filter {
 
     @Override
     public boolean isCommodityMatches(Commodity commodity) {
-        OptionalField optionalField = (OptionalField)commodity.getCategorySpecifications().get(correspondingFieldNumber);
+        OptionalField optionalField = (OptionalField) commodity.getCategorySpecifications().get(correspondingFieldNumber);
         return acceptableOptions.contains(optionalField.getValue());
     }
 }

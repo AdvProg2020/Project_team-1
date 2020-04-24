@@ -11,15 +11,15 @@ import static model.Commodity.Comparators.*;
 
 public class ProductsMenu implements CommandProcess {
 
-    private ArrayList<Filter> currentFilters = new ArrayList<Filter>();
     private static ArrayList<Commodity> filteredCommodities = (ArrayList<Commodity>) SuperMarket.getAllCommodities().clone();
+    private ArrayList<Filter> currentFilters = new ArrayList<Filter>();
     private String currentSort;
 
     public static void addFilteredCommodities(Commodity commodity) {
         filteredCommodities.add(commodity);
     }
 
-    public static void removeFromFilteredCommodities(Commodity commodity){
+    public static void removeFromFilteredCommodities(Commodity commodity) {
         filteredCommodities.remove(commodity);
     }
 
@@ -28,14 +28,14 @@ public class ProductsMenu implements CommandProcess {
         updateFilteredCommodities();
     }
 
-    public void updateFilteredCommodities(){
+    public void updateFilteredCommodities() {
         for (Commodity commodity : SuperMarket.getAllCommodities()) {
             if (canCommodityPassFilter(commodity))
                 filteredCommodities.add(commodity);
         }
     }
 
-    public boolean canCommodityPassFilter(Commodity commodity){
+    public boolean canCommodityPassFilter(Commodity commodity) {
         for (Filter filter : currentFilters) {
             if (!filter.isCommodityMatches(commodity))
                 return false;
@@ -45,8 +45,8 @@ public class ProductsMenu implements CommandProcess {
 
 
     public void disableFilter(Filter filter) {
-            currentFilters.remove(filter);
-            updateFilteredCommodities();
+        currentFilters.remove(filter);
+        updateFilteredCommodities();
     }
 
     public void sort(String sort) {
@@ -55,11 +55,11 @@ public class ProductsMenu implements CommandProcess {
             Collections.sort(SuperMarket.getAllCommodities(), price);
             return;
         }
-        if (sort.equals("Number of visits")){
+        if (sort.equals("Number of visits")) {
             Collections.sort(SuperMarket.getAllCommodities(), numberOfVisits);
             return;
         }
-        if (sort.equals("Average score")){
+        if (sort.equals("Average score")) {
             Collections.sort(SuperMarket.getAllCommodities(), score);
             return;
         }
