@@ -89,7 +89,7 @@ public class SuperMarket {
 
     public static boolean isThereAnyAccountWithThisUserAndPassword(String user, String password) {
         for (SimpleAccount account : allAccounts) {
-            if (checkPassword(account, user) && checkUser(account, user)) {
+            if (checkUsername(account, user) && checkPassword(account, user)) {
                 return true;
             }
         }
@@ -98,18 +98,18 @@ public class SuperMarket {
 
     public static SimpleAccount getAccountByUserAndPassword(String user, String password) {
         for (SimpleAccount account : allAccounts) {
-            if (checkPassword(account, user) && checkUser(account, user)) {
+            if (checkUsername(account, user) && checkPassword(account, password)) {
                 return account;
             }
         }
         return null;
     }
 
-    public static Boolean checkPassword(SimpleAccount account, String user) {
+    public static Boolean checkUsername(SimpleAccount account, String user) {
         return account.getUsername().equals(user);
     }
 
-    public static Boolean checkUser(SimpleAccount account, String password) {
+    public static Boolean checkPassword(SimpleAccount account, String password) {
         return account.isPasswordCorrect(password);
     }
 
