@@ -1,5 +1,8 @@
 package controller;
 
+import commands.Command;
+import commands.LoginCommand;
+import commands.LoginCommand;
 import main.Main;
 import model.Request;
 import model.SuperMarket;
@@ -7,6 +10,7 @@ import model.account.BusinessAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,14 +38,11 @@ public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
 
     @Override
     public void commandProcessor(String command) {
-        if (command.startsWith("login ")) {
-            Matcher matcher = Pattern.compile("login (?<username>\\S+)").matcher(command);
-            if (matcher.matches()) {
-                if (isUserNameValid(matcher.group("username"))) {
-                    String password = Main.getConsoleScanner().nextLine();
-                    login(matcher.group("username"), password);
-                }
-            }
+        ArrayList <Command> registerAndLoginCommands = new ArrayList<Command>();
+        registerAndLoginCommands.add(new LoginCommand("login (?<username>\\S+)"));
+        for (Command registerAndLoginCommand : registerAndLoginCommands) {
+            if (registerAndLoginCommand.checkCommand(command))
+                registerAndLoginCommand.runCommand(command);
         }
     }
 }

@@ -4,6 +4,7 @@ import model.account.SimpleAccount;
 import model.field.Field;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Commodity implements Requestable {
     private int commodityId;
@@ -21,6 +22,7 @@ public class Commodity implements Requestable {
     private double averageScore;
     private double totalScores;
     private int numberOfScores;
+    private int numberOfVisits;
 
     public Commodity(int commodityId, Status status, String brand, String name, int price,
                      SimpleAccount seller, Boolean isCommodityAvailable, Category category,
@@ -62,6 +64,14 @@ public class Commodity implements Requestable {
 
     public int getInventory() {
         return inventory;
+    }
+
+    public int getNumberOfVisits() {
+        return numberOfVisits;
+    }
+
+    public void setNumberOfVisits(int numberOfVisits) {
+        this.numberOfVisits = numberOfVisits;
     }
 
     public void setInventory(int inventory) {
@@ -134,6 +144,31 @@ public class Commodity implements Requestable {
 
     public double getAverageScore() {
         return averageScore;
+    }
+
+    public static class Comparators {
+
+        public static Comparator<Commodity> price = new Comparator<Commodity>() {
+            @Override
+            public int compare(Commodity o1, Commodity o2) {
+                return o1.price - o2.price;
+            }
+        };
+        public static Comparator<Commodity> score  = new Comparator<Commodity>() {
+            @Override
+            public int compare(Commodity o1, Commodity o2) {
+                if ( o1.getAverageScore() > o2.getAverageScore())
+                    return 1;
+                else
+                    return -1;
+            }
+        };
+        public static Comparator<Commodity> numberOfVisits = new Comparator<Commodity>() {
+            @Override
+            public int compare(Commodity o1, Commodity o2) {
+                return o1.numberOfVisits - o2.numberOfVisits;
+            }
+        };
     }
 
 }

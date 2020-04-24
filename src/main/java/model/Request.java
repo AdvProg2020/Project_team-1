@@ -1,5 +1,6 @@
 package model;
 
+import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 
 public class Request {

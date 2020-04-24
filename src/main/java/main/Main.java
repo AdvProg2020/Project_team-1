@@ -1,5 +1,7 @@
 package main;
 
+import controller.CommandProcess;
+import controller.HandleMenu;
 import controller.ProductsMenu;
 
 import java.util.Scanner;
@@ -10,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             String command = getConsoleScanner().nextLine();
-            ProductsMenu menu = ProductsMenu.getMenu();
+            CommandProcess menu = HandleMenu.getMenu();
             menu.commandProcessor(command);
         }
     }
