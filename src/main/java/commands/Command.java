@@ -22,6 +22,9 @@ public abstract class Command {
     protected Matcher matcher;
 
 
-    public abstract boolean checkCommand(String command);
+    public boolean checkCommand(String command) {
+        matcher = pattern.matcher(command);
+        return matcher.matches();
+    }
     public abstract String runCommand(String command);
 }

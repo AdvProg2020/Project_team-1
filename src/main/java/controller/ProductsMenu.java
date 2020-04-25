@@ -1,5 +1,9 @@
 package controller;
 
+import commands.Command;
+import commands.FilteringCommand;
+import commands.ShowAvailableFiltersCommand;
+import commands.ViewCategoryCommand;
 import model.Commodity;
 import model.SuperMarket;
 import model.filter.Filter;
@@ -11,8 +15,26 @@ import static model.Commodity.Comparators.*;
 
 public class ProductsMenu implements CommandProcess {
 
+    private static ArrayList <Command> productsMenuCommands = new ArrayList<Command>();
     private static ArrayList<Commodity> filteredCommodities = (ArrayList<Commodity>) SuperMarket.getAllCommodities().clone();
-    private ArrayList<Filter> currentFilters = new ArrayList<Filter>();
+
+    public static ArrayList<Command> getProductsMenuCommands() {
+        return productsMenuCommands;
+    }
+
+    public static ArrayList<Commodity> getFilteredCommodities() {
+        return filteredCommodities;
+    }
+
+    public static ArrayList<Filter> getCurrentFilters() {
+        return currentFilters;
+    }
+
+    public String getCurrentSort() {
+        return currentSort;
+    }
+
+    private static ArrayList<Filter> currentFilters = new ArrayList<Filter>();
     private String currentSort;
 
     public static void addFilteredCommodities(Commodity commodity) {
@@ -23,19 +45,20 @@ public class ProductsMenu implements CommandProcess {
         filteredCommodities.remove(commodity);
     }
 
-    public void filter(Filter filter) {
+    public static void filter(Filter filter) {
         currentFilters.add(filter);
         updateFilteredCommodities();
     }
 
-    public void updateFilteredCommodities() {
+    public static void updateFilteredCommodities() {
+        filteredCommodities = new ArrayList<Commodity>();
         for (Commodity commodity : SuperMarket.getAllCommodities()) {
             if (canCommodityPassFilter(commodity))
                 filteredCommodities.add(commodity);
         }
     }
 
-    public boolean canCommodityPassFilter(Commodity commodity) {
+    public static boolean canCommodityPassFilter(Commodity commodity) {
         for (Filter filter : currentFilters) {
             if (!filter.isCommodityMatches(commodity))
                 return false;
@@ -73,6 +96,14 @@ public class ProductsMenu implements CommandProcess {
 
     @Override
     public String commandProcessor(String command) {
+        productsMenuCommands.add(new ViewCategoryCommand("$view categories^"));
+        productsMenuCommands.add(new FilteringCommand("$filtering^"));
+        productsMenuCommands.add(new ShowAvailableFiltersCommand("$show available filters^"));
+        for (Command productsMenuCommand : productsMenuCommands) {
+            if (productsMenuCommand.checkCommand(command))
+                return productsMenuCommand.runCommand(command);
+        }
+        return "invalid command";
 
     }
 }

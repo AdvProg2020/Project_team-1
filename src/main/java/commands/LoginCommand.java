@@ -15,12 +15,6 @@ public class LoginCommand extends Command{
     }
 
     @Override
-    public boolean checkCommand(String command) {
-        matcher = pattern.matcher(command);
-        return matcher.matches();
-    }
-
-    @Override
     public String runCommand(String command) {
         menu = (LoginRegisterMenu)HandleMenu.getMenu();
         if (checkErrors() != null)

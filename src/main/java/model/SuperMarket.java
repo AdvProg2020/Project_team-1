@@ -121,6 +121,13 @@ public class SuperMarket {
         SuperMarket.onlineAccount = onlineAccount;
     }
 
+    public static Category getCategoryByName(String name){
+        for (Category category : allCategory) {
+            if (category.getName().equals(name))
+                return category;
+        }
+        return null;
+    }
 
 }
 
