@@ -9,9 +9,9 @@ public class OptionalFilter implements Filter {
     private ArrayList<String> acceptableOptions;
     private int correspondingFieldNumber;
 
-    public OptionalFilter(int correspondingFieldNumber) {
+    public OptionalFilter(int correspondingFieldNumber, ArrayList<String> acceptableOptions) {
         this.correspondingFieldNumber = correspondingFieldNumber;
-        acceptableOptions = new ArrayList<String>();
+        this.acceptableOptions = acceptableOptions;
     }
 
     public void addAcceptableOption(String acceptableOption) {

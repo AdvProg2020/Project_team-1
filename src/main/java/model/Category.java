@@ -8,13 +8,13 @@ public class Category {
     private ArrayList<Category> subCategories;
     private Category father;
     private ArrayList<Commodity> commodities;
-    private ArrayList<HashSet<String>> fieldOptions;
+    private ArrayList<CategorySpecification> fieldOptions;
 
     public Category(String name, int numberOfFields, Category father) {
         this.name = name;
         this.father = father;
         this.commodities = new ArrayList<Commodity>();
-        this.fieldOptions = new ArrayList<HashSet<String>>();
+        this.fieldOptions = new ArrayList<CategorySpecification>();
         this.subCategories = new ArrayList<Category>();
     }
 
@@ -22,7 +22,7 @@ public class Category {
         this.name = name;
         this.father = null;
         this.commodities = new ArrayList<Commodity>();
-        this.fieldOptions = new ArrayList<HashSet<String>>();
+        this.fieldOptions = new ArrayList<CategorySpecification>();
         this.subCategories = new ArrayList<Category>();
     }
 
@@ -58,11 +58,11 @@ public class Category {
         this.commodities = commodities;
     }
 
-    public ArrayList<HashSet<String>> getFieldOptions() {
+    public ArrayList<CategorySpecification> getFieldOptions() {
         return fieldOptions;
     }
 
-    public void setFieldOptions(ArrayList<HashSet<String>> fieldOptions) {
+    public void setFieldOptions(ArrayList<CategorySpecification> fieldOptions) {
         this.fieldOptions = fieldOptions;
     }
 }

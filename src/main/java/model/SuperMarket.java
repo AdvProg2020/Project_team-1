@@ -126,6 +126,7 @@ public class SuperMarket {
             if (category.getName().equals(name))
                 return category;
         }
+        return null;
     }
 
 }
