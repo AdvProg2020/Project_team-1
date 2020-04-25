@@ -67,7 +67,7 @@ public class ProductsMenu implements CommandProcess {
     }
 
 
-    public void disableFilter(Filter filter) {
+    public static void disableFilter(Filter filter) {
         currentFilters.remove(filter);
         updateFilteredCommodities();
     }

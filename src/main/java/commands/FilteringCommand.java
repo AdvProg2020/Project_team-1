@@ -18,6 +18,8 @@ public class FilteringCommand extends Command {
     public String runCommand(String command) {
        filteringCommands.add(new ShowAvailableFiltersCommand("$show available filters^"));
        filteringCommands.add(new Filter("$filter \\S+ \\S+ ?\\S+ ?\\S+ ?\\S+^"));
+       filteringCommands.add(new CurrentFilter("$current filter^"));
+       filteringCommands.add(new DisableFilter("$disable filter (?<filter name>\\S+)"));
         String input = Main.scan();
         for (Command filteringCommand : filteringCommands) {
             if (filteringCommand.checkCommand(input))

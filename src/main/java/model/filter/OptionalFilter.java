@@ -5,13 +5,14 @@ import model.field.OptionalField;
 
 import java.util.ArrayList;
 
-public class OptionalFilter implements Filter {
+public class OptionalFilter extends Filter {
     private ArrayList<String> acceptableOptions;
     private int correspondingFieldNumber;
 
-    public OptionalFilter(int correspondingFieldNumber, ArrayList<String> acceptableOptions) {
-        this.correspondingFieldNumber = correspondingFieldNumber;
+    public OptionalFilter(String filterName, ArrayList<String> acceptableOptions, int correspondingFieldNumber) {
+        super(filterName);
         this.acceptableOptions = acceptableOptions;
+        this.correspondingFieldNumber = correspondingFieldNumber;
     }
 
     public void addAcceptableOption(String acceptableOption) {
