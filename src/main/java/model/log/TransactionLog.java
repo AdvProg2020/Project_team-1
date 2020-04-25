@@ -6,17 +6,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public abstract class TransactionLog {
-    private int logId;
-    private Date date;
-    private ArrayList<Commodity> commodities;
+    protected String logId;
+    protected Date date;
+    protected ArrayList<Commodity> commodities;
 
-    public TransactionLog(int logId, Date date, ArrayList<Commodity> commodities) {
-        this.logId = logId;
+    public TransactionLog(Date date, ArrayList<Commodity> commodities) {
         this.date = date;
         this.commodities = commodities;
     }
 
-    public int getLogId() {
+    public String getLogId() {
         return logId;
     }
 
@@ -26,5 +25,9 @@ public abstract class TransactionLog {
 
     public ArrayList<Commodity> getCommodities() {
         return commodities;
+    }
+
+    protected String generateLogID() {
+        return date.toString();
     }
 }
