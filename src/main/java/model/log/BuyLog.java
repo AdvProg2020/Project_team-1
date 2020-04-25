@@ -4,7 +4,6 @@ import model.Commodity;
 import model.DiscountCode;
 import model.account.SimpleAccount;
 
-import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Date;
 

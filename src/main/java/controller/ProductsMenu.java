@@ -15,8 +15,10 @@ import static model.Commodity.Comparators.*;
 
 public class ProductsMenu implements CommandProcess {
 
-    private static ArrayList <Command> productsMenuCommands = new ArrayList<Command>();
+    private static ArrayList<Command> productsMenuCommands = new ArrayList<Command>();
     private static ArrayList<Commodity> filteredCommodities = (ArrayList<Commodity>) SuperMarket.getAllCommodities().clone();
+    private static ArrayList<Filter> currentFilters = new ArrayList<Filter>();
+    private String currentSort;
 
     public static ArrayList<Command> getProductsMenuCommands() {
         return productsMenuCommands;
@@ -29,13 +31,6 @@ public class ProductsMenu implements CommandProcess {
     public static ArrayList<Filter> getCurrentFilters() {
         return currentFilters;
     }
-
-    public String getCurrentSort() {
-        return currentSort;
-    }
-
-    private static ArrayList<Filter> currentFilters = new ArrayList<Filter>();
-    private String currentSort;
 
     public static void addFilteredCommodities(Commodity commodity) {
         filteredCommodities.add(commodity);
@@ -66,6 +61,9 @@ public class ProductsMenu implements CommandProcess {
         return true;
     }
 
+    public String getCurrentSort() {
+        return currentSort;
+    }
 
     public void disableFilter(Filter filter) {
         currentFilters.remove(filter);
@@ -95,7 +93,7 @@ public class ProductsMenu implements CommandProcess {
 
 
     @Override
-    public String commandProcessor(String command) {
+    public String commandProcessor(String command) throws Exception {
         productsMenuCommands.add(new ViewCategoryCommand("$view categories^"));
         productsMenuCommands.add(new FilteringCommand("$filtering^"));
         productsMenuCommands.add(new ShowAvailableFiltersCommand("$show available filters^"));

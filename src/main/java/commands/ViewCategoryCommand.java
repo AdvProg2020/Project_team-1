@@ -2,7 +2,7 @@ package commands;
 
 import model.SuperMarket;
 
-public class ViewCategoryCommand extends Command{
+public class ViewCategoryCommand extends Command {
 
 
     public ViewCategoryCommand(String regex) {

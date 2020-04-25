@@ -66,16 +66,16 @@ public class Commodity implements Requestable {
         return inventory;
     }
 
+    public void setInventory(int inventory) {
+        this.inventory = inventory;
+    }
+
     public int getNumberOfVisits() {
         return numberOfVisits;
     }
 
     public void setNumberOfVisits(int numberOfVisits) {
         this.numberOfVisits = numberOfVisits;
-    }
-
-    public void setInventory(int inventory) {
-        this.inventory = inventory;
     }
 
     public Status getStatus() {
@@ -154,10 +154,10 @@ public class Commodity implements Requestable {
                 return o1.price - o2.price;
             }
         };
-        public static Comparator<Commodity> score  = new Comparator<Commodity>() {
+        public static Comparator<Commodity> score = new Comparator<Commodity>() {
             @Override
             public int compare(Commodity o1, Commodity o2) {
-                if ( o1.getAverageScore() > o2.getAverageScore())
+                if (o1.getAverageScore() > o2.getAverageScore())
                     return 1;
                 else
                     return -1;

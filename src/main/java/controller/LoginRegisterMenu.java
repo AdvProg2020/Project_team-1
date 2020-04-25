@@ -2,21 +2,18 @@ package controller;
 
 import commands.Command;
 import commands.LoginCommand;
-import commands.LoginCommand;
-import main.Main;
+import commands.RegisterCommand;
 import model.Request;
 import model.SuperMarket;
 import model.account.BusinessAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashSet;
 
 public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
 
-    private static ArrayList <Command> registerAndLoginCommands = new ArrayList<Command>();
+    private static HashSet<Command> registerAndLoginCommands = new HashSet<>();
 
     public void registerPersonalAccount(PersonalAccount personalAccount) {
         SuperMarket.addAccount(personalAccount);
@@ -40,8 +37,10 @@ public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
     }
 
     @Override
-    public String commandProcessor(String command) {
-        registerAndLoginCommands.add(new LoginCommand("$login (?<username>\\S+)"));
+    public String commandProcessor(String command) throws Exception {
+        registerAndLoginCommands.add(new LoginCommand("login (?<username>\\S+)"));
+        registerAndLoginCommands.add(new RegisterCommand("create account (?<type>customer|seller|admin) " +
+                "(?<username>\\S+)"));
         for (Command registerAndLoginCommand : registerAndLoginCommands) {
             if (registerAndLoginCommand.checkCommand(command))
                 return registerAndLoginCommand.runCommand(command);
