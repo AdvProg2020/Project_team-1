@@ -21,11 +21,13 @@ public class LoginCommand extends Command{
     }
 
     @Override
-    public void runCommand(String command) {
+    public String runCommand(String command) {
         menu = (LoginRegisterMenu)HandleMenu.getMenu();
-        checkErrors();
+        if (checkErrors() != null)
+            return checkErrors();
         String password = Main.getConsoleScanner().nextLine();
         menu.login(matcher.group("username"), password);
+        return "you have successfully logged in";
     }
 
 

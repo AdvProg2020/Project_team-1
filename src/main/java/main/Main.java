@@ -13,7 +13,7 @@ public class Main {
         while (true) {
             String command = getConsoleScanner().nextLine();
             CommandProcess menu = HandleMenu.getMenu();
-            menu.commandProcessor(command);
+            System.out.println(menu.commandProcessor(command));
         }
     }
 

@@ -72,7 +72,7 @@ public class ProductsMenu implements CommandProcess {
 
 
     @Override
-    public void commandProcessor(String command) {
+    public String commandProcessor(String command) {
 
     }
 }

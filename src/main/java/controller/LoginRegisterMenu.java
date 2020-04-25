@@ -37,12 +37,13 @@ public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
     }
 
     @Override
-    public void commandProcessor(String command) {
+    public String commandProcessor(String command) {
         ArrayList <Command> registerAndLoginCommands = new ArrayList<Command>();
         registerAndLoginCommands.add(new LoginCommand("login (?<username>\\S+)"));
         for (Command registerAndLoginCommand : registerAndLoginCommands) {
             if (registerAndLoginCommand.checkCommand(command))
-                registerAndLoginCommand.runCommand(command);
+                return registerAndLoginCommand.runCommand(command);
         }
+        return null;
     }
 }

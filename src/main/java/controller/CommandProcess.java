@@ -1,5 +1,5 @@
 package controller;
 
 public interface CommandProcess {
-    public void commandProcessor(String command);
+    public String commandProcessor(String command);
 }

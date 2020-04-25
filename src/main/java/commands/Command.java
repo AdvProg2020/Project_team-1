@@ -23,5 +23,5 @@ public abstract class Command {
 
 
     public abstract boolean checkCommand(String command);
-    public abstract void runCommand(String command);
+    public abstract String runCommand(String command);
 }
