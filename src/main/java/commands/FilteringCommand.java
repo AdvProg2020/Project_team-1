@@ -18,8 +18,7 @@ public class FilteringCommand extends Command {
     public String runCommand(String command) {
        filteringCommands.add(new ShowAvailableFiltersCommand("$show available filters^"));
        filteringCommands.add(new Filter("$filter \\S+ \\S+ ?\\S+ ?\\S+ ?\\S+^"));
-        Scanner scanner = Main.getConsoleScanner();
-        String input = scanner.nextLine();
+        String input = Main.scan();
         for (Command filteringCommand : filteringCommands) {
             if (filteringCommand.checkCommand(input))
                  return filteringCommand.runCommand(input);

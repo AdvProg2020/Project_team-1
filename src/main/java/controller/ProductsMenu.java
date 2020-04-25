@@ -51,6 +51,7 @@ public class ProductsMenu implements CommandProcess {
     }
 
     public static void updateFilteredCommodities() {
+        filteredCommodities = new ArrayList<Commodity>();
         for (Commodity commodity : SuperMarket.getAllCommodities()) {
             if (canCommodityPassFilter(commodity))
                 filteredCommodities.add(commodity);

@@ -23,6 +23,10 @@ public class Main {
         return consoleScanner;
     }
 
+    public static String scan(){
+        return consoleScanner.nextLine();
+    }
+
     public static void setConsoleScanner(Scanner consoleScanner) {
         Main.consoleScanner = consoleScanner;
     }
