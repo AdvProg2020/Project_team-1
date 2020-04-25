@@ -15,6 +15,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
+
+    private static ArrayList <Command> registerAndLoginCommands = new ArrayList<Command>();
+
     public void registerPersonalAccount(PersonalAccount personalAccount) {
         SuperMarket.addAccount(personalAccount);
     }
@@ -38,12 +41,11 @@ public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
 
     @Override
     public String commandProcessor(String command) {
-        ArrayList <Command> registerAndLoginCommands = new ArrayList<Command>();
-        registerAndLoginCommands.add(new LoginCommand("login (?<username>\\S+)"));
+        registerAndLoginCommands.add(new LoginCommand("$login (?<username>\\S+)"));
         for (Command registerAndLoginCommand : registerAndLoginCommands) {
             if (registerAndLoginCommand.checkCommand(command))
                 return registerAndLoginCommand.runCommand(command);
         }
-        return null;
+        return "invalid command";
     }
 }

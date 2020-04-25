@@ -10,6 +10,10 @@ public class FilterByCategory implements Filter {
         this.category = category;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
     @Override
     public boolean isCommodityMatches(Commodity commodity) {
         return commodity.getCategory().getName().equals(category.getName());

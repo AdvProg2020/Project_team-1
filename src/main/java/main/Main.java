@@ -13,7 +13,9 @@ public class Main {
         while (true) {
             String command = getConsoleScanner().nextLine();
             CommandProcess menu = HandleMenu.getMenu();
-            System.out.println(menu.commandProcessor(command));
+            String respond = menu.commandProcessor(command);
+            if (respond != null)
+                System.out.println(respond);
         }
     }
 
