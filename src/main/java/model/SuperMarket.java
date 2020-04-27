@@ -81,7 +81,7 @@ public class SuperMarket {
 
     public static TransactionLog getLogByLogId(int logId) {
         for (TransactionLog log : allLogs) {
-            if (log.getLogId() == logId)
+            if (log.getLogId().equals(logId))
                 return log;
         }
         return null;
@@ -121,7 +121,7 @@ public class SuperMarket {
         SuperMarket.onlineAccount = onlineAccount;
     }
 
-    public static Category getCategoryByName(String name){
+    public static Category getCategoryByName(String name) {
         for (Category category : allCategory) {
             if (category.getName().equals(name))
                 return category;

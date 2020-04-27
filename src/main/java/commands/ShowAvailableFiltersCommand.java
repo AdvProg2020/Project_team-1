@@ -1,10 +1,12 @@
 package commands;
 
-import model.SuperMarket;
-
 public class ShowAvailableFiltersCommand extends Command {
 
     private boolean isThisCommandAvailable;
+
+    public ShowAvailableFiltersCommand(String regex) {
+        super(regex);
+    }
 
     public boolean isThisCommandAvailable() {
         return isThisCommandAvailable;
@@ -12,10 +14,6 @@ public class ShowAvailableFiltersCommand extends Command {
 
     public void setThisCommandAvailable(boolean thisCommandAvailable) {
         isThisCommandAvailable = thisCommandAvailable;
-    }
-
-    public ShowAvailableFiltersCommand(String regex) {
-        super(regex);
     }
 
     @Override

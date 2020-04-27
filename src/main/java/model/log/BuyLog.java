@@ -1,35 +1,37 @@
 package model.log;
 
 import model.Commodity;
+import model.DiscountCode;
+import model.account.SimpleAccount;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class BuyLog extends TransactionLog {
-    private int payedMoney;
-    private int discountByCode;
-    private String sellerName;
+    private double payedMoney;
+    private DiscountCode discountByCode;
+    private SimpleAccount seller;
     private Boolean isCommodityDelivered;
 
-    public BuyLog(int logId, Date date, ArrayList<Commodity> commodities, int payedMoney,
-                  int discountByCode, String sellerName, Boolean isCommodityDelivered) {
-        super(logId, date, commodities);
+    public BuyLog(Date date, ArrayList<Commodity> commodities, double payedMoney, DiscountCode discountByCode, SimpleAccount seller) {
+        super(date, commodities);
         this.payedMoney = payedMoney;
         this.discountByCode = discountByCode;
-        this.sellerName = sellerName;
-        this.isCommodityDelivered = isCommodityDelivered;
+        this.seller = seller;
+        logId = generateLogID();
+        isCommodityDelivered = false;
     }
 
-    public int getPayedMoney() {
+    public double getPayedMoney() {
         return payedMoney;
     }
 
-    public int getDiscountByCode() {
+    public DiscountCode getDiscountByCode() {
         return discountByCode;
     }
 
-    public String getSellerName() {
-        return sellerName;
+    public SimpleAccount getSeller() {
+        return seller;
     }
 
     public Boolean getCommodityDelivered() {
@@ -38,5 +40,10 @@ public class BuyLog extends TransactionLog {
 
     public void setCommodityDelivered(Boolean commodityDelivered) {
         isCommodityDelivered = commodityDelivered;
+    }
+
+    @Override
+    protected String generateLogID() {
+        return "BuyLog" + super.generateLogID() + seller.getUsername();
     }
 }

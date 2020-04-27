@@ -1,5 +1,5 @@
 package controller;
 
 public interface CommandProcess {
-    public String commandProcessor(String command);
+    String commandProcessor(String command) throws Exception;
 }

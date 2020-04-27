@@ -5,6 +5,9 @@ public class HandleMenu {
 
     private static CommandProcess menu;
 
+    private HandleMenu() {
+    }
+
     public static CommandProcess getMenu() {
         return menu;
     }
@@ -12,8 +15,6 @@ public class HandleMenu {
     public static void setMenu(CommandProcess menu) {
         HandleMenu.menu = menu;
     }
-
-    private HandleMenu() {}
 
     public static HandleMenu getInstance() {
         return handleMenu;

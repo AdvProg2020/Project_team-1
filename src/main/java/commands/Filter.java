@@ -8,9 +8,7 @@ import model.filter.FilterByCategory;
 import model.filter.FilterByName;
 import model.filter.NumericalFilter;
 import model.filter.OptionalFilter;
-import org.graalvm.compiler.lir.StandardOp;
 
-import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -18,6 +16,14 @@ public class Filter extends Command {
 
     public Filter(String regex) {
         super(regex);
+    }
+
+    public static boolean isOptionAvailable(String option, HashSet<String> allOptions) {
+        for (String allOption : allOptions) {
+            if (option.equals(allOption))
+                return true;
+        }
+        return false;
     }
 
     public String filterByOptionalField(int correspondingFieldNumber, Category category) {
@@ -41,7 +47,7 @@ public class Filter extends Command {
         if (category.getFieldOptions().get(correspondingFieldNumber).getOptions() == null) {
             return filterByNumericalField(correspondingFieldNumber);
         }
-        return filterByOptionalField(correspondingFieldNumber,category);
+        return filterByOptionalField(correspondingFieldNumber, category);
 
     }
 
@@ -60,14 +66,6 @@ public class Filter extends Command {
             return filterByField(splitCommand);
         }
         return "invalid command";
-    }
-
-    public static boolean isOptionAvailable(String option, HashSet<String> allOptions) {
-        for (String allOption : allOptions) {
-            if (option.equals(allOption))
-                return true;
-        }
-        return false;
     }
 
 

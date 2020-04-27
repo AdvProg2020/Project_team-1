@@ -4,8 +4,6 @@ import controller.HandleMenu;
 import controller.LoginRegisterMenu;
 import main.Main;
 
-import java.util.regex.Matcher;
-
 public class LoginCommand extends Command{
 
     LoginRegisterMenu menu;
@@ -26,7 +24,7 @@ public class LoginCommand extends Command{
 
 
     public String checkErrors(){
-        if (!menu.isUserNameValid(matcher.group("username"))){
+        if (!menu.isUserNameValid(matcher.group("username"))) {
             return "Valid nist :)";
         }
         return null;
