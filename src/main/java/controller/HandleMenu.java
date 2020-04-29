@@ -3,7 +3,7 @@ package controller;
 public class HandleMenu {
     private static final HandleMenu handleMenu = new HandleMenu();
 
-    private static CommandProcess menu;
+    private static ProductsMenu menu;
 
     private HandleMenu() {
     }
