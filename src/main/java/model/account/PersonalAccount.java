@@ -5,19 +5,20 @@ import model.DiscountCode;
 import model.log.BuyLog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PersonalAccount extends SimpleAccount {
     private ArrayList<DiscountCode> discountCodes;
     private ArrayList<BuyLog> buyLogs;
-    private ArrayList<Commodity> cart;
+    private HashMap<Commodity, Integer> cart;
     private BusinessAccount businessAccount;
     private double credit;
 
     public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password) throws Exception {
         super(username, firstName, lastName, email, phoneNumber, password);
-        discountCodes = new ArrayList<DiscountCode>();
-        buyLogs = new ArrayList<BuyLog>();
-        cart = new ArrayList<Commodity>();
+        discountCodes = new ArrayList<>();
+        buyLogs = new ArrayList<>();
+        cart = new HashMap<>();
         businessAccount = null;
         credit = 0.0;
     }
@@ -38,12 +39,12 @@ public class PersonalAccount extends SimpleAccount {
         buyLogs.add(buyLog);
     }
 
-    public ArrayList<Commodity> getCart() {
+    public HashMap<Commodity, Integer> getCart() {
         return cart;
     }
 
     public void addToCart(Commodity commodity) {
-        cart.add(commodity);
+        cart.put(commodity, 1);
     }
 
     public void removeFromCart(Commodity commodity) {
