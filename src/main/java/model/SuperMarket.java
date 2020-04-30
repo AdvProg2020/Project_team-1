@@ -19,6 +19,10 @@ public class SuperMarket {
         return allDiscountCodes;
     }
 
+    public static void addToDiscounts(DiscountCode discountCode) {
+        allDiscountCodes.add(discountCode);
+    }
+
     public static ArrayList<SimpleAccount> getAllAccounts() {
         return allAccounts;
     }

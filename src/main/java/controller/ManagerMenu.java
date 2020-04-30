@@ -48,6 +48,10 @@ public class ManagerMenu extends AccountMenu implements CommandProcess {
         return SuperMarket.getAllRequests();
     }
 
+    public void createNewDiscount(DiscountCode discountCode) {
+        SuperMarket.addToDiscounts(discountCode);
+    }
+
     public String commandProcessor(String command) throws Exception {
         managerMenuCommands.add(new ViewPersonalInfoCommand("view personal info"));
         for (Command registerAndLoginCommand : managerMenuCommands) {
