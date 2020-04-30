@@ -13,6 +13,11 @@ public class SuperMarket {
     private static ArrayList<Score> allScores = new ArrayList<Score>();
     private static ArrayList<Request> allRequests = new ArrayList<Request>();
     private static ArrayList<SimpleAccount> allAccounts = new ArrayList<SimpleAccount>();
+    private static ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>();
+
+    public static ArrayList<DiscountCode> getAllDiscountCodes() {
+        return allDiscountCodes;
+    }
 
     public static ArrayList<SimpleAccount> getAllAccounts() {
         return allAccounts;

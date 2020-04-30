@@ -2,6 +2,9 @@ package controller;
 
 import commands.Command;
 import commands.ViewPersonalInfoCommand;
+import model.Commodity;
+import model.DiscountCode;
+import model.Request;
 import model.SuperMarket;
 import model.account.ManagerAccount;
 import model.account.SimpleAccount;
@@ -31,6 +34,18 @@ public class ManagerMenu extends AccountMenu implements CommandProcess {
 
     public void createNewManager(ManagerAccount managerAccount) {
         SuperMarket.addAccount(managerAccount);
+    }
+
+    public ArrayList<Commodity> getAllCommodities() {
+        return SuperMarket.getAllCommodities();
+    }
+
+    public ArrayList<DiscountCode> getAllDiscounts() {
+        return SuperMarket.getAllDiscountCodes();
+    }
+
+    public ArrayList<Request> getAllRequests() {
+        return SuperMarket.getAllRequests();
     }
 
     public String commandProcessor(String command) throws Exception {
