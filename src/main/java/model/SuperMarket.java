@@ -80,12 +80,21 @@ public class SuperMarket {
         return null;
     }
 
-    public static Commodity getCommodityById(int commodityId) {
+    public static Commodity getCommodityById(int commodityId) throws Exception {
         for (Commodity commodity : allCommodities) {
             if (commodity.getCommodityId() == commodityId)
                 return commodity;
         }
-        return null;
+        throw new Exception("no product with this ID");
+    }
+
+    public static DiscountCode getDiscountWithCode(String code) throws Exception {
+        for (DiscountCode discountCode : allDiscountCodes) {
+            if (discountCode.getCode().equals(code)) {
+                return discountCode;
+            }
+        }
+        throw new Exception("no discount with this code");
     }
 
     public static TransactionLog getLogByLogId(int logId) {

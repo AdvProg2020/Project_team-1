@@ -2,7 +2,7 @@ package commands;
 
 import controller.AccountMenu;
 import controller.HandleMenu;
-import main.Main;
+import controller.ViewPersonalInfoMenu;
 
 public class ViewPersonalInfoCommand extends Command {
     AccountMenu menu;
@@ -14,11 +14,7 @@ public class ViewPersonalInfoCommand extends Command {
     @Override
     public String runCommand(String command) {
         this.menu = (AccountMenu) HandleMenu.getMenu();
-        Main.print(menu.getAccount().toString());
-        String string = Main.scan();
-        if (string.equals("back")) {
-            return null;
-        }
-        return "invalid command";
+        HandleMenu.setMenu(new ViewPersonalInfoMenu());
+        return menu.getAccount().toString();
     }
 }
