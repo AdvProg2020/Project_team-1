@@ -16,7 +16,8 @@ public abstract class SimpleAccount {
     protected String phoneNumber;
     protected String hashedPassword;
 
-    public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password) throws Exception {
+    public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
+                         String password) throws Exception {
         changeUsername(username);
         changeFirstName(firstName);
         changeLastName(lastName);
@@ -86,10 +87,7 @@ public abstract class SimpleAccount {
     }
 
     public boolean isPasswordCorrect(String password) {
-        if (BCrypt.checkpw(password, hashedPassword)) {
-            return true;
-        }
-        return false;
+        return BCrypt.checkpw(password, hashedPassword);
     }
 
     public void changePassword(String password) throws Exception {
@@ -98,6 +96,15 @@ public abstract class SimpleAccount {
         } else {
             throw new Exception("Invalid password.");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "username: " + this.username + "\n" +
+                "first name: " + this.firstName + "\n" +
+                "last name: " + this.lastName + "\n" +
+                "email: " + this.email + "\n" +
+                "phoneNumber: " + this.phoneNumber;
     }
 
     protected String hashPassword(String password) {

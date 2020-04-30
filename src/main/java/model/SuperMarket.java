@@ -129,5 +129,13 @@ public class SuperMarket {
         return null;
     }
 
+    public static SimpleAccount getAccountWithUsername(String username) throws Exception {
+        for (SimpleAccount account : allAccounts) {
+            if (account.getUsername().equals(username)) {
+                return account;
+            }
+        }
+        throw new Exception("no user with this username");
+    }
 }
 
