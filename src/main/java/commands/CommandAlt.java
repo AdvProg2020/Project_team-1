@@ -4,10 +4,7 @@ public abstract class CommandAlt {
     protected String commandRegex;
 
     protected boolean isCommandMatch(String input) {
-        if (input.matches(commandRegex)) {
-            return true;
-        }
-        return false;
+        return input.matches(commandRegex);
     }
 
     protected abstract String runCommand(String input) throws Exception;
