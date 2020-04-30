@@ -15,13 +15,16 @@ public class DiscountCode {
     private ArrayList<SimpleAccount> accounts;
 
     public DiscountCode(String code, Date startDate, Date finishDate, int discountPercentage, int maximumDiscountPrice,
-                        int maximumNumberOfUses, ArrayList<SimpleAccount> accounts) {
+                        int maximumNumberOfUses, ArrayList<SimpleAccount> accounts) throws Exception {
+        if (finishDate.compareTo(startDate) < 0) {
+            throw new Exception("dates are not valid");
+        }
+        setMaximumNumberOfUses(maximumNumberOfUses);
+        setDiscountPercentage(discountPercentage);
+        setMaximumDiscountPrice(maximumDiscountPrice);
         this.code = code;
         this.startDate = startDate;
         this.finishDate = finishDate;
-        this.discountPercentage = discountPercentage;
-        this.maximumDiscountPrice = maximumDiscountPrice;
-        this.maximumNumberOfUses = maximumNumberOfUses;
         this.accounts = accounts;
     }
 
@@ -33,7 +36,10 @@ public class DiscountCode {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Date startDate) throws Exception {
+        if (finishDate.compareTo(startDate) < 0) {
+            throw new Exception("dates are not valid");
+        }
         this.startDate = startDate;
     }
 
@@ -41,7 +47,10 @@ public class DiscountCode {
         return finishDate;
     }
 
-    public void setFinishDate(Date finishDate) {
+    public void setFinishDate(Date finishDate) throws Exception {
+        if (finishDate.compareTo(startDate) < 0) {
+            throw new Exception("dates are not valid");
+        }
         this.finishDate = finishDate;
     }
 
@@ -49,7 +58,10 @@ public class DiscountCode {
         return discountPercentage;
     }
 
-    public void setDiscountPercentage(int discountPercentage) {
+    public void setDiscountPercentage(int discountPercentage) throws Exception {
+        if (discountPercentage < 1) {
+            throw new Exception("not a valid percentage");
+        }
         this.discountPercentage = discountPercentage;
     }
 
@@ -57,7 +69,10 @@ public class DiscountCode {
         return maximumDiscountPrice;
     }
 
-    public void setMaximumDiscountPrice(int maximumDiscountPrice) {
+    public void setMaximumDiscountPrice(int maximumDiscountPrice) throws Exception {
+        if (maximumDiscountPrice <= 0) {
+            throw new Exception("not a valid price");
+        }
         this.maximumDiscountPrice = maximumDiscountPrice;
     }
 
@@ -65,7 +80,10 @@ public class DiscountCode {
         return maximumNumberOfUses;
     }
 
-    public void setMaximumNumberOfUses(int maximumNumberOfUses) {
+    public void setMaximumNumberOfUses(int maximumNumberOfUses) throws Exception {
+        if (maximumNumberOfUses <= 0) {
+            throw new Exception("not a valid number");
+        }
         this.maximumNumberOfUses = maximumNumberOfUses;
     }
 

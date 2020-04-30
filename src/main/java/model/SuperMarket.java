@@ -155,5 +155,11 @@ public class SuperMarket {
         }
         throw new Exception("no user with this username");
     }
+
+    public static Request getRequestWithId(int id) {
+        for (Request request : allRequests) {
+            if (request.)
+        }
+    }
 }
 
