@@ -64,4 +64,12 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
             throw new Exception("Invalid business name. Business name just contain 4 to 20 alphanumerical characters.");
         }
     }
+
+    @Override
+    public String toString() {
+        return  "BusinessAccount\n" +
+                "businessName=" + businessName + "\n" +
+                super.toString();
+
+    }
 }
