@@ -66,4 +66,9 @@ public class PersonalAccount extends SimpleAccount {
     public void addToCredit(double amount) {
         credit += amount;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
