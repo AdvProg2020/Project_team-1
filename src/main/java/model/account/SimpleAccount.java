@@ -110,13 +110,4 @@ public abstract class SimpleAccount {
     protected String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
-
-    @Override
-    public String toString() {
-        return  "username=" + username + "\n" +
-                "firstName=" + firstName + "\n" +
-                "lastName=" + lastName + "\n" +
-                "email=" + email + "\n" +
-                "phoneNumber=" + phoneNumber + "\n" ;
-    }
 }
