@@ -3,12 +3,13 @@ package model.filter;
 import model.Commodity;
 import model.field.NumericalField;
 
-public class NumericalFilter implements Filter {
+public class NumericalFilter extends Filter {
     private int rangeStart;
     private int rangeEnd;
     private int correspondingFieldNumber;
 
-    public NumericalFilter(int rangeStart, int rangeEnd, int correspondingFieldNumber) {
+    public NumericalFilter(String filterName, int rangeStart, int rangeEnd, int correspondingFieldNumber) {
+        super(filterName);
         this.rangeStart = rangeStart;
         this.rangeEnd = rangeEnd;
         this.correspondingFieldNumber = correspondingFieldNumber;

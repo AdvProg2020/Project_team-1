@@ -2,10 +2,11 @@ package model.filter;
 
 import model.Commodity;
 
-public class FilterByName implements Filter {
+public class FilterByName extends Filter {
     private String commodityName;
 
-    public FilterByName(String commodityName) {
+    public FilterByName(String filterName, String commodityName) {
+        super(filterName);
         this.commodityName = commodityName;
     }
 
