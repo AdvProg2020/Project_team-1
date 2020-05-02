@@ -134,6 +134,28 @@ public class Commodity implements Requestable {
         return description;
     }
 
+    @Override
+    public String toString() {
+        return "Commodity{" +
+                "commodityId=" + commodityId +
+                ", status=" + status +
+                ", brand='" + brand + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", inventory=" + inventory +
+                ", seller=" + seller +
+                ", isCommodityAvailable=" + isCommodityAvailable +
+                ", category=" + category +
+                ", categorySpecifications=" + categorySpecifications +
+                ", description='" + description + '\'' +
+                ", allComments=" + allComments +
+                ", averageScore=" + averageScore +
+                ", totalScores=" + totalScores +
+                ", numberOfScores=" + numberOfScores +
+                ", numberOfVisits=" + numberOfVisits +
+                '}';
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }

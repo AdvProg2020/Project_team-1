@@ -10,6 +10,18 @@ public class Comment implements Requestable {
     private boolean isABuyer;
     private Status status;
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "account=" + account +
+                ", commodity=" + commodity +
+                ", title='" + title + '\'' +
+                ", string='" + string + '\'' +
+                ", isABuyer=" + isABuyer +
+                ", status=" + status +
+                '}';
+    }
+
     public Comment(SimpleAccount account, Commodity commodity, String title, String string, boolean isABuyer) {
         this.account = account;
         this.commodity = commodity;

@@ -14,6 +14,7 @@ public class Main {
     private static Scanner consoleScanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        ManagerMenu.getCommands().add(new )
         CreateDiscountCodeMenu.getCommands().add(new CreateDiscountCodeCommand("^\\S+ \\d\\d-\\d\\d-\\d\\d\\d\\d \\d\\d-\\d\\d-\\d\\d\\d\\d \\d+ \\d+ \\d+ \\S+"));
         ManagerMenu.getCommands().add(new ViewPersonalInfoCommand("view personal info"));
         ManagerMenu.getCommands().add(new DiscountCodeCommand("create discount code"));

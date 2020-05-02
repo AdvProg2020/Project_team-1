@@ -17,6 +17,15 @@ public class Score {
         return account;
     }
 
+    @Override
+    public String toString() {
+        return "Score{" +
+                "account=" + account +
+                ", score=" + score +
+                ", commodity=" + commodity +
+                '}';
+    }
+
     public int getScore() {
         return score;
     }

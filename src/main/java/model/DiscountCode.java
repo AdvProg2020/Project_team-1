@@ -94,4 +94,17 @@ public class DiscountCode {
     public void setAccounts(ArrayList<SimpleAccount> accounts) {
         this.accounts = accounts;
     }
+
+    @Override
+    public String toString() {
+        return "DiscountCode{" +
+                "code='" + code + '\'' +
+                ", startDate=" + startDate +
+                ", finishDate=" + finishDate +
+                ", discountPercentage=" + discountPercentage +
+                ", maximumDiscountPrice=" + maximumDiscountPrice +
+                ", maximumNumberOfUses=" + maximumNumberOfUses +
+                ", accounts=" + accounts +
+                '}';
+    }
 }

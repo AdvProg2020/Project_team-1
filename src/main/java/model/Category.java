@@ -64,4 +64,15 @@ public class Category {
     public void setFieldOptions(ArrayList<CategorySpecification> fieldOptions) {
         this.fieldOptions = fieldOptions;
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "name='" + name + '\'' +
+                ", subCategories=" + subCategories +
+                ", father=" + father +
+                ", commodities=" + commodities +
+                ", fieldOptions=" + fieldOptions +
+                '}';
+    }
 }
