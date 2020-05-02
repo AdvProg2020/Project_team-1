@@ -1,8 +1,10 @@
 package main;
 
-import commands.Filter;
+import commands.*;
 import controller.CommandProcess;
+import controller.CreateDiscountCodeMenu;
 import controller.HandleMenu;
+import controller.ManagerMenu;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,6 +14,10 @@ public class Main {
     private static Scanner consoleScanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        CreateDiscountCodeMenu.getCommands().add(new CreateDiscountCodeCommand("^\\S+ \\d\\d-\\d\\d-\\d\\d\\d\\d \\d\\d-\\d\\d-\\d\\d\\d\\d \\d+ \\d+ \\d+ \\S+"));
+        ManagerMenu.getCommands().add(new ViewPersonalInfoCommand("view personal info"));
+        ManagerMenu.getCommands().add(new DiscountCodeCommand("create discount code"));
+        ManagerMenu.getCommands().add(new )
         while (true) {
             String command = getConsoleScanner().nextLine();
             CommandProcess menu = HandleMenu.getMenu();

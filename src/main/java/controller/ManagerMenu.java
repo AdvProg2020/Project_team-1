@@ -1,6 +1,7 @@
 package controller;
 
 import commands.Command;
+import commands.DiscountCodeCommand;
 import commands.ViewPersonalInfoCommand;
 import model.Commodity;
 import model.DiscountCode;
@@ -12,12 +13,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class ManagerMenu extends AccountMenu implements CommandProcess {
-    private static HashSet<Command> commands = new HashSet<>();
+    private static  ArrayList<Command> commands = new ArrayList<>();
+
+    public static ArrayList<Command> getCommands() {
+        return commands;
+    }
 
     public ManagerMenu(SimpleAccount account) {
         super(account);
-        commands.add(new ViewPersonalInfoCommand("view personal info"));
-        commands.add(new)
     }
 
     public ArrayList<SimpleAccount> getAllAccounts() {
