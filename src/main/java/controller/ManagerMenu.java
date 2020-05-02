@@ -44,9 +44,9 @@ public class ManagerMenu extends AccountMenu implements CommandProcess {
     }
 
     public String commandProcessor(String command) throws Exception {
-        for (Command registerAndLoginCommand : commands) {
-            if (registerAndLoginCommand.checkCommand(command))
-                return registerAndLoginCommand.runCommand(command);
+        for (Command managerCommand : commands) {
+            if (managerCommand.checkCommand(command))
+                return managerCommand.runCommand(command);
         }
         return "invalid command";
     }

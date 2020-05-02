@@ -1,6 +1,7 @@
 package commands;
 
 import controller.ProductsMenu;
+import model.filter.Filter;
 
 public class CurrentFilter extends Command {
     public CurrentFilter(String regex) {
@@ -9,6 +10,10 @@ public class CurrentFilter extends Command {
 
     @Override
     public String runCommand(String command) {
-        return ProductsMenu.getCurrentFilters().toString();
+        String respond = "";
+        for (Filter filter : ProductsMenu.getCurrentFilters()) {
+            respond += filter.getFilterName() + "\n";
+        }
+        return respond;
     }
 }

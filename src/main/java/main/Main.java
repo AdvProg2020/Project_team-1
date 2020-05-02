@@ -1,10 +1,8 @@
 package main;
 
+import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import commands.*;
-import controller.CommandProcess;
-import controller.CreateDiscountCodeMenu;
-import controller.HandleMenu;
-import controller.ManagerMenu;
+import controller.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,12 +11,14 @@ import java.util.Scanner;
 public class Main {
     private static Scanner consoleScanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         ManagerMenu.getCommands().add(new )
         CreateDiscountCodeMenu.getCommands().add(new CreateDiscountCodeCommand("^\\S+ \\d\\d-\\d\\d-\\d\\d\\d\\d \\d\\d-\\d\\d-\\d\\d\\d\\d \\d+ \\d+ \\d+ \\S+"));
-        ManagerMenu.getCommands().add(new ViewPersonalInfoCommand("view personal info"));
-        ManagerMenu.getCommands().add(new DiscountCodeCommand("create discount code"));
-        ManagerMenu.getCommands().add(new )
+        ManagerMenu.getCommands().add(new ViewPersonalInfoCommand("^view personal info$"));
+        ManagerMenu.getCommands().add(new DiscountCodeCommand("^create discount code$"));
+        ManagerMenu.getCommands().add(new ViewDiscountCodeCommand("^view discount code$"));
+        GetDiscountCodes.getDiscountCodeCommands().add(new ViewDiscountCodeCommand("^view discount code \\S+$"));
+        GetDiscountCodes.getDiscountCodeCommands().add(new EditDiscountCode("^edit discount code \\S+$"));
         while (true) {
             String command = getConsoleScanner().nextLine();
             CommandProcess menu = HandleMenu.getMenu();

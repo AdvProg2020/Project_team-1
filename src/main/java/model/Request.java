@@ -5,6 +5,11 @@ import model.account.SimpleAccount;
 public class Request {
     private Requestable obj;
     private SimpleAccount simpleAccount;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
 
     @Override
     public String toString() {
@@ -14,9 +19,10 @@ public class Request {
                 '}';
     }
 
-    public Request(Requestable obj, SimpleAccount simpleAccount) {
+    public Request(Requestable obj, SimpleAccount simpleAccount,int id) {
         this.obj = obj;
         this.simpleAccount = simpleAccount;
+        this.id = id;
     }
 
     public Requestable getObj() {
