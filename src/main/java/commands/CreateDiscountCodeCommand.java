@@ -31,7 +31,7 @@ public class CreateDiscountCodeCommand extends Command {
     public String runCommand(String command) throws Exception {
         String[] splitCommand = command.split(" ");
         String code = splitCommand[0];
-        SimpleDateFormat format=new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat format= new SimpleDateFormat("dd-mm-yyyy");
         Date startDate=format.parse(splitCommand[1]);
         Date finishDate = format.parse(splitCommand[2]);
         int discountPercentage = Integer.parseInt(splitCommand[3]);

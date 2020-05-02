@@ -54,4 +54,9 @@ public class Comment implements Requestable {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public void addObj() {
+        commodity.getAllComments().add(this);
+    }
 }

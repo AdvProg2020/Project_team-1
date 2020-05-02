@@ -86,6 +86,11 @@ public class Commodity implements Requestable {
         this.status = status;
     }
 
+    @Override
+    public void addObj() {
+        SuperMarket.addCommodities(this);
+    }
+
     public String getBrand() {
         return brand;
     }
