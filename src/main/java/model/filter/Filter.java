@@ -5,6 +5,13 @@ import model.Commodity;
 public abstract class Filter {
     private String filterName;
 
+    @Override
+    public String toString() {
+        return "Filter{" +
+                "filterName='" + filterName + '\'' +
+                '}';
+    }
+
     public String getFilterName() {
         return filterName;
     }
