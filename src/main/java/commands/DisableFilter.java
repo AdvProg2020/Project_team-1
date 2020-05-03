@@ -3,9 +3,13 @@ package commands;
 import controller.ProductsMenu;
 import model.filter.Filter;
 
+import java.util.regex.Matcher;
+
 public class DisableFilter extends Command {
-    public DisableFilter(String regex) {
-        super(regex);
+    Matcher matcher;
+
+    public DisableFilter() {
+        super.regex = "$disable filter (?<filter name>\\S+)";
     }
 
     public String checkErrors(){

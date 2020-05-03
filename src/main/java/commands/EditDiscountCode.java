@@ -6,12 +6,12 @@ import model.DiscountCode;
 import model.SuperMarket;
 
 public class EditDiscountCode extends Command{
-    public EditDiscountCode(String regex) {
-        super(regex);
+    public EditDiscountCode() {
+        super.regex = "^edit discount code \\S+$";
     }
 
     @Override
-    protected String runCommand(String input) throws Exception {
+    public String runCommand(String input) throws Exception {
         String[] splitCommand = input.split(" ");
         DiscountCode discountCode = SuperMarket.getDiscountWithCode(splitCommand[3]);
         HandleMenu.setMenu(new EditDiscountCodeMenu(discountCode));

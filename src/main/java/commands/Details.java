@@ -5,8 +5,8 @@ import model.SuperMarket;
 
 public class Details extends Command {
 
-    public Details(String regex) {
-        super(regex);
+    public Details() {
+        super.regex = "";
     }
 
     public boolean isNumeric(String s){

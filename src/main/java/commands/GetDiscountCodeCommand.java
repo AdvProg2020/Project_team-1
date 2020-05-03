@@ -4,8 +4,8 @@ import model.SuperMarket;
 
 public class GetDiscountCodeCommand extends Command {
 
-    public GetDiscountCodeCommand(String regex) {
-        super(regex);
+    public GetDiscountCodeCommand() {
+        super.regex = "";
     }
 
     @Override

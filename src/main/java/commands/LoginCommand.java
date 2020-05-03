@@ -4,12 +4,15 @@ import controller.HandleMenu;
 import controller.LoginRegisterMenu;
 import main.Main;
 
+import java.util.regex.Matcher;
+
 public class LoginCommand extends Command{
 
     LoginRegisterMenu menu;
+    Matcher matcher;
 
-    public LoginCommand(String regex) {
-        super(regex);
+    public LoginCommand() {
+        super.regex = "login (?<username>\\S+)";
     }
 
     @Override

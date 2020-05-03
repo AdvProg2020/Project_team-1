@@ -4,8 +4,8 @@ import model.Request;
 import model.SuperMarket;
 
 public class Decline extends Command {
-    public Decline(String regex) {
-        super(regex);
+    public Decline() {
+        super.regex = "";
     }
 
     public boolean isNumeric(String s){

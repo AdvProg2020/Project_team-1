@@ -4,8 +4,8 @@ import model.Request;
 import model.SuperMarket;
 
 public class Accept extends Command {
-    public Accept(String regex) {
-        super(regex);
+    public Accept() {
+        super.regex = "";
     }
 
     public boolean isNumeric(String s){

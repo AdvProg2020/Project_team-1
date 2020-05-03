@@ -6,11 +6,14 @@ import main.Main;
 import model.account.BusinessAccount;
 import model.account.PersonalAccount;
 
+import java.util.regex.Matcher;
+
 public class RegisterCommand extends Command {
     LoginRegisterMenu menu;
+    Matcher matcher;
 
-    public RegisterCommand(String regex) {
-        super(regex);
+    public RegisterCommand() {
+        super.regex = "create account (?<type>customer|seller|admin) (?<username>\\S+)";
     }
 
     @Override

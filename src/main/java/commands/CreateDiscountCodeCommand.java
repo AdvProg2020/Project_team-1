@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class CreateDiscountCodeCommand extends Command {
-    public CreateDiscountCodeCommand(String regex) {
-        super(regex);
+    public CreateDiscountCodeCommand() {
+        super.regex = "^\\S+ \\d\\d-\\d\\d-\\d\\d\\d\\d \\d\\d-\\d\\d-\\d\\d\\d\\d \\d+ \\d+ \\d+ \\S+";
     }
 
     private String checkError(Date start , Date finish , int discountPercentage, int maximumDiscountPrice,

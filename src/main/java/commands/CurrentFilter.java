@@ -4,8 +4,8 @@ import controller.ProductsMenu;
 import model.filter.Filter;
 
 public class CurrentFilter extends Command {
-    public CurrentFilter(String regex) {
-        super(regex);
+    public CurrentFilter() {
+        super.regex = "$current filter^";
     }
 
     @Override

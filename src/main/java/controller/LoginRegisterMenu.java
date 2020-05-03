@@ -38,9 +38,8 @@ public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
 
     @Override
     public String commandProcessor(String command) throws Exception {
-        registerAndLoginCommands.add(new LoginCommand("login (?<username>\\S+)"));
-        registerAndLoginCommands.add(new RegisterCommand("create account (?<type>customer|seller|admin) " +
-                "(?<username>\\S+)"));
+        registerAndLoginCommands.add(new LoginCommand());
+        registerAndLoginCommands.add(new RegisterCommand());
         for (Command registerAndLoginCommand : registerAndLoginCommands) {
             if (registerAndLoginCommand.checkCommand(command))
                 return registerAndLoginCommand.runCommand(command);

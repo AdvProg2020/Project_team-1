@@ -7,8 +7,8 @@ import model.SuperMarket;
 import sun.tools.tree.SubtractExpression;
 
 public class ManageRequestCommand extends Command {
-    public ManageRequestCommand(String regex) {
-        super(regex);
+    public ManageRequestCommand() {
+        super.regex = "";
     }
 
     @Override

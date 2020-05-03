@@ -4,8 +4,8 @@ import model.DiscountCode;
 import model.SuperMarket;
 
 public class RemoveDiscountCode extends Command {
-    public RemoveDiscountCode(String regex) {
-        super(regex);
+    public RemoveDiscountCode() {
+        super.regex = "";
     }
 
     @Override

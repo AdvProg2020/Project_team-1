@@ -4,8 +4,8 @@ import controller.CreateDiscountCodeMenu;
 import controller.HandleMenu;
 
 public class DiscountCodeCommand extends Command {
-    public DiscountCodeCommand(String regex) {
-        super(regex);
+    public DiscountCodeCommand() {
+        super.regex = "^create discount code$";
     }
 
     @Override

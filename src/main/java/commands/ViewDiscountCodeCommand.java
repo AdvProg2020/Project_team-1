@@ -8,8 +8,8 @@ import model.SuperMarket;
 
 public class ViewDiscountCodeCommand extends Command{
 
-    public ViewDiscountCodeCommand(String regex) {
-        super(regex);
+    public ViewDiscountCodeCommand() {
+        super.regex = "^view discount code$";
     }
 
     @Override

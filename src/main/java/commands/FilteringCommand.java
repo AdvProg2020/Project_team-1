@@ -10,16 +10,16 @@ public class FilteringCommand extends Command {
 
     private static ArrayList<Command> filteringCommands = new ArrayList<Command>();
 
-    public FilteringCommand(String regex) {
-        super(regex);
+    public FilteringCommand() {
+        super.regex = "$filtering^";
     }
 
     @Override
     public String runCommand(String command) throws Exception {
-       filteringCommands.add(new ShowAvailableFiltersCommand("$show available filters^"));
-       filteringCommands.add(new Filter("$filter \\S+ \\S+ ?\\S+ ?\\S+ ?\\S+^"));
-       filteringCommands.add(new CurrentFilter("$current filter^"));
-       filteringCommands.add(new DisableFilter("$disable filter (?<filter name>\\S+)"));
+       filteringCommands.add(new ShowAvailableFiltersCommand());
+       filteringCommands.add(new Filter());
+       filteringCommands.add(new CurrentFilter());
+       filteringCommands.add(new DisableFilter());
         String input = Main.scan();
         for (Command filteringCommand : filteringCommands) {
             if (filteringCommand.checkCommand(input))

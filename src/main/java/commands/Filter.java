@@ -14,8 +14,8 @@ import java.util.HashSet;
 
 public class Filter extends Command {
 
-    public Filter(String regex) {
-        super(regex);
+    public Filter() {
+        super.regex = "$filter \\S+ \\S+ ?\\S+ ?\\S+ ?\\S+^";
     }
 
     public static boolean isOptionAvailable(String option, HashSet<String> allOptions) {

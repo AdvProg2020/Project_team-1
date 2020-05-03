@@ -6,8 +6,8 @@ import model.SuperMarket;
 public class ViewCategoryCommand extends Command {
 
 
-    public ViewCategoryCommand(String regex) {
-        super(regex);
+    public ViewCategoryCommand() {
+        super.regex = "$view categories^";
     }
 
     @Override

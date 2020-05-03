@@ -4,8 +4,8 @@ public class ShowAvailableFiltersCommand extends Command {
 
     private boolean isThisCommandAvailable;
 
-    public ShowAvailableFiltersCommand(String regex) {
-        super(regex);
+    public ShowAvailableFiltersCommand() {
+        super.regex = "$show available filters^";
     }
 
     public boolean isThisCommandAvailable() {
