@@ -45,4 +45,22 @@ public class SellLog extends TransactionLog {
     protected String generateLogID() {
         return "SellLog" + super.generateLogID() + buyer.getUsername();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder commoditiesNames = new StringBuilder();
+        for (Commodity commodity : commodities) {
+            commoditiesNames.append(commodity.getName());
+        }
+        return "SellLog{" +
+                "receivedMoney=" + receivedMoney +
+                ", deductedMoneyOnSale=" + deductedMoneyOnSale +
+                ", buyer=" + buyer.getUsername() +
+                ", isCommodityDelivered=" + isCommodityDelivered +
+                ", logId='" + logId + '\'' +
+                ", date=" + date.toString() +
+                ", commodities=" + commoditiesNames.toString() +
+                "}";
+
+    }
 }

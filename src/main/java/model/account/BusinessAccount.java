@@ -16,6 +16,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
     private ArrayList<Off> offs;
     private PersonalAccount personalAccount;
     private Status status;
+    private double credit;
 
     public BusinessAccount(String username, String firstName, String lastName,PersonalAccount personalAccount, String email, String phoneNumber, String password, String businessName) throws Exception {
         super(username, firstName, lastName, email, phoneNumber, password);
@@ -25,6 +26,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         offs = new ArrayList<Off>();
         this.status = Status.UNDER_CHECKING_FOR_CREATE;
         this.personalAccount = personalAccount;
+        credit = 0;
     }
 
     public void setStatus(Status status) {
@@ -70,6 +72,14 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         } else {
             throw new Exception("Invalid business name. Business name just contain 4 to 20 alphanumerical characters.");
         }
+    }
+
+    public double getCredit() {
+        return credit;
+    }
+
+    public void addToCredit(double amount) {
+        credit += amount;
     }
 
     @Override
