@@ -17,7 +17,7 @@ public class ManagerMenu extends AccountMenu implements CommandProcess {
     public ManagerMenu(SimpleAccount account) {
         super(account);
         commands.add(new ViewPersonalInfoCommand("view personal info"));
-        commands.add(new)
+        //commands.add(new)
     }
 
     public ArrayList<SimpleAccount> getAllAccounts() {

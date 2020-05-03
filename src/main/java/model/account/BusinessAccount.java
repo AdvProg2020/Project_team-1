@@ -67,8 +67,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
 
     @Override
     public String toString() {
-        return  "BusinessAccount\n" +
-                "businessName=" + businessName + "\n" +
+        return  "businessName=" + businessName + "\n" +
                 super.toString();
 
     }

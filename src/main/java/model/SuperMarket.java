@@ -158,7 +158,7 @@ public class SuperMarket {
 
     public static Request getRequestWithId(int id) {
         for (Request request : allRequests) {
-            if (request.)
+            //if (request.)
         }
     }
 }
