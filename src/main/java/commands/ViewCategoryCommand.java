@@ -1,5 +1,6 @@
 package commands;
 
+import model.Category;
 import model.SuperMarket;
 
 public class ViewCategoryCommand extends Command {
@@ -11,6 +12,10 @@ public class ViewCategoryCommand extends Command {
 
     @Override
     public String runCommand(String command) {
-        return SuperMarket.getAllCategory().toString();
+        String respond = "";
+        for (Category category : SuperMarket.getAllCategory()) {
+            respond += category.getName() + "\n";
+        }
+        return respond;
     }
 }

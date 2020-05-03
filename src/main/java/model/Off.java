@@ -63,4 +63,17 @@ public class Off {
     private String generateOffID() {
         return owner.getBusinessName() + startTime.toString();
     }
+
+    @Override
+    public String toString() {
+        return "Off{" +
+                "offID='" + offID + '\'' +
+                ", owner=" + owner +
+                ", commodities=" + commodities +
+                ", status=" + status +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", discountPercent=" + discountPercent +
+                '}';
+    }
 }

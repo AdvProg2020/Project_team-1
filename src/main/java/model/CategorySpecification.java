@@ -11,6 +11,14 @@ public class CategorySpecification {
         this.options = options;
     }
 
+    @Override
+    public String toString() {
+        return "CategorySpecification{" +
+                "title='" + title + '\'' +
+                ", options=" + options +
+                '}';
+    }
+
     public String getTitle() {
         return title;
     }

@@ -15,7 +15,7 @@ public class FilteringCommand extends Command {
     }
 
     @Override
-    public String runCommand(String command) {
+    public String runCommand(String command) throws Exception {
        filteringCommands.add(new ShowAvailableFiltersCommand("$show available filters^"));
        filteringCommands.add(new Filter("$filter \\S+ \\S+ ?\\S+ ?\\S+ ?\\S+^"));
        filteringCommands.add(new CurrentFilter("$current filter^"));

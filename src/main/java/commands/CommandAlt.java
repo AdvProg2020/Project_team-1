@@ -9,5 +9,5 @@ public abstract class CommandAlt {
         return input.matches(commandRegex);
     }
 
-    protected abstract String runCommand(SimpleAccount requestSender, String input) throws Exception;
+    protected abstract String runCommand(String input) throws Exception;
 }

@@ -156,10 +156,36 @@ public class SuperMarket {
         throw new Exception("no user with this username");
     }
 
+    public static boolean isThereAnyRequestWithThisId(int id){
+        for (Request request : allRequests) {
+            if (request.getId() == id)
+                return true;
+        }
+        return false;
+    }
+
     public static Request getRequestWithId(int id) {
         for (Request request : allRequests) {
-            //if (request.)
+            if (request.getId() == id)
+                return request;
         }
+        return null;
+    }
+
+    public static DiscountCode getDiscountCodeWithCode(String code){
+        for (DiscountCode discountCode : allDiscountCodes) {
+            if (discountCode.getCode().equals(code))
+                return discountCode;
+        }
+        return null;
+    }
+
+    public static boolean isThereAnyDiscountCodeWithThisCode(String code){
+        for (DiscountCode discountCode : allDiscountCodes) {
+            if (discountCode.getCode().equals(code))
+                return true;
+        }
+        return false;
     }
 }
 
