@@ -1,6 +1,5 @@
 package main;
 
-import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import commands.*;
 import controller.*;
 
@@ -9,11 +8,12 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 import static controller.Filtering.filteringCommands;
+import static controller.ManageRequestMenu.manageRequestMenuCommands;
 
 public class Main {
     private static Scanner consoleScanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws Exception {\
+    public static void main(String[] args) throws Exception {
         filteringCommands.add(new ShowAvailableFiltersCommand());
         filteringCommands.add(new Filter());
         filteringCommands.add(new CurrentFilter());
@@ -25,6 +25,10 @@ public class Main {
         ManagerMenu.getCommands().add(new ViewDiscountCodeCommand());
         GetDiscountCodes.getDiscountCodeCommands().add(new ViewDiscountCodeCommand());
         GetDiscountCodes.getDiscountCodeCommands().add(new EditDiscountCode());
+        manageRequestMenuCommands.add(new Details());
+        manageRequestMenuCommands.add(new Accept());
+        manageRequestMenuCommands.add(new Decline());
+
         while (true) {
             String command = getConsoleScanner().nextLine();
             CommandProcess menu = HandleMenu.getMenu();

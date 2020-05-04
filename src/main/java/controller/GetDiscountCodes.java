@@ -13,6 +13,10 @@ public class GetDiscountCodes implements CommandProcess {
 
     @Override
     public String commandProcessor(String command) throws Exception {
-        if (command.)
+        for (Command discountCodeCommand : discountCodeCommands) {
+            if (discountCodeCommand.checkCommand(command))
+                return discountCodeCommand.runCommand(command);
+        }
+        return "invalid command";
     }
 }

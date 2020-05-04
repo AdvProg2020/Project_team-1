@@ -29,8 +29,4 @@ public class ViewPersonalInfoMenu extends ProductsMenu implements CommandProcess
         this.account.changeLastName(newPhoneNumber);
     }
 
-    @Override
-    public String runCommand(String command) {
-
-    }
 }

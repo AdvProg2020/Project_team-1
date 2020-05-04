@@ -8,8 +8,11 @@ public class Filtering implements CommandProcess {
     public static ArrayList<Command> filteringCommands = new ArrayList<Command>();
     @Override
     public String commandProcessor(String command) throws Exception {
-        HandleMenu.setMenu(new Filtering());
-        return "Enter your next Command";
+        for (Command filteringCommand : filteringCommands) {
+            if (filteringCommand.checkCommand(command))
+                return filteringCommand.runCommand(command);
+        }
+        return "invalid command";
     }
 
 }

@@ -1,5 +1,7 @@
 package commands;
 
+import controller.Filtering;
+import controller.HandleMenu;
 import controller.ProductsMenu;
 import main.Main;
 
@@ -16,6 +18,7 @@ public class FilteringCommand extends Command {
 
     @Override
     public String runCommand(String command) throws Exception {
-
+        HandleMenu.setMenu(new Filtering());
+        return "Enter your next Command";
     }
 }

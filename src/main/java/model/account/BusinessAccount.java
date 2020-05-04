@@ -29,6 +29,10 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         credit = 0;
     }
 
+    public BusinessAccount(String username, String s, String s1, String s2, String s3, String s4, String scan) {
+        super();
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }
