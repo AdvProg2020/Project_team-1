@@ -21,10 +21,7 @@ public class CreateDiscountCodeMenu implements CommandProcess {
         return "invalid input";
     }
 
-    @Override
-    public String runCommand(String command) {
-        return null;
-    }
+
 
 
 }

@@ -20,8 +20,4 @@ public class ManageUsersMenu extends ProductsMenu implements CommandProcess {
         SuperMarket.addAccount(managerAccount);
     }
 
-    @Override
-    public String runCommand(String command) {
-        return null;
-    }
 }

@@ -34,8 +34,4 @@ public class ManageDiscountsMenu extends ProductsMenu implements CommandProcess 
         discountCode.setMaximumNumberOfUses(number);
     }
 
-    @Override
-    public String runCommand(String command) {
-        return null;
-    }
 }

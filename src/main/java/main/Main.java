@@ -8,10 +8,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
+import static controller.Filtering.filteringCommands;
+
 public class Main {
     private static Scanner consoleScanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {\
+        filteringCommands.add(new ShowAvailableFiltersCommand());
+        filteringCommands.add(new Filter());
+        filteringCommands.add(new CurrentFilter());
+        filteringCommands.add(new DisableFilter());
         ManagerMenu.getCommands().add(null);
         CreateDiscountCodeMenu.getCommands().add(new CreateDiscountCodeCommand());
         ManagerMenu.getCommands().add(new ViewPersonalInfoCommand());

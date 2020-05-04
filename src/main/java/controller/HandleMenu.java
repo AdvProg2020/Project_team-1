@@ -1,9 +1,11 @@
 package controller;
 
+import commands.Command;
+
 public class HandleMenu {
     private static final HandleMenu handleMenu = new HandleMenu();
 
-    private static ProductsMenu menu;
+    private static CommandProcess menu;
 
     private HandleMenu() {
     }

@@ -7,8 +7,4 @@ public class ManageProductsMenu extends ProductsMenu implements CommandProcess {
         SuperMarket.getAllCommodities().remove(SuperMarket.getCommodityById(id));
     }
 
-    @Override
-    public String runCommand(String command) {
-        return null;
-    }
 }

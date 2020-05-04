@@ -16,15 +16,6 @@ public class FilteringCommand extends Command {
 
     @Override
     public String runCommand(String command) throws Exception {
-       filteringCommands.add(new ShowAvailableFiltersCommand());
-       filteringCommands.add(new Filter());
-       filteringCommands.add(new CurrentFilter());
-       filteringCommands.add(new DisableFilter());
-        String input = Main.scan();
-        for (Command filteringCommand : filteringCommands) {
-            if (filteringCommand.checkCommand(input))
-                 return filteringCommand.runCommand(input);
-        }
-        return "invalid command";
+
     }
 }

@@ -51,8 +51,4 @@ public class ManagerMenu extends AccountMenu implements CommandProcess {
         return "invalid command";
     }
 
-    @Override
-    public String runCommand(String command) {
-        return null;
-    }
 }

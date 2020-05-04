@@ -15,9 +15,4 @@ public class GetDiscountCodes implements CommandProcess {
     public String commandProcessor(String command) throws Exception {
         if (command.)
     }
-
-    @Override
-    public String runCommand(String command) {
-        return null;
-    }
 }

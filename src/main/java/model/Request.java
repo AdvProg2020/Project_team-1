@@ -3,6 +3,7 @@ package model;
 import model.account.SimpleAccount;
 
 public class Request {
+
     private Requestable obj;
     private SimpleAccount simpleAccount;
     private int id;
@@ -19,10 +20,10 @@ public class Request {
                 '}';
     }
 
-    public Request(Requestable obj, SimpleAccount simpleAccount,int id) {
+    public Request(Requestable obj, SimpleAccount simpleAccount) {
         this.obj = obj;
         this.simpleAccount = simpleAccount;
-        this.id = id;
+        this.id = SuperMarket.getAllRequests().size() + 1;
     }
 
     public Requestable getObj() {

@@ -20,7 +20,7 @@ public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
     }
 
     public void sendBusinessAccountRequest(PersonalAccount personalAccount, BusinessAccount businessAccount) {
-        SuperMarket.addRequest(new Request(businessAccount, personalAccount));
+        SuperMarket.addRequest(new Request(businessAccount, personalAccount  ));
     }
 
     public boolean isUserNameValid(String userName) {

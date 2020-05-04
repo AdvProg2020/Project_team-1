@@ -66,6 +66,7 @@ public class EditDiscountCodeMenu implements CommandProcess {
         if (command.startsWith("7")) {
             return changeAccounts(splitCommand);
         }
+        return null;
     }
 
     public String changeAccounts(String[] splitCommand) throws Exception {
@@ -80,8 +81,4 @@ public class EditDiscountCodeMenu implements CommandProcess {
         return "All accounts changed";
     }
 
-    @Override
-    public String runCommand(String command) {
-        return null;
-    }
 }
