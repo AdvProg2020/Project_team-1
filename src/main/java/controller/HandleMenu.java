@@ -7,9 +7,6 @@ public class HandleMenu {
 
     private static CommandProcess menu;
 
-    private HandleMenu() {
-    }
-
     public static CommandProcess getMenu() {
         return menu;
     }

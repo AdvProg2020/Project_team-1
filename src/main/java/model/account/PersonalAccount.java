@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class PersonalAccount extends SimpleAccount {
     private ArrayList<DiscountCode> discountCodes;
     private ArrayList<BuyLog> buyLogs;
-    private HashMap<Commodity, Integer> cart;
+    private HashMap<Commodity,Integer> cart;
     private BusinessAccount businessAccount;
     private double credit;
 
