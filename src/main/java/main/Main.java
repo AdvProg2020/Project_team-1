@@ -18,7 +18,7 @@ public class Main {
         filteringCommands.add(new Filter());
         filteringCommands.add(new CurrentFilter());
         filteringCommands.add(new DisableFilter());
-        ManagerMenu.getCommands().add(null);
+        ManagerMenu.getCommands().add(new ManageUsersCommand());
         CreateDiscountCodeMenu.getCommands().add(new CreateDiscountCodeCommand());
         ManagerMenu.getCommands().add(new ViewPersonalInfoCommand());
         ManagerMenu.getCommands().add(new DiscountCodeCommand());
