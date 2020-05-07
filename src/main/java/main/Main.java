@@ -36,6 +36,7 @@ public class Main {
         PersonalAccountMenu.personalAccountMenuCommands.add(new ViewCartCommand());
         GetCartMenu.getCartMenuCommands.add(new ShowProductsCommand());
         GetCartMenu.getCartMenuCommands.add(new ViewProductCommand());
+        ManageUsersMenu.getCommands().add(new ViewUser());
 
         while (true) {
             String command = getConsoleScanner().nextLine();
