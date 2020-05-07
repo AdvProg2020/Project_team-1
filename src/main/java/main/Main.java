@@ -2,7 +2,6 @@ package main;
 
 import commands.*;
 import controller.*;
-import model.account.PersonalAccount;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,6 +25,7 @@ public class Main {
         ManagerMenu.getCommands().add(new DiscountCodeCommand());
         ManagerMenu.getCommands().add(new ViewDiscountCodeCommand());
         ManagerMenu.getCommands().add(new ManageProducts());
+        ManageProductsMenu.getCommands().add(new RemoveCommodity());
         GetDiscountCodes.getDiscountCodeCommands().add(new ViewDiscountCodeCommand());
         GetDiscountCodes.getDiscountCodeCommands().add(new EditDiscountCode());
         manageRequestMenuCommands.add(new Details());

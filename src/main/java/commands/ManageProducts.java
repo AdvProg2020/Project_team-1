@@ -1,6 +1,7 @@
 package commands;
 
 import controller.HandleMenu;
+import controller.ManageProductsMenu;
 import controller.ManagerMenu;
 import model.Commodity;
 
@@ -19,6 +20,7 @@ public class ManageProducts extends Command {
         for (int i = 1; i < commodities.size(); i++) {
             output += commodities.get(i).getInformation();
         }
+        HandleMenu.setMenu(new ManageProductsMenu());
         return output;
     }
 }
