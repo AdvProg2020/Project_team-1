@@ -118,4 +118,11 @@ public abstract class SimpleAccount {
     protected String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
-}
+
+    public String getInformation() {
+        return "username: " + this.username + "\n" +
+                "first name: " + this.firstName + "\n" +
+                "last name: " + this.lastName + "\n" +
+                "email: " + this.email + "\n" +
+                "phone number: " + this.phoneNumber;
+    }

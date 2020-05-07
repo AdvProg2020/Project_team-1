@@ -88,8 +88,13 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
 
     @Override
     public String toString() {
-        return  "businessName=" + businessName + "\n" +
+        return "businessName=" + businessName + "\n" +
                 super.toString();
 
+    }
+
+    @Override
+    public String getInformation() {
+        return super.getInformation() + "\ncompany name: " + this.businessName;
     }
 }

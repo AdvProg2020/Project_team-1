@@ -32,6 +32,7 @@ public class Main {
         registerAndLoginCommands.add(new LoginCommand());
         registerAndLoginCommands.add(new RegisterCommand());
         ManageUsersMenu.getCommands().add(new DeleteUser());
+        ManageUsersMenu.getCommands().add(new ViewUser());
 
         while (true) {
             String command = getConsoleScanner().nextLine();
