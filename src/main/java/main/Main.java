@@ -28,6 +28,7 @@ public class Main {
         manageRequestMenuCommands.add(new Details());
         manageRequestMenuCommands.add(new Accept());
         manageRequestMenuCommands.add(new Decline());
+        ManageUsersMenu.getCommands().add(new DeleteUser());
 
         while (true) {
             String command = getConsoleScanner().nextLine();
