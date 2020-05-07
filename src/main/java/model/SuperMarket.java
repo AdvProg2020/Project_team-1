@@ -187,5 +187,13 @@ public class SuperMarket {
         }
         return false;
     }
+
+    public static boolean isThereAnyCategoryWithThisName(String name){
+        for (Category category : allCategory) {
+            if (category.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
 }
 

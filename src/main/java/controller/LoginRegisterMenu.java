@@ -13,7 +13,7 @@ import java.util.HashSet;
 
 public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
 
-    private static HashSet<Command> registerAndLoginCommands = new HashSet<>();
+    public static HashSet<Command> registerAndLoginCommands = new HashSet<>();
 
     public void registerPersonalAccount(PersonalAccount personalAccount) {
         SuperMarket.addAccount(personalAccount);
@@ -38,8 +38,6 @@ public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
 
     @Override
     public String commandProcessor(String command) throws Exception {
-        registerAndLoginCommands.add(new LoginCommand());
-        registerAndLoginCommands.add(new RegisterCommand());
         for (Command registerAndLoginCommand : registerAndLoginCommands) {
             if (registerAndLoginCommand.checkCommand(command))
                 return registerAndLoginCommand.runCommand(command);

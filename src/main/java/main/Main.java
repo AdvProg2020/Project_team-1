@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 import static controller.Filtering.filteringCommands;
+import static controller.LoginRegisterMenu.registerAndLoginCommands;
 import static controller.ManageRequestMenu.manageRequestMenuCommands;
 
 public class Main {
@@ -28,7 +29,8 @@ public class Main {
         manageRequestMenuCommands.add(new Details());
         manageRequestMenuCommands.add(new Accept());
         manageRequestMenuCommands.add(new Decline());
-
+        registerAndLoginCommands.add(new LoginCommand());
+        registerAndLoginCommands.add(new RegisterCommand());
         while (true) {
             String command = getConsoleScanner().nextLine();
             CommandProcess menu = HandleMenu.getMenu();
