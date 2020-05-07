@@ -60,5 +60,6 @@ public class EditCategoryCommand extends Command {
         if (splitCommand[2].equals("category specification")){
             return changeCategorySpecification(splitCommand , category);
         }
+        return "Invalid command";
     }
 }
