@@ -12,7 +12,7 @@ public class LoginCommand extends Command{
     Matcher matcher;
 
     public LoginCommand() {
-        super.regex = "login (?<username>\\S+)";
+        super.regex = "login (?<username>\\S+ ?<password>\\S+)";
     }
 
     @Override
@@ -20,8 +20,7 @@ public class LoginCommand extends Command{
         menu = (LoginRegisterMenu)HandleMenu.getMenu();
         if (checkErrors() != null)
             return checkErrors();
-        String password = Main.getConsoleScanner().nextLine();
-        menu.login(matcher.group("username"), password);
+        menu.login(matcher.group("username"), matcher.group("password"));
         return "you have successfully logged in";
     }
 
