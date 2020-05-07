@@ -31,6 +31,8 @@ public class Main {
         manageRequestMenuCommands.add(new Decline());
         registerAndLoginCommands.add(new LoginCommand());
         registerAndLoginCommands.add(new RegisterCommand());
+        ManageUsersMenu.getCommands().add(new DeleteUser());
+
         while (true) {
             String command = getConsoleScanner().nextLine();
             CommandProcess menu = HandleMenu.getMenu();
