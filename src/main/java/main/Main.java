@@ -2,6 +2,7 @@ package main;
 
 import commands.*;
 import controller.*;
+import model.account.PersonalAccount;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,6 +33,9 @@ public class Main {
         registerAndLoginCommands.add(new LoginCommand());
         registerAndLoginCommands.add(new RegisterCommand());
         ManageUsersMenu.getCommands().add(new DeleteUser());
+        PersonalAccountMenu.personalAccountMenuCommands.add(new ViewCartCommand());
+        GetCartMenu.getCartMenuCommands.add(new ShowProductsCommand());
+        GetCartMenu.getCartMenuCommands.add(new ViewProductCommand());
 
         while (true) {
             String command = getConsoleScanner().nextLine();
