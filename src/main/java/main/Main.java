@@ -24,6 +24,7 @@ public class Main {
         ManagerMenu.getCommands().add(new ViewPersonalInfoCommand());
         ManagerMenu.getCommands().add(new DiscountCodeCommand());
         ManagerMenu.getCommands().add(new ViewDiscountCodeCommand());
+        ManagerMenu.getCommands().add(new ManageProducts());
         GetDiscountCodes.getDiscountCodeCommands().add(new ViewDiscountCodeCommand());
         GetDiscountCodes.getDiscountCodeCommands().add(new EditDiscountCode());
         manageRequestMenuCommands.add(new Details());

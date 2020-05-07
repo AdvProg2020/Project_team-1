@@ -14,8 +14,8 @@ public class ManageUsersCommand extends Command {
         ArrayList<SimpleAccount> accounts = menu.getAllAccounts();
         HandleMenu.setMenu(new ManageUsersMenu());
         String output = accounts.get(0).getUsername();
-        for (SimpleAccount account : accounts) {
-            output += "\n" + account.getUsername();
+        for (int i = 1; i < accounts.size(); i++) {
+            output += "\n" + accounts.get(i).getUsername();
         }
         return output;
     }
