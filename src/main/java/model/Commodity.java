@@ -59,8 +59,8 @@ public class Commodity implements Requestable {
         allComments = new ArrayList<>(commodity.allComments);
         averageScore = commodity.averageScore;
         totalScores = commodity.totalScores;
-        numberOfScores = commodity;
-        numberOfVisits;
+        numberOfScores = commodity.numberOfScores;
+        numberOfVisits = commodity.numberOfVisits;
     }
 
     public int getCommodityId() {
@@ -191,6 +191,34 @@ public class Commodity implements Requestable {
 
     public double getAverageScore() {
         return averageScore;
+    }
+
+    public void setCommodityId(int commodityId) {
+        this.commodityId = commodityId;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setSeller(SimpleAccount seller) {
+        this.seller = seller;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setAllComments(ArrayList<Comment> allComments) {
+        this.allComments = allComments;
+    }
+
+    public void setAverageScore(double averageScore) {
+        this.averageScore = averageScore;
+    }
+
+    public void setTotalScores(double totalScores) {
+        this.totalScores = totalScores;
     }
 
     public static class Comparators {
