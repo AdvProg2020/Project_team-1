@@ -1,12 +1,11 @@
 package commands;
 
+import controller.GetAccountInfoMenu;
 import controller.HandleMenu;
 import controller.LoginRegisterMenu;
-import main.Main;
-import model.account.BusinessAccount;
-import model.account.PersonalAccount;
 
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterCommand extends Command {
     LoginRegisterMenu menu;
@@ -17,25 +16,14 @@ public class RegisterCommand extends Command {
     }
 
     @Override
-    public String runCommand(String command) throws Exception {
+    public String runCommand(String command) {
+        matcher = Pattern.compile(regex).matcher(command);
         this.menu = (LoginRegisterMenu) HandleMenu.getMenu();
         if (checkErrors() != null)
             return checkErrors();
-        String[] information = new String[]{"firstName", "lastName", "email", "phoneNumber", "password"};
-        String[] input = new String[5];
-        for (int i = 0; i < 5; i++) {
-            Main.print("please enter your " + information[i]);
-            input[i] = Main.scan();
-        }
-        PersonalAccount account = new PersonalAccount(matcher.group("username"), input[0], input[1], input[2],
-                input[3], input[4]);
-        menu.registerPersonalAccount(account);
-        if (matcher.group("type").equals("seller")) {
-            menu.sendBusinessAccountRequest(account, new BusinessAccount(matcher.group("username"), input[0],
-                    input[1], input[2], input[3], input[4], Main.scan()));
-            return "Customer account is ready and your request is sent";
-        }
-        return "Customer account is ready";
+        HandleMenu.setMenu(new GetAccountInfoMenu(matcher.group("username"), matcher.group("type")));
+        return "please enter your information in this format: (if you want to be a seller)\n" +
+                "password first_name last_name email phone_number( company_name)";
     }
 
     public String checkErrors() {
@@ -43,5 +31,10 @@ public class RegisterCommand extends Command {
             return "This username isn't available";
         }
         return null;
+    }
+
+    public boolean checkCommand(String command) {
+        matcher = Pattern.compile(this.regex).matcher(command);
+        return matcher.matches();
     }
 }

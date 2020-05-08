@@ -5,6 +5,9 @@ import controller.HandleMenu;
 import controller.ViewPersonalInfoMenu;
 import model.SuperMarket;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ViewPersonalInfoCommand extends Command {
     AccountMenu menu;
 
@@ -16,6 +19,11 @@ public class ViewPersonalInfoCommand extends Command {
     public String runCommand(String command) {
         this.menu = (AccountMenu) HandleMenu.getMenu();
         HandleMenu.setMenu(new ViewPersonalInfoMenu(SuperMarket.getOnlineAccount()));
-        return menu.getAccount().toString();
+        return menu.getAccount().getInformation();
+    }
+
+    public boolean checkCommand(String command) {
+        Matcher matcher = Pattern.compile(this.regex).matcher(command);
+        return matcher.matches();
     }
 }

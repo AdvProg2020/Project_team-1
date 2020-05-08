@@ -24,4 +24,9 @@ public class ViewUser extends Command {
         }
         return account.getInformation();
     }
+
+    public boolean checkCommand(String command) {
+        Matcher matcher = Pattern.compile(this.regex).matcher(command);
+        return matcher.matches();
+    }
 }
