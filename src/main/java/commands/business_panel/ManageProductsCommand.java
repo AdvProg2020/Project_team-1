@@ -1,6 +1,8 @@
 package commands.business_panel;
 
 import commands.Command;
+import controller.HandleMenu;
+import controller.ManageProductsMenu;
 import model.Commodity;
 import model.SuperMarket;
 import model.account.BusinessAccount;
@@ -18,7 +20,7 @@ public class ManageProductsCommand extends Command {
             result.append(commodity.toString());
             result.append('\n');
         }
-        //Change menu
+        HandleMenu.setMenu(new ManageProductsMenu());
         return result.toString();
     }
 }

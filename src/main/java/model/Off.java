@@ -5,7 +5,7 @@ import model.account.BusinessAccount;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Off {
+public class Off implements Requestable {
     private String offID;
     private BusinessAccount owner;
     private ArrayList<Commodity> commodities;
@@ -18,18 +18,44 @@ public class Off {
         this.owner = owner;
         this.startTime = startTime;
         this.endTime = endTime;
-        if (0 < discountPercent && discountPercent < 100) {
-            this.discountPercent = discountPercent;
-        } else {
-            throw new Exception("Invalid discount percent. Discount percent should be in range 1 to 99.");
-        }
+        setDiscountPercent(discountPercent);
         status = Status.UNDER_CHECKING_FOR_CREATE;
         commodities = new ArrayList<Commodity>();
         offID = generateOffID();
     }
 
+    public Off(Off off) {
+        offID = off.offID;
+        owner = off.owner;
+        commodities = new ArrayList<>(off.commodities);
+        status = off.status;
+        startTime = new Date(off.startTime.getTime());
+        endTime = new Date(off.endTime.getTime());
+        discountPercent = off.discountPercent;
+    }
+
     public String getOffID() {
         return offID;
+    }
+
+    public void setCommodities(ArrayList<Commodity> commodities) {
+        this.commodities = commodities;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setDiscountPercent(int discountPercent) throws Exception{
+        if (0 < discountPercent && discountPercent < 100) {
+            this.discountPercent = discountPercent;
+        } else {
+            throw new Exception("Invalid discount percent. Discount percent should be in range 1 to 99.");
+        }
     }
 
     public ArrayList<Commodity> getCommodities() {
@@ -46,6 +72,11 @@ public class Off {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Override
+    public void addObj() {
+
     }
 
     public Date getStartTime() {

@@ -1,5 +1,6 @@
 package model.account;
 
+import commands.Command;
 import model.Commodity;
 import model.Off;
 import model.Requestable;
@@ -29,10 +30,6 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         credit = 0;
     }
 
-    public BusinessAccount(String username, String s, String s1, String s2, String s3, String s4, String scan) {
-        super();
-    }
-
     public void setStatus(Status status) {
         this.status = status;
     }
@@ -54,12 +51,34 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         return commodities;
     }
 
+    public Commodity getCommodityById (int productId) {
+        for (Commodity commodity : commodities) {
+            if (commodity.getCommodityId() == productId) {
+                return commodity;
+            }
+        }
+        return null;
+    }
+
+    public void removeCommodity(Commodity commodity) {
+        commodities.remove(commodity);
+    }
+
     public void addCommodity(Commodity commodity) {
         commodities.add(commodity);
     }
 
     public ArrayList<Off> getOffs() {
         return offs;
+    }
+
+    public Off getOffById(String id) {
+        for (Off off : offs) {
+            if (off.getOffID().equals(id)) {
+                return off;
+            }
+        }
+        return null;
     }
 
     public void addSale(Off off) {

@@ -29,7 +29,7 @@ public class SellLog extends TransactionLog {
         return deductedMoneyOnSale;
     }
 
-    public SimpleAccount getBuyerName() {
+    public SimpleAccount getBuyer() {
         return buyer;
     }
 

@@ -1,6 +1,8 @@
 package commands.business_panel;
 
 import commands.Command;
+import controller.HandleMenu;
+import controller.business_menu.ManageOffMenu;
 import model.Commodity;
 import model.Off;
 import model.SuperMarket;
@@ -19,7 +21,7 @@ public class ViewOffs extends Command {
             result.append(off.toString());
             result.append('\n');
         }
-        //Change menu
+        HandleMenu.setMenu(new ManageOffMenu());
         return result.toString();
     }
 }

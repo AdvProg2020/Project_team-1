@@ -62,6 +62,10 @@ public abstract class SimpleAccount {
         }
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -119,6 +123,7 @@ public abstract class SimpleAccount {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
+
     public String getInformation() {
         return "username: " + this.username + "\n" +
                 "first name: " + this.firstName + "\n" +
@@ -126,3 +131,4 @@ public abstract class SimpleAccount {
                 "email: " + this.email + "\n" +
                 "phone number: " + this.phoneNumber;
     }
+}

@@ -1,6 +1,10 @@
 package commands.business_panel;
 
 import commands.Command;
+import controller.HandleMenu;
+import controller.business_menu.AddProductMenu;
+import model.Request;
+import model.SuperMarket;
 
 public class AddProduct extends Command {
     public AddProduct() {
@@ -9,7 +13,7 @@ public class AddProduct extends Command {
 
     @Override
     public String runCommand(String command) throws Exception {
-        //Create product request
-        return "New product request has been sent for manager.";
+        HandleMenu.setMenu(new AddProductMenu());
+        return "";
     }
 }
