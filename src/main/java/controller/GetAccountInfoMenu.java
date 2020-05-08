@@ -2,6 +2,10 @@ package controller;
 
 import commands.Command;
 import commands.get_info_to_reg.GetAccountInformation;
+import model.Request;
+import model.SuperMarket;
+import model.account.BusinessAccount;
+import model.account.PersonalAccount;
 
 import java.util.ArrayList;
 
@@ -14,6 +18,10 @@ public class GetAccountInfoMenu extends ProductsMenu implements CommandProcess {
         this.username = username;
         this.role = role;
         getInfoCommands.add(new GetAccountInformation(this.username, this.role));
+    }
+
+    public void sendBusinessAccountRequest(PersonalAccount personalAccount, BusinessAccount businessAccount) {
+        SuperMarket.addRequest(new Request(businessAccount, personalAccount));
     }
 
     @Override

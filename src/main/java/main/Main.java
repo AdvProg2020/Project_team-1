@@ -41,6 +41,7 @@ public class Main {
         GetCartMenu.getCartMenuCommands.add(new ShowProductsCommand());
         GetCartMenu.getCartMenuCommands.add(new ViewProductCommand());
         ManageUsersMenu.getCommands().add(new ViewUser());
+        ManageUsersMenu.getCommands().add(new CreateManager());
         GetCartMenu.getCartMenuCommands.add(new IncreaseCommand());
         GetCartMenu.getCartMenuCommands.add(new DecreaseCommand());
 

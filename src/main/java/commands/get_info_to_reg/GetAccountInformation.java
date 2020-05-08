@@ -1,6 +1,10 @@
 package commands.get_info_to_reg;
 
 import commands.Command;
+import controller.GetAccountInfoMenu;
+import controller.HandleMenu;
+import model.SuperMarket;
+import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 
@@ -23,14 +27,23 @@ public class GetAccountInformation extends Command {
     public String runCommand(String command) {
         try {
             if (role.equals("customer")) {
-                new PersonalAccount(matcher.group("username"), matcher.group("firstName"),
-                        matcher.group("lastName"), matcher.group("email"), matcher.group("phone"),
-                        matcher.group("password"));
+                SuperMarket.addAccount(new PersonalAccount(matcher.group("username"),
+                        matcher.group("firstName"), matcher.group("lastName"),
+                        matcher.group("email"), matcher.group("phone"), matcher.group("password")));
             } else if (role.equals("admin")) {
-                new ManagerAccount(matcher.group("username"), matcher.group("firstName"),
-                        matcher.group("lastName"), matcher.group("email"), matcher.group("phone"),
-                        matcher.group("password"));
-            } //to make a seller account
+                SuperMarket.addAccount(new ManagerAccount(matcher.group("username"),
+                        matcher.group("firstName"), matcher.group("lastName"),
+                        matcher.group("email"), matcher.group("phone"), matcher.group("password")));
+            } else {
+                GetAccountInfoMenu menu = (GetAccountInfoMenu) HandleMenu.getMenu();
+                menu.sendBusinessAccountRequest(new PersonalAccount(matcher.group("username"),
+                        matcher.group("firstName"), matcher.group("lastName"),
+                        matcher.group("email"), matcher.group("phone"),
+                        matcher.group("password")), new BusinessAccount(matcher.group("username"),
+                        matcher.group("firstName"), matcher.group("lastName"),
+                        matcher.group("email"), matcher.group("phone"),
+                        matcher.group("password"), matcher.group("company")));
+            }
         } catch (Exception e) {
             return e.getMessage();
         }
