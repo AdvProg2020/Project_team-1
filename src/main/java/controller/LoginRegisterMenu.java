@@ -1,12 +1,7 @@
 package controller;
 
 import commands.Command;
-import commands.LoginCommand;
-import commands.RegisterCommand;
-import model.Request;
 import model.SuperMarket;
-import model.account.BusinessAccount;
-import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 
 import java.util.HashSet;
@@ -14,14 +9,6 @@ import java.util.HashSet;
 public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
 
     public static HashSet<Command> registerAndLoginCommands = new HashSet<>();
-
-    public void registerPersonalAccount(PersonalAccount personalAccount) {
-        SuperMarket.addAccount(personalAccount);
-    }
-
-    public void sendBusinessAccountRequest(PersonalAccount personalAccount, BusinessAccount businessAccount) {
-        SuperMarket.addRequest(new Request(businessAccount, personalAccount  ));
-    }
 
     public boolean isUserNameValid(String userName) {
         for (SimpleAccount account : SuperMarket.getAllAccounts()) {

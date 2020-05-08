@@ -6,8 +6,14 @@ import controller.ManagerMenu;
 import model.account.SimpleAccount;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ManageUsersCommand extends Command {
+    public ManageUsersCommand() {
+        super.regex = "manage users";
+    }
+
     @Override
     public String runCommand(String command) throws Exception {
         ManagerMenu menu = (ManagerMenu) HandleMenu.getMenu();
@@ -18,5 +24,10 @@ public class ManageUsersCommand extends Command {
             output += "\n" + accounts.get(i).getUsername();
         }
         return output;
+    }
+
+    public boolean checkCommand(String command) {
+        Matcher matcher = Pattern.compile(this.regex).matcher(command);
+        return matcher.matches();
     }
 }
