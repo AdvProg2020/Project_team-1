@@ -25,6 +25,9 @@ public class Main {
         ManagerMenu.getCommands().add(new DiscountCodeCommand());
         ManagerMenu.getCommands().add(new ViewDiscountCodeCommand());
         ManagerMenu.getCommands().add(new ManageProducts());
+        ManagerMenu.getCommands().add(new ManageCategoryCommand());
+        ManageCategoryMenu.manageCategoryMenuCommands.add(new EditCategoryCommand());
+        ManageCategoryMenu.manageCategoryMenuCommands.add(new RemoveCategory());
         ManageProductsMenu.getCommands().add(new RemoveCommodity());
         GetDiscountCodes.getDiscountCodeCommands().add(new ViewDiscountCodeCommand());
         GetDiscountCodes.getDiscountCodeCommands().add(new EditDiscountCode());
