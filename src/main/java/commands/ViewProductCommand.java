@@ -4,7 +4,6 @@ import model.Commodity;
 import model.SuperMarket;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ViewProductCommand extends Command {
 
@@ -30,10 +29,5 @@ public class ViewProductCommand extends Command {
         int id = Integer.parseInt(matcher.group("productId"));
         Commodity commodity = SuperMarket.getCommodityById(id);
         return commodity.toString();
-    }
-
-    public boolean checkCommand(String command) {
-        Matcher matcher = Pattern.compile(this.regex).matcher(command);
-        return matcher.matches();
     }
 }

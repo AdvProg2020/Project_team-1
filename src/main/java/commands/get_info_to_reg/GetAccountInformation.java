@@ -9,7 +9,6 @@ import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class GetAccountInformation extends Command {
     public static Matcher matcher;
@@ -36,11 +35,12 @@ public class GetAccountInformation extends Command {
                         matcher.group("email"), matcher.group("phone"), matcher.group("password")));
             } else {
                 GetAccountInfoMenu menu = (GetAccountInfoMenu) HandleMenu.getMenu();
-                menu.sendBusinessAccountRequest(new PersonalAccount(matcher.group("username"),
+                PersonalAccount account = new PersonalAccount(matcher.group("username"),
                         matcher.group("firstName"), matcher.group("lastName"),
                         matcher.group("email"), matcher.group("phone"),
-                        matcher.group("password")), new BusinessAccount(matcher.group("username"),
-                        matcher.group("firstName"), matcher.group("lastName"),
+                        matcher.group("password"))
+                menu.sendBusinessAccountRequest(account, new BusinessAccount(matcher.group("username"),
+                        matcher.group("firstName"), matcher.group("lastName"), account,
                         matcher.group("email"), matcher.group("phone"),
                         matcher.group("password"), matcher.group("company")));
             }
@@ -48,10 +48,5 @@ public class GetAccountInformation extends Command {
             return e.getMessage();
         }
         return "created account successfully";
-    }
-
-    public boolean checkCommand(String command) {
-        matcher = Pattern.compile(this.regex).matcher(command);
-        return matcher.matches();
     }
 }

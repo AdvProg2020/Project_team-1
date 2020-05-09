@@ -1,6 +1,5 @@
 package model.account;
 
-import commands.Command;
 import model.Commodity;
 import model.Off;
 import model.Requestable;
@@ -19,7 +18,8 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
     private Status status;
     private double credit;
 
-    public BusinessAccount(String username, String firstName, String lastName,PersonalAccount personalAccount, String email, String phoneNumber, String password, String businessName) throws Exception {
+    public BusinessAccount(String username, String firstName, String lastName, PersonalAccount personalAccount,
+                           String email, String phoneNumber, String password, String businessName) throws Exception {
         super(username, firstName, lastName, email, phoneNumber, password);
         changeBusinessName(businessName);
         sellLogs = new ArrayList<SellLog>();

@@ -32,9 +32,4 @@ public class RegisterCommand extends Command {
         }
         return null;
     }
-
-    public boolean checkCommand(String command) {
-        matcher = Pattern.compile(this.regex).matcher(command);
-        return matcher.matches();
-    }
 }

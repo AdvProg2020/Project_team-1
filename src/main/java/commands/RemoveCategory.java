@@ -21,9 +21,4 @@ public class RemoveCategory extends Command {
         SuperMarket.getAllCategory().remove(category);
         return "category removed successfully";
     }
-
-    public boolean checkCommand(String command) {
-        Matcher matcher = Pattern.compile(this.regex).matcher(command);
-        return matcher.matches();
-    }
 }

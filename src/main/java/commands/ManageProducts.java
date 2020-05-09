@@ -6,8 +6,6 @@ import controller.ManagerMenu;
 import model.Commodity;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ManageProducts extends Command {
     public ManageProducts() {
@@ -24,10 +22,5 @@ public class ManageProducts extends Command {
         }
         HandleMenu.setMenu(new ManageProductsMenu());
         return output;
-    }
-
-    public boolean checkCommand(String command) {
-        Matcher matcher = Pattern.compile(this.regex).matcher(command);
-        return matcher.matches();
     }
 }
