@@ -43,6 +43,14 @@ public class PersonalAccount extends SimpleAccount {
         return cart;
     }
 
+    public int getTotalPrice() {
+        int price = 0;
+        for (Commodity commodity : cart.keySet()) {
+            price += cart.get(commodity) * commodity.getPrice();
+        }
+        return price;
+    }
+
     public void addToCart(Commodity commodity) {
         cart.put(commodity, 1);
     }

@@ -12,14 +12,21 @@ public class BuyLog extends TransactionLog {
     private DiscountCode discountByCode;
     private SimpleAccount seller;
     private Boolean isCommodityDelivered;
+    private String address;
+    private String phone;
+    private String postalCode;
 
-    public BuyLog(Date date, ArrayList<Commodity> commodities, double payedMoney, DiscountCode discountByCode, SimpleAccount seller) {
+    public BuyLog(Date date, ArrayList<Commodity> commodities, double payedMoney, DiscountCode discountByCode,
+                  SimpleAccount sellerو, String address, String phone, String postalCode) {
         super(date, commodities);
         this.payedMoney = payedMoney;
         this.discountByCode = discountByCode;
         this.seller = seller;
         logId = generateLogID();
         isCommodityDelivered = false;
+        this.phone = phone;
+        this.postalCode = postalCode;
+        this.address = address;
     }
 
     public double getPayedMoney() {
