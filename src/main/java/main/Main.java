@@ -44,6 +44,7 @@ public class Main {
         ManageUsersMenu.getCommands().add(new CreateManager());
         GetCartMenu.getCartMenuCommands.add(new IncreaseCommand());
         GetCartMenu.getCartMenuCommands.add(new DecreaseCommand());
+        GetCartMenu.getCartMenuCommands.add(new GetTotalPrice());
 
         while (true) {
             String command = getConsoleScanner().nextLine();

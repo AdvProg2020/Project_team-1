@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 public class IncreaseCommand extends Command {
     Matcher matcher;
     public IncreaseCommand() {
-        this.regex = "^increase ?<productId>\\S+";
+        this.regex = "^increase (?<productId>\\S+)";
     }
 
     public boolean checkIsIdNumeric(String id){
