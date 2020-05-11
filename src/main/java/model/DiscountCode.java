@@ -99,6 +99,14 @@ public class DiscountCode {
         this.code = code;
     }
 
+    public void isStillValid() throws Exception {
+        Date now = new Date();
+        if (this.startDate.compareTo(now) >= 0 && this.finishDate.compareTo(now) <= 0) {
+            return;
+        }
+        throw new Exception("you can't use this code right now");
+    }
+
     @Override
     public String toString() {
         return "DiscountCode{" +

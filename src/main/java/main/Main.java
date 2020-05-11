@@ -1,7 +1,15 @@
 package main;
 
 import commands.*;
+import commands.get_info_to_purchase.GetAddress;
+import commands.get_info_to_purchase.GetDiscountCode;
+import commands.get_info_to_purchase.GetPhone;
+import commands.get_info_to_purchase.GetPostalCode;
 import controller.*;
+import controller.get_info_to_purchase.GetAddressMenu;
+import controller.get_info_to_purchase.GetDiscountCodeMenu;
+import controller.get_info_to_purchase.GetPhoneMenu;
+import controller.get_info_to_purchase.GetPostalCodeMenu;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,6 +46,7 @@ public class Main {
         registerAndLoginCommands.add(new RegisterCommand());
         ManageUsersMenu.getCommands().add(new DeleteUser());
         PersonalAccountMenu.personalAccountMenuCommands.add(new ViewCartCommand());
+        PersonalAccountMenu.personalAccountMenuCommands.add(new Purchase());
         GetCartMenu.getCartMenuCommands.add(new ShowProductsCommand());
         GetCartMenu.getCartMenuCommands.add(new ViewProductCommand());
         ManageUsersMenu.getCommands().add(new ViewUser());
@@ -45,6 +54,11 @@ public class Main {
         GetCartMenu.getCartMenuCommands.add(new IncreaseCommand());
         GetCartMenu.getCartMenuCommands.add(new DecreaseCommand());
         GetCartMenu.getCartMenuCommands.add(new GetTotalPrice());
+        GetCartMenu.getCartMenuCommands.add(new Purchase());
+        GetAddressMenu.commands.add(new GetAddress());
+        GetPhoneMenu.commands.add(new GetPhone());
+        GetPostalCodeMenu.commands.add(new GetPostalCode());
+        GetDiscountCodeMenu.commands.add(new GetDiscountCode());
 
         while (true) {
             String command = getConsoleScanner().nextLine();

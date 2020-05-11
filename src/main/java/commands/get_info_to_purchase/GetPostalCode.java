@@ -1,6 +1,9 @@
 package commands.get_info_to_purchase;
 
 import commands.Command;
+import controller.HandleMenu;
+import controller.get_info_to_purchase.GetDiscountCodeMenu;
+import controller.get_info_to_purchase.GetPostalCodeMenu;
 
 public class GetPostalCode extends Command {
     public GetPostalCode() {
@@ -9,7 +12,10 @@ public class GetPostalCode extends Command {
 
     @Override
     public String runCommand(String command) throws Exception {
-
-        return "please enter a discount code or go to next line";
+        GetPostalCodeMenu menu = (GetPostalCodeMenu) HandleMenu.getMenu();
+        String address = menu.getAddress();
+        String phone = menu.getPhoneNumber();
+        HandleMenu.setMenu(new GetDiscountCodeMenu(address, phone, command));
+        return "please enter a discount code or if you don't want to use a discount code, enter nothing";
     }
 }

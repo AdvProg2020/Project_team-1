@@ -2,6 +2,8 @@ package model.account;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.Objects;
+
 public abstract class SimpleAccount {
     protected final String VALID_USERNAME = "^\\w{4,10}$";
     protected final String VALID_FIRST_NAME_AND_LAST_NAME = "^[a-zA-z ]$";
@@ -130,5 +132,13 @@ public abstract class SimpleAccount {
                 "last name: " + this.lastName + "\n" +
                 "email: " + this.email + "\n" +
                 "phone number: " + this.phoneNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SimpleAccount)) return false;
+        SimpleAccount account = (SimpleAccount) o;
+        return Objects.equals(getUsername(), account.getUsername());
     }
 }

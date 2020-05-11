@@ -5,14 +5,16 @@ import controller.CommandProcess;
 
 import java.util.ArrayList;
 
-public class GetPostalCodeMenu implements CommandProcess {
+public class GetDiscountCodeMenu implements CommandProcess {
     public static ArrayList<Command> commands = new ArrayList<Command>();
     private String address;
     private String phoneNumber;
+    private String postalCode;
 
-    public GetPostalCodeMenu(String address, String phoneNumber) {
+    public GetDiscountCodeMenu(String address, String phoneNumber, String postalCode) {
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.postalCode = postalCode;
     }
 
     public String getAddress() {
@@ -21,6 +23,10 @@ public class GetPostalCodeMenu implements CommandProcess {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
     }
 
     @Override

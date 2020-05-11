@@ -6,29 +6,30 @@ import model.log.BuyLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class PersonalAccount extends SimpleAccount {
-    private ArrayList<DiscountCode> discountCodes;
+    private HashMap<DiscountCode, Integer> discountCodes;
     private ArrayList<BuyLog> buyLogs;
     private HashMap<Commodity,Integer> cart;
     private BusinessAccount businessAccount;
-    private double credit;
+    private int credit;
 
     public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password) throws Exception {
         super(username, firstName, lastName, email, phoneNumber, password);
-        discountCodes = new ArrayList<>();
+        discountCodes = new HashMap<>();
         buyLogs = new ArrayList<>();
         cart = new HashMap<>();
         businessAccount = null;
-        credit = 0.0;
+        credit = 0;
     }
 
-    public ArrayList<DiscountCode> getDiscountCodes() {
-        return discountCodes;
+    public Set<DiscountCode> getDiscountCodes() {
+        return discountCodes.keySet();
     }
 
     public void addDiscountCode(DiscountCode discountCode) {
-        discountCodes.add(discountCode);
+        discountCodes.put(discountCode, 0);
     }
 
     public ArrayList<BuyLog> getBuyLogs() {
@@ -67,17 +68,32 @@ public class PersonalAccount extends SimpleAccount {
         this.businessAccount = businessAccount;
     }
 
-    public double getCredit() {
+    public int getCredit() {
         return credit;
     }
 
-    public void addToCredit(double amount) {
+    public void addToCredit(int amount) {
         credit += amount;
     }
+
+    public void doesHaveThisDiscount(DiscountCode discountCode) throws Exception {
+        if (discountCodes.containsKey(discountCode)) {
+            return;
+        }
+        throw new Exception("you can't use this discount code");
+    }
+
+    public void useThisDiscount(DiscountCode discountCode) {
+        int numberOfTimesUsed = discountCodes.get(discountCode) + 1;
+        discountCodes.remove(discountCode);
+        if (numberOfTimesUsed < discountCode.getMaximumNumberOfUses()) {
+            discountCodes.put(discountCode, numberOfTimesUsed);
+        }
+    }
+
 
     @Override
     public String toString() {
         return super.toString();
     }
-}
 }
