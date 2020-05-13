@@ -1,6 +1,6 @@
 package old.commands;
 
-import old.HandleMenu;
+import controller.HandleMenu;
 import old.ProductMenu;
 import model.Commodity;
 import model.DataManager;

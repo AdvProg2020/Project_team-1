@@ -1,7 +1,7 @@
 package old.commands;
 
 import old.CreateDiscountCodeMenu;
-import old.HandleMenu;
+import controller.HandleMenu;
 
 public class DiscountCodeCommand extends Command {
     public DiscountCodeCommand() {

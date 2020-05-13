@@ -1,7 +1,7 @@
 package old.commands;
 
 import old.GetAccountInfoMenu;
-import old.HandleMenu;
+import controller.HandleMenu;
 import old.LoginRegisterMenu;
 
 import java.util.regex.Matcher;

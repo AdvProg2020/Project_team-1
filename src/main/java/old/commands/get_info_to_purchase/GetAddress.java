@@ -1,7 +1,7 @@
 package old.commands.get_info_to_purchase;
 
 import old.commands.Command;
-import old.HandleMenu;
+import controller.HandleMenu;
 import old.get_info_to_purchase.GetPhoneMenu;
 
 public class GetAddress extends Command {

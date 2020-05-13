@@ -2,7 +2,7 @@ package old.commands.get_info_to_reg;
 
 import old.commands.Command;
 import old.GetAccountInfoMenu;
-import old.HandleMenu;
+import controller.HandleMenu;
 
 public class GetUsername extends Command {
     public GetUsername() {

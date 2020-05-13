@@ -1,7 +1,7 @@
 package old.commands.get_info_to_purchase;
 
 import old.commands.Command;
-import old.HandleMenu;
+import controller.HandleMenu;
 import old.PersonalAccountMenu;
 import model.DiscountCode;
 import model.DataManager;

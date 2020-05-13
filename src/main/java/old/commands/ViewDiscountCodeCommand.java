@@ -2,7 +2,7 @@ package old.commands;
 
 
 import old.GetDiscountCodes;
-import old.HandleMenu;
+import controller.HandleMenu;
 import model.DiscountCode;
 import model.DataManager;
 

@@ -1,5 +1,7 @@
-package old;
+package controller;
 
+import old.CommandProcess;
+import old.ProductsMenu;
 import old.commands.Command;
 import model.DataManager;
 import model.account.ManagerAccount;
@@ -7,14 +9,7 @@ import model.account.SimpleAccount;
 
 import java.util.ArrayList;
 
-public class ManageUsersMenu extends ProductsMenu implements CommandProcess {
-    CommandProcess commandProcess;
-
-    private static ArrayList<Command> commands = new ArrayList<>();
-
-    public static ArrayList<Command> getCommands() {
-        return commands;
-    }
+public class ManageUsersMenu extends Menu {
 
     public SimpleAccount getAccountWithUsername(String username) throws Exception {
         ArrayList<SimpleAccount> allAccounts = DataManager.getAllAccounts();
@@ -29,11 +24,5 @@ public class ManageUsersMenu extends ProductsMenu implements CommandProcess {
         DataManager.addAccount(managerAccount);
     }
 
-    public String commandProcessor(String command) throws Exception {
-        for (Command managerCommand : commands) {
-            if (managerCommand.checkCommand(command))
-                return managerCommand.runCommand(command);
-        }
-        return "invalid command";
-    }
+
 }

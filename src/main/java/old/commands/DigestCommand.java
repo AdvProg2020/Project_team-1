@@ -1,7 +1,7 @@
 package old.commands;
 
 import old.DigestMenu;
-import old.HandleMenu;
+import controller.HandleMenu;
 import model.Commodity;
 import model.DataManager;
 
