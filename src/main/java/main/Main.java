@@ -18,11 +18,19 @@ import java.util.Scanner;
 import static controller.Filtering.filteringCommands;
 import static controller.LoginRegisterMenu.registerAndLoginCommands;
 import static controller.ManageRequestMenu.manageRequestMenuCommands;
+import static controller.ProductsMenu.getProductsMenuCommands;
+import static controller.ProductsMenu.productsMenuCommands;
 
 public class Main {
     private static Scanner consoleScanner = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
+        ProductsMenu.getProductsMenuCommands().add(new ViewCategoryCommand());
+        ProductsMenu.getProductsMenuCommands().add(new FilteringCommand());
+        ProductsMenu.getProductsMenuCommands().add(new ShowAvailableFiltersCommand());
+        ProductsMenu.getProductsMenuCommands().add(new ShowProductsCommand());
+        ProductMenu.getProductMenuCommand().add(new DigestCommand());
+        DigestMenu.getDigestMenuCommand().add(new AddToCartCommand());
         filteringCommands.add(new ShowAvailableFiltersCommand());
         filteringCommands.add(new Filter());
         filteringCommands.add(new CurrentFilter());

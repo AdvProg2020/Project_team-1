@@ -19,6 +19,14 @@ public class ManagerMenu extends AccountMenu implements CommandProcess {
         return commands;
     }
 
+    CommandProcess commandProcess = new CommandProcess() {
+        @Override
+        public String commandProcessor(String command) throws Exception {
+            return null;
+        }
+    };
+
+
     public ManagerMenu(SimpleAccount account) {
         super(account);
     }

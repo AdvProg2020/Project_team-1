@@ -13,7 +13,7 @@ public class PersonalAccount extends SimpleAccount {
     private ArrayList<BuyLog> buyLogs;
     private HashMap<Commodity,Integer> cart;
     private BusinessAccount businessAccount;
-    private int credit;
+    private double credit;
 
     public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password) throws Exception {
         super(username, firstName, lastName, email, phoneNumber, password);
@@ -21,7 +21,7 @@ public class PersonalAccount extends SimpleAccount {
         buyLogs = new ArrayList<>();
         cart = new HashMap<>();
         businessAccount = null;
-        credit = 0;
+        credit = 0.0;
     }
 
     public Set<DiscountCode> getDiscountCodes() {
@@ -52,8 +52,15 @@ public class PersonalAccount extends SimpleAccount {
         return price;
     }
 
+    private boolean isCommodityInTheCart(Commodity commodity){
+        return cart.keySet().contains(commodity);
+    }
+
     public void addToCart(Commodity commodity) {
-        cart.put(commodity, 1);
+        if (isCommodityInTheCart(commodity))
+            cart.put(commodity, 1);
+        else
+            cart.put(commodity , cart.get(commodity) + 1);
     }
 
     public void removeFromCart(Commodity commodity) {
@@ -68,11 +75,11 @@ public class PersonalAccount extends SimpleAccount {
         this.businessAccount = businessAccount;
     }
 
-    public int getCredit() {
+    public double getCredit() {
         return credit;
     }
 
-    public void addToCredit(int amount) {
+    public void addToCredit(double amount) {
         credit += amount;
     }
 

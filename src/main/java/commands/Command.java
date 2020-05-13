@@ -10,5 +10,5 @@ public abstract class Command {
         return command.matches(regex);
     }
 
-    public abstract String runCommand(String command) throws Exception;
+    public abstract String runCommand(String command , ) throws Exception;
 }

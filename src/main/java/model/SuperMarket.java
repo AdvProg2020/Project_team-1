@@ -4,15 +4,34 @@ import model.account.SimpleAccount;
 import model.log.TransactionLog;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class SuperMarket {
+
+    public static Object getNearHand() {
+        return nearHand;
+    }
+
+    private static Object nearHand = new Object();
+
     private static SimpleAccount onlineAccount;
+
+    public static void setNearHand(Object nearHand) {
+        SuperMarket.nearHand = nearHand;
+    }
+
     private static ArrayList<TransactionLog> allLogs = new ArrayList<TransactionLog>();
+
     private static ArrayList<Category> allCategory = new ArrayList<Category>();
+
     private static ArrayList<Commodity> allCommodities = new ArrayList<Commodity>();
+
     private static ArrayList<Score> allScores = new ArrayList<Score>();
+
     private static ArrayList<Request> allRequests = new ArrayList<Request>();
+
     private static ArrayList<SimpleAccount> allAccounts = new ArrayList<SimpleAccount>();
+
     private static ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>();
 
     public static ArrayList<DiscountCode> getAllDiscountCodes() {
@@ -38,7 +57,6 @@ public class SuperMarket {
     public static ArrayList<Commodity> getAllCommodities() {
         return allCommodities;
     }
-
 
     public static ArrayList<Score> getAllScores() {
         return allScores;
@@ -156,7 +174,7 @@ public class SuperMarket {
         throw new Exception("no user with this username");
     }
 
-    public static boolean isThereAnyRequestWithThisId(int id){
+    public static boolean isThereAnyRequestWithThisId(int id) {
         for (Request request : allRequests) {
             if (request.getId() == id)
                 return true;
@@ -172,7 +190,7 @@ public class SuperMarket {
         return null;
     }
 
-    public static DiscountCode getDiscountCodeWithCode(String code){
+    public static DiscountCode getDiscountCodeWithCode(String code) {
         for (DiscountCode discountCode : allDiscountCodes) {
             if (discountCode.getCode().equals(code))
                 return discountCode;
@@ -180,7 +198,7 @@ public class SuperMarket {
         return null;
     }
 
-    public static boolean isThereAnyDiscountCodeWithThisCode(String code){
+    public static boolean isThereAnyDiscountCodeWithThisCode(String code) {
         for (DiscountCode discountCode : allDiscountCodes) {
             if (discountCode.getCode().equals(code))
                 return true;
@@ -188,7 +206,7 @@ public class SuperMarket {
         return false;
     }
 
-    public static boolean isThereAnyCategoryWithThisName(String name){
+    public static boolean isThereAnyCategoryWithThisName(String name) {
         for (Category category : allCategory) {
             if (category.getName().equals(name))
                 return true;

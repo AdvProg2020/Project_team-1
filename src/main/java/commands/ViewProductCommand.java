@@ -1,5 +1,8 @@
 package commands;
 
+import controller.HandleMenu;
+import controller.ProductMenu;
+import controller.ProductsMenu;
 import model.Commodity;
 import model.SuperMarket;
 
@@ -28,6 +31,8 @@ public class ViewProductCommand extends Command {
         }
         int id = Integer.parseInt(matcher.group("productId"));
         Commodity commodity = SuperMarket.getCommodityById(id);
-        return commodity.toString();
+        HandleMenu.setMenu(new ProductMenu(commodity));
+        SuperMarket.setNearHand(commodity);
+        return "You are in product menu now";
     }
 }

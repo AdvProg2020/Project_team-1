@@ -94,9 +94,6 @@ public class ProductsMenu implements CommandProcess {
 
     @Override
     public String commandProcessor(String command) throws Exception {
-        productsMenuCommands.add(new ViewCategoryCommand());
-        productsMenuCommands.add(new FilteringCommand());
-        productsMenuCommands.add(new ShowAvailableFiltersCommand());
         for (Command productsMenuCommand : productsMenuCommands) {
             if (productsMenuCommand.checkCommand(command))
                 return productsMenuCommand.runCommand(command);

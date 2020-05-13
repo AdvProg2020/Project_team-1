@@ -170,12 +170,10 @@ public class Commodity implements Requestable {
                 ", inventory=" + inventory +
                 ", seller=" + seller +
                 ", isCommodityAvailable=" + isCommodityAvailable +
-                ", category=" + category +
-                ", categorySpecifications=" + categorySpecifications +
+                ", category=" + category.getName() +
                 ", description='" + description + '\'' +
                 ", allComments=" + allComments +
                 ", averageScore=" + averageScore +
-                ", totalScores=" + totalScores +
                 ", numberOfScores=" + numberOfScores +
                 ", numberOfVisits=" + numberOfVisits +
                 '}';
