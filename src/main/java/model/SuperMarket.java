@@ -106,6 +106,15 @@ public class SuperMarket {
         throw new Exception("no product with this ID");
     }
 
+    public static boolean isThereAnyAccountWithThisUserName(String userName){
+        for (SimpleAccount account : allAccounts) {
+            if (account.getUsername().equals("userName")){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static DiscountCode getDiscountWithCode(String code) throws Exception {
         for (DiscountCode discountCode : allDiscountCodes) {
             if (discountCode.getCode().equals(code)) {

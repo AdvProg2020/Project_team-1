@@ -1,7 +1,7 @@
 package old.commands.business_panel;
 
 import old.commands.Command;
-import old.HandleMenu;
+import controller.HandleMenu;
 import old.ManageProductsMenu;
 import model.Commodity;
 import model.SuperMarket;

@@ -1,6 +1,6 @@
 package old.commands;
 
-import old.HandleMenu;
+import controller.HandleMenu;
 import old.get_info_to_purchase.GetAddressMenu;
 
 public class Purchase extends Command {

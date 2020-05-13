@@ -1,7 +1,7 @@
 package old.commands;
 
 import old.CreateManagerMenu;
-import old.HandleMenu;
+import controller.HandleMenu;
 
 public class CreateManager extends Command {
     public CreateManager() {

@@ -1,8 +1,5 @@
 package controller;
 
-import old.HandleMenu;
-import old.LoginRegisterMenu;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

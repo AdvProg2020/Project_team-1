@@ -1,7 +1,7 @@
 package old.commands;
 
 import old.AccountMenu;
-import old.HandleMenu;
+import controller.HandleMenu;
 import old.ViewPersonalInfoMenu;
 import model.SuperMarket;
 

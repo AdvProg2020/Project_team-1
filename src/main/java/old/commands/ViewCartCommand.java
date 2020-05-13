@@ -1,7 +1,7 @@
 package old.commands;
 
 import old.GetCartMenu;
-import old.HandleMenu;
+import controller.HandleMenu;
 
 public class ViewCartCommand extends Command {
     public ViewCartCommand() {

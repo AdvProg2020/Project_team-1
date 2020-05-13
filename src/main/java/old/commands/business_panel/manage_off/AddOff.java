@@ -1,7 +1,7 @@
 package old.commands.business_panel.manage_off;
 
 import old.commands.Command;
-import old.HandleMenu;
+import controller.HandleMenu;
 import old.business_menu.AddOffMenu;
 
 public class AddOff extends Command {

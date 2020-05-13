@@ -1,7 +1,7 @@
 package old.commands;
 
-import old.HandleMenu;
-import old.ManageUsersMenu;
+import controller.HandleMenu;
+import controller.ManageUsersMenu;
 import model.account.SimpleAccount;
 
 import java.util.regex.Matcher;

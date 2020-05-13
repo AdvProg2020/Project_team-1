@@ -1,6 +1,6 @@
 package old.commands;
 
-import old.HandleMenu;
+import controller.HandleMenu;
 import old.ManageRequestsMenu;
 import model.Request;
 import model.SuperMarket;

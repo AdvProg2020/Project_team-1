@@ -1,17 +1,17 @@
-package old;
+package controller;
 
 public class HandleMenu {
-    CommandProcess commandProcess;
+    old.CommandProcess commandProcess;
 
     private static final HandleMenu handleMenu = new HandleMenu();
 
-    private static CommandProcess menu;
+    private static Menu menu;
 
-    public static CommandProcess getMenu() {
+    public static Menu getMenu() {
         return menu;
     }
 
-    public static void setMenu(CommandProcess menu) {
+    public static void setMenu(Menu menu) {
         HandleMenu.menu = menu;
     }
 

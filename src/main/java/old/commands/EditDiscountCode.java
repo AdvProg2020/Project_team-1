@@ -1,7 +1,7 @@
 package old.commands;
 
 import old.EditDiscountCodeMenu;
-import old.HandleMenu;
+import controller.HandleMenu;
 import model.DiscountCode;
 import model.SuperMarket;
 
