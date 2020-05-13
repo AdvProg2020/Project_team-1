@@ -20,18 +20,24 @@ public class ManagerMenu extends Menu {
         return true;
     }
 
-    private boolean checkCreatDiscountCodeErrors(Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
+    public boolean checkCreateDiscountCodeErrors(Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
                               int maximumNumberOfUse) {
         if (finish.compareTo(start) > 0)
             return false;
         if (discountPercentage <= 0)
-            return false
+            return false;
         if (maximumDiscountPrice <= 0)
             return false;
         if (maximumNumberOfUse <= 0)
             return false;
 
         return true;
+    }
+
+    public void addDiscountCode(String code,Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
+                               int maximumNumberOfUse,ArrayList<SimpleAccount> accountArrayList) throws Exception {
+        SuperMarket.addToDiscounts(new DiscountCode(code,start,finish,discountPercentage,maximumDiscountPrice,maximumNumberOfUse,accountArrayList));
+
     }
 
     public ArrayList<SimpleAccount> getAllAccounts() {

@@ -19,7 +19,7 @@ public class View {
     Scanner scanner = new Scanner(System.in);
 
     public View() {
-        ManagerMenu managerMenu = new ManagerMenu();
+        final ManagerMenu managerMenu = new ManagerMenu();
         final ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
         final ManageUsersMenu manageUsersMenu = new ManageUsersMenu();
         manageUsersMenu.commandProcess = new CommandProcess() {
@@ -100,9 +100,11 @@ public class View {
                     HandleMenu.setMenu(manageUsersMenu);
                 }
                 if (command.matches("^create discount code$")) {
+                    System.out.println("Enter code");
+                    String code = scanner.nextLine();
                     System.out.println("Enter start date in dd-mm-yyyy format");
                     String stringStart = scanner.nextLine();
-                    if (!stringStart.matches("\\d\\d--\\d\\d-\\d\\d\\d")){
+                    if (!stringStart.matches("\\d\\d--\\d\\d-\\d\\d\\d")) {
                         System.out.println("invalid date format");
                         return;
                     }
@@ -110,32 +112,55 @@ public class View {
                     Date start = format.parse(stringStart);
                     System.out.println("Enter finish date in dd-mm-yyyy format");
                     String stringFinish = scanner.nextLine();
-                    if (!stringFinish.matches("\\d\\d--\\d\\d-\\d\\d\\d")){
+                    if (!stringFinish.matches("\\d\\d--\\d\\d-\\d\\d\\d")) {
                         System.out.println("invalid date format");
                         return;
                     }
                     Date finish = format.parse(stringFinish);
                     System.out.println("Enter discount percentage");
+                    int discountPercentage;
                     try {
-                        int discountPercentage = scanner.nextInt();
-                    }catch (Exception e){
+                        discountPercentage = scanner.nextInt();
+                    } catch (Exception e) {
                         System.out.println("invalid discount percentage");
                         return;
                     }
                     System.out.println("Enter maximum discount price");
+                    int maximumDiscountPrice;
                     try {
-                        int maximumDiscountPrice = scanner.nextInt();
-                    }catch (Exception e){
+                        maximumDiscountPrice = scanner.nextInt();
+                    } catch (Exception e) {
                         System.out.println("invalid maximum discount price");
                         return;
-                    }System.out.println("Enter maximum number of use");
+                    }
+                    System.out.println("Enter maximum number of use");
+                    int maximumNumberOfUse;
                     try {
-                        int maximumNumberOfUse = scanner.nextInt();
-                    }catch (Exception e){
+                        maximumNumberOfUse = scanner.nextInt();
+                    } catch (Exception e) {
                         System.out.println("invalid maximum number of user");
                         return;
                     }
+                    if (managerMenu.checkCreateDiscountCodeErrors(start, finish, discountPercentage,maximumDiscountPrice,maximumNumberOfUse)){
+                        System.out.println("invalid input");
+                        return;
+                    }
+                    System.out.println("Enter accounts");
+                    String accounts = scanner.nextLine();
+                    String[] splitCommand = accounts.split(" ");
+                    ArrayList<SimpleAccount> allAccount = new ArrayList<SimpleAccount>();
+                    for (int i = 0; i < splitCommand.length; i++) {
+                        SimpleAccount simpleAccount = SuperMarket.getAccountWithUsername(splitCommand[i]);
+                        if (simpleAccount == null) {
+                            System.out.println("user name " + splitCommand[i] + " not found");
+                            i--;
+                        }
+                        allAccount.add(simpleAccount);
+                    }
+                    System.out.println("Discount code successfully added");
+                    managerMenu.addDiscountCode(code,start,finish,discountPercentage,maximumDiscountPrice,maximumNumberOfUse,allAccount);
                 }
+
 
             }
         };

@@ -37,13 +37,6 @@ public class CreateDiscountCodeCommand extends Command {
         int discountPercentage = Integer.parseInt(splitCommand[3]);
         int maximumDiscountPrice = Integer.parseInt(splitCommand[4]);
         int maximumNumberOfUse = Integer.parseInt(splitCommand[5]);
-        ArrayList<SimpleAccount> allAccount = new ArrayList<SimpleAccount>();
-        for (int i = 6; i < splitCommand.length; i++) {
-            SimpleAccount simpleAccount = SuperMarket.getAccountWithUsername(splitCommand[i]);
-            if (simpleAccount == null)
-                return "user name " + splitCommand[i] + " not found";
-            allAccount.add(simpleAccount);
-        }
         String error = checkError(startDate, finishDate, discountPercentage, maximumDiscountPrice, maximumDiscountPrice);
         if (error != null)
             return error;
