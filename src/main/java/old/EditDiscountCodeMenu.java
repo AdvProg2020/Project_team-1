@@ -1,7 +1,7 @@
 package old;
 
 import model.DiscountCode;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.SimpleAccount;
 
 import java.text.SimpleDateFormat;
@@ -73,7 +73,7 @@ public class EditDiscountCodeMenu implements CommandProcess {
     public String changeAccounts(String[] splitCommand) throws Exception {
         ArrayList<SimpleAccount> allAccount = new ArrayList<SimpleAccount>();
         for (int i = 2; i < splitCommand.length; i++) {
-            SimpleAccount simpleAccount = SuperMarket.getAccountWithUsername(splitCommand[i]);
+            SimpleAccount simpleAccount = DataManager.getAccountWithUsername(splitCommand[i]);
             if (simpleAccount == null)
                 return "user name " + splitCommand[i] + " not found";
             allAccount.add(simpleAccount);

@@ -4,18 +4,18 @@ import old.commands.Command;
 import old.HandleMenu;
 import old.PersonalAccountMenu;
 import model.DiscountCode;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.PersonalAccount;
 
 public class GetDiscountCode extends Command {
     @Override
     public String runCommand(String command) throws Exception {
-        PersonalAccount account = (PersonalAccount) SuperMarket.getOnlineAccount();
+        PersonalAccount account = (PersonalAccount) DataManager.getOnlineAccount();
         int price = account.getTotalPrice();
         int money = account.getCredit();
         if (!command.equals("")) {
             try {
-                DiscountCode code = SuperMarket.getDiscountWithCode(command);
+                DiscountCode code = DataManager.getDiscountWithCode(command);
                 account.doesHaveThisDiscount(code);
                 code.isStillValid();
                 account.useThisDiscount(code);

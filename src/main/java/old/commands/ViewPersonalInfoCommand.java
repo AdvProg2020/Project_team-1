@@ -3,7 +3,7 @@ package old.commands;
 import old.AccountMenu;
 import old.HandleMenu;
 import old.ViewPersonalInfoMenu;
-import model.SuperMarket;
+import model.DataManager;
 
 public class ViewPersonalInfoCommand extends Command {
     AccountMenu menu;
@@ -15,7 +15,7 @@ public class ViewPersonalInfoCommand extends Command {
     @Override
     public String runCommand(String command) {
         this.menu = (AccountMenu) HandleMenu.getMenu();
-        HandleMenu.setMenu(new ViewPersonalInfoMenu(SuperMarket.getOnlineAccount()));
+        HandleMenu.setMenu(new ViewPersonalInfoMenu(DataManager.getOnlineAccount()));
         return menu.getAccount().getInformation() + "\nand enter the field you want to edit and after that the new" +
                 "value of that. For example: phone 09123456789\n" +
                 "only password is different and you have to edit it like this:\n" +

@@ -23,7 +23,7 @@ public class Request {
     public Request(Requestable obj, SimpleAccount simpleAccount) {
         this.obj = obj;
         this.simpleAccount = simpleAccount;
-        this.id = SuperMarket.getAllRequests().size() + 1;
+        this.id = DataManager.getAllRequests().size() + 1;
     }
 
     public Requestable getObj() {

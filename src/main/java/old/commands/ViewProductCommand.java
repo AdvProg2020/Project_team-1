@@ -3,7 +3,7 @@ package old.commands;
 import old.HandleMenu;
 import old.ProductMenu;
 import model.Commodity;
-import model.SuperMarket;
+import model.DataManager;
 
 import java.util.regex.Matcher;
 
@@ -29,9 +29,9 @@ public class ViewProductCommand extends Command {
             return "product id should be numeric";
         }
         int id = Integer.parseInt(matcher.group("productId"));
-        Commodity commodity = SuperMarket.getCommodityById(id);
+        Commodity commodity = DataManager.getCommodityById(id);
         HandleMenu.setMenu(new ProductMenu(commodity));
-        SuperMarket.setNearHand(commodity);
+        DataManager.setNearHand(commodity);
         return "You are in product menu now";
     }
 }

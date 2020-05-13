@@ -1,7 +1,7 @@
 package old.commands.business_panel;
 
 import old.commands.Command;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.BusinessAccount;
 
 public class ViewCompanyInfoCommand extends Command {
@@ -12,6 +12,6 @@ public class ViewCompanyInfoCommand extends Command {
 
     @Override
     public String runCommand(String command) throws Exception {
-        return ((BusinessAccount)SuperMarket.getOnlineAccount()).getBusinessName();
+        return ((BusinessAccount) DataManager.getOnlineAccount()).getBusinessName();
     }
 }

@@ -1,17 +1,17 @@
 package old;
 
 import model.DiscountCode;
-import model.SuperMarket;
+import model.DataManager;
 
 import java.util.Date;
 
 public class ManageDiscountsMenu extends ProductsMenu implements CommandProcess {
     public DiscountCode getDiscountWithCode(String code) throws Exception {
-        return SuperMarket.getDiscountWithCode(code);
+        return DataManager.getDiscountWithCode(code);
     }
 
     public void removeDiscount(String code) throws Exception {
-        SuperMarket.getAllDiscountCodes().remove(SuperMarket.getDiscountWithCode(code));
+        DataManager.getAllDiscountCodes().remove(DataManager.getDiscountWithCode(code));
     }
 
     public void editStartDate(Date date, DiscountCode discountCode) throws Exception {

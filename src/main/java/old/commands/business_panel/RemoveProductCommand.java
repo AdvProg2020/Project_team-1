@@ -2,7 +2,7 @@ package old.commands.business_panel;
 
 import old.commands.Command;
 import model.Commodity;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.BusinessAccount;
 
 import java.util.regex.Matcher;
@@ -17,7 +17,7 @@ public class RemoveProductCommand extends Command {
     public String runCommand(String command) throws Exception {
         Matcher matcher = Pattern.compile(regex).matcher(command);
         int productId = Integer.parseInt(matcher.group(1));
-        BusinessAccount businessAccount = ((BusinessAccount) SuperMarket.getOnlineAccount());
+        BusinessAccount businessAccount = ((BusinessAccount) DataManager.getOnlineAccount());
         Commodity commodity = businessAccount.getCommodityById(productId);
         if (commodity == null) {
             throw new Exception("Product ID not found.");

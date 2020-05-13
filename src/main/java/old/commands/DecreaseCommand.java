@@ -1,7 +1,7 @@
 package old.commands;
 
 import model.Commodity;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.PersonalAccount;
 
 import java.util.HashMap;
@@ -36,8 +36,8 @@ public class DecreaseCommand extends Command {
             return "product id should be numeric";
         }
         int id = Integer.parseInt(matcher.group("productId"));
-        Commodity commodity = SuperMarket.getCommodityById(id);
-        PersonalAccount personalAccount = (PersonalAccount) SuperMarket.getOnlineAccount();
+        Commodity commodity = DataManager.getCommodityById(id);
+        PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
         if (cart.containsKey(commodity)) {
           decreaseCommodity(commodity, cart );

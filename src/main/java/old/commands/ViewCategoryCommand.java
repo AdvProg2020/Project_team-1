@@ -1,7 +1,7 @@
 package old.commands;
 
 import model.Category;
-import model.SuperMarket;
+import model.DataManager;
 
 public class ViewCategoryCommand extends Command {
 
@@ -13,7 +13,7 @@ public class ViewCategoryCommand extends Command {
     @Override
     public String runCommand(String command) {
         String respond = "";
-        for (Category category : SuperMarket.getAllCategory()) {
+        for (Category category : DataManager.getAllCategory()) {
             respond += category.getName() + "\n";
         }
         return respond;

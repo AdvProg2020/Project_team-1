@@ -1,7 +1,7 @@
 package old.commands;
 
 import model.DiscountCode;
-import model.SuperMarket;
+import model.DataManager;
 
 public class RemoveDiscountCode extends Command {
     public RemoveDiscountCode() {
@@ -11,10 +11,10 @@ public class RemoveDiscountCode extends Command {
     @Override
     public String runCommand(String command) throws Exception {
         String[] splitCommand = command.split(" ");
-        if (!SuperMarket.isThereAnyDiscountCodeWithThisCode(splitCommand[2]))
+        if (!DataManager.isThereAnyDiscountCodeWithThisCode(splitCommand[2]))
             return "Wrong code";
-        DiscountCode discountCode = SuperMarket.getDiscountWithCode(splitCommand[1]);
-        SuperMarket.getAllDiscountCodes().remove(discountCode);
+        DiscountCode discountCode = DataManager.getDiscountWithCode(splitCommand[1]);
+        DataManager.getAllDiscountCodes().remove(discountCode);
         return "Discount code removed";
     }
 }

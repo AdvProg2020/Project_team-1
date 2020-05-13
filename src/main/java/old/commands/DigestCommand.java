@@ -3,7 +3,7 @@ package old.commands;
 import old.DigestMenu;
 import old.HandleMenu;
 import model.Commodity;
-import model.SuperMarket;
+import model.DataManager;
 
 public class DigestCommand extends Command {
     Commodity commodity;
@@ -18,7 +18,7 @@ public class DigestCommand extends Command {
 
     public DigestCommand() {
         this.regex = "^digest$";
-        this.commodity = (Commodity)SuperMarket.getNearHand();
+        this.commodity = (Commodity) DataManager.getNearHand();
 
     }
 

@@ -1,6 +1,6 @@
 package old.commands;
 
-import model.SuperMarket;
+import model.DataManager;
 import model.account.PersonalAccount;
 
 public class GetTotalPrice extends Command {
@@ -10,7 +10,7 @@ public class GetTotalPrice extends Command {
 
     @Override
     public String runCommand(String command) throws Exception {
-        PersonalAccount personalAccount = (PersonalAccount) SuperMarket.getOnlineAccount();
+        PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
         return "total price is " + personalAccount.getTotalPrice();
     }
 }

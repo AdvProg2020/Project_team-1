@@ -1,6 +1,6 @@
 package old.commands;
 
-import model.SuperMarket;
+import model.DataManager;
 
 public class GetDiscountCodeCommand extends Command {
 
@@ -11,8 +11,8 @@ public class GetDiscountCodeCommand extends Command {
     @Override
     public String runCommand(String command) throws Exception {
         String[] splitCommand = command.split(" ");
-        if (SuperMarket.isThereAnyDiscountCodeWithThisCode(splitCommand[3])){
-            return SuperMarket.getDiscountCodeWithCode(splitCommand[3]).toString();
+        if (DataManager.isThereAnyDiscountCodeWithThisCode(splitCommand[3])){
+            return DataManager.getDiscountCodeWithCode(splitCommand[3]).toString();
         }else return "Wrong code";
     }
 }

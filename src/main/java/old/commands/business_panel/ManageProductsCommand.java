@@ -4,7 +4,7 @@ import old.commands.Command;
 import old.HandleMenu;
 import old.ManageProductsMenu;
 import model.Commodity;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.BusinessAccount;
 
 public class ManageProductsCommand extends Command {
@@ -16,7 +16,7 @@ public class ManageProductsCommand extends Command {
     @Override
     public String runCommand(String command) throws Exception {
         StringBuilder result = new StringBuilder("");
-        for (Commodity commodity : ((BusinessAccount) SuperMarket.getOnlineAccount()).getCommodities()) {
+        for (Commodity commodity : ((BusinessAccount) DataManager.getOnlineAccount()).getCommodities()) {
             result.append(commodity.toString());
             result.append('\n');
         }

@@ -2,7 +2,7 @@ package old.commands;
 
 import model.Category;
 import model.CategorySpecification;
-import model.SuperMarket;
+import model.DataManager;
 
 import java.util.HashSet;
 
@@ -22,7 +22,7 @@ public class EditCategoryCommand extends Command {
 
 
     public boolean checkCategoryName(String name){
-        return SuperMarket.isThereAnyCategoryWithThisName(name);
+        return DataManager.isThereAnyCategoryWithThisName(name);
     }
 
     public String changeName(String name , Category category){
@@ -53,7 +53,7 @@ public class EditCategoryCommand extends Command {
         String[] splitCommand = command.split(" ");
         if (!checkCategoryName(splitCommand[1]))
             return "invalid name";
-        Category category = SuperMarket.getCategoryByName(splitCommand[1]);
+        Category category = DataManager.getCategoryByName(splitCommand[1]);
         if (splitCommand[2].equals("name")){
            return changeName(splitCommand[3] , category);
         }

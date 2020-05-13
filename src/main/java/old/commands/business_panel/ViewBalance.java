@@ -1,7 +1,7 @@
 package old.commands.business_panel;
 
 import old.commands.Command;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.BusinessAccount;
 
 public class ViewBalance extends Command {
@@ -12,6 +12,6 @@ public class ViewBalance extends Command {
 
     @Override
     public String runCommand(String command) throws Exception {
-        return String.valueOf(((BusinessAccount)SuperMarket.getOnlineAccount()).getCredit());
+        return String.valueOf(((BusinessAccount) DataManager.getOnlineAccount()).getCredit());
     }
 }

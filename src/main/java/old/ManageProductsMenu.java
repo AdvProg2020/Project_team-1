@@ -1,7 +1,7 @@
 package old;
 
 import old.commands.Command;
-import model.SuperMarket;
+import model.DataManager;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class ManageProductsMenu extends ProductsMenu implements CommandProcess {
     }
 
     public void removeCommodityWithId(int id) throws Exception {
-        SuperMarket.getAllCommodities().remove(SuperMarket.getCommodityById(id));
+        DataManager.getAllCommodities().remove(DataManager.getCommodityById(id));
     }
 
     public String commandProcessor(String command) throws Exception {

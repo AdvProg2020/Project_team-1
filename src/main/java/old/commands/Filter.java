@@ -3,7 +3,7 @@ package old.commands;
 import old.ProductsMenu;
 import Main;
 import model.Category;
-import model.SuperMarket;
+import model.DataManager;
 import model.filter.FilterByCategory;
 import model.filter.FilterByName;
 import model.filter.NumericalFilter;
@@ -41,7 +41,7 @@ public class Filter extends Command {
     }
 
     public String filterByField(String[] splitCommand) {
-        Category category = SuperMarket.getCategoryByName(splitCommand[2]);
+        Category category = DataManager.getCategoryByName(splitCommand[2]);
         ProductsMenu.filter(new FilterByCategory("filter by category " + splitCommand[2],category));
         int correspondingFieldNumber = Integer.parseInt(splitCommand[3]);
         if (category.getFieldOptions().get(correspondingFieldNumber).getOptions() == null) {
@@ -59,7 +59,7 @@ public class Filter extends Command {
             return ProductsMenu.getFilteredCommodities().toString();
         }
         if (splitCommand[1].equals("category") && splitCommand.length == 3) {
-            ProductsMenu.filter(new FilterByCategory("filter by category "+ splitCommand[2] , SuperMarket.getCategoryByName(splitCommand[2]) ));
+            ProductsMenu.filter(new FilterByCategory("filter by category "+ splitCommand[2] , DataManager.getCategoryByName(splitCommand[2]) ));
             return ProductsMenu.getFilteredCommodities().toString();
         }
         if (splitCommand[1].equals("category") && splitCommand.length > 3) {

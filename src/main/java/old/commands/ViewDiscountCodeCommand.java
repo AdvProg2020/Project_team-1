@@ -4,7 +4,7 @@ package old.commands;
 import old.GetDiscountCodes;
 import old.HandleMenu;
 import model.DiscountCode;
-import model.SuperMarket;
+import model.DataManager;
 
 public class ViewDiscountCodeCommand extends Command{
 
@@ -15,7 +15,7 @@ public class ViewDiscountCodeCommand extends Command{
     @Override
     public String runCommand(String command) throws Exception {
         String respond = "";
-        for (DiscountCode discountCode : SuperMarket.getAllDiscountCodes()) {
+        for (DiscountCode discountCode : DataManager.getAllDiscountCodes()) {
             respond += "[" + discountCode.toString() + "]";
         }
         HandleMenu.setMenu(new GetDiscountCodes());

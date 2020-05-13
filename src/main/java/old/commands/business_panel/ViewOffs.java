@@ -4,7 +4,7 @@ import old.commands.Command;
 import old.HandleMenu;
 import old.business_menu.ManageOffMenu;
 import model.Off;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.BusinessAccount;
 
 public class ViewOffs extends Command {
@@ -16,7 +16,7 @@ public class ViewOffs extends Command {
     @Override
     public String runCommand(String command) throws Exception {
         StringBuilder result = new StringBuilder("");
-        for (Off off: ((BusinessAccount) SuperMarket.getOnlineAccount()).getOffs()) {
+        for (Off off: ((BusinessAccount) DataManager.getOnlineAccount()).getOffs()) {
             result.append(off.toString());
             result.append('\n');
         }

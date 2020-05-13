@@ -1,7 +1,7 @@
 package old.commands;
 
 import model.Commodity;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.PersonalAccount;
 
 public class ShowProductsCommand extends Command {
@@ -12,7 +12,7 @@ public class ShowProductsCommand extends Command {
     @Override
     public String runCommand(String command) throws Exception {
         String respond = "";
-        PersonalAccount personalAccount = (PersonalAccount) SuperMarket.getOnlineAccount();
+        PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
         for (Commodity commodity : personalAccount.getCart().keySet()) {
             respond += "[" + commodity.toString() + "]";
         }

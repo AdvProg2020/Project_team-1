@@ -15,7 +15,7 @@ public class AddProductMenu implements CommandProcess{
                            int averageScore, int amount) throws Exception {
         Commodity commodity = new Commodity(commodityId, status, brand, name, price, seller, isCommodityAvailable,
                 category, categorySpecifications, description, averageScore, amount);
-        SuperMarket.addRequest(new Request(commodity, SuperMarket.getOnlineAccount()));
+        DataManager.addRequest(new Request(commodity, DataManager.getOnlineAccount()));
     }
 
     @Override

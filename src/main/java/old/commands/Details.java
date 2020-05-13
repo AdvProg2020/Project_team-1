@@ -1,7 +1,7 @@
 package old.commands;
 
 import model.Request;
-import model.SuperMarket;
+import model.DataManager;
 
 public class Details extends Command {
 
@@ -23,9 +23,9 @@ public class Details extends Command {
         String[] splitCommand = command.split(" ");
         if (!isNumeric(splitCommand[1]))
             return "Id is not numeric.";
-        if (!SuperMarket.isThereAnyRequestWithThisId(Integer.parseInt(splitCommand[1])))
+        if (!DataManager.isThereAnyRequestWithThisId(Integer.parseInt(splitCommand[1])))
             return "Id is not valid";
-        Request request = SuperMarket.getRequestWithId(Integer.parseInt(splitCommand[1]));
+        Request request = DataManager.getRequestWithId(Integer.parseInt(splitCommand[1]));
         return request.toString();
     }
 }

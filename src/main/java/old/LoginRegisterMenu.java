@@ -1,7 +1,7 @@
 package old;
 
 import old.commands.Command;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.SimpleAccount;
 
 import java.util.HashSet;
@@ -12,7 +12,7 @@ public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
     public static HashSet<Command> registerAndLoginCommands = new HashSet<>();
 
     public boolean isUserNameValid(String userName) {
-        for (SimpleAccount account : SuperMarket.getAllAccounts()) {
+        for (SimpleAccount account : DataManager.getAllAccounts()) {
             if (account.getUsername().equals(userName))
                 return true;
         }
@@ -20,8 +20,8 @@ public class LoginRegisterMenu extends ProductsMenu implements CommandProcess {
     }
 
     public void login(String userName, String password) {
-        SimpleAccount onlineAccount = SuperMarket.getAccountByUserAndPassword(userName, password);
-        SuperMarket.setOnlineAccount(onlineAccount);
+        SimpleAccount onlineAccount = DataManager.getAccountByUserAndPassword(userName, password);
+        DataManager.setOnlineAccount(onlineAccount);
     }
 
     @Override

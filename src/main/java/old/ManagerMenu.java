@@ -4,7 +4,7 @@ import old.commands.Command;
 import model.Commodity;
 import model.DiscountCode;
 import model.Request;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.SimpleAccount;
 
 import java.util.ArrayList;
@@ -24,23 +24,23 @@ public class ManagerMenu extends AccountMenu implements CommandProcess {
     }
 
     public ArrayList<SimpleAccount> getAllAccounts() {
-        return SuperMarket.getAllAccounts();
+        return DataManager.getAllAccounts();
     }
 
     public ArrayList<Commodity> getAllCommodities() {
-        return SuperMarket.getAllCommodities();
+        return DataManager.getAllCommodities();
     }
 
     public ArrayList<DiscountCode> getAllDiscounts() {
-        return SuperMarket.getAllDiscountCodes();
+        return DataManager.getAllDiscountCodes();
     }
 
     public ArrayList<Request> getAllRequests() {
-        return SuperMarket.getAllRequests();
+        return DataManager.getAllRequests();
     }
 
     public void createNewDiscount(DiscountCode discountCode) {
-        SuperMarket.addToDiscounts(discountCode);
+        DataManager.addToDiscounts(discountCode);
     }
 
     public String commandProcessor(String command) throws Exception {

@@ -1,7 +1,7 @@
 package old.commands;
 
 import model.Request;
-import model.SuperMarket;
+import model.DataManager;
 
 public class Accept extends Command {
     public Accept() {
@@ -22,11 +22,11 @@ public class Accept extends Command {
         String[] splitCommand = command.split(" ");
         if (!isNumeric(splitCommand[1]))
             return "Id is not numeric.";
-        if (!SuperMarket.isThereAnyRequestWithThisId(Integer.parseInt(splitCommand[1])))
+        if (!DataManager.isThereAnyRequestWithThisId(Integer.parseInt(splitCommand[1])))
             return "Id is not valid";
-        Request request = SuperMarket.getRequestWithId(Integer.parseInt(splitCommand[1]));
+        Request request = DataManager.getRequestWithId(Integer.parseInt(splitCommand[1]));
         request.getObj().addObj();
-        SuperMarket.getAllRequests().remove(request);
+        DataManager.getAllRequests().remove(request);
         return "Request accepted";
     }
 }

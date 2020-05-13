@@ -5,7 +5,6 @@ import model.field.Field;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 public class Commodity implements Requestable {
     private int commodityId;
@@ -41,7 +40,7 @@ public class Commodity implements Requestable {
         this.allComments = new ArrayList<Comment>();
         this.averageScore = averageScore;
         this.inventory = amount;
-        SuperMarket.getAllCommodities().add(this);
+        DataManager.getAllCommodities().add(this);
     }
 
     public Commodity(Commodity commodity) {
@@ -108,7 +107,7 @@ public class Commodity implements Requestable {
 
     @Override
     public void addObj() {
-        SuperMarket.addCommodities(this);
+        DataManager.addCommodities(this);
     }
 
     public String getBrand() {

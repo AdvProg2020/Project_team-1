@@ -3,7 +3,7 @@ package old.commands;
 import old.EditDiscountCodeMenu;
 import old.HandleMenu;
 import model.DiscountCode;
-import model.SuperMarket;
+import model.DataManager;
 
 public class EditDiscountCode extends Command{
     public EditDiscountCode() {
@@ -13,7 +13,7 @@ public class EditDiscountCode extends Command{
     @Override
     public String runCommand(String input) throws Exception {
         String[] splitCommand = input.split(" ");
-        DiscountCode discountCode = SuperMarket.getDiscountWithCode(splitCommand[3]);
+        DiscountCode discountCode = DataManager.getDiscountWithCode(splitCommand[3]);
         HandleMenu.setMenu(new EditDiscountCodeMenu(discountCode));
         return "1.Change Code" + "\n" +
                 "2.Change first date" + "\n" +

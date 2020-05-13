@@ -2,7 +2,7 @@ package old;
 
 import old.commands.Command;
 import model.Commodity;
-import model.SuperMarket;
+import model.DataManager;
 import model.filter.Filter;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class ProductsMenu implements CommandProcess {
     public CommandProcess commandProcess;
 
     private static ArrayList<Command> productsMenuCommands = new ArrayList<Command>();
-    private static ArrayList<Commodity> filteredCommodities = (ArrayList<Commodity>) SuperMarket.getAllCommodities().clone();
+    private static ArrayList<Commodity> filteredCommodities = (ArrayList<Commodity>) DataManager.getAllCommodities().clone();
     private static ArrayList<Filter> currentFilters = new ArrayList<Filter>();
     private String currentSort;
 
@@ -45,7 +45,7 @@ public class ProductsMenu implements CommandProcess {
 
     public static void updateFilteredCommodities() {
         filteredCommodities = new ArrayList<Commodity>();
-        for (Commodity commodity : SuperMarket.getAllCommodities()) {
+        for (Commodity commodity : DataManager.getAllCommodities()) {
             if (canCommodityPassFilter(commodity))
                 filteredCommodities.add(commodity);
         }
@@ -71,22 +71,22 @@ public class ProductsMenu implements CommandProcess {
     public void sort(String sort) {
         this.currentSort = sort;
         if (sort.equals("price")) {
-            Collections.sort(SuperMarket.getAllCommodities(), price);
+            Collections.sort(DataManager.getAllCommodities(), price);
             return;
         }
         if (sort.equals("Number of visits")) {
-            Collections.sort(SuperMarket.getAllCommodities(), numberOfVisits);
+            Collections.sort(DataManager.getAllCommodities(), numberOfVisits);
             return;
         }
         if (sort.equals("Average score")) {
-            Collections.sort(SuperMarket.getAllCommodities(), score);
+            Collections.sort(DataManager.getAllCommodities(), score);
             return;
         }
     }
 
     public void disableSort() {
         this.currentSort = "Number of visits";
-        Collections.sort(SuperMarket.getAllCommodities(), numberOfVisits);
+        Collections.sort(DataManager.getAllCommodities(), numberOfVisits);
     }
 
 

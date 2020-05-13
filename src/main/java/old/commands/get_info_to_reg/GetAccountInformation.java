@@ -3,7 +3,7 @@ package old.commands.get_info_to_reg;
 import old.commands.Command;
 import old.GetAccountInfoMenu;
 import old.HandleMenu;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
@@ -26,11 +26,11 @@ public class GetAccountInformation extends Command {
     public String runCommand(String command) {
         try {
             if (role.equals("customer")) {
-                SuperMarket.addAccount(new PersonalAccount(matcher.group("username"),
+                DataManager.addAccount(new PersonalAccount(matcher.group("username"),
                         matcher.group("firstName"), matcher.group("lastName"),
                         matcher.group("email"), matcher.group("phone"), matcher.group("password")));
             } else if (role.equals("admin")) {
-                SuperMarket.addAccount(new ManagerAccount(matcher.group("username"),
+                DataManager.addAccount(new ManagerAccount(matcher.group("username"),
                         matcher.group("firstName"), matcher.group("lastName"),
                         matcher.group("email"), matcher.group("phone"), matcher.group("password")));
             } else {

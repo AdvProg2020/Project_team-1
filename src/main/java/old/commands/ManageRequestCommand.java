@@ -3,7 +3,7 @@ package old.commands;
 import old.HandleMenu;
 import old.ManageRequestsMenu;
 import model.Request;
-import model.SuperMarket;
+import model.DataManager;
 
 public class ManageRequestCommand extends Command {
     public ManageRequestCommand() {
@@ -14,7 +14,7 @@ public class ManageRequestCommand extends Command {
     public String runCommand(String command) throws Exception {
         HandleMenu.setMenu(new ManageRequestsMenu());
         String respond = "";
-        for (Request request : SuperMarket.getAllRequests()) {
+        for (Request request : DataManager.getAllRequests()) {
             respond += "[" + request.toString() +"]";
         }
         return respond;

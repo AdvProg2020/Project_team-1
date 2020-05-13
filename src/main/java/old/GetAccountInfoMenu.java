@@ -3,7 +3,7 @@ package old;
 import old.commands.Command;
 import old.commands.get_info_to_reg.GetAccountInformation;
 import model.Request;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.BusinessAccount;
 import model.account.PersonalAccount;
 
@@ -22,7 +22,7 @@ public class GetAccountInfoMenu extends ProductsMenu implements CommandProcess {
     }
 
     public void sendBusinessAccountRequest(PersonalAccount personalAccount, BusinessAccount businessAccount) {
-        SuperMarket.addRequest(new Request(businessAccount, personalAccount));
+        DataManager.addRequest(new Request(businessAccount, personalAccount));
     }
 
     @Override

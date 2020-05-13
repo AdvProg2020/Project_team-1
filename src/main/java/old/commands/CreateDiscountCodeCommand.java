@@ -1,7 +1,7 @@
 package old.commands;
 
 import model.DiscountCode;
-import model.SuperMarket;
+import model.DataManager;
 import model.account.SimpleAccount;
 
 import java.text.SimpleDateFormat;
@@ -39,7 +39,7 @@ public class CreateDiscountCodeCommand extends Command {
         int maximumNumberOfUse = Integer.parseInt(splitCommand[5]);
         ArrayList<SimpleAccount> allAccount = new ArrayList<SimpleAccount>();
         for (int i = 6; i < splitCommand.length; i++) {
-            SimpleAccount simpleAccount = SuperMarket.getAccountWithUsername(splitCommand[i]);
+            SimpleAccount simpleAccount = DataManager.getAccountWithUsername(splitCommand[i]);
             if (simpleAccount == null)
                 return "user name " + splitCommand[i] + " not found";
             allAccount.add(simpleAccount);
@@ -47,7 +47,7 @@ public class CreateDiscountCodeCommand extends Command {
         String error = checkError(startDate, finishDate, discountPercentage, maximumDiscountPrice, maximumDiscountPrice);
         if (error != null)
             return error;
-        SuperMarket.addToDiscounts(new DiscountCode(code, startDate, finishDate, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, allAccount));
+        DataManager.addToDiscounts(new DiscountCode(code, startDate, finishDate, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, allAccount));
         return "Discount code created";
     }
 }
