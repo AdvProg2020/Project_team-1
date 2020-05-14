@@ -2,12 +2,10 @@ package controller;
 
 import model.DataManager;
 import model.Session;
+import model.account.BusinessAccount;
+import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
-
-import javax.xml.crypto.Data;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class LoginRegisterMenu extends Menu{
 
@@ -23,8 +21,10 @@ public class LoginRegisterMenu extends Menu{
         }
     }
 
-    public void registerManagerAccount() throws Exception{
-
+    public void registerManagerAccount(String username, String firstName, String lastName, String email,
+                                       String phoneNumber, String password) throws Exception{
+        ManagerAccount newAccount = new ManagerAccount(username, firstName, lastName, email, phoneNumber, password);
+        DataManager.addManagerAccount(newAccount);
     }
 
     public void registerPersonalAccount(String username, String firstName, String lastName, String email,
@@ -33,8 +33,13 @@ public class LoginRegisterMenu extends Menu{
         DataManager.addPersonalAccount(newAccount);
     }
 
-    public void registerResellerAccount() throws Exception{
-
+    public void registerResellerAccount(String username, String firstName, String lastName, String email,
+                                        String phoneNumber, String password, String businessName) throws Exception{
+        PersonalAccount newAccount = new PersonalAccount(username, firstName, lastName, email, phoneNumber, password);
+        newAccount.setBusinessAccount(new BusinessAccount(username, firstName, lastName, newAccount, email,
+                phoneNumber, password, businessName));
+        DataManager.addPersonalAccount(newAccount);
+        DataManager.addResellerAccount(newAccount.getBusinessAccount());
     }
 
     public void login(String username, String password) throws Exception{
@@ -45,5 +50,6 @@ public class LoginRegisterMenu extends Menu{
             throw new Exception("Invalid password");
         }
         Session.setSimpleAccount(simpleAccount);
+        goToPreviousMenu();
     }
 }
