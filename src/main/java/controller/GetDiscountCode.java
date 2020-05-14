@@ -4,6 +4,7 @@ import model.DataManager;
 import model.DiscountCode;
 import model.account.SimpleAccount;
 
+import java.io.IOException;
 import java.util.Date;
 
 public class GetDiscountCode extends Menu {
@@ -31,8 +32,27 @@ public class GetDiscountCode extends Menu {
         discountCode.setMaximumNumberOfUses(maximumNumberOfUses);
     }
 
-    public void deleteAccount(SimpleAccount simpleAccount, DiscountCode discountCode) throws Exception {
-        discountCode.deleteAccount(simpleAccount);
+    public void deleteAccount(String userName, DiscountCode discountCode) throws Exception {
+        if (DataManager.isUsernameExist(userName))
+            discountCode.deleteAccount(getAccountWithUserNameFromDatabase(userName));
+        else
+            throw new Exception();
+    }
+
+    public void addAccount(String userName, DiscountCode discountCode) throws Exception {
+        if (DataManager.isUsernameExist(userName))
+            discountCode.addAccount(getAccountWithUserNameFromDatabase(userName));
+        else
+            throw new Exception();
+    }
+
+
+    public void deleteDiscountCode(DiscountCode discountCode) throws Exception {
+        DataManager.deleteDiscountCode(discountCode);
+    }
+
+    public SimpleAccount getAccountWithUserNameFromDatabase(String username) throws IOException {
+        return DataManager.getAccountWithUserName(username);
     }
 
 

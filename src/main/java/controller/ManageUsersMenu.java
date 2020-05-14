@@ -15,8 +15,7 @@ public class ManageUsersMenu extends Menu {
     public SimpleAccount getAccountWithUserNameFromDatabase(String username) throws IOException {
         return DataManager.getAccountWithUserName(username);
     }
-
-    public void deleteUser(String username) throws Exception {
+    public void deleteUser(String username) throws Exception{
         DataManager.deleteAccountWithUserName(username);
     }
 
