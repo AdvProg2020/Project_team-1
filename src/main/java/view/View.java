@@ -1,7 +1,9 @@
 package view;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import controller.*;
 import model.DataManager;
+import model.DiscountCode;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
@@ -56,15 +58,29 @@ public class View {
 
     public View() {
         initializeLoginRegisterMenu();
+        final GetDiscountCode getDiscountCode = new GetDiscountCode();
         final ManagerMenu managerMenu = new ManagerMenu();
         final ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
         final ManageUsersMenu manageUsersMenu = new ManageUsersMenu();
+        getDiscountCode.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("^view discount code (?<code>\\S+)$")){
+                    Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
+                    viewDiscountCode(getDiscountCode, matcher.group("code"));
+                }
+                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")){
+
+                }
+
+            }
+        };
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.matches("view (?<username>\\S+)")) {
                     Matcher matcher = Pattern.compile("^view (?<username>\\S+)$").matcher(command);
-                    SimpleAccount simpleAccount = DataManager.getAccountWithUserName(matcher.group("username"));
+                    SimpleAccount simpleAccount = manageUsersMenu.getAccountWithUserNameFromDatabase(matcher.group("username"));
                     System.out.println(simpleAccount.toString());
                 }
                 if (command.matches("^delete user (?<username> \\S+)")) {
@@ -88,7 +104,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
-                   viewPersonalInfo(viewPersonalInfoMenu);
+                   viewPersonalInfo(viewPersonalInfoMenu,managerMenu);
                 }
                 if (command.matches("^manage users$")) {
                     manageUsers(manageUsersMenu);
@@ -96,14 +112,32 @@ public class View {
                 if (command.matches("^create discount code$")) {
                     createDiscountCode(managerMenu);
                 }
+                if (command.matches("^view discount codes$")){
+                    viewDiscountCodes(managerMenu);
+                }
             }
         };
+    }
+
+    private void viewDiscountCodes(ManagerMenu managerMenu) throws Exception {
+        DiscountCode[] discountCodes = managerMenu.getAllDiscountCodes();
+        for (DiscountCode discountCode : discountCodes) {
+            System.out.println(discountCode.toString() + "\n");
+        }
+    }
+
+    private void viewDiscountCode(GetDiscountCode getDiscountCode,String code){
+        try {
+            System.out.println(getDiscountCode.getDiscountCode(code).toString());
+        } catch (Exception e) {
+            System.out.println("Cant view discount code please try again");
+        }
     }
 
     private void deleteUser(String command,ManageUsersMenu manageUsersMenu) throws Exception {
         Matcher matcher = Pattern.compile("^delete user (?<username> \\S+)").matcher(command);
         try {
-            DataManager.deleteAccountWithUserName(matcher.group("username"));
+            manageUsersMenu.deleteUser(matcher.group("username"));
         }catch (Exception e){
             System.out.println("Invalid input please try again");
         }
@@ -172,8 +206,8 @@ public class View {
         HandleMenu.setMenu(manageUsersMenu);
     }
 
-    private void viewPersonalInfo(ViewPersonalInfoMenu viewPersonalInfoMenu){
-        System.out.println(((ManagerAccount) DataManager.getOnlineAccount()).toString());
+    private void viewPersonalInfo(ViewPersonalInfoMenu viewPersonalInfoMenu, ManagerMenu managerMenu){
+        System.out.println(managerMenu.getOnlineAccount().toString());
         HandleMenu.setMenu(viewPersonalInfoMenu);
     }
 

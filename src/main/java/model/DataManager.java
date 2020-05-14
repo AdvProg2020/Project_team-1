@@ -148,6 +148,14 @@ public class DataManager {
         throw new Exception();
     }
 
+    public static DiscountCode getDiscountCodeWithCode(String code) throws Exception{
+        for (DiscountCode discountCode : getAllDiscountCodes()) {
+            if (discountCode.getCode().equals(code))
+                return discountCode;
+        }
+        throw new Exception();
+    }
+
 
     public static void addResellerAccount(BusinessAccount businessAccount) throws Exception{
         ArrayList<BusinessAccount> allResellersAccounts = new ArrayList<>(Arrays.asList(getAllResellers()));

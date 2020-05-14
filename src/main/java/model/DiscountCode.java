@@ -95,6 +95,14 @@ public class DiscountCode {
         this.accounts = accounts;
     }
 
+    public void deleteAccount(SimpleAccount simpleAccount){
+        accounts.remove(simpleAccount);
+    }
+
+    public void addAccount(SimpleAccount simpleAccount){
+        accounts.add(simpleAccount);
+    }
+
     public void setCode(String code) {
         this.code = code;
     }
