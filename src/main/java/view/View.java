@@ -109,6 +109,12 @@ public class View {
                 }
             }
         };
+        initializeCustomerMenu(viewPersonalInfoMenu, customerMenu);
+
+        initializeCartMenu(cartMenu, commodityMenu);
+    }
+
+    private void initializeCustomerMenu(final ViewPersonalInfoMenu viewPersonalInfoMenu, CustomerMenu customerMenu) {
         customerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
@@ -127,7 +133,9 @@ public class View {
                 }
             }
         };
+    }
 
+    private void initializeCartMenu(final CartMenu cartMenu, final CommodityMenu commodityMenu) {
         cartMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
@@ -152,11 +160,11 @@ public class View {
         getDiscountCode.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.equals("^view discount code (?<code>\\S+)$")){
+                if (command.equals("^view discount code (?<code>\\S+)$")) {
                     Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
                     viewDiscountCode(getDiscountCode, matcher.group("code"));
                 }
-                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")){
+                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")) {
 
                 }
 
@@ -213,7 +221,7 @@ public class View {
         }
     }
 
-    private void viewDiscountCode(GetDiscountCode getDiscountCode,String code){
+    private void viewDiscountCode(GetDiscountCode getDiscountCode, String code) {
         try {
             System.out.println(getDiscountCode.getDiscountCode(code).toString());
         } catch (Exception e) {
