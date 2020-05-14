@@ -2,6 +2,7 @@ package view;
 
 import controller.*;
 import controller.customer.CartMenu;
+import controller.customer.OrderMenu;
 import model.Commodity;
 import model.DataManager;
 import model.DiscountCode;
@@ -10,6 +11,7 @@ import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+import model.log.BuyLog;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -67,6 +69,7 @@ public class View {
         final CustomerMenu customerMenu = new CustomerMenu();
         final CartMenu cartMenu = new CartMenu();
         final CommodityMenu commodityMenu = new CommodityMenu();
+        final OrderMenu orderMenu = new OrderMenu();
         getDiscountCodeInitialize(getDiscountCode);
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
@@ -110,12 +113,26 @@ public class View {
                 }
             }
         };
-        initializeCustomerMenu(viewPersonalInfoMenu, customerMenu, cartMenu);
+        initializeCustomerMenu(viewPersonalInfoMenu, customerMenu, cartMenu, orderMenu);
         initializeCartMenu(cartMenu, commodityMenu);
+        initializeOrderMenu();
+    }
+
+    private void initializeOrderMenu(final OrderMenu orderMenu) {
+        orderMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("show order (?<id>\\S+)")) {
+                    
+                } else if (command.matches("rate (?<id>\\d+) (?<rate>[1-5])")) {
+
+                }
+            }
+        };
     }
 
     private void initializeCustomerMenu(final ViewPersonalInfoMenu viewPersonalInfoMenu, final CustomerMenu customerMenu,
-                                        final CartMenu cartMenu) {
+                                        final CartMenu cartMenu, final OrderMenu orderMenu) {
         customerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
@@ -126,17 +143,15 @@ public class View {
                 } else if (command.equals("purchase")) {
                     purchase(cartMenu);
                 } else if (command.equals("view orders")) {
-
+                    viewOrders(orderMenu, customerMenu);
                 } else if (command.equals("view balance")) {
                     System.out.println("your balance is " + customerMenu.getBalance() + "\n" +
                             "enter your command");
                 } else if (command.equals("view discount codes"))
                     viewMyDiscountCodes(customerMenu);
             }
-        }
+        };
     }
-
-}
 
     private void initializeCartMenu(final CartMenu cartMenu, final CommodityMenu commodityMenu) {
         cartMenu.commandProcess = new CommandProcess() {
@@ -158,6 +173,17 @@ public class View {
                 }
             }
         };
+    }
+
+    private void viewOrders(OrderMenu orderMenu, CustomerMenu customerMenu) {
+        String output = "your orders:";
+        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+        for (BuyLog log : account.getBuyLogs()) {
+            output += "\n" + log.toString();
+        }
+        System.out.println(output + "\nenter your command:");
+        HandleMenu.setMenu(orderMenu);
+        orderMenu.setPreviousMenu(customerMenu);
     }
 
     private void viewMyDiscountCodes(CustomerMenu customerMenu) {

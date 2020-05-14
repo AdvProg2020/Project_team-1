@@ -6,22 +6,26 @@ import model.account.SimpleAccount;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 public class BuyLog extends TransactionLog {
     private double payedMoney;
     private DiscountCode discountByCode;
-    private SimpleAccount seller;
+    private Set<SimpleAccount> sellers;
     private Boolean isCommodityDelivered;
     private String address;
     private String phone;
     private String postalCode;
 
     public BuyLog(Date date, ArrayList<Commodity> commodities, double payedMoney, DiscountCode discountByCode,
-                  SimpleAccount sellerو, String address, String phone, String postalCode) {
+                  String address, String phone, String postalCode) {
         super(date, commodities);
         this.payedMoney = payedMoney;
         this.discountByCode = discountByCode;
-        this.seller = seller;
+        this.sellers = null;
+        for (Commodity commodity : commodities) {
+            sellers.add(commodity.getSeller());
+        }
         logId = generateLogID();
         isCommodityDelivered = false;
         this.phone = phone;
@@ -37,10 +41,6 @@ public class BuyLog extends TransactionLog {
         return discountByCode;
     }
 
-    public SimpleAccount getSeller() {
-        return seller;
-    }
-
     public Boolean getCommodityDelivered() {
         return isCommodityDelivered;
     }
@@ -51,6 +51,10 @@ public class BuyLog extends TransactionLog {
 
     @Override
     protected String generateLogID() {
-        return "BuyLog" + super.generateLogID() + seller.getUsername();
+        String output = "BuyLog" + super.generateLogID();
+        for (SimpleAccount seller : sellers) {
+            output += seller.getUsername();
+        }
+        return output;
     }
 }
