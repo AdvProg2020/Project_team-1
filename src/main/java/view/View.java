@@ -1,19 +1,18 @@
 package view;
 
 import controller.*;
+import controller.customer.CartMenu;
 import controller.reseller.ManageResellerOffsMenu;
 import controller.reseller.ManageResellerProductsMenu;
 import controller.reseller.ResellerMenu;
-import model.*;
-import controller.customer.CartMenu;
 import model.Commodity;
 import model.DataManager;
 import model.DiscountCode;
+import model.Request;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
-import old.business_menu.ManageProductMenu;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -31,36 +30,32 @@ public class View {
     public static final ManageResellerProductsMenu manageResellerProductsMenu = new ManageResellerProductsMenu();
     public static final ManageResellerOffsMenu manageResellerOffMenu = new ManageResellerOffsMenu();
     private final Scanner scanner = new Scanner(System.in);
+    public static final GetDiscountCode getDiscountCode = new GetDiscountCode();
+    public static final ManagerMenu managerMenu = new ManagerMenu();
+    public static final ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
+    public static final ManageUsersMenu manageUsersMenu = new ManageUsersMenu();
+    public static final CustomerMenu customerMenu = new CustomerMenu();
+    public static final CartMenu cartMenu = new CartMenu();
+    public static final CommodityMenu commodityMenu = new CommodityMenu();
+    public static final ManageRequestMenu manageRequestMenu = new ManageRequestMenu();
 
     public View() {
         initializeLoginRegisterMenu();
-        final GetDiscountCode getDiscountCode = new GetDiscountCode();
-        final ManagerMenu managerMenu = new ManagerMenu();
-        final ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
-        final ManageUsersMenu manageUsersMenu = new ManageUsersMenu();
-        final CustomerMenu customerMenu = new CustomerMenu();
-        final CartMenu cartMenu = new CartMenu();
-        final CommodityMenu commodityMenu = new CommodityMenu();
-        ManageRequestMenu manageRequestMenu = new ManageRequestMenu();
-        initializeManageRequestMenuCommandProcessor(manageRequestMenu);
-        initializeGetDiscountCodeMenu(getDiscountCode);
-        initializeManageUsers(manageUsersMenu);
-        initializeViewPersonalMenu(viewPersonalInfoMenu);
-        initializeManagerMenu(managerMenu, viewPersonalInfoMenu, manageUsersMenu);
+        initializeManageRequestMenuCommandProcessor();
+        initializeGetDiscountCodeMenu();
+        initializeManageUsers();
+        initializeViewPersonalMenu();
+        initializeManagerMenu();
         //initializeCustomerMenu(viewPersonalInfoMenu, customerMenu, cartMenu);
-        initializeCartMenu(cartMenu, commodityMenu);
+        initializeCartMenu();
     }
 
-    private void viewRequestDetails(){
-
-    }
-
-    private void initializeManagerMenu(final ManagerMenu managerMenu, final ViewPersonalInfoMenu viewPersonalInfoMenu, final ManageUsersMenu manageUsersMenu) {
+    private void initializeManagerMenu() {
         managerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo(viewPersonalInfoMenu,managerMenu);
+                    viewPersonalInfo(viewPersonalInfoMenu, managerMenu);
                 }
                 if (command.matches("^manage users$")) {
                     manageUsers(manageUsersMenu);
@@ -68,31 +63,68 @@ public class View {
                 if (command.matches("^create discount code$")) {
                     createDiscountCode(managerMenu);
                 }
-                if (command.matches("^view discount codes$")){
+                if (command.matches("^view discount codes$")) {
                     viewDiscountCodes(managerMenu);
                 }
-                if (command.matches("^manage requests$")){
+                if (command.matches("^manage requests$")) {
                     manageRequests(managerMenu);
                 }
             }
         };
     }
 
-    private void initializeManageRequestMenuCommandProcessor(ManageRequestMenu manageRequestMenu) {
+    private void initializeManageRequestMenuCommandProcessor() {
         manageRequestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-
+                if (command.matches("details (?<requestId> \\d+>)")) {
+                    Matcher matcher = Pattern.compile("details (?<requestId> \\d+>)").matcher(command);
+                    viewRequestDetails(Integer.parseInt(matcher.group("requestId")));
+                }
+                if (command.matches("accept (?<requestId> \\d+>)")) {
+                    Matcher matcher = Pattern.compile("accept (?<requestId> \\d+>)").matcher(command);
+                    acceptRequest(Integer.parseInt(matcher.group("requestId")));
+                }
+                if (command.matches("decline (?<requestId> \\d+>)")) {
+                    Matcher matcher = Pattern.compile("decline (?<requestId> \\d+>)").matcher(command);
+                    declineRequest(Integer.parseInt(matcher.group("requestId")));
+                }
             }
         };
     }
 
-    private void initializeViewPersonalMenu(final ViewPersonalInfoMenu viewPersonalInfoMenu) {
+    private void acceptRequest(int id) {
+        try {
+            manageRequestMenu.accept(id);
+            System.out.println("Request accepted");
+        } catch (Exception e) {
+            System.out.println("invalid id");
+        }
+    }
+
+    private void declineRequest(int id) {
+        try {
+            manageRequestMenu.decline(id);
+            System.out.println("Request declined");
+        } catch (Exception e) {
+            System.out.println("invalid id");
+        }
+    }
+
+    private void viewRequestDetails(int id) {
+        try {
+            System.out.println(manageRequestMenu.getRequestById(id).getSimpleAccount().toString());
+        } catch (Exception e) {
+            System.out.println("invalid id");
+        }
+    }
+
+    private void initializeViewPersonalMenu() {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
-                    editManagerAccountFields(viewPersonalInfoMenu,command);
+                    editManagerAccountFields(viewPersonalInfoMenu, command);
                 }
             }
         };
@@ -100,36 +132,36 @@ public class View {
 
     private void manageRequests(ManagerMenu managerMenu) throws IOException {
         String output = "";
-        Request[] allRequests =  managerMenu.getAllRequests();
+        Request[] allRequests = managerMenu.getAllRequests();
         for (Request request : allRequests) {
-            output += "["+request.getSimpleAccount().getUsername()+"]";
+            output += "[" + request.getSimpleAccount().getUsername() + "]";
         }
         System.out.println(output);
     }
 
-    private void initializeGetDiscountCodeMenu(final GetDiscountCode getDiscountCode) {
+    private void initializeGetDiscountCodeMenu() {
         getDiscountCode.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.equals("^view discount code (?<code>\\S+)$")){
+                if (command.equals("^view discount code (?<code>\\S+)$")) {
                     Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
                     viewDiscountCode(getDiscountCode, matcher.group("code"));
                 }
-                if (command.equals("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField> \\S+)$")){
+                if (command.equals("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField> \\S+)$")) {
                     Matcher matcher = Pattern.compile("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField> \\S+)$").matcher(command);
                     DiscountCode discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
-                    editDiscountCode(discountCode,getDiscountCode,command);
+                    editDiscountCode(discountCode, getDiscountCode, command);
                 }
-                if (command.equals("remove discount code (?<code>\\S+)")){
+                if (command.equals("remove discount code (?<code>\\S+)")) {
                     Matcher matcher = Pattern.compile("remove discount code (?<code>\\S+)").matcher(command);
                     DiscountCode discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
-                    deleteDiscountCode(discountCode,getDiscountCode);
+                    deleteDiscountCode(discountCode, getDiscountCode);
                 }
             }
         };
     }
 
-    private void initializeManageUsers(final ManageUsersMenu manageUsersMenu) {
+    private void initializeManageUsers() {
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
@@ -139,7 +171,7 @@ public class View {
                     System.out.println(simpleAccount.toString());
                 }
                 if (command.matches("^delete user (?<username> \\S+)")) {
-                    deleteUser(command,manageUsersMenu);
+                    deleteUser(command, manageUsersMenu);
                 }
                 if (command.matches("^create manager profile$")) {
                     createManagerProfile(manageUsersMenu);
@@ -148,7 +180,7 @@ public class View {
         };
     }
 
-    private void deleteDiscountCode(DiscountCode discountCode,GetDiscountCode getDiscountCode){
+    private void deleteDiscountCode(DiscountCode discountCode, GetDiscountCode getDiscountCode) {
         try {
             getDiscountCode.deleteDiscountCode(discountCode);
             System.out.println("discount code successfully deleted");
@@ -157,21 +189,21 @@ public class View {
         }
     }
 
-    private void editDiscountCode(DiscountCode discountCode,GetDiscountCode getDiscountCode,String command) throws Exception {
+    private void editDiscountCode(DiscountCode discountCode, GetDiscountCode getDiscountCode, String command) throws Exception {
         Matcher matcher = Pattern.compile("^edit (?<code>\\S+) (?<field>\\S+ ?\\S+ ?\\S+ ?\\S+) (?<newfield> \\S+)$").matcher(command);
         if (matcher.group("field").equals("code")) {
-            getDiscountCode.changeCode(matcher.group("new field"),discountCode);
+            getDiscountCode.changeCode(matcher.group("new field"), discountCode);
         }
         if (matcher.group("field").equals("maximum discount price")) {
             try {
-                getDiscountCode.changeMaximumDiscountPrice(Integer.parseInt(matcher.group("new field")),discountCode);
+                getDiscountCode.changeMaximumDiscountPrice(Integer.parseInt(matcher.group("new field")), discountCode);
             } catch (Exception e) {
                 System.out.println("invalid maximum discount price");
             }
         }
         if (matcher.group("field").equals("maximum number of uses")) {
             try {
-                getDiscountCode.changeMaximumNumberOfUses(Integer.parseInt(matcher.group("new field")),discountCode);
+                getDiscountCode.changeMaximumNumberOfUses(Integer.parseInt(matcher.group("new field")), discountCode);
             } catch (Exception e) {
                 System.out.println("invalid maximum number of uses");
             }
@@ -185,18 +217,18 @@ public class View {
         if (matcher.group("field").equals("add account")) {
             String userName = matcher.group("new field");
             try {
-                getDiscountCode.addAccount(userName,discountCode);
+                getDiscountCode.addAccount(userName, discountCode);
                 System.out.println("Account added successfully");
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Invalid user name");
             }
         }
         if (matcher.group("field").equals("delete account")) {
             String userName = matcher.group("new field");
             try {
-                getDiscountCode.deleteAccount(userName,discountCode);
+                getDiscountCode.deleteAccount(userName, discountCode);
                 System.out.println("Account deleted successfully");
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Invalid user name");
             }
         }
@@ -211,7 +243,7 @@ public class View {
             System.out.println("invalid date format");
             return true;
         }
-        getDiscountCode.changeStartDate(startDate,discountCode);
+        getDiscountCode.changeStartDate(startDate, discountCode);
         return false;
     }
 
@@ -224,11 +256,11 @@ public class View {
             System.out.println("invalid date format");
             return;
         }
-        getDiscountCode.changeFinishDate(finishDate,discountCode);
+        getDiscountCode.changeFinishDate(finishDate, discountCode);
     }
 
 
-    private void editManagerAccountFields(ViewPersonalInfoMenu viewPersonalInfoMenu , String command) throws Exception {
+    private void editManagerAccountFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) throws Exception {
         Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$").matcher(command);
         if (matcher.group("field").equals("first name")) {
             viewPersonalInfoMenu.editFirstName(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
@@ -248,8 +280,7 @@ public class View {
     }
 
 
-
-    private void viewPersonalInfo(ViewPersonalInfoMenu viewPersonalInfoMenu, ManagerMenu managerMenu){
+    private void viewPersonalInfo(ViewPersonalInfoMenu viewPersonalInfoMenu, ManagerMenu managerMenu) {
         System.out.println(managerMenu.getOnlineAccount().toString());
         HandleMenu.setMenu(viewPersonalInfoMenu);
     }
@@ -276,7 +307,7 @@ public class View {
         };
     }
 
-    private void initializeCartMenu(final CartMenu cartMenu, final CommodityMenu commodityMenu) {
+    private void initializeCartMenu() {
         cartMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
@@ -297,21 +328,6 @@ public class View {
         };
     }
 
-    private void getDiscountCodeInitialize(final GetDiscountCode getDiscountCode) {
-        getDiscountCode.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.equals("^view discount code (?<code>\\S+)$")) {
-                    Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
-                    viewDiscountCode(getDiscountCode, matcher.group("code"));
-                }
-                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")) {
-
-                }
-
-            }
-        };
-    }
 
     private void decreaseCommodityInCart(String command, CartMenu cartMenu) {
         Matcher matcher = Pattern.compile("decrease (?<id>\\d+)").matcher(command);
@@ -399,25 +415,6 @@ public class View {
         String phoneNumber = scanner.nextLine();
         ManagerAccount managerAccount = new ManagerAccount(userName, firstName, lastName, email, phoneNumber, password);
         manageUsersMenu.createNewManager(managerAccount);
-    }
-
-    private void editFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) throws Exception {
-        Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$").matcher(command);
-        if (matcher.group("field").equals("first name")) {
-            viewPersonalInfoMenu.editFirstName(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
-        }
-        if (matcher.group("field").equals("last name")) {
-            viewPersonalInfoMenu.editLastName(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
-        }
-        if (matcher.group("field").equals("email")) {
-            viewPersonalInfoMenu.editEmail(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
-        }
-        if (matcher.group("field").equals("password")) {
-            viewPersonalInfoMenu.editPassword(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
-        }
-        if (matcher.group("field").equals("phone number")) {
-            viewPersonalInfoMenu.editPhoneNumber(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
-        }
     }
 
     private void manageUsers(ManageUsersMenu manageUsersMenu) throws IOException {

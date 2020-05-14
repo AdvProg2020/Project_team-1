@@ -59,6 +59,13 @@ public class DataManager {
         }
     }
 
+    public static void deleteRequest(Request request) throws IOException {
+        ArrayList<Request> allRequests = new ArrayList<>(Arrays.asList(getAllRequests()));
+        allRequests.remove(request);
+        Gson gson = new Gson();
+        gson.toJson(allRequests, new FileWriter(allRequestsJson));
+    }
+
     public static Request getRequest(int id) throws Exception {
         for (Request request : getAllRequests()) {
             if (request.getId() == id ){
@@ -66,6 +73,7 @@ public class DataManager {
             }
         }
         Exception e  = new Exception("Request doesn't exist");
+        throw e;
     }
 
     public static Request[] getAllRequests() throws IOException{
@@ -217,12 +225,6 @@ public class DataManager {
         return gson.fromJson(jsonReader, DiscountCode.class);
     }
 
-    public static void addDiscountCode(DiscountCode discountCode) throws Exception {
-        ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>(Arrays.asList(getAllDiscountCodes()));
-        allDiscountCodes.add(discountCode);
-        Gson gson = new Gson();
-        gson.toJson(allDiscountCodes, new FileWriter(allDiscountCodeJson));
-    }
 
     public static void addPersonalAccount(PersonalAccount personalAccount) throws Exception {
         ArrayList<PersonalAccount> allPersonalAccounts = new ArrayList<>(Arrays.asList(getAllPersonalAccounts()));
