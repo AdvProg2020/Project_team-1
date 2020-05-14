@@ -128,19 +128,15 @@ public class View {
                 } else if (command.equals("view orders")) {
 
                 } else if (command.equals("view balance")) {
-
-                } else if (command.equals("view discount codes")) {
-
-                }
+                    System.out.println("your balance is " + customerMenu.getBalance() + "\n" +
+                            "enter your command");
+                } else if (command.equals("view discount codes"))
+                    viewMyDiscountCodes(customerMenu);
             }
-        };
+        }
     }
 
-    private void goToCartMenu(CartMenu cartMenu, CustomerMenu customerMenu) {
-        System.out.println("enter your command");
-        cartMenu.setPreviousMenu(customerMenu);
-        HandleMenu.setMenu(cartMenu);
-    }
+}
 
     private void initializeCartMenu(final CartMenu cartMenu, final CommodityMenu commodityMenu) {
         cartMenu.commandProcess = new CommandProcess() {
@@ -155,12 +151,27 @@ public class View {
                 } else if (command.matches("decrease (?<id>\\d+)")) {
                     decreaseCommodityInCart(command, cartMenu);
                 } else if (command.equals("show total price")) {
-                    System.out.println("total price is " + cartMenu.calculateTotalPrice());
+                    System.out.println("total price is " + cartMenu.calculateTotalPrice() + "\n" +
+                            "enter next command");
                 } else if (command.equals("purchase")) {
                     purchase(cartMenu);
                 }
             }
         };
+    }
+
+    private void viewMyDiscountCodes(CustomerMenu customerMenu) {
+        String output = "your discount codes:";
+        for (DiscountCode discount : customerMenu.getMyDiscounts()) {
+            output += "\n" + discount.toString();
+        }
+        System.out.println(output);
+    }
+
+    private void goToCartMenu(CartMenu cartMenu, CustomerMenu customerMenu) {
+        System.out.println("enter your command");
+        cartMenu.setPreviousMenu(customerMenu);
+        HandleMenu.setMenu(cartMenu);
     }
 
     private void purchase(CartMenu cartMenu) {

@@ -47,7 +47,7 @@ public class CartMenu extends Menu {
         throw new Exception("successfully added");
     }
 
-    public DiscountCode checkDiscountCode(String code) {
+    public DiscountCode checkDiscountCode(String code) throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         if (!code.equals("")) {
             DiscountCode discountCode = DataManager.getDiscountCodeWithCode(code);
