@@ -15,7 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -167,21 +166,9 @@ public class View {
 
     private void decreaseCommodityInCart(String command, CartMenu cartMenu) {
         Matcher matcher = Pattern.compile("decrease (?<id>\\d+)").matcher(command);
+        int id = Integer.parseInt(matcher.group("id"));
         try {
-            int id = Integer.parseInt(matcher.group("id"));
-            Commodity commodity = DataManager.getCommodityById(id);
-            PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
-            HashMap<Commodity, Integer> cart = personalAccount.getCart();
-            if (cart.containsKey(commodity)) {
-                if (cart.get(commodity) - 1 == 0) {
-                    cart.remove(commodity);
-                    System.out.println("successfully removed");
-                } else {
-                    cart.put(commodity, cart.get(commodity) + 1);
-                    System.out.println("successfully decreased");
-                }
-            } else
-                System.out.println("this commodity isn't in your cart");
+            cartMenu.decrease(id);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -189,18 +176,9 @@ public class View {
 
     private void increaseCommodityInCart(String command, CartMenu cartMenu) {
         Matcher matcher = Pattern.compile("increase (?<id>\\d+)").matcher(command);
+        int id = Integer.parseInt(matcher.group("id"));
         try {
-            int id = Integer.parseInt(matcher.group("id"));
-            Commodity commodity = DataManager.getCommodityById(id);
-            PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
-            HashMap<Commodity, Integer> cart = personalAccount.getCart();
-            if (cart.containsKey(commodity)) {
-                cart.put(commodity, cart.get(commodity) + 1);
-                System.out.println("successfully increased");
-            } else {
-                cart.put(commodity, 1);
-                System.out.println("successfully added");
-            }
+            cartMenu.increase(id);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

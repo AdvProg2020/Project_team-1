@@ -17,4 +17,31 @@ public class CartMenu extends Menu {
         }
         return price;
     }
+
+    public void decrease(int id) throws Exception {
+        Commodity commodity = DataManager.getCommodityById(id);
+        PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
+        HashMap<Commodity, Integer> cart = personalAccount.getCart();
+        if (cart.containsKey(commodity)) {
+            if (cart.get(commodity) - 1 == 0) {
+                cart.remove(commodity);
+                throw new Exception("successfully removed");
+            }
+            cart.put(commodity, cart.get(commodity) - 1);
+            throw new Exception("successfully decreased");
+        }
+        throw new Exception("this commodity isn't in your cart");
+    }
+
+    public void increase(int id) throws Exception {
+        Commodity commodity = DataManager.getCommodityById(id);
+        PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
+        HashMap<Commodity, Integer> cart = personalAccount.getCart();
+        if (cart.containsKey(commodity)) {
+            cart.put(commodity, cart.get(commodity) + 1);
+            throw new Exception("successfully increased");
+        }
+        cart.put(commodity, 1);
+        throw new Exception("successfully added");
+    }
 }
