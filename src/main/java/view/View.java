@@ -54,7 +54,7 @@ public class View {
 //
 //    }
     private final LoginRegisterMenu loginRegisterMenu = new LoginRegisterMenu();
-    Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     public View() {
         initializeLoginRegisterMenu();
@@ -62,19 +62,7 @@ public class View {
         final ManagerMenu managerMenu = new ManagerMenu();
         final ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
         final ManageUsersMenu manageUsersMenu = new ManageUsersMenu();
-        getDiscountCode.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.equals("^view discount code (?<code>\\S+)$")){
-                    Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
-                    viewDiscountCode(getDiscountCode, matcher.group("code"));
-                }
-                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")){
-
-                }
-
-            }
-        };
+        getDiscountCodeInitialize(getDiscountCode);
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
@@ -115,6 +103,22 @@ public class View {
                 if (command.matches("^view discount codes$")){
                     viewDiscountCodes(managerMenu);
                 }
+            }
+        };
+    }
+
+    private void getDiscountCodeInitialize(final GetDiscountCode getDiscountCode) {
+        getDiscountCode.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("^view discount code (?<code>\\S+)$")){
+                    Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
+                    viewDiscountCode(getDiscountCode, matcher.group("code"));
+                }
+                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")){
+
+                }
+
             }
         };
     }
@@ -282,16 +286,15 @@ public class View {
         System.out.println("Discount code successfully added");
     }
 
-
     private void initializeLoginRegisterMenu() {
         loginRegisterMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
-                    if (command.matches("create account (?<type>customer|seller|admin) (?<username>\\S+)")) {
+                    if (command.matches("create account (personal|reseller|manager) (\\S+)")) {
 
-                    } else if (command.matches("login (?<username>\\S+) (?<password>\\S+)")) {
-
+                    } else if (command.matches("^login \\S+$")) {
+                        loginCommand(command);
                     } else if (command.equalsIgnoreCase("back")) {
                         loginRegisterMenu.goToPreviousMenu();
                     } else {
@@ -302,6 +305,63 @@ public class View {
                 }
             }
         };
+    }
+
+    private void loginCommand(String command) throws Exception {
+        Matcher matcher = Pattern.compile("^login (?<username>\\S+)$").matcher(command);
+        String username = matcher.group("username");
+        System.out.println("password for " + username + ":");
+        String password = scanner.nextLine();
+        loginRegisterMenu.login(username, password);
+        System.out.println("you successfully loged in as " + username);
+    }
+
+    private void registerCommand(String command) throws Exception {
+
+        Pattern pattern = Pattern.compile("create account (?<type>personal|reseller|manager) (?<username>\\S+)");
+        Matcher matcher = pattern.matcher(command);
+        String accountType = matcher.group("type");
+        String username = matcher.group("username");
+
+        loginRegisterMenu.checkUserNameAvailability(username);
+
+        if (accountType.equalsIgnoreCase("manager")) {
+            loginRegisterMenu.isThereManagerAccount();
+        }
+
+        System.out.println("enter your first name:");
+        String firstName = scanner.nextLine();
+
+        System.out.println("enter your last name:");
+        String lastName = scanner.nextLine();
+
+        System.out.println("enter your email:");
+        String email = scanner.nextLine();
+
+        System.out.println("enter your phone number:");
+        String phoneNumber = scanner.nextLine();
+
+        System.out.println("enter password:");
+        String password = scanner.nextLine();
+
+        switch (accountType) {
+            case "personal":
+
+                loginRegisterMenu.registerPersonalAccount();
+                break;
+
+            case "reseller":
+                loginRegisterMenu.registerResellerAccount();
+                break;
+
+            case "manager":
+                loginRegisterMenu.registerManagerAccount();
+                break;
+
+            default:
+                System.out.println("Invalid account type. Available account types are personal/reseller/manager.");
+        }
+        System.out.println("You registered successfully.");
     }
 
 
