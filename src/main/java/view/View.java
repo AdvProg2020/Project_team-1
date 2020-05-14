@@ -1,6 +1,7 @@
 package view;
 
 import controller.*;
+import model.*;
 import controller.customer.CartMenu;
 import model.Commodity;
 import model.DataManager;
@@ -66,37 +67,26 @@ public class View {
         final CustomerMenu customerMenu = new CustomerMenu();
         final CartMenu cartMenu = new CartMenu();
         final CommodityMenu commodityMenu = new CommodityMenu();
-        getDiscountCodeInitialize(getDiscountCode);
-        manageUsersMenu.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.matches("view (?<username>\\S+)")) {
-                    Matcher matcher = Pattern.compile("^view (?<username>\\S+)$").matcher(command);
-                    SimpleAccount simpleAccount = manageUsersMenu.getAccountWithUserNameFromDatabase(matcher.group("username"));
-                    System.out.println(simpleAccount.toString());
-                }
-                if (command.matches("^delete user (?<username> \\S+)")) {
-                    deleteUser(command, manageUsersMenu);
-                }
-                if (command.matches("^create manager profile$")) {
-                    createManagerProfile(manageUsersMenu);
-                }
-            }
-        };
-        viewPersonalInfoMenu.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
-                    editFields(viewPersonalInfoMenu, command);
-                }
-            }
-        };
+        ManageRequestMenu manageRequestMenu = new ManageRequestMenu();
+        initializeManageRequestMenuCommandProcessor(manageRequestMenu);
+        initializeGetDiscountCodeMenu(getDiscountCode);
+        initializeManageUsers(manageUsersMenu);
+        initializeViewPersonalMenu(viewPersonalInfoMenu);
+        initializeManagerMenu(managerMenu, viewPersonalInfoMenu, manageUsersMenu);
+        initializeCustomerMenu(viewPersonalInfoMenu, customerMenu, cartMenu);
+        initializeCartMenu(cartMenu, commodityMenu);
+    }
 
+    private void viewRequestDetails(){
+
+    }
+
+    private void initializeManagerMenu(final ManagerMenu managerMenu, final ViewPersonalInfoMenu viewPersonalInfoMenu, final ManageUsersMenu manageUsersMenu) {
         managerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo(viewPersonalInfoMenu);
+                    viewPersonalInfo(viewPersonalInfoMenu,managerMenu);
                 }
                 if (command.matches("^manage users$")) {
                     manageUsers(manageUsersMenu);
@@ -104,15 +94,34 @@ public class View {
                 if (command.matches("^create discount code$")) {
                     createDiscountCode(managerMenu);
                 }
-                if (command.matches("^view discount codes$")) {
+                if (command.matches("^view discount codes$")){
                     viewDiscountCodes(managerMenu);
+                }
+                if (command.matches("^manage requests$")){
+                    manageRequests(managerMenu);
                 }
             }
         };
     }
 
-    private void viewRequestDetails(){
+    private void initializeManageRequestMenuCommandProcessor(ManageRequestMenu manageRequestMenu) {
+        manageRequestMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
 
+            }
+        };
+    }
+
+    private void initializeViewPersonalMenu(final ViewPersonalInfoMenu viewPersonalInfoMenu) {
+        viewPersonalInfoMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
+                    editManagerAccountFields(viewPersonalInfoMenu,command);
+                }
+            }
+        };
     }
 
     private void manageRequests(ManagerMenu managerMenu) throws IOException {
@@ -244,51 +253,6 @@ public class View {
         getDiscountCode.changeFinishDate(finishDate,discountCode);
     }
 
-    private void viewDiscountCodes(ManagerMenu managerMenu) throws Exception {
-        DiscountCode[] discountCodes = managerMenu.getAllDiscountCodes();
-        for (DiscountCode discountCode : discountCodes) {
-            System.out.println(discountCode.toString() + "\n");
-        }
-    }
-
-    private void viewDiscountCode(GetDiscountCode getDiscountCode,String code){
-        try {
-            System.out.println(getDiscountCode.getDiscountCode(code).toString());
-        } catch (Exception e) {
-            System.out.println("Cant view discount code please try again");
-        }
-    }
-
-    private void deleteUser(String command,ManageUsersMenu manageUsersMenu) throws Exception {
-        Matcher matcher = Pattern.compile("^delete user (?<username> \\S+)").matcher(command);
-        try {
-            manageUsersMenu.deleteUser(matcher.group("username"));
-        }catch (Exception e){
-            System.out.println("Invalid input please try again");
-        }
-        System.out.println("user deleted");
-    }
-
-    private void createManagerProfile(ManageUsersMenu manageUsersMenu) throws Exception {
-        System.out.println("Please enter your user name");
-        String userName = scanner.nextLine();
-        if (DataManager.isUsernameExist(userName)) {
-            System.out.println("invalid username");
-            return;
-        }
-        System.out.println("Please enter your password");
-        String password = scanner.nextLine();
-        System.out.println("Please enter you first name");
-        String firstName = scanner.nextLine();
-        System.out.println("Please enter you last name");
-        String lastName = scanner.nextLine();
-        System.out.println("Please enter you email");
-        String email = scanner.nextLine();
-        System.out.println("Please enter you phone number");
-        String phoneNumber = scanner.nextLine();
-        ManagerAccount managerAccount = new ManagerAccount(userName, firstName, lastName, email, phoneNumber, password);
-        manageUsersMenu.createNewManager(managerAccount);
-    }
 
     private void editManagerAccountFields(ViewPersonalInfoMenu viewPersonalInfoMenu , String command) throws Exception {
         Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$").matcher(command);
@@ -309,129 +273,13 @@ public class View {
         }
     }
 
-    private void manageUsers(ManageUsersMenu manageUsersMenu) throws IOException {
-        ManagerMenu menu = ((ManagerMenu) HandleMenu.getMenu());
-        ManagerAccount[] managerAccounts = DataManager.getAllManagers();
-        PersonalAccount[] personalAccounts = DataManager.getAllPersonalAccounts();
-        BusinessAccount[] businessAccounts = DataManager.getAllResellers();
-        HandleMenu.setMenu(new ManageUsersMenu());
-        String output = "Managers";
-        for (int i = 0; i < managerAccounts.length; i++) {
-            output += "\n" + managerAccounts[i].getUsername();
-        }
-        output += "\n" + "Business accounts";
-        for (int i = 0; i < businessAccounts.length; i++) {
-            output += "\n" + businessAccounts[i].getUsername();
-        }
-        output += "\n" + "Personal accounts";
-        for (int i = 0; i < personalAccounts.length; i++) {
-            output += "\n" + personalAccounts[i].getUsername();
-        }
-        System.out.println(output);
-        HandleMenu.setMenu(manageUsersMenu);
-    }
+
 
     private void viewPersonalInfo(ViewPersonalInfoMenu viewPersonalInfoMenu, ManagerMenu managerMenu){
         System.out.println(managerMenu.getOnlineAccount().toString());
         HandleMenu.setMenu(viewPersonalInfoMenu);
     }
 
-    private void createDiscountCode(ManagerMenu managerMenu) throws IOException {
-        System.out.println("Enter code");
-        String code = scanner.nextLine();
-        System.out.println("Enter start date in dd-mm-yyyy format");
-        String stringStart = scanner.nextLine();
-        SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
-        Date start = null;
-        try {
-            start = format.parse(stringStart);
-        } catch (ParseException e) {
-            System.out.println("invalid date format");
-            return;
-        }
-        System.out.println("Enter finish date in dd-mm-yyyy format");
-        String stringFinish = scanner.nextLine();
-        Date finish = null;
-        try {
-            finish = format.parse(stringFinish);
-        } catch (ParseException e) {
-            System.out.println("invalid date format");
-            return;
-        }
-        System.out.println("Enter discount percentage");
-        int discountPercentage;
-        try {
-            discountPercentage = scanner.nextInt();
-        } catch (Exception e) {
-            System.out.println("invalid discount percentage");
-            return;
-        }
-        System.out.println("Enter maximum discount price");
-        int maximumDiscountPrice;
-        try {
-            maximumDiscountPrice = scanner.nextInt();
-        } catch (Exception e) {
-            System.out.println("invalid maximum discount price");
-            return;
-        }
-        System.out.println("Enter maximum number of use");
-        int maximumNumberOfUse;
-        try {
-            maximumNumberOfUse = scanner.nextInt();
-        } catch (Exception e) {
-            System.out.println("invalid maximum number of user");
-            return;
-        }
-        if (managerMenu.checkCreateDiscountCodeErrors(start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse)) {
-            System.out.println("invalid input");
-            return;
-        }
-        System.out.println("Enter accounts");
-        String accounts = scanner.nextLine();
-        String[] splitCommand = accounts.split(" ");
-        ArrayList<SimpleAccount> allAccount = new ArrayList<SimpleAccount>();
-        for (int i = 0; i < splitCommand.length; i++) {
-            SimpleAccount simpleAccount = DataManager.getAccountWithUserName(splitCommand[i]);
-            if (simpleAccount == null) {
-                System.out.println("user name " + splitCommand[i] + " not found");
-                i--;
-            }
-            allAccount.add(simpleAccount);
-        }
-        try {
-            managerMenu.addDiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, allAccount);
-        } catch (Exception e) {
-            System.out.println("Invalid entry please try again");
-            return;
-        }
-        System.out.println("Discount code successfully added");
-    }
-
-
-    private void initializeLoginRegisterMenu() {
-        loginRegisterMenu.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                try {
-                    if (command.matches("create account (?<type>customer|seller|admin) (?<username>\\S+)")) {
-
-                    } else if (command.matches("login (?<username>\\S+) (?<password>\\S+)")) {
-
-                    } else if (command.equalsIgnoreCase("back")) {
-                        loginRegisterMenu.goToPreviousMenu();
-                    } else {
-                        System.out.println("Command not found!");
-                    }
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-        };
-    }
-
-        initializeCustomerMenu(viewPersonalInfoMenu, customerMenu, cartMenu);
-        initializeCartMenu(cartMenu, commodityMenu);
-    }
 
     private void initializeCustomerMenu(final ViewPersonalInfoMenu viewPersonalInfoMenu, CustomerMenu customerMenu) {
         customerMenu.commandProcess = new CommandProcess() {
