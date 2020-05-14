@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import controller.*;
 import controller.customer.CartMenu;
 import model.Commodity;
@@ -98,7 +97,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo(viewPersonalInfoMenu,managerMenu);
+                    viewPersonalInfo(viewPersonalInfoMenu);
                 }
                 if (command.matches("^manage users$")) {
                     manageUsers(manageUsersMenu);
@@ -106,28 +105,11 @@ public class View {
                 if (command.matches("^create discount code$")) {
                     createDiscountCode(managerMenu);
                 }
-                if (command.matches("^view discount codes$")){
+                if (command.matches("^view discount codes$")) {
                     viewDiscountCodes(managerMenu);
                 }
             }
         };
-    }
-
-    private void getDiscountCodeInitialize(final GetDiscountCode getDiscountCode) {
-        getDiscountCode.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.equals("^view discount code (?<code>\\S+)$")){
-                    Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
-                    viewDiscountCode(getDiscountCode, matcher.group("code"));
-                }
-                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")){
-
-                }
-
-            }
-        };
-
         customerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
@@ -163,6 +145,22 @@ public class View {
                 } else if (command.equals("purchase")) {
                     //to do
                 }
+            }
+        };
+    }
+
+    private void getDiscountCodeInitialize(final GetDiscountCode getDiscountCode) {
+        getDiscountCode.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("^view discount code (?<code>\\S+)$")){
+                    Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
+                    viewDiscountCode(getDiscountCode, matcher.group("code"));
+                }
+                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")){
+
+                }
+
             }
         };
     }
