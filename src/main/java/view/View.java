@@ -2,17 +2,16 @@ package view;
 
 import controller.*;
 import controller.customer.CartMenu;
+import controller.customer.OrderMenu;
 import controller.reseller.ManageResellerOffsMenu;
 import controller.reseller.ManageResellerProductsMenu;
 import controller.reseller.ResellerMenu;
-import model.Commodity;
-import model.DataManager;
-import model.DiscountCode;
-import model.Request;
+import model.*;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+import model.log.BuyLog;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -40,6 +39,10 @@ public class View {
     public static final ManageRequestMenu manageRequestMenu = new ManageRequestMenu();
 
     public View() {
+        initializeManageRequestMenuCommandProcessor();
+        initializeGetDiscountCodeMenu();
+        initializeManageUsersMenu();
+        initializeViewPersonalMenu();
         initializeLoginRegisterMenu();
         initializeManageRequestMenuCommandProcessor();
         initializeGetDiscountCodeMenu();
@@ -128,13 +131,20 @@ public class View {
                 }
             }
         };
+        getDiscountCodeInitialize();
+        initializeManageUsersMenu();
+        initializeViewPersonalInfoMenu();
+        initializeManagerMenu();
+        initializeCustomerMenu();
+        initializeCartMenu();
+        initializeOrderMenu();
     }
 
     private void manageRequests(ManagerMenu managerMenu) throws IOException {
         String output = "";
-        Request[] allRequests = managerMenu.getAllRequests();
+        Request[] allRequests =  managerMenu.getAllRequests();
         for (Request request : allRequests) {
-            output += "[" + request.getSimpleAccount().getUsername() + "]";
+            output += "["+request.getSimpleAccount().getUsername()+"]";
         }
         System.out.println(output);
     }
@@ -143,16 +153,16 @@ public class View {
         getDiscountCode.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.equals("^view discount code (?<code>\\S+)$")) {
+                if (command.equals("^view discount code (?<code>\\S+)$")){
                     Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
                     viewDiscountCode(getDiscountCode, matcher.group("code"));
                 }
-                if (command.equals("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField> \\S+)$")) {
+                if (command.equals("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField> \\S+)$")){
                     Matcher matcher = Pattern.compile("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField> \\S+)$").matcher(command);
                     DiscountCode discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
                     editDiscountCode(discountCode, getDiscountCode, command);
                 }
-                if (command.equals("remove discount code (?<code>\\S+)")) {
+                if (command.equals("remove discount code (?<code>\\S+)")){
                     Matcher matcher = Pattern.compile("remove discount code (?<code>\\S+)").matcher(command);
                     DiscountCode discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
                     deleteDiscountCode(discountCode, getDiscountCode);
@@ -307,7 +317,7 @@ public class View {
         };
     }
 
-    private void initializeCartMenu() {
+    private void initializeCartMenu(final CartMenu cartMenu, final CommodityMenu commodityMenu) {
         cartMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
@@ -327,6 +337,7 @@ public class View {
             }
         };
     }
+
 
 
     private void decreaseCommodityInCart(String command, CartMenu cartMenu) {

@@ -1,6 +1,7 @@
 package controller;
 
 import model.DataManager;
+import model.DiscountCode;
 import model.Request;
 import model.Status;
 

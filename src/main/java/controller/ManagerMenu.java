@@ -1,12 +1,10 @@
 package controller;
 
-import model.Commodity;
 import model.DataManager;
 import model.DiscountCode;
 import model.Request;
 import model.account.SimpleAccount;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,22 +21,19 @@ public class ManagerMenu extends Menu {
     }
 
     public boolean checkCreateDiscountCodeErrors(Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
-                              int maximumNumberOfUse) {
+                                                 int maximumNumberOfUse) {
         if (finish.compareTo(start) > 0)
             return false;
         if (discountPercentage <= 0)
             return false;
         if (maximumDiscountPrice <= 0)
             return false;
-        if (maximumNumberOfUse <= 0)
-            return false;
-
-        return true;
+        return maximumNumberOfUse > 0;
     }
 
-    public void addDiscountCode(String code,Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
-                               int maximumNumberOfUse,ArrayList<SimpleAccount> accountArrayList) throws Exception {
-        DataManager.addDiscountCode(new DiscountCode(code,start,finish,discountPercentage,maximumDiscountPrice,maximumNumberOfUse,accountArrayList));
+    public void addDiscountCode(String code, Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
+                                int maximumNumberOfUse, ArrayList<SimpleAccount> accountArrayList) throws Exception {
+        DataManager.addDiscountCode(new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accountArrayList));
 
     }
 
@@ -46,7 +41,7 @@ public class ManagerMenu extends Menu {
         return DataManager.getAllRequests();
     }
 
-    public SimpleAccount getOnlineAccount(){
+    public SimpleAccount getOnlineAccount() {
         return DataManager.getOnlineAccount();
     }
 
