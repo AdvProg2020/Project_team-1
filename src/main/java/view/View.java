@@ -9,6 +9,7 @@ import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,57 +20,83 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class View {
-
-    private final controller.LoginRegisterMenu loginRegisterMenu = new controller.LoginRegisterMenu();
+    //    public ArrayList<CommandProcess> allMenus = new ArrayList<CommandProcess>();
+//
+//    public View() {
+//        ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
+//        viewPersonalInfoMenu.commandProcess1 = new CommandProcess() {
+//            @Override
+//            public String commandProcessor(String command) throws Exception {
+//                try {
+//                    ViewPersonalInfoMenu.filter();
+//                } catch (Exception e) {
+//                    System.out.println("filter nashod");
+//                }
+//            }
+//        };
+//        final ProductsMenu productsMenu = new ProductsMenu();
+//        productsMenu.commandProcess = new CommandProcess() {
+//            @Override
+//            public String commandProcessor(String command) throws Exception {
+//              if (command.equals("get products")){
+//                  try {
+//                      ArrayList t = productsMenu.getallProducts;
+//                      t.for{
+//                          System.out.println(t.name);
+//                      }
+//                  }catch (Exception e){
+//                      System.out.println(" gerfte nashod");
+//                  }
+//              }
+//            }
+//        };
+//
+//        HandleMenu.getMenu().commandProcess.commandProssor;
+//
+//    }
+    private final LoginRegisterMenu loginRegisterMenu = new LoginRegisterMenu();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {
         initializeLoginRegisterMenu();
-        final controller.GetDiscountCode getDiscountCode = new controller.GetDiscountCode();
+        final GetDiscountCode getDiscountCode = new GetDiscountCode();
         final ManagerMenu managerMenu = new ManagerMenu();
         final ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
         final ManageUsersMenu manageUsersMenu = new ManageUsersMenu();
         final CustomerMenu customerMenu = new CustomerMenu();
         final CartMenu cartMenu = new CartMenu();
         final CommodityMenu commodityMenu = new CommodityMenu();
-        ManageRequestMenu manageRequestMenu = new ManageRequestMenu();
-        initializeManageRequestMenuCommandProcessor(manageRequestMenu);
-        initializeGetDiscountCodeMenu(getDiscountCode);
-        initializeManageUsers(manageUsersMenu);
-        initializeViewPersonalMenu(viewPersonalInfoMenu);
-        initializeManagerMenu(managerMenu, viewPersonalInfoMenu, manageUsersMenu);
         getDiscountCodeInitialize(getDiscountCode);
-        initializeCustomerMenu(viewPersonalInfoMenu, customerMenu);
-        initializeCartMenu(cartMenu, commodityMenu);
-    }
-
-    private void initializeManageRequestMenuCommandProcessor(ManageRequestMenu manageRequestMenu) {
-        manageRequestMenu.commandProcess = new CommandProcess() {
+        manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-
+                if (command.matches("view (?<username>\\S+)")) {
+                    Matcher matcher = Pattern.compile("^view (?<username>\\S+)$").matcher(command);
+                    SimpleAccount simpleAccount = manageUsersMenu.getAccountWithUserNameFromDatabase(matcher.group("username"));
+                    System.out.println(simpleAccount.toString());
+                }
+                if (command.matches("^delete user (?<username> \\S+)")) {
+                    deleteUser(command, manageUsersMenu);
+                }
+                if (command.matches("^create manager profile$")) {
+                    createManagerProfile(manageUsersMenu);
+                }
             }
         };
-    }
-
-
-    private void initializeViewPersonalMenu(final ViewPersonalInfoMenu viewPersonalInfoMenu) {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
-                    editManagerAccountFields(viewPersonalInfoMenu,command);
+                    editFields(viewPersonalInfoMenu, command);
                 }
             }
         };
-    }
 
-    private void initializeManagerMenu(final ManagerMenu managerMenu, final ViewPersonalInfoMenu viewPersonalInfoMenu, final ManageUsersMenu manageUsersMenu) {
         managerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo(viewPersonalInfoMenu,managerMenu);
+                    viewPersonalInfo(viewPersonalInfoMenu);
                 }
                 if (command.matches("^manage users$")) {
                     manageUsers(manageUsersMenu);
@@ -77,11 +104,8 @@ public class View {
                 if (command.matches("^create discount code$")) {
                     createDiscountCode(managerMenu);
                 }
-                if (command.matches("^view discount codes$")){
+                if (command.matches("^view discount codes$")) {
                     viewDiscountCodes(managerMenu);
-                }
-                if (command.matches("^manage requests$")){
-                    manageRequests(managerMenu);
                 }
             }
         };
@@ -405,6 +429,9 @@ public class View {
         };
     }
 
+        initializeCustomerMenu(viewPersonalInfoMenu, customerMenu, cartMenu);
+        initializeCartMenu(cartMenu, commodityMenu);
+    }
 
     private void initializeCustomerMenu(final ViewPersonalInfoMenu viewPersonalInfoMenu, CustomerMenu customerMenu) {
         customerMenu.commandProcess = new CommandProcess() {

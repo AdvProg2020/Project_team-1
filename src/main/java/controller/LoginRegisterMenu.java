@@ -36,7 +36,7 @@ public class LoginRegisterMenu extends Menu{
     public void registerResellerAccount(String username, String firstName, String lastName, String email,
                                         String phoneNumber, String password, String businessName) throws Exception{
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
-                phoneNumber, password, businessName));
+                phoneNumber, password, businessName))
         DataManager.addResellerAccount(newAccount);
     }
 
@@ -47,7 +47,7 @@ public class LoginRegisterMenu extends Menu{
         } else if (!simpleAccount.isPasswordCorrect(password)) {
             throw new Exception("Invalid password");
         }
-        Session.setSimpleAccount(simpleAccount);
+        Session.setOnlineAccount(simpleAccount);
         goToPreviousMenu();
     }
 }
