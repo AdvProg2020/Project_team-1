@@ -1,6 +1,8 @@
 package view;
 
 import controller.*;
+import controller.customer.CartMenu;
+import model.Commodity;
 import model.DataManager;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
@@ -12,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,6 +62,9 @@ public class View {
         final ManagerMenu managerMenu = new ManagerMenu();
         final ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
         final ManageUsersMenu manageUsersMenu = new ManageUsersMenu();
+        final CustomerMenu customerMenu = new CustomerMenu();
+        final CartMenu cartMenu = new CartMenu();
+        final CommodityMenu commodityMenu = new CommodityMenu();
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
@@ -68,7 +74,7 @@ public class View {
                     System.out.println(simpleAccount.toString());
                 }
                 if (command.matches("^delete user (?<username> \\S+)")) {
-                    deleteUser(command,manageUsersMenu);
+                    deleteUser(command, manageUsersMenu);
                 }
                 if (command.matches("^create manager profile$")) {
                     createManagerProfile(manageUsersMenu);
@@ -79,7 +85,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
-                    editFields(viewPersonalInfoMenu,command);
+                    editFields(viewPersonalInfoMenu, command);
                 }
             }
         };
@@ -88,7 +94,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
-                   viewPersonalInfo(viewPersonalInfoMenu);
+                    viewPersonalInfo(viewPersonalInfoMenu);
                 }
                 if (command.matches("^manage users$")) {
                     manageUsers(manageUsersMenu);
@@ -98,13 +104,114 @@ public class View {
                 }
             }
         };
+
+        customerMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("view personal info")) {
+                    viewPersonalInfo(viewPersonalInfoMenu);
+                } else if (command.equals("view cart")) {
+
+                } else if (command.equals("purchase")) {
+
+                } else if (command.equals("view orders")) {
+
+                } else if (command.equals("view balance")) {
+
+                } else if (command.equals("view discount codes")) {
+
+                }
+            }
+        };
+
+        cartMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("show products")) {
+                    showProducts(cartMenu);
+                } else if (command.matches("view (?<id>\\d+)")) {
+                    viewProduct(command, commodityMenu, cartMenu);
+                } else if (command.matches("increase (?<id>\\d+)")) {
+                    increaseCommodityInCart(command, cartMenu);
+                } else if (command.matches("decrease (?<id>\\d+)")) {
+                    decreaseCommodityInCart(command, cartMenu);
+                } else if (command.equals("show total price")) {
+                    System.out.println("total price is " + cartMenu.calculateTotalPrice());
+                } else if (command.equals("purchase")) {
+                    //to do
+                }
+            }
+        };
     }
 
-    private void deleteUser(String command,ManageUsersMenu manageUsersMenu) throws Exception {
+    private void decreaseCommodityInCart(String command, CartMenu cartMenu) {
+        Matcher matcher = Pattern.compile("decrease (?<id>\\d+)").matcher(command);
+        try {
+            int id = Integer.parseInt(matcher.group("id"));
+            Commodity commodity = DataManager.getCommodityById(id);
+            PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
+            HashMap<Commodity, Integer> cart = personalAccount.getCart();
+            if (cart.containsKey(commodity)) {
+                if (cart.get(commodity) - 1 == 0) {
+                    cart.remove(commodity);
+                    System.out.println("successfully removed");
+                } else {
+                    cart.put(commodity, cart.get(commodity) + 1);
+                    System.out.println("successfully decreased");
+                }
+            } else
+                System.out.println("this commodity isn't in your cart");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void increaseCommodityInCart(String command, CartMenu cartMenu) {
+        Matcher matcher = Pattern.compile("increase (?<id>\\d+)").matcher(command);
+        try {
+            int id = Integer.parseInt(matcher.group("id"));
+            Commodity commodity = DataManager.getCommodityById(id);
+            PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
+            HashMap<Commodity, Integer> cart = personalAccount.getCart();
+            if (cart.containsKey(commodity)) {
+                cart.put(commodity, cart.get(commodity) + 1);
+                System.out.println("successfully increased");
+            } else {
+                cart.put(commodity, 1);
+                System.out.println("successfully added");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void viewProduct(String command, CommodityMenu commodityMenu, CartMenu cartMenu) {
+        Matcher matcher = Pattern.compile("view (?<id>\\d+)").matcher(command);
+        try {
+            int id = Integer.parseInt(matcher.group("id"));
+            Commodity commodity = DataManager.getCommodityById(id);
+            HandleMenu.setMenu(commodityMenu);
+            commodityMenu.setCommodity(commodity);
+            commodityMenu.setPreviousMenu(cartMenu);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void showProducts(CartMenu cartMenu) {
+        String respond = "";
+        PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
+        for (Commodity commodity : personalAccount.getCart().keySet()) {
+            respond += "[" + commodity.toString() + "]";
+        }
+        System.out.println(respond);
+    }
+
+    private void deleteUser(String command, ManageUsersMenu manageUsersMenu) throws Exception {
         Matcher matcher = Pattern.compile("^delete user (?<username> \\S+)").matcher(command);
         try {
             DataManager.deleteAccountWithUserName(matcher.group("username"));
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Invalid input please try again");
         }
         System.out.println("user deleted");
@@ -131,7 +238,7 @@ public class View {
         manageUsersMenu.createNewManager(managerAccount);
     }
 
-    private void editFields(ViewPersonalInfoMenu viewPersonalInfoMenu , String command) throws Exception {
+    private void editFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) throws Exception {
         Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$").matcher(command);
         if (matcher.group("field").equals("first name")) {
             viewPersonalInfoMenu.editFirstName(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
@@ -172,8 +279,8 @@ public class View {
         HandleMenu.setMenu(manageUsersMenu);
     }
 
-    private void viewPersonalInfo(ViewPersonalInfoMenu viewPersonalInfoMenu){
-        System.out.println(((ManagerAccount) DataManager.getOnlineAccount()).toString());
+    private void viewPersonalInfo(ViewPersonalInfoMenu viewPersonalInfoMenu) {
+        System.out.println(DataManager.getOnlineAccount().toString());
         HandleMenu.setMenu(viewPersonalInfoMenu);
     }
 

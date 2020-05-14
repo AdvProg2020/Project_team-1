@@ -2,15 +2,15 @@ package model;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import com.sun.security.auth.UnixNumericGroupPrincipal;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
-import model.log.TransactionLog;
-import sun.java2d.pipe.SpanShapeRenderer;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,12 +24,15 @@ public class DataManager {
 
     private static File allDiscountCodeJson;
 
+    private static File allCommoditiesJson;
+
     static {
         initializeDataDirectory();
         allManagersJson = new File("data/accounts/allManagers.json");
         allResellersJson = new File("data/accounts/allResellers.json");
         allPersonalAccountsJson = new File("data/accounts/allPersonalAccounts.json");
         allDiscountCodeJson = new File("data/allDiscountCodes.json");
+        allCommoditiesJson = new File("data/allCommodities.json");
         initializeDataFiles();
     }
 
@@ -120,7 +123,7 @@ public class DataManager {
     }
 
     public static boolean deleteBusinessAccount(String username) throws IOException {
-        BusinessAccount businessAccount = null
+        BusinessAccount businessAccount = null;
         for (BusinessAccount reseller : getAllResellers()) {
             if (reseller.getUsername().equalsIgnoreCase(username)) {
                 businessAccount = reseller;
@@ -177,14 +180,30 @@ public class DataManager {
         gson.toJson(allDiscountCodes, new FileWriter(allDiscountCodeJson));
     }
 
-    public static void addPersonalAccount(PersonalAccount personalAccount) throws Exception{
+    public static void addPersonalAccount(PersonalAccount personalAccount) throws Exception {
         ArrayList<PersonalAccount> allPersonalAccounts = new ArrayList<>(Arrays.asList(getAllPersonalAccounts()));
         allPersonalAccounts.add(personalAccount);
         Gson gson = new Gson();
         gson.toJson(allPersonalAccounts, new FileWriter(allPersonalAccountsJson));
     }
 
-    public static boolean isUsernameExist(String username) throws IOException{
+    public static Commodity[] getAllCommodities() throws Exception {
+        FileReader fileReader = new FileReader(allCommoditiesJson);
+        JsonReader jsonReader = new JsonReader(fileReader);
+        Gson gson = new Gson();
+        return gson.fromJson(jsonReader, Commodity.class);
+    }
+
+    public static Commodity getCommodityById(int id) throws Exception {
+        for (Commodity commodity : getAllCommodities()) {
+            if (commodity.getCommodityId() == id) {
+                return commodity;
+            }
+        }
+        throw new Exception("there is no product with this ID");
+    }
+
+    public static boolean isUsernameExist(String username) throws IOException {
         for (ManagerAccount manager : getAllManagers()) {
             if (manager.getUsername().equalsIgnoreCase(username)) {
                 return true;

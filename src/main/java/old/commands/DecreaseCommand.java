@@ -24,10 +24,7 @@ public class DecreaseCommand extends Command {
     }
 
     public void decreaseCommodity(Commodity commodity, HashMap<Commodity,Integer> cart){
-        if (cart.get(commodity) - 1 == 0)
-            cart.remove(commodity);
-        else
-            cart.put(commodity,cart.get(commodity) + 1);
+
     }
 
     @Override
