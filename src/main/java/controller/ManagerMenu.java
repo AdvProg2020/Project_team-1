@@ -1,9 +1,7 @@
 package controller;
 
-import model.Commodity;
 import model.DataManager;
 import model.DiscountCode;
-import model.Request;
 import model.account.SimpleAccount;
 
 import java.util.ArrayList;
@@ -28,19 +26,16 @@ public class ManagerMenu extends Menu {
             return false;
         if (maximumDiscountPrice <= 0)
             return false;
-        if (maximumNumberOfUse <= 0)
-            return false;
-
-        return true;
+        return maximumNumberOfUse > 0;
     }
 
-    public void addDiscountCode(String code,Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
-                               int maximumNumberOfUse,ArrayList<SimpleAccount> accountArrayList) throws Exception {
-        DataManager.addDiscountCode(new DiscountCode(code,start,finish,discountPercentage,maximumDiscountPrice,maximumNumberOfUse,accountArrayList));
+    public void addDiscountCode(String code, Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
+                                int maximumNumberOfUse, ArrayList<SimpleAccount> accountArrayList) throws Exception {
+        DataManager.addDiscountCode(new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accountArrayList));
 
     }
 
-    public SimpleAccount getOnlineAccount(){
+    public SimpleAccount getOnlineAccount() {
         return DataManager.getOnlineAccount();
     }
 

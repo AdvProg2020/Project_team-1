@@ -142,16 +142,16 @@ public class DataManager {
         if (deleteBusinessAccount(username)){
             return;
         }
-        if (deletePersonalAccount(username)){
+        if (deletePersonalAccount(username)) {
             return;
         }
-        if (deleteManagerAccount(username)){
+        if (deleteManagerAccount(username)) {
             return;
         }
         throw new Exception();
     }
 
-    public static DiscountCode getDiscountCodeWithCode(String code) throws Exception{
+    public static DiscountCode getDiscountCodeWithCode(String code) throws Exception {
         for (DiscountCode discountCode : getAllDiscountCodes()) {
             if (discountCode.getCode().equals(code))
                 return discountCode;
@@ -160,14 +160,14 @@ public class DataManager {
     }
 
 
-    public static void addResellerAccount(BusinessAccount businessAccount) throws Exception{
+    public static void addResellerAccount(BusinessAccount businessAccount) throws Exception {
         ArrayList<BusinessAccount> allResellersAccounts = new ArrayList<>(Arrays.asList(getAllResellers()));
         allResellersAccounts.add(businessAccount);
         Gson gson = new Gson();
         gson.toJson(allResellersAccounts, new FileWriter(allResellersJson));
     }
 
-    public static PersonalAccount[] getAllPersonalAccounts() throws IOException{
+    public static PersonalAccount[] getAllPersonalAccounts() throws IOException {
         FileReader fileReader = new FileReader(allPersonalAccountsJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();

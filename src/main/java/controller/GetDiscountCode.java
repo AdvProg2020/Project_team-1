@@ -3,16 +3,15 @@ package controller;
 import model.DataManager;
 import model.DiscountCode;
 import model.account.SimpleAccount;
-import sun.java2d.DefaultDisposerRecord;
 
 import java.util.Date;
 
 public class GetDiscountCode extends Menu {
-    public DiscountCode getDiscountCode(String code) throws Exception{
+    public DiscountCode getDiscountCode(String code) throws Exception {
         return DataManager.getDiscountCodeWithCode(code);
     }
 
-    public void changeCode(String code,DiscountCode discountCode) {
+    public void changeCode(String code, DiscountCode discountCode) {
         discountCode.setCode(code);
     }
 
@@ -31,10 +30,10 @@ public class GetDiscountCode extends Menu {
     public void changeMaximumNumberOfUses(int maximumNumberOfUses, DiscountCode discountCode) throws Exception {
         discountCode.setMaximumNumberOfUses(maximumNumberOfUses);
     }
+
     public void deleteAccount(SimpleAccount simpleAccount, DiscountCode discountCode) throws Exception {
         discountCode.deleteAccount(simpleAccount);
     }
-
 
 
 }

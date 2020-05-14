@@ -95,11 +95,11 @@ public class DiscountCode {
         this.accounts = accounts;
     }
 
-    public void deleteAccount(SimpleAccount simpleAccount){
+    public void deleteAccount(SimpleAccount simpleAccount) {
         accounts.remove(simpleAccount);
     }
 
-    public void addAccount(SimpleAccount simpleAccount){
+    public void addAccount(SimpleAccount simpleAccount) {
         accounts.add(simpleAccount);
     }
 
