@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 public class DataManager {
 
+
     private static File allManagersJson;
 
     private static File allResellersJson;
@@ -26,12 +27,15 @@ public class DataManager {
 
     private static File allCommoditiesJson;
 
+    private static File allRequestsJson;
+
     static {
         initializeDataDirectory();
         allManagersJson = new File("data/accounts/allManagers.json");
         allResellersJson = new File("data/accounts/allResellers.json");
         allPersonalAccountsJson = new File("data/accounts/allPersonalAccounts.json");
         allDiscountCodeJson = new File("data/allDiscountCodes.json");
+        allRequestsJson = new File("data/allRequests.json");
         allCommoditiesJson = new File("data/allCommodities.json");
         initializeDataFiles();
     }
@@ -47,13 +51,30 @@ public class DataManager {
             gson.toJson(new ArrayList<ManagerAccount>(), new FileWriter(allManagersJson));
             gson.toJson(new ArrayList<BusinessAccount>(), new FileWriter(allResellersJson));
             gson.toJson(new ArrayList<PersonalAccount>(), new FileWriter(allPersonalAccountsJson));
-            gson.toJson(new ArrayList<DiscountCode>() , new FileWriter(allDiscountCodeJson));
+            gson.toJson(new ArrayList<DiscountCode>(), new FileWriter(allDiscountCodeJson));
+            gson.toJson(new ArrayList<Request>(), new FileWriter(allRequestsJson));
         } catch (IOException e) {
 
         }
     }
 
-    public static ManagerAccount[] getAllManagers() throws IOException{
+    public static Request getRequest(int id) throws Exception {
+        for (Request request : getAllRequests()) {
+            if (request.getId() == id) {
+                return request;
+            }
+        }
+        Exception e = new Exception("Request doesn't exist");
+    }
+
+    public static Request[] getAllRequests() throws IOException {
+        FileReader fileReader = new FileReader(allRequestsJson);
+        JsonReader jsonReader = new JsonReader(fileReader);
+        Gson gson = new Gson();
+        return gson.fromJson(jsonReader, Request.class);
+    }
+
+    public static ManagerAccount[] getAllManagers() throws IOException {
         FileReader fileReader = new FileReader(allManagersJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
@@ -61,8 +82,7 @@ public class DataManager {
     }
 
 
-
-    public static void addManagerAccount(ManagerAccount managerAccount) throws Exception{
+    public static void addManagerAccount(ManagerAccount managerAccount) throws Exception {
         ArrayList<ManagerAccount> allManagerAccounts = new ArrayList<>(Arrays.asList(getAllManagers()));
         allManagerAccounts.add(managerAccount);
         Gson gson = new Gson();
@@ -120,6 +140,20 @@ public class DataManager {
             }
         }
         return false;
+    }
+
+    public static void addDiscountCode(DiscountCode discountCode) throws Exception {
+        ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>(Arrays.asList(getAllDiscountCodes()));
+        allDiscountCodes.add(discountCode);
+        Gson gson = new Gson();
+        gson.toJson(allDiscountCodes, new FileWriter(allDiscountCodeJson));
+    }
+
+    public static void deleteDiscountCode(DiscountCode discountCode) throws Exception {
+        ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>(Arrays.asList(getAllDiscountCodes()));
+        allDiscountCodes.remove(discountCode);
+        Gson gson = new Gson();
+        gson.toJson(allDiscountCodes, new FileWriter(allDiscountCodeJson));
     }
 
     public static boolean deleteBusinessAccount(String username) throws IOException {

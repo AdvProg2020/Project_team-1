@@ -1,6 +1,8 @@
 package controller.reseller;
 
-public class ManageProductsMenu {
+import controller.Menu;
+
+public class ManageResellerProductsMenu extends Menu {
     /*
         viewProduct
         viewBuyers

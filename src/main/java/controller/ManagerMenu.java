@@ -2,8 +2,10 @@ package controller;
 
 import model.DataManager;
 import model.DiscountCode;
+import model.Request;
 import model.account.SimpleAccount;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,7 +21,7 @@ public class ManagerMenu extends Menu {
     }
 
     public boolean checkCreateDiscountCodeErrors(Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
-                              int maximumNumberOfUse) {
+                                                 int maximumNumberOfUse) {
         if (finish.compareTo(start) > 0)
             return false;
         if (discountPercentage <= 0)
@@ -33,6 +35,10 @@ public class ManagerMenu extends Menu {
                                 int maximumNumberOfUse, ArrayList<SimpleAccount> accountArrayList) throws Exception {
         DataManager.addDiscountCode(new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accountArrayList));
 
+    }
+
+    public Request[] getAllRequests() throws IOException {
+        return DataManager.getAllRequests();
     }
 
     public SimpleAccount getOnlineAccount() {
