@@ -1,9 +1,11 @@
 package view;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import controller.*;
 import controller.customer.CartMenu;
 import model.Commodity;
 import model.DataManager;
+import model.DiscountCode;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
@@ -55,22 +57,24 @@ public class View {
 //
 //    }
     private final LoginRegisterMenu loginRegisterMenu = new LoginRegisterMenu();
-    Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     public View() {
         initializeLoginRegisterMenu();
+        final GetDiscountCode getDiscountCode = new GetDiscountCode();
         final ManagerMenu managerMenu = new ManagerMenu();
         final ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
         final ManageUsersMenu manageUsersMenu = new ManageUsersMenu();
         final CustomerMenu customerMenu = new CustomerMenu();
         final CartMenu cartMenu = new CartMenu();
         final CommodityMenu commodityMenu = new CommodityMenu();
+        getDiscountCodeInitialize(getDiscountCode);
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.matches("view (?<username>\\S+)")) {
                     Matcher matcher = Pattern.compile("^view (?<username>\\S+)$").matcher(command);
-                    SimpleAccount simpleAccount = DataManager.getAccountWithUserName(matcher.group("username"));
+                    SimpleAccount simpleAccount = manageUsersMenu.getAccountWithUserNameFromDatabase(matcher.group("username"));
                     System.out.println(simpleAccount.toString());
                 }
                 if (command.matches("^delete user (?<username> \\S+)")) {
@@ -94,7 +98,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo(viewPersonalInfoMenu);
+                    viewPersonalInfo(viewPersonalInfoMenu,managerMenu);
                 }
                 if (command.matches("^manage users$")) {
                     manageUsers(manageUsersMenu);
@@ -102,6 +106,25 @@ public class View {
                 if (command.matches("^create discount code$")) {
                     createDiscountCode(managerMenu);
                 }
+                if (command.matches("^view discount codes$")){
+                    viewDiscountCodes(managerMenu);
+                }
+            }
+        };
+    }
+
+    private void getDiscountCodeInitialize(final GetDiscountCode getDiscountCode) {
+        getDiscountCode.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("^view discount code (?<code>\\S+)$")){
+                    Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
+                    viewDiscountCode(getDiscountCode, matcher.group("code"));
+                }
+                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")){
+
+                }
+
             }
         };
 
@@ -207,10 +230,25 @@ public class View {
         System.out.println(respond);
     }
 
+    private void viewDiscountCodes(ManagerMenu managerMenu) throws Exception {
+        DiscountCode[] discountCodes = managerMenu.getAllDiscountCodes();
+        for (DiscountCode discountCode : discountCodes) {
+            System.out.println(discountCode.toString() + "\n");
+        }
+    }
+
+    private void viewDiscountCode(GetDiscountCode getDiscountCode,String code){
+        try {
+            System.out.println(getDiscountCode.getDiscountCode(code).toString());
+        } catch (Exception e) {
+            System.out.println("Cant view discount code please try again");
+        }
+    }
+
     private void deleteUser(String command, ManageUsersMenu manageUsersMenu) throws Exception {
         Matcher matcher = Pattern.compile("^delete user (?<username> \\S+)").matcher(command);
         try {
-            DataManager.deleteAccountWithUserName(matcher.group("username"));
+            manageUsersMenu.deleteUser(matcher.group("username"));
         } catch (Exception e) {
             System.out.println("Invalid input please try again");
         }
@@ -355,16 +393,15 @@ public class View {
         System.out.println("Discount code successfully added");
     }
 
-
     private void initializeLoginRegisterMenu() {
         loginRegisterMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
-                    if (command.matches("create account (?<type>customer|seller|admin) (?<username>\\S+)")) {
+                    if (command.matches("create account (personal|reseller|manager) (\\S+)")) {
 
-                    } else if (command.matches("login (?<username>\\S+) (?<password>\\S+)")) {
-
+                    } else if (command.matches("^login \\S+$")) {
+                        loginCommand(command);
                     } else if (command.equalsIgnoreCase("back")) {
                         loginRegisterMenu.goToPreviousMenu();
                     } else {
@@ -375,6 +412,63 @@ public class View {
                 }
             }
         };
+    }
+
+    private void loginCommand(String command) throws Exception {
+        Matcher matcher = Pattern.compile("^login (?<username>\\S+)$").matcher(command);
+        String username = matcher.group("username");
+        System.out.println("password for " + username + ":");
+        String password = scanner.nextLine();
+        loginRegisterMenu.login(username, password);
+        System.out.println("you successfully loged in as " + username);
+    }
+
+    private void registerCommand(String command) throws Exception {
+
+        Pattern pattern = Pattern.compile("create account (?<type>personal|reseller|manager) (?<username>\\S+)");
+        Matcher matcher = pattern.matcher(command);
+        String accountType = matcher.group("type");
+        String username = matcher.group("username");
+
+        loginRegisterMenu.checkUserNameAvailability(username);
+
+        if (accountType.equalsIgnoreCase("manager")) {
+            loginRegisterMenu.isThereManagerAccount();
+        }
+
+        System.out.println("enter your first name:");
+        String firstName = scanner.nextLine();
+
+        System.out.println("enter your last name:");
+        String lastName = scanner.nextLine();
+
+        System.out.println("enter your email:");
+        String email = scanner.nextLine();
+
+        System.out.println("enter your phone number:");
+        String phoneNumber = scanner.nextLine();
+
+        System.out.println("enter password:");
+        String password = scanner.nextLine();
+
+        switch (accountType) {
+            case "personal":
+
+                loginRegisterMenu.registerPersonalAccount();
+                break;
+
+            case "reseller":
+                loginRegisterMenu.registerResellerAccount();
+                break;
+
+            case "manager":
+                loginRegisterMenu.registerManagerAccount();
+                break;
+
+            default:
+                System.out.println("Invalid account type. Available account types are personal/reseller/manager.");
+        }
+        System.out.println("You registered successfully.");
     }
 
 

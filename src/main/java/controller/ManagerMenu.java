@@ -40,5 +40,13 @@ public class ManagerMenu extends Menu {
 
     }
 
+    public SimpleAccount getOnlineAccount(){
+        return DataManager.getOnlineAccount();
+    }
+
+    public DiscountCode[] getAllDiscountCodes() throws Exception {
+        return DataManager.getAllDiscountCodes();
+    }
+
 
 }
