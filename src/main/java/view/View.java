@@ -346,16 +346,17 @@ public class View {
 
         switch (accountType) {
             case "personal":
-
-                loginRegisterMenu.registerPersonalAccount();
+                loginRegisterMenu.registerPersonalAccount(username, firstName, lastName, email, phoneNumber, password);
                 break;
 
             case "reseller":
-                loginRegisterMenu.registerResellerAccount();
+                System.out.println("enter your business name:");
+                String businessName = scanner.nextLine();
+                loginRegisterMenu.registerResellerAccount(username, firstName, lastName, email, phoneNumber, password, businessName);
                 break;
 
             case "manager":
-                loginRegisterMenu.registerManagerAccount();
+                loginRegisterMenu.registerManagerAccount(username, firstName, lastName, email, phoneNumber, password);
                 break;
 
             default:
