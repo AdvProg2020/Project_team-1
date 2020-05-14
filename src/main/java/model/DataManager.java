@@ -17,6 +17,7 @@ import java.util.Arrays;
 public class DataManager {
 
 
+
     private static File allManagersJson;
 
     private static File allResellersJson;
@@ -54,7 +55,7 @@ public class DataManager {
             gson.toJson(new ArrayList<ManagerAccount>(), new FileWriter(allManagersJson));
             gson.toJson(new ArrayList<BusinessAccount>(), new FileWriter(allResellersJson));
             gson.toJson(new ArrayList<PersonalAccount>(), new FileWriter(allPersonalAccountsJson));
-            gson.toJson(new ArrayList<DiscountCode>(), new FileWriter(allDiscountCodeJson));
+            gson.toJson(new ArrayList<DiscountCode>() , new FileWriter(allDiscountCodeJson));
             gson.toJson(new ArrayList<Request>(), new FileWriter(allRequestsJson));
             gson.toJson(new ArrayList<Off>(), new FileWriter(allOffsJson));
         } catch (IOException e) {
@@ -62,23 +63,31 @@ public class DataManager {
         }
     }
 
+    public static void deleteRequest(Request request) throws IOException {
+        ArrayList<Request> allRequests = new ArrayList<>(Arrays.asList(getAllRequests()));
+        allRequests.remove(request);
+        Gson gson = new Gson();
+        gson.toJson(allRequests, new FileWriter(allRequestsJson));
+    }
+
     public static Request getRequest(int id) throws Exception {
         for (Request request : getAllRequests()) {
-            if (request.getId() == id) {
+            if (request.getId() == id ){
                 return request;
             }
         }
-        Exception e = new Exception("Request doesn't exist");
+        Exception e  = new Exception("Request doesn't exist");
+        throw e;
     }
 
-    public static Request[] getAllRequests() throws IOException {
+    public static Request[] getAllRequests() throws IOException{
         FileReader fileReader = new FileReader(allRequestsJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
         return gson.fromJson(jsonReader, Request[].class);
     }
 
-    public static ManagerAccount[] getAllManagers() throws IOException {
+    public static ManagerAccount[] getAllManagers() throws IOException{
         FileReader fileReader = new FileReader(allManagersJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
@@ -86,7 +95,8 @@ public class DataManager {
     }
 
 
-    public static void addManagerAccount(ManagerAccount managerAccount) throws Exception {
+
+    public static void addManagerAccount(ManagerAccount managerAccount) throws Exception{
         ArrayList<ManagerAccount> allManagerAccounts = new ArrayList<>(Arrays.asList(getAllManagers()));
         allManagerAccounts.add(managerAccount);
         Gson gson = new Gson();
@@ -219,12 +229,6 @@ public class DataManager {
         return gson.fromJson(jsonReader, DiscountCode[].class);
     }
 
-    public static void addDiscountCode(DiscountCode discountCode) throws Exception {
-        ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>(Arrays.asList(getAllDiscountCodes()));
-        allDiscountCodes.add(discountCode);
-        Gson gson = new Gson();
-        gson.toJson(allDiscountCodes, new FileWriter(allDiscountCodeJson));
-    }
 
     public static void addPersonalAccount(PersonalAccount personalAccount) throws Exception {
         ArrayList<PersonalAccount> allPersonalAccounts = new ArrayList<>(Arrays.asList(getAllPersonalAccounts()));
