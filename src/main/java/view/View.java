@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import controller.*;
 import controller.customer.CartMenu;
 import controller.customer.OrderMenu;
@@ -12,6 +13,7 @@ import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 import model.log.BuyLog;
+import model.log.SellLog;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -52,6 +54,7 @@ public class View {
         initializeCustomerMenu();
         initializeCartMenu();
         initializeOrderMenu();
+        initializeOffMenu();
     }
 
     private void manageRequests(ManagerMenu managerMenu) throws IOException {
@@ -683,15 +686,15 @@ public class View {
                     if (command.equalsIgnoreCase("view personal info")) {
 
                     } else if (command.equalsIgnoreCase("view company info")) {
-
+                        viewCompanyInfo();
                     } else if (command.equalsIgnoreCase("view sales history")) {
-
+                        viewSalesHistory();
                     } else if (command.equalsIgnoreCase("manage products")) {
-
+                        manageResellerProduct();
                     } else if (command.equalsIgnoreCase("add product")) {
-
-                    } else if (command.matches("^remove product (\\d+)$")) {
-
+                        addProduct();
+                    } else if (command.matches("^remove product \\d+$")) {
+                        removeProduct(command);
                     } else if (command.equalsIgnoreCase("show categories")) {
 
                     } else if (command.equalsIgnoreCase("view offs")) {
@@ -709,6 +712,33 @@ public class View {
             }
         };
     }
+
+    private void viewCompanyInfo() {
+        System.out.println(resellerMenu.getBusinessAccount().getBusinessName());
+    }
+
+    private void viewSalesHistory() {
+        BusinessAccount businessAccount = resellerMenu.getBusinessAccount();
+        for (SellLog sellLog : businessAccount.getSellLogs()) {
+            System.out.println(sellLog.toString());
+        }
+    }
+
+    private void manageResellerProduct() {
+
+    }
+
+    private void addProduct() {
+
+    }
+
+    private void removeProduct(String command) {
+
+    }
+
+
+
+
 
     private void initializeManageResellerProductMenu() {
         manageResellerProductsMenu.commandProcess = new CommandProcess() {
@@ -733,6 +763,18 @@ public class View {
         };
     }
 
+    public void viewResellerProduct(String command) {
+
+    }
+
+    public void viewResellerProductBuyers(String command) {
+
+    }
+
+    public void editResellerProduct(String command) {
+
+    }
+
     private void initializeManageResellerOffMenu() {
         manageResellerOffMenu.commandProcess = new CommandProcess() {
             @Override
@@ -754,6 +796,51 @@ public class View {
                 }
             }
         };
+    }
+
+    public void viewResellerOff(String command) {
+
+    }
+
+    public void editResellerOff(String command) {
+
+    }
+
+    public void addOff() {
+
+    }
+
+    private void initializeOffMenu() {
+        offMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                try {
+                    if (command.equalsIgnoreCase("offs")) {
+                        showOffs();
+                    } else if (command.matches("^show product \\w+$")) {
+                        showOffProduct(command);
+                    } else if (command.equalsIgnoreCase("back")) {
+                        offMenu.goToPreviousMenu();
+                    } else {
+                        throw new Exception("Invalid command");
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        };
+    }
+
+    private void showOffs() throws Exception {
+        for (Off off : DataManager.getAllOffs()) {
+            System.out.println(off.toString());
+        }
+    }
+
+    private void showOffProduct(String command) throws Exception {
+        Matcher matcher = Pattern.compile("^show product (?<productId>\\w+)$").matcher(command);
+        int productId = Integer.parseInt(matcher.group("productId"));
+        DataManager.getCommodityById(productId).toString();
     }
 
     public void run() {
