@@ -11,17 +11,8 @@ import java.util.ArrayList;
 
 public class ManageUsersMenu extends Menu {
 
-    public SimpleAccount getAccountWithUsername(String username) throws Exception {
-        ArrayList<SimpleAccount> allAccounts = DataManager.getAllAccounts();
-        return DataManager.getAccountWithUsername(username);
-    }
-
-    public void deleteAccountWithUsername(String username) throws Exception {
-        DataManager.getAllAccounts().remove(DataManager.getAccountWithUsername(username));
-    }
-
-    public void createNewManager(ManagerAccount managerAccount) {
-        DataManager.addAccount(managerAccount);
+    public void createNewManager(ManagerAccount managerAccount) throws Exception {
+        DataManager.addManagerAccount(managerAccount);
     }
 
 

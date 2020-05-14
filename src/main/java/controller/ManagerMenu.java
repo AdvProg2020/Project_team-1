@@ -1,9 +1,9 @@
 package controller;
 
 import model.Commodity;
+import model.DataManager;
 import model.DiscountCode;
 import model.Request;
-import model.SuperMarket;
 import model.account.SimpleAccount;
 
 import java.util.ArrayList;
@@ -36,27 +36,9 @@ public class ManagerMenu extends Menu {
 
     public void addDiscountCode(String code,Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
                                int maximumNumberOfUse,ArrayList<SimpleAccount> accountArrayList) throws Exception {
-        SuperMarket.addToDiscounts(new DiscountCode(code,start,finish,discountPercentage,maximumDiscountPrice,maximumNumberOfUse,accountArrayList));
+        DataManager.addDiscountCode(new DiscountCode(code,start,finish,discountPercentage,maximumDiscountPrice,maximumNumberOfUse,accountArrayList));
 
     }
 
-    public ArrayList<SimpleAccount> getAllAccounts() {
-        return SuperMarket.getAllAccounts();
-    }
 
-    public ArrayList<Commodity> getAllCommodities() {
-        return SuperMarket.getAllCommodities();
-    }
-
-    public ArrayList<DiscountCode> getAllDiscounts() {
-        return SuperMarket.getAllDiscountCodes();
-    }
-
-    public ArrayList<Request> getAllRequests() {
-        return SuperMarket.getAllRequests();
-    }
-
-    public void createNewDiscount(DiscountCode discountCode) {
-        SuperMarket.addToDiscounts(discountCode);
-    }
 }

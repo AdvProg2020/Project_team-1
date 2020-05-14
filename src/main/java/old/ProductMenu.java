@@ -6,7 +6,13 @@ import model.Commodity;
 import java.util.ArrayList;
 
 public class ProductMenu implements CommandProcess {
-    CommandProcess commandProcess;
+    CommandProcess commandProcess = new CommandProcess() {
+        @Override
+        public String commandProcessor(String command) throws Exception {
+            return null;
+        }
+    };
+
 
     public static ArrayList<Command> getProductMenuCommand() {
         return productMenuCommand;

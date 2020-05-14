@@ -2,6 +2,7 @@ package model;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.sun.security.auth.UnixNumericGroupPrincipal;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
@@ -9,10 +10,7 @@ import model.account.SimpleAccount;
 import model.log.TransactionLog;
 import sun.java2d.pipe.SpanShapeRenderer;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,11 +22,14 @@ public class DataManager {
 
     private static File allPersonalAccountsJson;
 
+    private static File allDiscountCodeJson;
+
     static {
         initializeDataDirectory();
         allManagersJson = new File("data/accounts/allManagers.json");
         allResellersJson = new File("data/accounts/allResellers.json");
         allPersonalAccountsJson = new File("data/accounts/allPersonalAccounts.json");
+        allDiscountCodeJson = new File("data/allDiscountCodes.json");
         initializeDataFiles();
     }
 
@@ -43,6 +44,7 @@ public class DataManager {
             gson.toJson(new ArrayList<ManagerAccount>(), new FileWriter(allManagersJson));
             gson.toJson(new ArrayList<BusinessAccount>(), new FileWriter(allResellersJson));
             gson.toJson(new ArrayList<PersonalAccount>(), new FileWriter(allPersonalAccountsJson));
+            gson.toJson(new ArrayList<DiscountCode>() , new FileWriter(allDiscountCodeJson));
         } catch (IOException e) {
 
         }
@@ -55,11 +57,29 @@ public class DataManager {
         return gson.fromJson(jsonReader, ManagerAccount.class);
     }
 
+
+
     public static void addManagerAccount(ManagerAccount managerAccount) throws Exception{
         ArrayList<ManagerAccount> allManagerAccounts = new ArrayList<>(Arrays.asList(getAllManagers()));
         allManagerAccounts.add(managerAccount);
         Gson gson = new Gson();
         gson.toJson(allManagerAccounts, new FileWriter(allManagersJson));
+    }
+
+    public static SimpleAccount getAccountWithUserName(String username) throws IOException {
+        for (ManagerAccount managerAccount : getAllManagers()) {
+            if (managerAccount.getUsername().equals(username))
+                return managerAccount;
+        }
+        for (PersonalAccount personalAccount : getAllPersonalAccounts()) {
+            if (personalAccount.getUsername().equals(username))
+                return personalAccount;
+        }
+        for (BusinessAccount reseller : getAllResellers()) {
+            if (reseller.getUsername().equals(username))
+                return reseller;
+        }
+        return null;
     }
 
     public static BusinessAccount[] getAllResellers() throws IOException{
@@ -68,6 +88,66 @@ public class DataManager {
         Gson gson = new Gson();
         return gson.fromJson(jsonReader, BusinessAccount.class);
     }
+
+    public static boolean deleteManagerAccount(String username) throws IOException {
+        ManagerAccount managerAccount = null;
+        for (ManagerAccount manager : getAllManagers()) {
+            if (manager.getUsername().equalsIgnoreCase(username)) {
+                managerAccount = manager;
+                ArrayList<ManagerAccount> allManagerAccounts = new ArrayList<>(Arrays.asList(getAllManagers()));
+                allManagerAccounts.remove(managerAccount);
+                Gson gson = new Gson();
+                gson.toJson(allManagerAccounts, new FileWriter(allManagersJson));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean deletePersonalAccount(String username) throws IOException {
+        PersonalAccount personalAccount = null;
+        for (PersonalAccount personalAcc : getAllPersonalAccounts()) {
+            if (personalAccount.getUsername().equalsIgnoreCase(username)) {
+                personalAccount = personalAcc;
+                ArrayList<PersonalAccount> allPersonalAccounts = new ArrayList<>(Arrays.asList(getAllPersonalAccounts()));
+                allPersonalAccounts.remove(personalAccount);
+                Gson gson = new Gson();
+                gson.toJson(allPersonalAccounts, new FileWriter(allPersonalAccountsJson));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean deleteBusinessAccount(String username) throws IOException {
+        BusinessAccount businessAccount = null
+        for (BusinessAccount reseller : getAllResellers()) {
+            if (reseller.getUsername().equalsIgnoreCase(username)) {
+                businessAccount = reseller;
+                ArrayList<BusinessAccount> allResellersAccounts = new ArrayList<>(Arrays.asList(getAllResellers()));
+                allResellersAccounts.remove(businessAccount);
+                Gson gson = new Gson();
+                gson.toJson(allResellersAccounts, new FileWriter(allResellersJson));
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public static void deleteAccountWithUserName(String username) throws Exception {
+        if (deleteBusinessAccount(username)){
+            return;
+        }
+        if (deletePersonalAccount(username)){
+            return;
+        }
+        if (deleteManagerAccount(username)){
+            return;
+        }
+        throw new Exception();
+    }
+
 
     public static void addResellerAccount(BusinessAccount businessAccount) throws Exception{
         ArrayList<BusinessAccount> allResellersAccounts = new ArrayList<>(Arrays.asList(getAllResellers()));
@@ -81,6 +161,20 @@ public class DataManager {
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
         return gson.fromJson(jsonReader, PersonalAccount.class);
+    }
+
+    public static DiscountCode[] getAllDiscountCodes() throws Exception{
+        FileReader fileReader = new FileReader(allDiscountCodeJson);
+        JsonReader jsonReader = new JsonReader(fileReader);
+        Gson gson = new Gson();
+        return gson.fromJson(jsonReader, DiscountCode.class);
+    }
+
+    public static void addDiscountCode(DiscountCode discountCode) throws Exception {
+        ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>(Arrays.asList(getAllDiscountCodes()));
+        allDiscountCodes.add(discountCode);
+        Gson gson = new Gson();
+        gson.toJson(allDiscountCodes, new FileWriter(allDiscountCodeJson));
     }
 
     public static void addPersonalAccount(PersonalAccount personalAccount) throws Exception{
@@ -108,9 +202,16 @@ public class DataManager {
         }
         return false;
     }
+    private static SimpleAccount onlineAccount;
 
+    public static void setOnlineAccount(SimpleAccount onlineAccount) {
+        DataManager.onlineAccount = onlineAccount;
+    }
 
-//    public static Object getNearHand() {
+    public static SimpleAccount getOnlineAccount() {
+        return onlineAccount;
+    }
+    //    public static Object getNearHand() {
 //        return nearHand;
 //    }
 //
