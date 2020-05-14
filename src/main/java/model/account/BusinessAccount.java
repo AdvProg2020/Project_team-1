@@ -14,29 +14,22 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
     private ArrayList<SellLog> sellLogs;
     private ArrayList<Commodity> commodities;
     private ArrayList<Off> offs;
-    private PersonalAccount personalAccount;
     private Status status;
     private double credit;
 
-    public BusinessAccount(String username, String firstName, String lastName, PersonalAccount personalAccount,
-                           String email, String phoneNumber, String password, String businessName) throws Exception {
+    public BusinessAccount(String username, String firstName, String lastName, String email, String phoneNumber,
+                           String password, String businessName) throws Exception {
         super(username, firstName, lastName, email, phoneNumber, password);
         changeBusinessName(businessName);
         sellLogs = new ArrayList<SellLog>();
         commodities = new ArrayList<Commodity>();
         offs = new ArrayList<Off>();
         this.status = Status.UNDER_CHECKING_FOR_CREATE;
-        this.personalAccount = personalAccount;
         credit = 0;
     }
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    @Override
-    public void addObj() {
-        personalAccount.setBusinessAccount(this);
     }
 
     public ArrayList<SellLog> getSellLogs() {

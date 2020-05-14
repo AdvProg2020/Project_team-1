@@ -375,7 +375,7 @@ public class View {
             public void commandProcessor(String command) throws Exception {
                 try {
                     if (command.matches("create account (personal|reseller|manager) (\\S+)")) {
-
+                        registerCommand(command);
                     } else if (command.matches("^login \\S+$")) {
                         loginCommand(command);
                     } else if (command.equalsIgnoreCase("back")) {
@@ -446,6 +446,10 @@ public class View {
                 System.out.println("Invalid account type. Available account types are personal/reseller/manager.");
         }
         System.out.println("You registered successfully.");
+    }
+
+    private void initializeResellerMenu() {
+
     }
 
 

@@ -12,7 +12,6 @@ public class PersonalAccount extends SimpleAccount {
     private HashMap<DiscountCode, Integer> discountCodes;
     private ArrayList<BuyLog> buyLogs;
     private HashMap<Commodity,Integer> cart;
-    private BusinessAccount businessAccount;
     private double credit;
 
     public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password) throws Exception {
@@ -20,7 +19,6 @@ public class PersonalAccount extends SimpleAccount {
         discountCodes = new HashMap<>();
         buyLogs = new ArrayList<>();
         cart = new HashMap<>();
-        businessAccount = null;
         credit = 0.0;
     }
 
@@ -65,14 +63,6 @@ public class PersonalAccount extends SimpleAccount {
 
     public void removeFromCart(Commodity commodity) {
         cart.remove(commodity);
-    }
-
-    public BusinessAccount getBusinessAccount() {
-        return businessAccount;
-    }
-
-    public void setBusinessAccount(BusinessAccount businessAccount) {
-        this.businessAccount = businessAccount;
     }
 
     public double getCredit() {

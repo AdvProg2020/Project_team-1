@@ -35,11 +35,9 @@ public class LoginRegisterMenu extends Menu{
 
     public void registerResellerAccount(String username, String firstName, String lastName, String email,
                                         String phoneNumber, String password, String businessName) throws Exception{
-        PersonalAccount newAccount = new PersonalAccount(username, firstName, lastName, email, phoneNumber, password);
-        newAccount.setBusinessAccount(new BusinessAccount(username, firstName, lastName, newAccount, email,
+        BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
                 phoneNumber, password, businessName));
-        DataManager.addPersonalAccount(newAccount);
-        DataManager.addResellerAccount(newAccount.getBusinessAccount());
+        DataManager.addResellerAccount(newAccount);
     }
 
     public void login(String username, String password) throws Exception{
