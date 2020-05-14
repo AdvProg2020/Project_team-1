@@ -1,6 +1,9 @@
 package view;
 
 import controller.*;
+import controller.reseller.ManageResellerOffsMenu;
+import controller.reseller.ManageResellerProductsMenu;
+import controller.reseller.ResellerMenu;
 import model.*;
 import controller.customer.CartMenu;
 import model.Commodity;
@@ -10,6 +13,7 @@ import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+import old.business_menu.ManageProductMenu;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -21,41 +25,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class View {
-    //    public ArrayList<CommandProcess> allMenus = new ArrayList<CommandProcess>();
-//
-//    public View() {
-//        ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
-//        viewPersonalInfoMenu.commandProcess1 = new CommandProcess() {
-//            @Override
-//            public String commandProcessor(String command) throws Exception {
-//                try {
-//                    ViewPersonalInfoMenu.filter();
-//                } catch (Exception e) {
-//                    System.out.println("filter nashod");
-//                }
-//            }
-//        };
-//        final ProductsMenu productsMenu = new ProductsMenu();
-//        productsMenu.commandProcess = new CommandProcess() {
-//            @Override
-//            public String commandProcessor(String command) throws Exception {
-//              if (command.equals("get products")){
-//                  try {
-//                      ArrayList t = productsMenu.getallProducts;
-//                      t.for{
-//                          System.out.println(t.name);
-//                      }
-//                  }catch (Exception e){
-//                      System.out.println(" gerfte nashod");
-//                  }
-//              }
-//            }
-//        };
-//
-//        HandleMenu.getMenu().commandProcess.commandProssor;
-//
-//    }
-    private final LoginRegisterMenu loginRegisterMenu = new LoginRegisterMenu();
+
+    public static final LoginRegisterMenu loginRegisterMenu = new LoginRegisterMenu();
+    public static final ResellerMenu resellerMenu = new ResellerMenu();
+    public static final ManageResellerProductsMenu manageResellerProductsMenu = new ManageResellerProductsMenu();
+    public static final ManageResellerOffsMenu manageResellerOffMenu = new ManageResellerOffsMenu();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {
@@ -73,7 +47,7 @@ public class View {
         initializeManageUsers(manageUsersMenu);
         initializeViewPersonalMenu(viewPersonalInfoMenu);
         initializeManagerMenu(managerMenu, viewPersonalInfoMenu, manageUsersMenu);
-        initializeCustomerMenu(viewPersonalInfoMenu, customerMenu, cartMenu);
+        //initializeCustomerMenu(viewPersonalInfoMenu, customerMenu, cartMenu);
         initializeCartMenu(cartMenu, commodityMenu);
     }
 
@@ -624,9 +598,85 @@ public class View {
     }
 
     private void initializeResellerMenu() {
+        resellerMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                try {
+                    if (command.equalsIgnoreCase("view personal info")) {
 
+                    } else if (command.equalsIgnoreCase("view company info")) {
+
+                    } else if (command.equalsIgnoreCase("view sales history")) {
+
+                    } else if (command.equalsIgnoreCase("manage products")) {
+
+                    } else if (command.equalsIgnoreCase("add product")) {
+
+                    } else if (command.matches("^remove product (\\d+)$")) {
+
+                    } else if (command.equalsIgnoreCase("show categories")) {
+
+                    } else if (command.equalsIgnoreCase("view offs")) {
+
+                    } else if (command.equalsIgnoreCase("view balance")) {
+
+                    } else if (command.equalsIgnoreCase("back")) {
+                        resellerMenu.goToPreviousMenu();
+                    } else {
+                        throw new Exception("Invalid command");
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        };
     }
 
+    private void initializeManageResellerProductMenu() {
+        manageResellerProductsMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                try {
+                    if (command.matches("^view (\\d+)$")) {
+
+                    } else if (command.matches("^view buyers (\\d+)$")) {
+
+                    } else if (command.matches("^edit (\\w+)$")) {
+
+                    } else if (command.equalsIgnoreCase("back")) {
+                        manageResellerProductsMenu.goToPreviousMenu();
+                    } else {
+                        throw new Exception("Invalid command");
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        };
+    }
+
+    private void initializeManageResellerOffMenu() {
+        manageResellerOffMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                try {
+                    if (command.matches("^view \\w+$")) {
+
+                    } else if (command.matches("^edit \\w+$")) {
+
+                    } else if (command.equalsIgnoreCase("add off")) {
+
+                    } else if (command.equalsIgnoreCase("back")) {
+                        manageResellerOffMenu.goToPreviousMenu();
+                    } else {
+                        throw new Exception("Invalid command");
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        };
+    }
 
     public void run() {
 
