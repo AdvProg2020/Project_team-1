@@ -1,4 +1,5 @@
 package controller;
 
-public class OffMenu extends MenuHandler{
+public class OffMenu extends Menu {
+
 }

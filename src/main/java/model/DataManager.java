@@ -29,6 +29,8 @@ public class DataManager {
 
     private static File allRequestsJson;
 
+    private static File allOffsJson;
+
     static {
         initializeDataDirectory();
         allManagersJson = new File("data/accounts/allManagers.json");
@@ -37,6 +39,7 @@ public class DataManager {
         allDiscountCodeJson = new File("data/allDiscountCodes.json");
         allRequestsJson = new File("data/allRequests.json");
         allCommoditiesJson = new File("data/allCommodities.json");
+        allOffsJson = new File("data/allOffs.json");
         initializeDataFiles();
     }
 
@@ -53,6 +56,7 @@ public class DataManager {
             gson.toJson(new ArrayList<PersonalAccount>(), new FileWriter(allPersonalAccountsJson));
             gson.toJson(new ArrayList<DiscountCode>(), new FileWriter(allDiscountCodeJson));
             gson.toJson(new ArrayList<Request>(), new FileWriter(allRequestsJson));
+            gson.toJson(new ArrayList<Off>(), new FileWriter(allOffsJson));
         } catch (IOException e) {
 
         }
@@ -71,14 +75,14 @@ public class DataManager {
         FileReader fileReader = new FileReader(allRequestsJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, Request.class);
+        return gson.fromJson(jsonReader, Request[].class);
     }
 
     public static ManagerAccount[] getAllManagers() throws IOException {
         FileReader fileReader = new FileReader(allManagersJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, ManagerAccount.class);
+        return gson.fromJson(jsonReader, ManagerAccount[].class);
     }
 
 
@@ -109,7 +113,7 @@ public class DataManager {
         FileReader fileReader = new FileReader(allResellersJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, BusinessAccount.class);
+        return gson.fromJson(jsonReader, BusinessAccount[].class);
     }
 
     public static boolean deleteManagerAccount(String username) throws IOException {
@@ -205,14 +209,14 @@ public class DataManager {
         FileReader fileReader = new FileReader(allPersonalAccountsJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, PersonalAccount.class);
+        return gson.fromJson(jsonReader, PersonalAccount[].class);
     }
 
     public static DiscountCode[] getAllDiscountCodes() throws Exception{
         FileReader fileReader = new FileReader(allDiscountCodeJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, DiscountCode.class);
+        return gson.fromJson(jsonReader, DiscountCode[].class);
     }
 
     public static void addDiscountCode(DiscountCode discountCode) throws Exception {
@@ -233,7 +237,7 @@ public class DataManager {
         FileReader fileReader = new FileReader(allCommoditiesJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, Commodity.class);
+        return gson.fromJson(jsonReader, Commodity[].class);
     }
 
     public static Commodity getCommodityById(int id) throws Exception {
@@ -271,6 +275,21 @@ public class DataManager {
 
     public static SimpleAccount getOnlineAccount() {
         return onlineAccount;
+    }
+
+    public static Off[] getAllOffs() throws IOException {
+        FileReader fileReader = new FileReader(allOffsJson);
+        JsonReader jsonReader = new JsonReader(fileReader);
+        Gson gson = new Gson();
+        return gson.fromJson(jsonReader, Off[].class);
+    }
+
+
+    public static void addOff(Off off) throws Exception {
+        ArrayList<Off> allOffs = new ArrayList<>(Arrays.asList(getAllOffs()));
+        allOffs.add(off);
+        Gson gson = new Gson();
+        gson.toJson(allOffs, new FileWriter(allOffsJson));
     }
     //    public static Object getNearHand() {
 //        return nearHand;
