@@ -3,16 +3,16 @@ package model;
 import model.account.SimpleAccount;
 
 public class Session {
-    private static SimpleAccount simpleAccount;
+    private static SimpleAccount onlineAccount;
 
     private Session() {
     }
 
-    public static SimpleAccount getSimpleAccount() {
-        return simpleAccount;
+    public static SimpleAccount getOnlineAccount() {
+        return onlineAccount;
     }
 
-    public static void setSimpleAccount(SimpleAccount simpleAccount) {
-        Session.simpleAccount = simpleAccount;
+    public static void setOnlineAccount(SimpleAccount onlineAccount) {
+        Session.onlineAccount = onlineAccount;
     }
 }

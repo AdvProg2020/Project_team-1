@@ -5,6 +5,7 @@ import controller.customer.CartMenu;
 import model.Commodity;
 import model.DataManager;
 import model.DiscountCode;
+import model.Session;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
@@ -109,21 +110,21 @@ public class View {
                 }
             }
         };
-        initializeCustomerMenu(viewPersonalInfoMenu, customerMenu);
-
+        initializeCustomerMenu(viewPersonalInfoMenu, customerMenu, cartMenu);
         initializeCartMenu(cartMenu, commodityMenu);
     }
 
-    private void initializeCustomerMenu(final ViewPersonalInfoMenu viewPersonalInfoMenu, CustomerMenu customerMenu) {
+    private void initializeCustomerMenu(final ViewPersonalInfoMenu viewPersonalInfoMenu, final CustomerMenu customerMenu,
+                                        final CartMenu cartMenu) {
         customerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
                     viewPersonalInfo(viewPersonalInfoMenu);
                 } else if (command.equals("view cart")) {
-
+                    goToCartMenu(cartMenu, customerMenu);
                 } else if (command.equals("purchase")) {
-
+                    purchase(cartMenu);
                 } else if (command.equals("view orders")) {
 
                 } else if (command.equals("view balance")) {
@@ -133,6 +134,12 @@ public class View {
                 }
             }
         };
+    }
+
+    private void goToCartMenu(CartMenu cartMenu, CustomerMenu customerMenu) {
+        System.out.println("enter your command");
+        cartMenu.setPreviousMenu(customerMenu);
+        HandleMenu.setMenu(cartMenu);
     }
 
     private void initializeCartMenu(final CartMenu cartMenu, final CommodityMenu commodityMenu) {
@@ -150,10 +157,50 @@ public class View {
                 } else if (command.equals("show total price")) {
                     System.out.println("total price is " + cartMenu.calculateTotalPrice());
                 } else if (command.equals("purchase")) {
-                    //to do
+                    purchase(cartMenu);
                 }
             }
         };
+    }
+
+    private void purchase(CartMenu cartMenu) {
+        System.out.println("please enter your address");
+        String address = scanner.nextLine();
+        System.out.println("please enter your phone number");
+        String phone = scanner.nextLine();
+        while (!phone.matches("0\\d{10}")) {
+            System.out.println("please enter a valid phone number");
+            phone = scanner.nextLine();
+        }
+        System.out.println("please enter your postal code");
+        String postalCode = scanner.nextLine();
+        while (!postalCode.matches("\\d{10}")) {
+            System.out.println("please enter a valid postal code");
+            postalCode = scanner.nextLine();
+        }
+        System.out.println("please enter a discount code or enter nothing");
+        String code = scanner.nextLine();
+        boolean done = false;
+        int price = cartMenu.calculateTotalPrice();
+        while (!done) {
+            try {
+                DiscountCode discountCode = cartMenu.checkDiscountCode(code);
+                if (discountCode.getMaximumDiscountPrice() <= discountCode.getDiscountPercentage() * price / 100) {
+                    price -= discountCode.getMaximumDiscountPrice();
+                } else {
+                    price -= discountCode.getDiscountPercentage() * price / 100;
+                }
+                done = true;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+        if (price <= account.getCredit()) {
+            //to do
+            return;
+        }
+        System.out.println("you don't have enough money to pay");
     }
 
     private void getDiscountCodeInitialize(final GetDiscountCode getDiscountCode) {
