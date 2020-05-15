@@ -22,10 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -136,7 +133,20 @@ public class View {
         try {
             Commodity comparingCommodity = commodityMenu.compare(id);
             Commodity commodity = commodityMenu.getCommodity();
-            //to do
+            Category category = commodity.getCategory();
+            System.out.format("%-15s: %-30s %-30s", "name", commodity.getName(), comparingCommodity.getName());
+            System.out.format("%-15s: %-30s %-30s", "brand", commodity.getBrand(), comparingCommodity.getBrand());
+            System.out.format("%-15s: %-30s %-30s", "price", commodity.getPrice(), comparingCommodity.getPrice());
+            System.out.format("%-15s: %-30s %-30s", "seller", commodity.getSeller().getUsername(), comparingCommodity.
+                    getSeller().getUsername());
+            System.out.format("%-15s: %-30s %-30s", "amount", commodity.getInventory(), comparingCommodity.
+                    getInventory());
+            for (int i = 0; i < commodity.getCategorySpecifications().size(); i++) {
+                Field specification = commodity.getCategorySpecifications().get(i);
+                Field comparingSpecification = comparingCommodity.getCategorySpecifications().get(i);
+                System.out.format("%-15s: %-30s %-30s", specification.getTitle(), specification.getValue(),
+                        comparingSpecification.getValue());
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -490,9 +500,10 @@ public class View {
         String code = scanner.nextLine();
         boolean done = false;
         int price = cartMenu.calculateTotalPrice();
+        DiscountCode discountCode = null;
         while (!done) {
             try {
-                DiscountCode discountCode = cartMenu.checkDiscountCode(code);
+                discountCode = cartMenu.checkDiscountCode(code);
                 if (discountCode.getMaximumDiscountPrice() <= discountCode.getDiscountPercentage() * price / 100) {
                     price -= discountCode.getMaximumDiscountPrice();
                 } else {
@@ -505,7 +516,23 @@ public class View {
         }
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         if (price <= account.getCredit()) {
-            //to do
+            account.addToCredit(-price);
+            BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, discountCode, address, phone,
+                    postalCode);
+            account.addBuyLog(buyLog);
+            Set<BusinessAccount> sellers = buyLog.getSellers();
+            for (BusinessAccount seller : sellers) {
+                Set<Commodity> commodities = new HashSet<>();
+                int received = 0;
+                for (Commodity commodity : account.getCart().keySet()) {
+                    if (commodity.getSeller().getUsername().equals(seller.getUsername())) {
+                        commodities.add(commodity);
+                        received += commodity.getPrice();
+                    }
+                }
+                // to do
+                seller.addSellLog(new SellLog(new Date(), received, 0, commodities, account));
+            }
             return;
         }
         System.out.println("you don't have enough money to pay");

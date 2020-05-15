@@ -8,7 +8,7 @@ public class NumericalField extends Field {
         this.value = value;
     }
 
-    public int getValue() {
+    public Integer getValue() {
         return value;
     }
 

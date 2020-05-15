@@ -7,4 +7,9 @@ public abstract class Field {
         this.title = title;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public abstract Object getValue();
 }

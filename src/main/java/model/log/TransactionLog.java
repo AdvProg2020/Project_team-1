@@ -4,6 +4,7 @@ import model.Commodity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 public abstract class TransactionLog {
     protected String logId;
@@ -18,9 +19,9 @@ public abstract class TransactionLog {
                 '}';
     }
 
-    protected ArrayList<Commodity> commodities;
+    protected Set<Commodity> commodities;
 
-    public TransactionLog(Date date, ArrayList<Commodity> commodities) {
+    public TransactionLog(Date date, Set<Commodity> commodities) {
         this.date = date;
         this.commodities = commodities;
     }

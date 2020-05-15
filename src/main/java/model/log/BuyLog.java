@@ -2,35 +2,39 @@ package model.log;
 
 import model.Commodity;
 import model.DiscountCode;
+import model.account.BusinessAccount;
 import model.account.SimpleAccount;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
 public class BuyLog extends TransactionLog {
     private double payedMoney;
     private DiscountCode discountByCode;
-    private Set<SimpleAccount> sellers;
+    private Set<BusinessAccount> sellers;
     private Boolean isCommodityDelivered;
     private String address;
     private String phone;
     private String postalCode;
 
-    public BuyLog(Date date, ArrayList<Commodity> commodities, double payedMoney, DiscountCode discountByCode,
+    public BuyLog(Date date, Set<Commodity> commodities, double payedMoney, DiscountCode discountByCode,
                   String address, String phone, String postalCode) {
         super(date, commodities);
         this.payedMoney = payedMoney;
         this.discountByCode = discountByCode;
         this.sellers = null;
         for (Commodity commodity : commodities) {
-            sellers.add(commodity.getSeller());
+            sellers.add((BusinessAccount) commodity.getSeller());
         }
         logId = generateLogID();
         isCommodityDelivered = false;
         this.phone = phone;
         this.postalCode = postalCode;
         this.address = address;
+    }
+
+    public Set<BusinessAccount> getSellers() {
+        return sellers;
     }
 
     public double getPayedMoney() {

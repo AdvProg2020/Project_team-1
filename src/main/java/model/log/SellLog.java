@@ -3,8 +3,8 @@ package model.log;
 import model.Commodity;
 import model.account.SimpleAccount;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 public class SellLog extends TransactionLog {
     private double receivedMoney;
@@ -12,7 +12,8 @@ public class SellLog extends TransactionLog {
     private SimpleAccount buyer;
     private Boolean isCommodityDelivered;
 
-    public SellLog(Date date, int receivedMoney, int deductedMoneyOnSale, ArrayList<Commodity> soledCommodities, SimpleAccount buyer) {
+    public SellLog(Date date, int receivedMoney, int deductedMoneyOnSale, Set<Commodity> soledCommodities,
+                   SimpleAccount buyer) {
         super(date, soledCommodities);
         this.receivedMoney = receivedMoney;
         this.deductedMoneyOnSale = deductedMoneyOnSale;
