@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import controller.*;
 import controller.customer.CartMenu;
 import controller.customer.OrderMenu;
@@ -352,7 +351,7 @@ public class View {
                     manageRequests(managerMenu);
                 }
                 if (command.matches("^manageCategories")) {
-                    manage
+                    manageCategories();
                 }
             }
         };
