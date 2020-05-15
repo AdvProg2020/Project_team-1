@@ -815,7 +815,7 @@ public class View {
             public void commandProcessor(String command) throws Exception {
                 try {
                     if (command.matches("^view \\w+$")) {
-                        viewResellerOff();
+
                     } else if (command.matches("^edit \\w+$")) {
 
                     } else if (command.equalsIgnoreCase("add off")) {

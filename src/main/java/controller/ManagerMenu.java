@@ -1,10 +1,13 @@
 package controller;
 
+import model.Category;
 import model.DataManager;
 import model.DiscountCode;
 import model.Request;
 import model.account.SimpleAccount;
+import view.View;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +38,22 @@ public class ManagerMenu extends Menu {
                                 int maximumNumberOfUse, ArrayList<SimpleAccount> accountArrayList) throws Exception {
         DataManager.addDiscountCode(new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accountArrayList));
 
+    }
+
+    public Category[] manageCategory() throws FileNotFoundException {
+        HandleMenu.setMenu(View.manageCategoryMenu);
+        View.manageCategoryMenu.setPreviousMenu(View.managerMenu);
+        return getAllCategories();
+    }
+
+    public Category[] getAllCategories() throws FileNotFoundException {
+        return DataManager.getAllCategories();
+    }
+
+    public Request[] manageRequest() throws IOException {
+        HandleMenu.setMenu(View.manageRequestMenu);
+        View.manageRequestMenu.setPreviousMenu(View.managerMenu);
+        return getAllRequests();
     }
 
     public Request[] getAllRequests() throws IOException {

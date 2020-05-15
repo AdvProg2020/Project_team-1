@@ -17,11 +17,11 @@ public class Category {
         this.subCategories = new ArrayList<Category>();
     }
 
-    public Category(String name, int numberOfFields) {
+    public Category(String name, ArrayList<Commodity> commodities , ArrayList<CategorySpecification> categorySpecifications) {
         this.name = name;
         this.father = null;
-        this.commodities = new ArrayList<Commodity>();
-        this.fieldOptions = new ArrayList<CategorySpecification>();
+        this.commodities = commodities;
+        this.fieldOptions = categorySpecifications;
         this.subCategories = new ArrayList<Category>();
     }
 
