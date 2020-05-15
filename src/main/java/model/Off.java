@@ -36,7 +36,7 @@ public class Off implements Requestable {
         discountPercent = off.discountPercent;
     }
 
-    public String getOffID() {
+    public int getOffID() {
         return offID;
     }
 

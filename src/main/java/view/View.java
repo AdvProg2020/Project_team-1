@@ -757,7 +757,7 @@ public class View {
     }
 
     private void removeProduct(String command) throws Exception {
-        Matcher matcher = Pattern.compile("^remove product (?<productId>\\d+)$")).matcher(command);
+        Matcher matcher = Pattern.compile("^remove product (?<productId>\\d+)$").matcher(command);
         int productId = Integer.parseInt(matcher.group("productId"));
         resellerMenu.removeProduct(productId);
     }
