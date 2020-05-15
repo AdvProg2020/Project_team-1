@@ -62,6 +62,27 @@ public class View {
         initializeOrderMenu();
         initializeOffMenu();
         initializeCommodityMenu();
+        initializeDigestMenu();
+    }
+
+    private void initializeDigestMenu() {
+        digestMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("add to cart")) {
+                    addToCart();
+                }
+            }
+        };
+    }
+
+    private void addToCart() {
+        try {
+            digestMenu.addToCart();
+            System.out.println("successfully added");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void initializeCommodityMenu() {
@@ -73,7 +94,7 @@ public class View {
                 } else if (command.equals("attributes")) {
                     attributes();
                 } else if (command.matches("compare (?<id>\\d+))")) {
-
+                    compare(command);
                 } else if (command.equals("comments")) {
                     comments();
                 }
@@ -793,8 +814,27 @@ public class View {
         }
     }
 
-    private void addProduct() {
-
+    private void addProduct() throws Exception {
+        System.out.println("enter product brand:");
+        String brand = scanner.nextLine();
+        System.out.println("enter product name:");
+        String name = scanner.nextLine();
+        System.out.println("enter product price:");
+        int price = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("enter product category:");
+        String categoryString = scanner.nextLine();
+        Category category = resellerMenu.getCategoryByName(categoryString);
+        System.out.println("enter product specification:");
+        ArrayList<Field> productCategorySpecification = new ArrayList<>();
+        for (int i = 0; i < category.getFieldOptions().size(); ++i) {
+            System.out.println("Enter product " + category.getFieldOptions() + ":");
+        }
+        System.out.println("enter product description:");
+        String description = scanner.nextLine();
+        System.out.println("enter product amount:");
+        int amount = scanner.nextInt();
+        scanner.nextLine();
     }
 
     private void removeProduct(String command) throws Exception {

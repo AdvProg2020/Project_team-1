@@ -2,6 +2,7 @@ package controller.reseller;
 
 import controller.Menu;
 import controller.MenuHandler;
+import model.Category;
 import model.Commodity;
 import model.DataManager;
 import model.Session;
@@ -19,6 +20,15 @@ public class ResellerMenu extends Menu {
         ArrayList<Commodity> commodityArrayList = getBusinessAccount().getCommodities();
         MenuHandler.getInstance().setCurrentMenu(View.manageResellerProductsMenu);
         return commodityArrayList;
+    }
+
+    public Category getCategoryByName(String categoryString) throws Exception {
+        for (Category category : DataManager.getAllCategories()) {
+            if (category.getName().equalsIgnoreCase(categoryString)) {
+                return category;
+            }
+        }
+        throw new Exception("Category not found");
     }
 
     public void addProduct() throws Exception {

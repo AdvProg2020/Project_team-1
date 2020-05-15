@@ -18,11 +18,13 @@ public class CommodityMenu extends Menu {
 
     public void goToDigestMenu(DigestMenu digestMenu) {
         HandleMenu.setMenu(digestMenu);
+        digestMenu.setCommodity(this.commodity);
         digestMenu.setPreviousMenu(this);
     }
 
     public void goToCommentsMenu(CommentsMenu commentsMenu) {
         HandleMenu.setMenu(commentsMenu);
+        commentsMenu.setCommodity(this.commodity);
         commentsMenu.setPreviousMenu(this);
     }
 
