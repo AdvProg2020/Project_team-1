@@ -107,8 +107,8 @@ public class Commodity implements Requestable {
     }
 
     @Override
-    public void addObj() {
-        DataManager.addCommodities(this);
+    public void addObj() throws Exception {
+        DataManager.addCommodity(this);
     }
 
     public String getBrand() {

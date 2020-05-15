@@ -17,6 +17,7 @@ import model.field.Field;
 import model.log.BuyLog;
 import model.log.SellLog;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,6 +77,18 @@ public class View {
                 }
             }
         };
+    }
+
+    private void compare(String command) {
+        Matcher matcher = Pattern.compile("compare (?<id>\\d+))").matcher(command);
+        int id = Integer.parseInt(matcher.group("id"));
+        try {
+            Commodity comparingCommodity = commodityMenu.compare(id);
+            Commodity commodity = commodityMenu.getCommodity();
+            //to do
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void comments() {
@@ -744,7 +757,7 @@ public class View {
                     } else if (command.matches("^remove product \\d+$")) {
                         removeProduct(command);
                     } else if (command.equalsIgnoreCase("show categories")) {
-
+                        showCategories();
                     } else if (command.equalsIgnoreCase("view offs")) {
                         viewResellerOff();
                     } else if (command.equalsIgnoreCase("view balance")) {
@@ -786,6 +799,12 @@ public class View {
         Matcher matcher = Pattern.compile("^remove product (?<productId>\\d+)$").matcher(command);
         int productId = Integer.parseInt(matcher.group("productId"));
         resellerMenu.removeProduct(productId);
+    }
+
+    private void showCategories() throws Exception {
+        for (Category category : DataManager.getAllCategories()) {
+            System.out.println(category.toString());
+        }
     }
 
     private void viewResellerBalance() {
