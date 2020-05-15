@@ -1,6 +1,7 @@
 package controller;
 
 import model.DataManager;
+import model.Request;
 import model.Session;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
@@ -37,7 +38,8 @@ public class LoginRegisterMenu extends Menu{
                                         String phoneNumber, String password, String businessName) throws Exception{
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
                 phoneNumber, password, businessName))
-        DataManager.addResellerAccount(newAccount);
+        Request request = new Request(newAccount, null);
+        DataManager.addRequest(request);
     }
 
     public void login(String username, String password) throws Exception{
