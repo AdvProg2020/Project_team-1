@@ -340,13 +340,7 @@ public class DataManager {
         gson.toJson(allOffs, new FileWriter(allOffsJson));
     }
 
-    public static int getCommodityID() {
-        return commodityID;
-    }
-
-    public static void setCommodityID(int commodityID) {
-        DataManager.commodityID = commodityID;
-    }
+    
 
 }
 

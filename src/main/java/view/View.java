@@ -791,8 +791,27 @@ public class View {
         }
     }
 
-    private void addProduct() {
-
+    private void addProduct() throws Exception {
+        System.out.println("enter product brand:");
+        String brand = scanner.nextLine();
+        System.out.println("enter product name:");
+        String name = scanner.nextLine();
+        System.out.println("enter product price:");
+        int price = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("enter product category:");
+        String categoryString = scanner.nextLine();
+        Category category = resellerMenu.getCategoryByName(categoryString);
+        System.out.println("enter product specification:");
+        ArrayList<Field> productCategorySpecification = new ArrayList<>();
+        for (int i = 0; i < category.getFieldOptions().size(); ++i) {
+            System.out.println("Enter product " + category.getFieldOptions() + ":");
+        }
+        System.out.println("enter product description:");
+        String description = scanner.nextLine();
+        System.out.println("enter product amount:");
+        int amount = scanner.nextInt();
+        scanner.nextLine();
     }
 
     private void removeProduct(String command) throws Exception {
