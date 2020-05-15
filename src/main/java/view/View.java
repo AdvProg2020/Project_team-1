@@ -79,6 +79,18 @@ public class View {
         };
     }
 
+    private void compare(String command) {
+        Matcher matcher = Pattern.compile("compare (?<id>\\d+))").matcher(command);
+        int id = Integer.parseInt(matcher.group("id"));
+        try {
+            Commodity comparingCommodity = commodityMenu.compare(id);
+            Commodity commodity = commodityMenu.getCommodity();
+            //to do
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private void comments() {
         Commodity commodity = commodityMenu.getCommodity();
         String output = "";
