@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import controller.*;
 import controller.commodity.CommentsMenu;
 import controller.commodity.DigestMenu;
@@ -18,8 +17,6 @@ import model.field.Field;
 import model.filter.*;
 import model.log.BuyLog;
 import model.log.SellLog;
-import old.Filtering;
-import sun.security.krb5.internal.PAData;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -74,6 +71,26 @@ public class View {
         initializeProductsMenu();
         initializeSortingMenu();
         initializeFilteringMenu();
+        initializeCommentsMenu();
+    }
+
+    private void initializeCommentsMenu() {
+        digestMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("add comment")) {
+                    addComment();
+                }
+            }
+        };
+    }
+
+    private void addComment() {
+        System.out.println("enter title:");
+        String title = scanner.nextLine();
+        System.out.println("enter your comment");
+        String content = scanner.nextLine();
+        commentsMenu.addComment(title, content);
     }
 
     private void initializeDigestMenu() {
@@ -104,7 +121,7 @@ public class View {
                     digest();
                 } else if (command.equals("attributes")) {
                     attributes();
-                } else if (command.matches("compare (?<id>\\d+))")) {
+                } else if (command.matches("compare (?<id>\\d+)")) {
                     compare(command);
                 } else if (command.equals("comments")) {
                     comments();
@@ -114,7 +131,7 @@ public class View {
     }
 
     private void compare(String command) {
-        Matcher matcher = Pattern.compile("compare (?<id>\\d+))").matcher(command);
+        Matcher matcher = Pattern.compile("compare (?<id>\\d+)").matcher(command);
         int id = Integer.parseInt(matcher.group("id"));
         try {
             Commodity comparingCommodity = commodityMenu.compare(id);
