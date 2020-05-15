@@ -14,6 +14,11 @@ import java.util.Date;
 
 public class ManagerMenu extends Menu {
 
+    public void manageAllProducts(){
+        HandleMenu.setMenu(View.manageAllProducts);
+        View.manageAllProducts.setPreviousMenu(View.managerMenu);
+    }
+
     public boolean isNumeric(String s) {
         try {
             Integer.parseInt(s);
@@ -62,6 +67,12 @@ public class ManagerMenu extends Menu {
 
     public SimpleAccount getOnlineAccount() {
         return DataManager.getOnlineAccount();
+    }
+
+    public DiscountCode[] viewDiscountCodesCommand() throws Exception {
+        HandleMenu.setMenu(View.getDiscountCode);
+        View.getDiscountCode.setPreviousMenu(View.managerMenu);
+        return getAllDiscountCodes();
     }
 
     public DiscountCode[] getAllDiscountCodes() throws Exception {

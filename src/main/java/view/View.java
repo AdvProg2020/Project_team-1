@@ -49,6 +49,7 @@ public class View {
     public static final ManageCategoryMenu manageCategoryMenu = new ManageCategoryMenu();
     public static final FilteringMenu filteringMenu = new FilteringMenu();
     public static final SortingMenu sortingMenu = new SortingMenu();
+    public static final ManageAllProducts manageAllProducts =  new ManageAllProducts();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {
@@ -71,6 +72,7 @@ public class View {
         initializeSortingMenu();
         initializeFilteringMenu();
         initializeCommentsMenu();
+        initializeManageAllProductsMenu();
     }
 
     private void initializeCommentsMenu() {
@@ -183,7 +185,7 @@ public class View {
 
     private void manageRequests(ManagerMenu managerMenu) throws IOException {
         String output = "";
-        Request[] allRequests = managerMenu.getAllRequests();
+        Request[] allRequests = managerMenu.manageRequest();
         for (Request request : allRequests) {
             output += "[" + request.getSimpleAccount().getUsername() + "]";
         }
@@ -299,6 +301,9 @@ public class View {
                 }
                 if (command.matches("^manage categories$")) {
                     manageCategories();
+                }
+                if (command.matches("^manage all products")){
+                    manageAllProducts();
                 }
             }
         };
@@ -584,7 +589,7 @@ public class View {
     }
 
     private void viewDiscountCodes(ManagerMenu managerMenu) throws Exception {
-        DiscountCode[] discountCodes = managerMenu.getAllDiscountCodes();
+        DiscountCode[] discountCodes = managerMenu.viewDiscountCodesCommand();
         for (DiscountCode discountCode : discountCodes) {
             System.out.println(discountCode.toString() + "\n");
         }
@@ -1455,6 +1460,27 @@ public class View {
             }
         };
     }
+
+    private void manageAllProducts(){
+        managerMenu.manageAllProducts();
+    }
+
+    private void initializeManageAllProductsMenu(){
+        manageAllProducts.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("remove (?<productId> \\d+)")){
+                    Matcher matcher = Pattern.compile("remove (?<prooductId>)").matcher(command);
+                    try {
+                        manageAllProducts.removeCommodity(Integer.parseInt(matcher.group("productId")));
+                    }catch (Exception e){
+                        System.out.println("invalid commodity id");
+                    }
+                }
+            }
+        };
+    }
+
 
 
     public void run() {
