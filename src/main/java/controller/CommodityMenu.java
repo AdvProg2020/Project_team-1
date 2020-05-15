@@ -33,6 +33,9 @@ public class CommodityMenu extends Menu {
         if (!commodity.getCategory().equals(comparingCommodity.getCategory())) {
             throw new Exception("to compare two products, they have to in the same category");
         }
+        if (commodity.getCommodityId() == comparingCommodity.getCommodityId()) {
+            throw new Exception("these two products are identical");
+        }
         return comparingCommodity;
     }
 }

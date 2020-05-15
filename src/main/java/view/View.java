@@ -21,10 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -130,7 +127,7 @@ public class View {
         try {
             Commodity comparingCommodity = commodityMenu.compare(id);
             Commodity commodity = commodityMenu.getCommodity();
-            //to do
+            Category category = commodity.getCategory();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -276,10 +273,10 @@ public class View {
                 if (command.matches("^view discount codes$")) {
                     viewDiscountCodes(managerMenu);
                 }
-                if (command.matches("^manage requests$")){
+                if (command.matches("^manage requests$")) {
                     manageRequests(managerMenu);
                 }
-                if (command.matches("^manage categories$")){
+                if (command.matches("^manage categories$")) {
                     manageCategories();
                 }
             }
@@ -484,9 +481,10 @@ public class View {
         String code = scanner.nextLine();
         boolean done = false;
         int price = cartMenu.calculateTotalPrice();
+        DiscountCode discountCode = null;
         while (!done) {
             try {
-                DiscountCode discountCode = cartMenu.checkDiscountCode(code);
+                discountCode = cartMenu.checkDiscountCode(code);
                 if (discountCode.getMaximumDiscountPrice() <= discountCode.getDiscountPercentage() * price / 100) {
                     price -= discountCode.getMaximumDiscountPrice();
                 } else {
@@ -499,7 +497,23 @@ public class View {
         }
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         if (price <= account.getCredit()) {
-            //to do
+            account.addToCredit(-price);
+            BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, discountCode, address, phone,
+                    postalCode);
+            account.addBuyLog(buyLog);
+            Set<BusinessAccount> sellers = buyLog.getSellers();
+            for (BusinessAccount seller : sellers) {
+                Set<Commodity> commodities = new HashSet<>();
+                int received = 0;
+                for (Commodity commodity : account.getCart().keySet()) {
+                    if (commodity.getSeller().getUsername().equals(seller.getUsername())) {
+                        commodities.add(commodity);
+                        received += commodity.getPrice();
+                    }
+                }
+                // to do
+                seller.addSellLog(new SellLog(new Date(), received, 0, commodities, account));
+            }
             return;
         }
         System.out.println("you don't have enough money to pay");
@@ -996,15 +1010,15 @@ public class View {
         manageRequestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("^details (?<requestId> \\S+)")){
+                if (command.matches("^details (?<requestId> \\S+)")) {
                     Matcher matcher = Pattern.compile("^details (?<requestId> \\S+)").matcher(command);
                     viewRequestDetails(Integer.parseInt(matcher.group("requestId")));
                 }
-                if (command.matches("^accept (?<requestId> \\S+)")){
+                if (command.matches("^accept (?<requestId> \\S+)")) {
                     Matcher matcher = Pattern.compile("^accept (?<requestId> \\S+)").matcher(command);
                     acceptRequest(Integer.parseInt(matcher.group("requestId")));
                 }
-                if (command.matches("^decline (?<requestId> \\S+)")){
+                if (command.matches("^decline (?<requestId> \\S+)")) {
                     Matcher matcher = Pattern.compile("^decline (?<requestId> \\S+)").matcher(command);
                     declineRequest(Integer.parseInt(matcher.group("requestId")));
                 }
@@ -1013,7 +1027,7 @@ public class View {
     }
 
 
-    private void viewRequestDetails(int id){
+    private void viewRequestDetails(int id) {
         try {
             System.out.println(manageRequestMenu.getRequestById(id).getSimpleAccount().getUsername());
         } catch (Exception e) {
@@ -1021,7 +1035,7 @@ public class View {
         }
     }
 
-    private void acceptRequest(int id){
+    private void acceptRequest(int id) {
         try {
             manageRequestMenu.accept(id);
             System.out.println("request accepted");
@@ -1030,7 +1044,7 @@ public class View {
         }
     }
 
-    private void declineRequest(int id){
+    private void declineRequest(int id) {
         try {
             manageRequestMenu.decline(id);
             System.out.println("request declined");
@@ -1039,29 +1053,29 @@ public class View {
         }
     }
 
-    private void initializeProductsMenu(){
+    private void initializeProductsMenu() {
         productsMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("^view categories$")){
+                if (command.matches("^view categories$")) {
 
                 }
-                if (command.matches("^filtering$")){
+                if (command.matches("^filtering$")) {
 
                 }
-                if (command.matches("^$")){
+                if (command.matches("^$")) {
 
                 }
-                if (command.matches("^$")){
+                if (command.matches("^$")) {
 
                 }
-                if (command.matches("^$")){
+                if (command.matches("^$")) {
 
                 }
-                if (command.matches("^$")){
+                if (command.matches("^$")) {
 
                 }
-                if (command.matches("^$")){
+                if (command.matches("^$")) {
 
                 }
             }
@@ -1104,7 +1118,7 @@ public class View {
     }
 
     private void addCategory(String categoryName) throws Exception {
-        if (manageCategoryMenu.checkCategoryName(categoryName)){
+        if (manageCategoryMenu.checkCategoryName(categoryName)) {
             System.out.println("This name is not available");
             return;
         }
@@ -1114,7 +1128,7 @@ public class View {
         ArrayList<Integer> commoditiesId = new ArrayList<Integer>();
         while (scanner.hasNextInt())
             commoditiesId.add(scanner.nextInt());
-        manageCategoryMenu.addCategory(categoryName,commoditiesId,categorySpecifications);
+        manageCategoryMenu.addCategory(categoryName, commoditiesId, categorySpecifications);
     }
 
     private void getCategorySpecificationFromUser(ArrayList<CategorySpecification> categorySpecifications) {
@@ -1126,7 +1140,7 @@ public class View {
             HashSet<String> options = new HashSet<String>();
             while (scanner.hasNext())
                 options.add(scanner.next());
-            categorySpecifications.add(manageCategoryMenu.createCategorySpecification(title,options));
+            categorySpecifications.add(manageCategoryMenu.createCategorySpecification(title, options));
             System.out.println("Do you want to add another category specification");
             tmp = scanner.nextLine();
         }
@@ -1194,7 +1208,6 @@ public class View {
             System.out.println(e.getMessage());
         }
     }
-
 
 
     public void run() {
