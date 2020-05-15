@@ -890,7 +890,7 @@ public class View {
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
         for (int i = 0; i < category.getFieldOptions().size(); ++i) {
             System.out.println("Enter product " + category.getFieldOptions() + ":");
-            productCategorySpecification.add();
+            //productCategorySpecification.add();
         }
         System.out.println("enter product description:");
         String description = scanner.nextLine();
@@ -1021,8 +1021,38 @@ public class View {
         System.out.println(manageResellerOffMenu.getOffById(offId).toString());
     }
 
-    public void editResellerOff(String command) {
+    public void editResellerOff(String command) throws Exception {
+        Matcher matcher = Pattern.compile("^edit (?<offId>\\d+)$").matcher(command);
+        int offId = Integer.parseInt(matcher.group("offId"));
+        Off oldOff = manageResellerOffMenu.getOffById(offId);
+        System.out.println("enter off start time (put '-' for previous value):");
+        System.out.println("(enter date in format : 'MMM d HH:mm:ss yyyy' ex. Jun 18 10:30:00 2020)");
+        String startTime = scanner.nextLine();
+        System.out.println("enter off end time (put '-' for previous value):");
+        System.out.println("(enter date in format : 'MMM d HH:mm:ss yyyy' ex. Jun 18 10:30:00 2020)");
+        String endTime = scanner.nextLine();
+        System.out.println("enter off percent (put '-1' for previous value):");
+        int offPercent = Integer.parseInt(scanner.nextLine());
+        ArrayList<Commodity> addedProduct = new ArrayList<>();
+        System.out.println("enter products id that you want to add to off");
+        System.out.println("(type -1 when finished)");
+        int productId = 0;
 
+        while ((productId = scanner.nextInt()) != -1) {
+            addedProduct.add(manageResellerProductsMenu.getCommodityById(productId));
+            scanner.nextLine();
+        }
+
+        ArrayList<Commodity> removedProduct = new ArrayList<>();
+        System.out.println("enter products id that you want to remove from off");
+        System.out.println("(type -1 when finished)");
+
+        while ((productId = scanner.nextInt()) != -1) {
+            removedProduct.add(manageResellerProductsMenu.getCommodityById(productId));
+            scanner.nextLine();
+        }
+
+        manageResellerOffMenu.editOff(oldOff, removedProduct, addedProduct, startTime, endTime, offPercent);
     }
 
     public void addOff() throws Exception {
