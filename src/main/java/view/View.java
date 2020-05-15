@@ -863,12 +863,14 @@ public class View {
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
         for (int i = 0; i < category.getFieldOptions().size(); ++i) {
             System.out.println("Enter product " + category.getFieldOptions() + ":");
+            productCategorySpecification.add();
         }
         System.out.println("enter product description:");
         String description = scanner.nextLine();
         System.out.println("enter product amount:");
         int amount = scanner.nextInt();
         scanner.nextLine();
+        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount);
     }
 
     private void removeProduct(String command) throws Exception {
@@ -924,10 +926,37 @@ public class View {
         }
     }
 
-    public void editResellerProduct(String command) {
+    public void editResellerProduct(String command) throws Exception {
         Matcher matcher = Pattern.compile("^edit (?<productId>\\d+)$").matcher(command);
         int productId = Integer.parseInt(matcher.group("productId"));
+        Commodity commodity = DataManager.getCommodityById(productId);
+        System.out.println("enter product brand (put '-' for previous value):");
+        String brand = scanner.nextLine();
+        System.out.println("enter product name (put '-' for previous value):");
+        String name = scanner.nextLine();
+        System.out.println("enter product price (put '-' for previous value):");
+        int price = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("enter product category (put '-' for previous value):");
+        String categoryString = scanner.nextLine();
+        Category category;
+        if (categoryString.equalsIgnoreCase("-")) {
+            category = commodity.getCategory();
+        } else {
+            category = resellerMenu.getCategoryByName(categoryString);
+        }
+        System.out.println("enter product specification (put '-' for previous value):");
+        ArrayList<Field> productCategorySpecification = new ArrayList<>();
+        for (int i = 0; i < category.getFieldOptions().size(); ++i) {
+            System.out.println("Enter product " + category.getFieldOptions() + ":");
 
+        }
+        System.out.println("enter product description:");
+        String description = scanner.nextLine();
+        System.out.println("enter product amount:");
+        int amount = scanner.nextInt();
+        scanner.nextLine();
+        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount);
     }
 
     private void initializeManageResellerOffMenu() {
@@ -935,12 +964,12 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
-                    if (command.matches("^view \\w+$")) {
-
+                    if (command.matches("^view \\d+$")) {
+                        viewResellerOff(command);
                     } else if (command.matches("^edit \\w+$")) {
-
+                        editResellerOff(command);
                     } else if (command.equalsIgnoreCase("add off")) {
-
+                        addOff();
                     } else if (command.equalsIgnoreCase("back")) {
                         manageResellerOffMenu.goToPreviousMenu();
                     } else {
@@ -953,16 +982,34 @@ public class View {
         };
     }
 
-    public void viewResellerOff() {
-
+    public void viewResellerOff(String command) throws Exception {
+        Matcher matcher = Pattern.compile("^view (?<offId>\\d+)$").matcher(command);
+        int offId = Integer.parseInt(matcher.group("offId"));
+        System.out.println(manageResellerOffMenu.getOffById(offId).toString());
     }
 
     public void editResellerOff(String command) {
 
     }
 
-    public void addOff() {
-
+    public void addOff() throws Exception {
+        System.out.println("enter off start time:");
+        System.out.println("(enter date in format : 'MMM d HH:mm:ss yyyy' ex. Jun 18 10:30:00 2020)");
+        String startTime = scanner.nextLine();
+        System.out.println("enter off end time:");
+        System.out.println("(enter date in format : 'MMM d HH:mm:ss yyyy' ex. Jun 18 10:30:00 2020)");
+        String endTime = scanner.nextLine();
+        System.out.println("enter off percent:");
+        int offPercent = Integer.parseInt(scanner.nextLine());
+        ArrayList<Commodity> commoditiesInOff = new ArrayList<>();
+        System.out.println("enter products id that you want to add to off");
+        System.out.println("(type -1 when finished)");
+        int productId = 0;
+        while ((productId = scanner.nextInt()) != -1) {
+            commoditiesInOff.add(manageResellerProductsMenu.getCommodityById(productId));
+            scanner.nextLine();
+        }
+        manageResellerOffMenu.addOff(commoditiesInOff, startTime, endTime, offPercent);
     }
 
     private void initializeOffMenu() {

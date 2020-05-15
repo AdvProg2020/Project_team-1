@@ -16,13 +16,13 @@ public class Off implements Requestable {
     private Date endTime;
     private int discountPercent;
 
-    public Off(BusinessAccount owner, Date startTime, Date endTime, int discountPercent) throws Exception {
+    public Off(BusinessAccount owner, ArrayList<Commodity> commodities, Date startTime, Date endTime, int discountPercent) throws Exception {
         this.owner = owner;
         this.startTime = startTime;
         this.endTime = endTime;
         setDiscountPercent(discountPercent);
         status = Status.UNDER_CHECKING_FOR_CREATE;
-        commodities = new ArrayList<Commodity>();
+        this.commodities = commodities;
         offID = lastId++;
     }
 

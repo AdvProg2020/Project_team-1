@@ -32,6 +32,11 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         this.status = status;
     }
 
+    @Override
+    public void addObj() throws Exception {
+
+    }
+
     public ArrayList<SellLog> getSellLogs() {
         return sellLogs;
     }
@@ -65,9 +70,9 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         return offs;
     }
 
-    public Off getOffById(String id) {
+    public Off getOffById(int id) {
         for (Off off : offs) {
-            if (off.getOffID().equals(id)) {
+            if (off.getOffID() == id) {
                 return off;
             }
         }

@@ -110,6 +110,13 @@ public class DataManager {
         throw e;
     }
 
+    public static void addRequest(Request request) throws Exception {
+        ArrayList<Request> allRequests = new ArrayList<>(Arrays.asList(getAllRequests()));
+        allRequests.add(request);
+        Gson gson = new Gson();
+        gson.toJson(allRequests, new FileWriter(allRequestsJson));
+    }
+
     public static boolean isCommodityExist(int id) throws Exception {
         for (Commodity commodity : getAllCommodities()) {
             if (commodity.getCommodityId() == id)

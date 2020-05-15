@@ -2,11 +2,10 @@ package controller.reseller;
 
 import controller.Menu;
 import controller.MenuHandler;
-import model.Category;
-import model.Commodity;
-import model.DataManager;
-import model.Session;
+import model.*;
 import model.account.BusinessAccount;
+import model.account.SimpleAccount;
+import model.field.Field;
 import view.View;
 
 import java.util.ArrayList;
@@ -31,8 +30,13 @@ public class ResellerMenu extends Menu {
         throw new Exception("Category not found");
     }
 
-    public void addProduct() throws Exception {
-        //create request
+    public void addProduct(String brand, String name, int price, Category category,
+                           ArrayList<Field> categorySpecifications, String description, int amount) throws Exception {
+        BusinessAccount businessAccount = getBusinessAccount();
+        Commodity newCommodity = new Commodity(brand, name, price, businessAccount, true,
+                category, categorySpecifications, description, amount);
+        Request request = new Request(newCommodity, businessAccount);
+        DataManager.addRequest(request);
     }
 
     public void removeProduct(int productId) throws Exception {
