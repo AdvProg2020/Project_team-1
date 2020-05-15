@@ -843,7 +843,7 @@ public class View {
                     } else if (command.equalsIgnoreCase("show categories")) {
                         showCategories();
                     } else if (command.equalsIgnoreCase("view offs")) {
-                        viewResellerOff();
+                        viewResellerOffs();
                     } else if (command.equalsIgnoreCase("view balance")) {
                         viewResellerBalance();
                     } else if (command.equalsIgnoreCase("back")) {
@@ -909,6 +909,12 @@ public class View {
     private void showCategories() throws Exception {
         for (Category category : DataManager.getAllCategories()) {
             System.out.println(category.toString());
+        }
+    }
+
+    public void viewResellerOffs() throws Exception {
+        for (Off off : resellerMenu.manageOffs()) {
+            System.out.println(off.toString());
         }
     }
 

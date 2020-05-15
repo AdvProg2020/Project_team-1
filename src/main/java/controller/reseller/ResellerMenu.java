@@ -21,6 +21,12 @@ public class ResellerMenu extends Menu {
         return commodityArrayList;
     }
 
+    public ArrayList<Off> manageOffs() throws Exception {
+        ArrayList<Off> offArrayList = getBusinessAccount().getOffs();
+        MenuHandler.getInstance().setCurrentMenu(View.manageResellerOffMenu);
+        return offArrayList;
+    }
+
     public Category getCategoryByName(String categoryString) throws Exception {
         for (Category category : DataManager.getAllCategories()) {
             if (category.getName().equalsIgnoreCase(categoryString)) {
