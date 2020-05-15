@@ -1,5 +1,6 @@
 package controller;
 
+import controller.commodity.CommentsMenu;
 import controller.commodity.DigestMenu;
 import model.Commodity;
 
@@ -17,5 +18,10 @@ public class CommodityMenu extends Menu {
     public void goToDigestMenu(DigestMenu digestMenu) {
         HandleMenu.setMenu(digestMenu);
         digestMenu.setPreviousMenu(this);
+    }
+
+    public void goToCommentsMenu(CommentsMenu commentsMenu) {
+        HandleMenu.setMenu(commentsMenu);
+        commentsMenu.setPreviousMenu(this);
     }
 }
