@@ -283,6 +283,20 @@ public class DataManager {
         throw new Exception("there is no product with this ID");
     }
 
+    public static void addCommodity(Commodity commodity) throws Exception {
+        ArrayList<Commodity> allCommodities = new ArrayList<>(Arrays.asList(getAllCommodities()));
+        allCommodities.add(commodity);
+        Gson gson = new Gson();
+        gson.toJson(allCommodities, new FileWriter(allCommoditiesJson));
+    }
+
+    public static void deleteCommodity(Commodity commodity) throws Exception {
+        ArrayList<Commodity> allCommodities = new ArrayList<>(Arrays.asList(getAllCommodities()));
+        allCommodities.remove(commodity);
+        Gson gson = new Gson();
+        gson.toJson(allCommodities, new FileWriter(allCommoditiesJson));
+    }
+
     public static boolean isUsernameExist(String username) throws IOException {
         for (ManagerAccount manager : getAllManagers()) {
             if (manager.getUsername().equalsIgnoreCase(username)) {
