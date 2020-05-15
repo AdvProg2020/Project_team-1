@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import controller.*;
 import controller.customer.CartMenu;
 import controller.customer.OrderMenu;
@@ -262,12 +261,23 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.matches("show order (?<id>\\S+)")) {
-
+                    showOrder(command);
                 } else if (command.matches("rate (?<id>\\d+) (?<rate>[1-5])")) {
 
                 }
             }
         };
+    }
+
+    private void showOrder(String command) {
+        Matcher matcher = Pattern.compile("show order (?<id>\\S+)").matcher(command);
+        String id = matcher.group("id");
+        try {
+            BuyLog log = orderMenu.getOrderWithId(id);
+            System.out.println(log.toString());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void initializeCustomerMenu() {
@@ -735,9 +745,6 @@ public class View {
     private void removeProduct(String command) {
 
     }
-
-
-
 
 
     private void initializeManageResellerProductMenu() {
