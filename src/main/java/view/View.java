@@ -14,6 +14,8 @@ import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 import model.field.Field;
+import model.field.NumericalField;
+import model.field.OptionalField;
 import model.filter.*;
 import model.log.BuyLog;
 import model.log.SellLog;
@@ -889,8 +891,14 @@ public class View {
         System.out.println("enter product specification:");
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
         for (int i = 0; i < category.getFieldOptions().size(); ++i) {
-            System.out.println("Enter product " + category.getFieldOptions() + ":");
-            //productCategorySpecification.add();
+            CategorySpecification categorySpecification = category.getFieldOptions().get(i);
+            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
+            if (categorySpecification.getOptions().isEmpty()) {
+                productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), scanner.nextInt()));
+                scanner.nextLine();
+            } else {
+                productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), scanner.nextLine()));
+            }
         }
         System.out.println("enter product description:");
         String description = scanner.nextLine();
