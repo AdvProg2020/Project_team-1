@@ -51,7 +51,6 @@ public class View {
         initializeManageUsersMenu();
         initializeViewPersonalMenu();
         initializeLoginRegisterMenu();
-        getDiscountCodeInitialize();
         initializeManageUsersMenu();
         initializeViewPersonalInfoMenu();
         initializeManagerMenu();
@@ -450,21 +449,6 @@ public class View {
         System.out.println("you don't have enough money to pay");
     }
 
-    private void getDiscountCodeInitialize() {
-        getDiscountCode.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.equals("^view discount code (?<code>\\S+)$")) {
-                    Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
-                    viewDiscountCode(getDiscountCode, matcher.group("code"));
-                }
-                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")) {
-
-                }
-
-            }
-        };
-    }
 
     private void decreaseCommodityInCart(String command, CartMenu cartMenu) {
         Matcher matcher = Pattern.compile("decrease (?<id>\\d+)").matcher(command);

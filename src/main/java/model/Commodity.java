@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Commodity implements Requestable {
+
+    private static int counter = 0;
     private int commodityId;
     private Status status;
     private String brand;
@@ -24,11 +26,11 @@ public class Commodity implements Requestable {
     private int numberOfScores;
     private int numberOfVisits;
 
-    public Commodity(int commodityId, Status status, String brand, String name, int price,
+    public Commodity( Status status, String brand, String name, int price,
                      SimpleAccount seller, Boolean isCommodityAvailable, Category category,
                      ArrayList<Field> categorySpecifications, String description, int averageScore, int amount) {
-        this.commodityId = commodityId;
-        this.status = status;
+        this.commodityId = ++counter;
+        this.status = Status.UNDER_CHECKING_FOR_CREATE;
         this.brand = brand;
         this.name = name;
         this.price = price;
@@ -38,7 +40,7 @@ public class Commodity implements Requestable {
         this.categorySpecifications = categorySpecifications;
         this.description = description;
         this.allComments = new ArrayList<Comment>();
-        this.averageScore = averageScore;
+        this.averageScore = 0;
         this.inventory = amount;
     }
 
