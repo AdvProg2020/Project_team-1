@@ -201,14 +201,6 @@ public class View {
         };
     }
 
-    private void initializeManageRequestMenuCommandProcessor() {
-        manageRequestMenu.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-
-            }
-        };
-    }
 
     private void initializeManagerMenu() {
         managerMenu.commandProcess = new CommandProcess() {
@@ -909,6 +901,53 @@ public class View {
         Matcher matcher = Pattern.compile("^show product (?<productId>\\w+)$").matcher(command);
         int productId = Integer.parseInt(matcher.group("productId"));
         DataManager.getCommodityById(productId).toString();
+    }
+
+    private void initializeManageRequestMenuCommandProcessor() {
+        manageRequestMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("^details (?<requestId> \\S+)")){
+                    Matcher matcher = Pattern.compile("^details (?<requestId> \\S+)").matcher(command);
+                    viewRequestDetails(Integer.parseInt(matcher.group("requestId")));
+                }
+                if (command.matches("^accept (?<requestId> \\S+)")){
+                    Matcher matcher = Pattern.compile("^accept (?<requestId> \\S+)").matcher(command);
+                    acceptRequest(Integer.parseInt(matcher.group("requestId")));
+                }
+                if (command.matches("^decline (?<requestId> \\S+)")){
+                    Matcher matcher = Pattern.compile("^decline (?<requestId> \\S+)").matcher(command);
+                    declineRequest(Integer.parseInt(matcher.group("requestId")));
+                }
+            }
+        };
+    }
+
+
+    private void viewRequestDetails(int id){
+        try {
+            System.out.println(manageRequestMenu.getRequestById(id).getSimpleAccount().getUsername());
+        } catch (Exception e) {
+            System.out.println("invalid id");
+        }
+    }
+
+    private void acceptRequest(int id){
+        try {
+            manageRequestMenu.accept(id);
+            System.out.println("request accepted");
+        } catch (Exception e) {
+            System.out.println("invalid id");
+        }
+    }
+
+    private void declineRequest(int id){
+        try {
+            manageRequestMenu.decline(id);
+            System.out.println("request declined");
+        } catch (Exception e) {
+            System.out.println("invalid id");
+        }
     }
 
     public void run() {
