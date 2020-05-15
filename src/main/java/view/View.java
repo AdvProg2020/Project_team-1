@@ -16,7 +16,6 @@ import model.account.SimpleAccount;
 import model.field.Field;
 import model.log.BuyLog;
 import model.log.SellLog;
-import old.commands.Command;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -255,6 +255,12 @@ public class View {
                 }
                 if (command.matches("^view discount codes$")) {
                     viewDiscountCodes(managerMenu);
+                }
+                if (command.matches("^manage requests$")){
+                    manageRequests(managerMenu);
+                }
+                if (command.matches("^manage categories$")){
+                    manageCategories();
                 }
             }
         };
@@ -1169,25 +1175,7 @@ public class View {
         }
     }
 
-    private void initializeManageRequestMenuCommandProcessor() {
-        manageRequestMenu.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.matches("^details (?<requestId> \\S+)")) {
-                    Matcher matcher = Pattern.compile("^details (?<requestId> \\S+)").matcher(command);
-                    viewRequestDetails(Integer.parseInt(matcher.group("requestId")));
-                }
-                if (command.matches("^accept (?<requestId> \\S+)")) {
-                    Matcher matcher = Pattern.compile("^accept (?<requestId> \\S+)").matcher(command);
-                    acceptRequest(Integer.parseInt(matcher.group("requestId")));
-                }
-                if (command.matches("^decline (?<requestId> \\S+)")) {
-                    Matcher matcher = Pattern.compile("^decline (?<requestId> \\S+)").matcher(command);
-                    declineRequest(Integer.parseInt(matcher.group("requestId")));
-                }
-            }
-        };
-    }
+
 
     public void run() {
 
