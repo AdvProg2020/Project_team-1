@@ -1,6 +1,7 @@
 package view;
 
 import controller.*;
+import controller.commodity.CommentsMenu;
 import controller.commodity.DigestMenu;
 import controller.customer.CartMenu;
 import controller.customer.OrderMenu;
@@ -42,6 +43,7 @@ public class View {
     public static final ManageResellerOffsMenu manageResellerOffMenu = new ManageResellerOffsMenu();
     public static final OffMenu offMenu = new OffMenu();
     public static final DigestMenu digestMenu = new DigestMenu();
+    public static final CommentsMenu commentsMenu = new CommentsMenu();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {
@@ -72,10 +74,34 @@ public class View {
                 } else if (command.matches("compare (?<id>\\d+))")) {
 
                 } else if (command.equals("comments")) {
-
+                    comments();
                 }
             }
         };
+    }
+
+    private void compare(String command) {
+        Matcher matcher = Pattern.compile("compare (?<id>\\d+))").matcher(command);
+        int id = Integer.parseInt(matcher.group("id"));
+        try {
+            Commodity comparingCommodity = commodityMenu.compare(id);
+            Commodity commodity = commodityMenu.getCommodity();
+            //to do
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void comments() {
+        Commodity commodity = commodityMenu.getCommodity();
+        String output = "";
+        for (Comment comment : commodity.getAllComments()) {
+            if (comment.getStatus() == Status.VERIFIED) {
+                output += comment.getInformation() + '\n';
+            }
+        }
+        System.out.print(output);
+        commodityMenu.goToCommentsMenu(commentsMenu);
     }
 
     private void attributes() {

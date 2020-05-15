@@ -22,6 +22,19 @@ public class Comment implements Requestable {
                 '}';
     }
 
+    public String getInformation() {
+        if (isABuyer) {
+            return "account: " + this.account.getUsername() + '\n' +
+                    "did buy this? true\n" +
+                    "title: " + this.title + '\n' +
+                    "comment: " + this.string;
+        }
+        return "account: " + this.account.getUsername() + '\n' +
+                "did buy this? false\n" +
+                "title: " + this.title + '\n' +
+                "comment: " + this.string;
+    }
+
     public Comment(SimpleAccount account, Commodity commodity, String title, String string, boolean isABuyer) {
         this.account = account;
         this.commodity = commodity;
