@@ -263,10 +263,22 @@ public class View {
                 if (command.matches("show order (?<id>\\S+)")) {
                     showOrder(command);
                 } else if (command.matches("rate (?<id>\\d+) (?<rate>[1-5])")) {
-
+                    rate(command);
                 }
             }
         };
+    }
+
+    private void rate(String command) {
+        Matcher matcher = Pattern.compile("rate (?<id>\\d+) (?<rate>[1-5])").matcher(command);
+        int id = Integer.parseInt(matcher.group("id"));
+        int rate = Integer.parseInt(matcher.group("rate"));
+        try {
+            orderMenu.rateProduct(id, rate);
+            System.out.println("thanks for your contribution");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void showOrder(String command) {
