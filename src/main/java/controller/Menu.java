@@ -1,5 +1,7 @@
 package controller;
 
+import view.View;
+
 public class Menu {
 
     public CommandProcess commandProcess;
@@ -18,5 +20,9 @@ public class Menu {
     public void goToPreviousMenu() {
         MenuHandler.getInstance().setCurrentMenu(previousMenu);
         previousMenu = null;
+    }
+
+    public void products(){
+        HandleMenu.setMenu(View.productsMenu);
     }
 }

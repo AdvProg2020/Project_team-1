@@ -17,7 +17,7 @@ public class Request {
     @Override
     public String toString() {
         return "Request{" +
-                "obj=" + obj +
+                "obj=" + obj.toString() +
                 ", simpleAccount=" + simpleAccount +
                 '}';
     }

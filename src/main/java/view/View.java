@@ -16,6 +16,7 @@ import model.account.SimpleAccount;
 import model.field.Field;
 import model.log.BuyLog;
 import model.log.SellLog;
+import old.commands.Command;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class View {
     public static final OffMenu offMenu = new OffMenu();
     public static final DigestMenu digestMenu = new DigestMenu();
     public static final CommentsMenu commentsMenu = new CommentsMenu();
+    public static final ProductsMenu productsMenu = new ProductsMenu();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {
@@ -967,6 +969,35 @@ public class View {
         } catch (Exception e) {
             System.out.println("invalid id");
         }
+    }
+
+    private void initializeProductsMenu(){
+        productsMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("^view categories$")){
+
+                }
+                if (command.matches("^filtering$")){
+
+                }
+                if (command.matches("^$")){
+
+                }
+                if (command.matches("^$")){
+
+                }
+                if (command.matches("^$")){
+
+                }
+                if (command.matches("^$")){
+
+                }
+                if (command.matches("^$")){
+
+                }
+            }
+        };
     }
 
     public void run() {

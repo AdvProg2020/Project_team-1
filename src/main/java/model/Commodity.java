@@ -26,9 +26,9 @@ public class Commodity implements Requestable {
     private int numberOfScores;
     private int numberOfVisits;
 
-    public Commodity( Status status, String brand, String name, int price,
+    public Commodity(String brand, String name, int price,
                      SimpleAccount seller, Boolean isCommodityAvailable, Category category,
-                     ArrayList<Field> categorySpecifications, String description, int averageScore, int amount) {
+                     ArrayList<Field> categorySpecifications, String description,  int amount) {
         this.commodityId = ++counter;
         this.status = Status.UNDER_CHECKING_FOR_CREATE;
         this.brand = brand;
