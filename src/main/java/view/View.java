@@ -166,7 +166,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo(viewPersonalInfoMenu);
+                    viewPersonalInfo();
                 }
                 if (command.matches("^manage users$")) {
                     manageUsers(manageUsersMenu);
@@ -285,7 +285,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo(viewPersonalInfoMenu);
+                    viewPersonalInfo();
                 } else if (command.equals("view cart")) {
                     goToCartMenu(cartMenu, customerMenu);
                 } else if (command.equals("purchase")) {
@@ -533,7 +533,7 @@ public class View {
         HandleMenu.setMenu(manageUsersMenu);
     }
 
-    private void viewPersonalInfo(ViewPersonalInfoMenu viewPersonalInfoMenu) {
+    private void viewPersonalInfo() {
         System.out.println(DataManager.getOnlineAccount().toString());
         HandleMenu.setMenu(viewPersonalInfoMenu);
     }
@@ -694,7 +694,7 @@ public class View {
             public void commandProcessor(String command) throws Exception {
                 try {
                     if (command.equalsIgnoreCase("view personal info")) {
-
+                        viewPersonalInfo();
                     } else if (command.equalsIgnoreCase("view company info")) {
                         viewCompanyInfo();
                     } else if (command.equalsIgnoreCase("view sales history")) {
@@ -708,9 +708,9 @@ public class View {
                     } else if (command.equalsIgnoreCase("show categories")) {
 
                     } else if (command.equalsIgnoreCase("view offs")) {
-
+                        viewResellerOff();
                     } else if (command.equalsIgnoreCase("view balance")) {
-
+                        viewResellerBalance();
                     } else if (command.equalsIgnoreCase("back")) {
                         resellerMenu.goToPreviousMenu();
                     } else {
@@ -734,18 +734,25 @@ public class View {
         }
     }
 
-    private void manageResellerProduct() {
-
+    private void manageResellerProduct() throws Exception {
+        for (Commodity commodity : resellerMenu.manageCommodities()) {
+            System.out.println(commodity.toString());
+        }
     }
 
     private void addProduct() {
 
     }
 
-    private void removeProduct(String command) {
-
+    private void removeProduct(String command) throws Exception {
+        Matcher matcher = Pattern.compile("^remove product (?<productId>\\d+)$")).matcher(command);
+        int productId = Integer.parseInt(matcher.group("productId"));
+        resellerMenu.removeProduct(productId);
     }
 
+    private void viewResellerBalance() {
+        System.out.println(resellerMenu.getBusinessAccount().getCredit());
+    }
 
     private void initializeManageResellerProductMenu() {
         manageResellerProductsMenu.commandProcess = new CommandProcess() {
@@ -753,11 +760,11 @@ public class View {
             public void commandProcessor(String command) throws Exception {
                 try {
                     if (command.matches("^view (\\d+)$")) {
-
+                        viewResellerProduct(command);
                     } else if (command.matches("^view buyers (\\d+)$")) {
-
-                    } else if (command.matches("^edit (\\w+)$")) {
-
+                        viewResellerProductBuyers(command);
+                    } else if (command.matches("^edit (\\d+)$")) {
+                        editResellerProduct(command);
                     } else if (command.equalsIgnoreCase("back")) {
                         manageResellerProductsMenu.goToPreviousMenu();
                     } else {
@@ -770,16 +777,23 @@ public class View {
         };
     }
 
-    public void viewResellerProduct(String command) {
-
+    public void viewResellerProduct(String command) throws Exception {
+        Matcher matcher = Pattern.compile("^view (?<productId>\\d+)$").matcher(command);
+        int productId = Integer.parseInt(matcher.group("productId"));
+        System.out.println(manageResellerProductsMenu.getCommodityById(productId).toString());
     }
 
-    public void viewResellerProductBuyers(String command) {
-
+    public void viewResellerProductBuyers(String command) throws Exception {
+        Matcher matcher = Pattern.compile("^view buyers (?<productId>\\d+)$").matcher(command);
+        int productId = Integer.parseInt(matcher.group("productId"));
+        for (SimpleAccount simpleAccount : manageResellerProductsMenu.getBuyersById(productId)) {
+            System.out.println(simpleAccount.getUsername());
+        }
     }
 
     public void editResellerProduct(String command) {
-
+        Matcher matcher = Pattern.compile("^edit (?<productId>\\d+)$").matcher(command);
+        int productId = Integer.parseInt(matcher.group("productId"));
     }
 
     private void initializeManageResellerOffMenu() {
@@ -805,7 +819,7 @@ public class View {
         };
     }
 
-    public void viewResellerOff(String command) {
+    public void viewResellerOff() {
 
     }
 

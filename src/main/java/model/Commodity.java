@@ -40,7 +40,6 @@ public class Commodity implements Requestable {
         this.allComments = new ArrayList<Comment>();
         this.averageScore = averageScore;
         this.inventory = amount;
-        DataManager.getAllCommodities().add(this);
     }
 
     public Commodity(Commodity commodity) {
