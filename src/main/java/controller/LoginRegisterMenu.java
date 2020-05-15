@@ -37,7 +37,7 @@ public class LoginRegisterMenu extends Menu{
     public void registerResellerAccount(String username, String firstName, String lastName, String email,
                                         String phoneNumber, String password, String businessName) throws Exception{
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
-                phoneNumber, password, businessName))
+                phoneNumber, password, businessName);
         Request request = new Request(newAccount, null);
         DataManager.addRequest(request);
     }
