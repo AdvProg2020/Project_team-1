@@ -110,6 +110,14 @@ public class DataManager {
         throw e;
     }
 
+    public static boolean isCommodityExist(int id) throws Exception {
+        for (Commodity commodity : getAllCommodities()) {
+            if (commodity.getCommodityId() == id)
+                return true;
+        }
+        return false;
+    }
+
     public static Request[] getAllRequests() throws IOException{
         FileReader fileReader = new FileReader(allRequestsJson);
         JsonReader jsonReader = new JsonReader(fileReader);

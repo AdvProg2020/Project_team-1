@@ -1,26 +1,31 @@
 package old;
 
-import old.commands.Command;
 import model.Commodity;
 import model.DataManager;
 import model.filter.Filter;
+import old.commands.Command;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
 import static model.Commodity.Comparators.*;
 
 public class ProductsMenu implements CommandProcess {
     public CommandProcess commandProcess;
 
-    private static ArrayList<Command> productsMenuCommands = new ArrayList<Command>();
-    private static ArrayList<Commodity> filteredCommodities = (ArrayList<Commodity>) DataManager.getAllCommodities().clone();
+    private static ArrayList<Commodity> filteredCommodities;
+
+    static {
+        try {
+            filteredCommodities = (ArrayList<Commodity>) Arrays.asList(DataManager.getAllCommodities().clone());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private static ArrayList<Filter> currentFilters = new ArrayList<Filter>();
     private String currentSort;
 
-    public static ArrayList<Command> getProductsMenuCommands() {
-        return productsMenuCommands;
-    }
 
     public static ArrayList<Commodity> getFilteredCommodities() {
         return filteredCommodities;
@@ -38,12 +43,12 @@ public class ProductsMenu implements CommandProcess {
         filteredCommodities.remove(commodity);
     }
 
-    public static void filter(Filter filter) {
+    public static void filter(Filter filter) throws Exception {
         currentFilters.add(filter);
         updateFilteredCommodities();
     }
 
-    public static void updateFilteredCommodities() {
+    public static void updateFilteredCommodities() throws Exception {
         filteredCommodities = new ArrayList<Commodity>();
         for (Commodity commodity : DataManager.getAllCommodities()) {
             if (canCommodityPassFilter(commodity))
@@ -63,30 +68,30 @@ public class ProductsMenu implements CommandProcess {
         return currentSort;
     }
 
-    public static void disableFilter(Filter filter) {
+    public static void disableFilter(Filter filter) throws Exception {
         currentFilters.remove(filter);
         updateFilteredCommodities();
     }
 
-    public void sort(String sort) {
+    public void sort(String sort) throws Exception {
         this.currentSort = sort;
         if (sort.equals("price")) {
-            Collections.sort(DataManager.getAllCommodities(), price);
+            Arrays.sort(DataManager.getAllCommodities(), price);
             return;
         }
         if (sort.equals("Number of visits")) {
-            Collections.sort(DataManager.getAllCommodities(), numberOfVisits);
+            Arrays.sort(DataManager.getAllCommodities(), numberOfVisits);
             return;
         }
         if (sort.equals("Average score")) {
-            Collections.sort(DataManager.getAllCommodities(), score);
+            Arrays.sort(DataManager.getAllCommodities(), score);
             return;
         }
     }
 
-    public void disableSort() {
+    public void disableSort() throws Exception {
         this.currentSort = "Number of visits";
-        Collections.sort(DataManager.getAllCommodities(), numberOfVisits);
+        Arrays.sort(DataManager.getAllCommodities(), numberOfVisits);
     }
 
 
