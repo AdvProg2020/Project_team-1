@@ -12,6 +12,7 @@ import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+import model.field.Field;
 import model.log.BuyLog;
 import model.log.SellLog;
 
@@ -66,7 +67,7 @@ public class View {
                 if (command.equals("digest")) {
                     digest();
                 } else if (command.equals("attributes")) {
-
+                    attributes();
                 } else if (command.matches("compare (?<id>\\d+))")) {
 
                 } else if (command.equals("comments")) {
@@ -76,13 +77,18 @@ public class View {
         };
     }
 
+    private void attributes() {
+        Commodity commodity = commodityMenu.getCommodity();
+        String respond = commodity.toString();
+        for (Field categorySpecification : commodity.getCategorySpecifications()) {
+            respond += "[" + categorySpecification.toString() + "]";
+        }
+        System.out.println(respond);
+    }
+
     private void digest() {
         Commodity commodity = commodityMenu.getCommodity();
-        System.out.println("description: " + commodity.getDescription() + '\n' +
-                "price: " + commodity.getPrice() + '\n' +
-                "seller: " + commodity.getSeller().getInformation() + '\n' +
-                "category: " + commodity.getCategory().getName() + '\n' +
-                "average score: " + commodity.getAverageScore());
+        System.out.println(commodity.toString());
         commodityMenu.goToDigestMenu(digestMenu);
     }
 
