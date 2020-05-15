@@ -17,7 +17,6 @@ import model.field.Field;
 import model.log.BuyLog;
 import model.log.SellLog;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,6 +60,26 @@ public class View {
         initializeOffMenu();
         initializeCommodityMenu();
         initializeDigestMenu();
+        initializeCommentsMenu();
+    }
+
+    private void initializeCommentsMenu() {
+        digestMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("add comment")) {
+                    addComment();
+                }
+            }
+        };
+    }
+
+    private void addComment() {
+        System.out.println("enter title:");
+        String title = scanner.nextLine();
+        System.out.println("enter your comment");
+        String content = scanner.nextLine();
+        commentsMenu.addComment(title, content);
     }
 
     private void initializeDigestMenu() {
