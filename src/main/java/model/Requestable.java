@@ -2,5 +2,5 @@ package model;
 
 public interface Requestable {
     void setStatus(Status status);
-    void addObj();
+    void addObj() throws Exception;
 }

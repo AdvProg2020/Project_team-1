@@ -17,6 +17,7 @@ import model.field.Field;
 import model.log.BuyLog;
 import model.log.SellLog;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +52,6 @@ public class View {
         initializeManageUsersMenu();
         initializeViewPersonalMenu();
         initializeLoginRegisterMenu();
-        getDiscountCodeInitialize();
         initializeManageUsersMenu();
         initializeViewPersonalInfoMenu();
         initializeManagerMenu();
@@ -235,14 +235,6 @@ public class View {
         };
     }
 
-    private void initializeManageRequestMenuCommandProcessor() {
-        manageRequestMenu.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-
-            }
-        };
-    }
 
     private void initializeManagerMenu() {
         managerMenu.commandProcess = new CommandProcess() {
@@ -483,21 +475,6 @@ public class View {
         System.out.println("you don't have enough money to pay");
     }
 
-    private void getDiscountCodeInitialize() {
-        getDiscountCode.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.equals("^view discount code (?<code>\\S+)$")) {
-                    Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
-                    viewDiscountCode(getDiscountCode, matcher.group("code"));
-                }
-                if (command.equals("^edit discount code (?<field>\\S+ ?\\S+) (?<newField> \\S+)$")) {
-
-                }
-
-            }
-        };
-    }
 
     private void decreaseCommodityInCart(String command, CartMenu cartMenu) {
         Matcher matcher = Pattern.compile("decrease (?<id>\\d+)").matcher(command);
@@ -801,7 +778,7 @@ public class View {
                     } else if (command.matches("^remove product \\d+$")) {
                         removeProduct(command);
                     } else if (command.equalsIgnoreCase("show categories")) {
-
+                        showCategories();
                     } else if (command.equalsIgnoreCase("view offs")) {
                         viewResellerOff();
                     } else if (command.equalsIgnoreCase("view balance")) {
@@ -843,6 +820,12 @@ public class View {
         Matcher matcher = Pattern.compile("^remove product (?<productId>\\d+)$").matcher(command);
         int productId = Integer.parseInt(matcher.group("productId"));
         resellerMenu.removeProduct(productId);
+    }
+
+    private void showCategories() throws Exception {
+        for (Category category : DataManager.getAllCategories()) {
+            System.out.println(category.toString());
+        }
     }
 
     private void viewResellerBalance() {
@@ -958,6 +941,53 @@ public class View {
         Matcher matcher = Pattern.compile("^show product (?<productId>\\w+)$").matcher(command);
         int productId = Integer.parseInt(matcher.group("productId"));
         DataManager.getCommodityById(productId).toString();
+    }
+
+    private void initializeManageRequestMenuCommandProcessor() {
+        manageRequestMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("^details (?<requestId> \\S+)")){
+                    Matcher matcher = Pattern.compile("^details (?<requestId> \\S+)").matcher(command);
+                    viewRequestDetails(Integer.parseInt(matcher.group("requestId")));
+                }
+                if (command.matches("^accept (?<requestId> \\S+)")){
+                    Matcher matcher = Pattern.compile("^accept (?<requestId> \\S+)").matcher(command);
+                    acceptRequest(Integer.parseInt(matcher.group("requestId")));
+                }
+                if (command.matches("^decline (?<requestId> \\S+)")){
+                    Matcher matcher = Pattern.compile("^decline (?<requestId> \\S+)").matcher(command);
+                    declineRequest(Integer.parseInt(matcher.group("requestId")));
+                }
+            }
+        };
+    }
+
+
+    private void viewRequestDetails(int id){
+        try {
+            System.out.println(manageRequestMenu.getRequestById(id).getSimpleAccount().getUsername());
+        } catch (Exception e) {
+            System.out.println("invalid id");
+        }
+    }
+
+    private void acceptRequest(int id){
+        try {
+            manageRequestMenu.accept(id);
+            System.out.println("request accepted");
+        } catch (Exception e) {
+            System.out.println("invalid id");
+        }
+    }
+
+    private void declineRequest(int id){
+        try {
+            manageRequestMenu.decline(id);
+            System.out.println("request declined");
+        } catch (Exception e) {
+            System.out.println("invalid id");
+        }
     }
 
     public void run() {
