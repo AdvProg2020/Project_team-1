@@ -115,7 +115,7 @@ public class View {
                     digest();
                 } else if (command.equals("attributes")) {
                     attributes();
-                } else if (command.matches("compare (?<id>\\d+))")) {
+                } else if (command.matches("compare (?<id>\\d+)")) {
                     compare(command);
                 } else if (command.equals("comments")) {
                     comments();
@@ -125,7 +125,7 @@ public class View {
     }
 
     private void compare(String command) {
-        Matcher matcher = Pattern.compile("compare (?<id>\\d+))").matcher(command);
+        Matcher matcher = Pattern.compile("compare (?<id>\\d+)").matcher(command);
         int id = Integer.parseInt(matcher.group("id"));
         try {
             Commodity comparingCommodity = commodityMenu.compare(id);
