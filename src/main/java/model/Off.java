@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Off implements Requestable {
-    private String offID;
+
+    private static int lastId = 0;
+    private int offID;
     private BusinessAccount owner;
     private ArrayList<Commodity> commodities;
     private Status status;
@@ -21,7 +23,7 @@ public class Off implements Requestable {
         setDiscountPercent(discountPercent);
         status = Status.UNDER_CHECKING_FOR_CREATE;
         commodities = new ArrayList<Commodity>();
-        offID = generateOffID();
+        offID = lastId++;
     }
 
     public Off(Off off) {
@@ -89,10 +91,6 @@ public class Off implements Requestable {
 
     public int getDiscountPercent() {
         return discountPercent;
-    }
-
-    private String generateOffID() {
-        return owner.getBusinessName() + startTime.toString();
     }
 
     @Override

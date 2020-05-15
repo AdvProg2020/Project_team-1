@@ -806,6 +806,7 @@ public class View {
     public void editResellerProduct(String command) {
         Matcher matcher = Pattern.compile("^edit (?<productId>\\d+)$").matcher(command);
         int productId = Integer.parseInt(matcher.group("productId"));
+
     }
 
     private void initializeManageResellerOffMenu() {
@@ -814,7 +815,7 @@ public class View {
             public void commandProcessor(String command) throws Exception {
                 try {
                     if (command.matches("^view \\w+$")) {
-
+                        viewResellerOff();
                     } else if (command.matches("^edit \\w+$")) {
 
                     } else if (command.equalsIgnoreCase("add off")) {
