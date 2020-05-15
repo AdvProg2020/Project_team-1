@@ -250,6 +250,9 @@ public class View {
         getDiscountCode.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    getDiscountCode.goToPreviousMenu();
+                }
                 if (command.equals("^view discount code (?<code>\\S+)$")) {
                     Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
                     viewDiscountCode(getDiscountCode, matcher.group("code"));
@@ -272,6 +275,9 @@ public class View {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    viewPersonalInfoMenu.goToPreviousMenu();
+                }
                 if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
                     editManagerAccountFields(viewPersonalInfoMenu, command);
                 }
@@ -284,6 +290,9 @@ public class View {
         managerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    managerMenu.goToPreviousMenu();
+                }
                 if (command.equals("view personal info")) {
                     viewPersonalInfo();
                 }
@@ -358,6 +367,9 @@ public class View {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    viewPersonalInfoMenu.goToPreviousMenu();
+                }
                 if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
                     editFields(viewPersonalInfoMenu, command);
                 }
@@ -369,6 +381,9 @@ public class View {
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    manageUsersMenu.goToPreviousMenu();
+                }
                 if (command.matches("view (?<username>\\S+)")) {
                     Matcher matcher = Pattern.compile("^view (?<username>\\S+)$").matcher(command);
                     SimpleAccount simpleAccount = manageUsersMenu.getAccountWithUserNameFromDatabase(matcher.group("username"));
@@ -1125,6 +1140,9 @@ public class View {
         manageRequestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                   manageRequestMenu.goToPreviousMenu();
+                }
                 if (command.matches("^details (?<requestId> \\S+)")) {
                     Matcher matcher = Pattern.compile("^details (?<requestId> \\S+)").matcher(command);
                     viewRequestDetails(Integer.parseInt(matcher.group("requestId")));
@@ -1172,6 +1190,9 @@ public class View {
         productsMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                   productsMenu.goToPreviousMenu();
+                }
                 if (command.matches("^view categories$")) {
                     viewCategory();
                 }
@@ -1213,6 +1234,9 @@ public class View {
         manageCategoryMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    manageCategoryMenu.goToPreviousMenu();
+                }
                 if (command.matches("edit (?<category> \\S+)")) {
                     Matcher matcher = Pattern.compile("edit (?<category> \\S+)").matcher(command);
                     editCategory(matcher.group("category"));
@@ -1341,6 +1365,9 @@ public class View {
         filteringMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    filteringMenu.goToPreviousMenu();
+                }
                 if (command.matches("show available filters")) {
                     System.out.println("Filter by name, by category, by category specification\n");
                 }
@@ -1439,6 +1466,9 @@ public class View {
         sortingMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    sortingMenu.goToPreviousMenu();
+                }
                 if (command.matches("^show available sorts$")){
                     System.out.println("price, number of visits, average score");
                 }
@@ -1469,6 +1499,9 @@ public class View {
         manageAllProducts.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    manageAllProducts.goToPreviousMenu();
+                }
                 if (command.matches("remove (?<productId> \\d+)")){
                     Matcher matcher = Pattern.compile("remove (?<prooductId>)").matcher(command);
                     try {
