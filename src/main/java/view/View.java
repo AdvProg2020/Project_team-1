@@ -14,6 +14,7 @@ import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 import model.field.Field;
+import model.filter.*;
 import model.log.BuyLog;
 import model.log.SellLog;
 
@@ -44,6 +45,8 @@ public class View {
     public static final CommentsMenu commentsMenu = new CommentsMenu();
     public static final ProductsMenu productsMenu = new ProductsMenu();
     public static final ManageCategoryMenu manageCategoryMenu = new ManageCategoryMenu();
+    public static final FilteringMenu filteringMenu = new FilteringMenu();
+    public static final SortingMenu sortingMenu = new SortingMenu();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {
@@ -62,6 +65,9 @@ public class View {
         initializeCommodityMenu();
         initializeDigestMenu();
         initializeManageCategoryMenu();
+        initializeProductsMenu();
+        initializeSortingMenu();
+        initializeFilteringMenu();
         initializeCommentsMenu();
     }
 
@@ -1058,25 +1064,29 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.matches("^view categories$")) {
-
+                    viewCategory();
                 }
                 if (command.matches("^filtering$")) {
-
+                    productsMenu.filtering();
                 }
-                if (command.matches("^$")) {
-
+                if (command.matches("^sorting$")) {
+                    productsMenu.sorting();
                 }
-                if (command.matches("^$")) {
-
+                if (command.matches("^show products$")) {
+                    String output = "products";
+                    for (Commodity product : productsMenu.getProducts()) {
+                        output += "\n" + product.toString();
+                    }
+                    System.out.println(output);
                 }
-                if (command.matches("^$")) {
-
-                }
-                if (command.matches("^$")) {
-
-                }
-                if (command.matches("^$")) {
-
+                if (command.matches("^show product (?<productID> \\d+)$")) {
+                    Matcher matcher = Pattern.compile("^show roduct (?<productID> \\d+)$").matcher(command);
+                    try {
+                        Commodity commodity = productsMenu.getProducts(Integer.parseInt(matcher.group("productID")));
+                        System.out.println(commodity.toString());
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
             }
         };
@@ -1104,6 +1114,7 @@ public class View {
                 }
                 if (command.matches("remove (?<category> \\S+)")) {
                     Matcher matcher = Pattern.compile("remove (?<category> \\S+)").matcher(command);
+                    removeCategory(matcher.group("category"));
                 }
             }
         };
@@ -1207,6 +1218,138 @@ public class View {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void viewCategory() throws FileNotFoundException {
+        Category[] categories = productsMenu.getAllCategories();
+        System.out.println("all categories:");
+        for (Category category : categories) {
+            System.out.println("\n" + category.getName());
+        }
+    }
+
+    private void initializeFilteringMenu() {
+        filteringMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("show available filters")) {
+                    System.out.println("Filter by name, by category, by category specification\n");
+                }
+                if (command.matches("filter (?<filter> \\S+ ?\\S+)")) {
+                    Matcher matcher = Pattern.compile("filter (?<filter> \\S+ ?\\S+)").matcher(command);
+                    filter(matcher.group("filter"));
+                }
+                if (command.matches("currentfilters")){
+                    for (Filter filter : FilteringMenu.getCurrentFilters()) {
+                        System.out.println("\n" + filter.getFilterName());
+                    }
+                }
+                if (command.matches("delete filter (?<filterName> \\.+)"));{
+                    Matcher matcher = Pattern.compile("delete filter (?<filterName> \\.+)").matcher(command);
+                    try {
+                        filteringMenu.disableFilter(matcher.group("filterName"));
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+        };
+    }
+
+    private void filter(String filterName) throws Exception {
+        if (filterName.equalsIgnoreCase("name")) {
+            filterByName();
+            System.out.println("Successfully filtered\n");
+        }
+        if (filterName.equalsIgnoreCase("category")) {
+            System.out.println("Enter category name\n");
+            String categoryName = scanner.nextLine();
+            if (filterByCategory(categoryName))
+                return;
+            System.out.println("Successfully filtered\n");
+        }
+        if (filterName.equalsIgnoreCase("category specification")) {
+            System.out.println("Enter category name\n");
+            String categoryName = scanner.nextLine();
+            if (filterByCategory(categoryName))
+                return;
+            System.out.println("Enter you correspondingFieldNumber\n");
+            int correspondingFieldNumber = scanner.nextInt();
+            System.out.println("Numerical filter or optional filter?\n");
+            String type = scanner.nextLine();
+            if (type.equalsIgnoreCase("Numerical")) {
+                filterByNumericalField(categoryName, correspondingFieldNumber);
+            }
+            if (type.equalsIgnoreCase("Optional")){
+                filterByOptionalField(categoryName, correspondingFieldNumber);
+            }
+
+        }
+    }
+
+    private void filterByOptionalField(String categoryName, int correspondingFieldNumber) {
+        System.out.println("Enter acceptable options");
+        ArrayList<String> options = new ArrayList<String>();
+        while (scanner.hasNext())
+            options.add(scanner.next());
+        OptionalFilter optionalFilter = new OptionalFilter("Optional filter " + categoryName + " " + correspondingFieldNumber , options , correspondingFieldNumber);
+    }
+
+    private void filterByNumericalField(String categoryName, int correspondingFieldNumber) throws Exception {
+        System.out.println("Enter start range");
+        int startRange = scanner.nextInt();
+        System.out.println("Enter finish range");
+        int finishRange = scanner.nextInt();
+        Category category = manageCategoryMenu.getCategory(categoryName);
+        NumericalFilter numericalFilter = new NumericalFilter("Numerical filter " + categoryName + " " + correspondingFieldNumber + " " + startRange + " " + finishRange,startRange,finishRange,correspondingFieldNumber);
+        filteringMenu.filter(numericalFilter);
+        System.out.println("successfully filtered");
+    }
+
+    private void filterByName() throws Exception {
+        System.out.println("Enter name\n");
+        String name = scanner.nextLine();
+        FilterByName filterByName = new FilterByName("Filter by name " + name, name);
+        filteringMenu.filter(filterByName);
+    }
+
+    private boolean filterByCategory(String categoryName) throws Exception {
+
+        Category category = null;
+        if (!manageCategoryMenu.checkCategoryName(categoryName)) {
+            System.out.println("invalid category name\n");
+            return true;
+        }
+        category = manageCategoryMenu.getCategory(categoryName);
+        FilterByCategory filterByCategory = new FilterByCategory("Filter by category" + categoryName, category);
+        filteringMenu.filter(filterByCategory);
+        return false;
+    }
+
+    private void initializeSortingMenu() {
+        sortingMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("^show available sorts$")){
+                    System.out.println("price, number of visits, average score");
+                }
+                if (command.matches("sort (?<sort> \\S+)")){
+                    Matcher matcher = Pattern.compile("sort (?<sort> \\S+)").matcher(command);
+                    try{
+                        sortingMenu.sort(matcher.group("sort"));
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+                if (command.matches("current sort")){
+                    System.out.println(SortingMenu.getCurrentSort());
+                }
+                if (command.matches("disable sort")){
+                    sortingMenu.disableSort();
+                    System.out.println("sort successfully disabled");
+                }
+            }
+        };
     }
 
 
