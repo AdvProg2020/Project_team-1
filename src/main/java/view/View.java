@@ -17,11 +17,13 @@ import model.field.Field;
 import model.log.BuyLog;
 import model.log.SellLog;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +45,8 @@ public class View {
     public static final OffMenu offMenu = new OffMenu();
     public static final DigestMenu digestMenu = new DigestMenu();
     public static final CommentsMenu commentsMenu = new CommentsMenu();
+    public static final ProductsMenu productsMenu = new ProductsMenu();
+    public static final ManageCategoryMenu manageCategoryMenu = new ManageCategoryMenu();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {
@@ -60,6 +64,7 @@ public class View {
         initializeOffMenu();
         initializeCommodityMenu();
         initializeDigestMenu();
+        initializeManageCategoryMenu();
         initializeCommentsMenu();
     }
 
@@ -270,6 +275,12 @@ public class View {
                 }
                 if (command.matches("^view discount codes$")) {
                     viewDiscountCodes(managerMenu);
+                }
+                if (command.matches("^manage requests$")){
+                    manageRequests(managerMenu);
+                }
+                if (command.matches("^manage categories$")){
+                    manageCategories();
                 }
             }
         };
@@ -1027,6 +1038,164 @@ public class View {
             System.out.println("invalid id");
         }
     }
+
+    private void initializeProductsMenu(){
+        productsMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("^view categories$")){
+
+                }
+                if (command.matches("^filtering$")){
+
+                }
+                if (command.matches("^$")){
+
+                }
+                if (command.matches("^$")){
+
+                }
+                if (command.matches("^$")){
+
+                }
+                if (command.matches("^$")){
+
+                }
+                if (command.matches("^$")){
+
+                }
+            }
+        };
+    }
+
+    private void manageCategories() throws FileNotFoundException {
+        Category[] categories = managerMenu.manageCategory();
+        System.out.println("all categories:");
+        for (Category category : categories) {
+            System.out.println("\n" + category.getName());
+        }
+    }
+
+    private void initializeManageCategoryMenu() {
+        manageCategoryMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("edit (?<category> \\S+)")) {
+                    Matcher matcher = Pattern.compile("edit (?<category> \\S+)").matcher(command);
+                    editCategory(matcher.group("category"));
+                }
+                if (command.matches("add (?<category> \\S+)")) {
+                    Matcher matcher = Pattern.compile("add (?<category> \\S+)").matcher(command);
+                    addCategory(matcher.group("category"));
+                }
+                if (command.matches("remove (?<category> \\S+)")) {
+                    Matcher matcher = Pattern.compile("remove (?<category> \\S+)").matcher(command);
+                }
+            }
+        };
+    }
+
+    private void removeCategory(String categoryName) throws IOException {
+        if (!manageCategoryMenu.checkCategoryName(categoryName)) {
+            System.out.println("invalid category name");
+            return;
+        }
+        manageCategoryMenu.removeCategory(categoryName);
+    }
+
+    private void addCategory(String categoryName) throws Exception {
+        if (manageCategoryMenu.checkCategoryName(categoryName)){
+            System.out.println("This name is not available");
+            return;
+        }
+        ArrayList<CategorySpecification> categorySpecifications = new ArrayList<>();
+        getCategorySpecificationFromUser(categorySpecifications);
+        System.out.println("Enter commodities id in a line");
+        ArrayList<Integer> commoditiesId = new ArrayList<Integer>();
+        while (scanner.hasNextInt())
+            commoditiesId.add(scanner.nextInt());
+        manageCategoryMenu.addCategory(categoryName,commoditiesId,categorySpecifications);
+    }
+
+    private void getCategorySpecificationFromUser(ArrayList<CategorySpecification> categorySpecifications) {
+        String tmp = "NO";
+        while (tmp.equalsIgnoreCase("NO")) {
+            System.out.println("Enter title");
+            String title = scanner.nextLine();
+            System.out.println("Enter options");
+            HashSet<String> options = new HashSet<String>();
+            while (scanner.hasNext())
+                options.add(scanner.next());
+            categorySpecifications.add(manageCategoryMenu.createCategorySpecification(title,options));
+            System.out.println("Do you want to add another category specification");
+            tmp = scanner.nextLine();
+        }
+    }
+
+    private void editCategory(String categoryName) throws FileNotFoundException {
+        if (!manageCategoryMenu.checkCategoryName(categoryName)) {
+            System.out.println("invalid category name");
+            return;
+        }
+        Category category = manageCategoryMenu.getCategory(categoryName);
+        System.out.println("Which field do you want to edit");
+        String field = scanner.nextLine();
+        if (field.equalsIgnoreCase("name")) {
+            System.out.println("Enter your new name");
+            String newName = scanner.nextLine();
+            manageCategoryMenu.changeName(newName, category);
+        }
+        if (field.equalsIgnoreCase("add category specification")) {
+            addCategorySpecification(category);
+        }
+        if (field.equalsIgnoreCase("remove category specification")) {
+            removeCategorySpecification(category);
+        }
+        if (field.equalsIgnoreCase("add commodity")) {
+            addCommodityToCategory(category);
+        }
+        if (field.equalsIgnoreCase("remove commodity")) {
+            removeCommodityFromCategory(category);
+        }
+    }
+
+    private void addCategorySpecification(Category category) {
+        System.out.println("Enter your new title");
+        String title = scanner.nextLine();
+        System.out.println("Enter options");
+        HashSet<String> options = new HashSet<String>();
+        while (scanner.hasNext())
+            options.add(scanner.next());
+        manageCategoryMenu.addCategorySpecification(options, title, category);
+    }
+
+    private void removeCategorySpecification(Category category) {
+        System.out.println("Enter category specification title");
+        String title = scanner.nextLine();
+        manageCategoryMenu.removeCategorySpecification(title, category);
+    }
+
+    private void addCommodityToCategory(Category category) {
+        System.out.println("Enter commodityID");
+        int id = scanner.nextInt();
+        try {
+            manageCategoryMenu.addCommodity(id, category);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void removeCommodityFromCategory(Category category) {
+        System.out.println("Enter commodityID");
+        int id = scanner.nextInt();
+        try {
+            manageCategoryMenu.removeCommodity(id, category);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
 
     public void run() {
 
