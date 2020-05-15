@@ -60,6 +60,27 @@ public class View {
         initializeOrderMenu();
         initializeOffMenu();
         initializeCommodityMenu();
+        initializeDigestMenu();
+    }
+
+    private void initializeDigestMenu() {
+        digestMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("add to cart")) {
+                    addToCart();
+                }
+            }
+        };
+    }
+
+    private void addToCart() {
+        try {
+            digestMenu.addToCart();
+            System.out.println("successfully added");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void initializeCommodityMenu() {
@@ -71,7 +92,7 @@ public class View {
                 } else if (command.equals("attributes")) {
                     attributes();
                 } else if (command.matches("compare (?<id>\\d+))")) {
-
+                    compare(command);
                 } else if (command.equals("comments")) {
                     comments();
                 }
