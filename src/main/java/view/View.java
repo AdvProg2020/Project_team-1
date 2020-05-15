@@ -134,7 +134,19 @@ public class View {
             Commodity comparingCommodity = commodityMenu.compare(id);
             Commodity commodity = commodityMenu.getCommodity();
             Category category = commodity.getCategory();
-
+            System.out.format("%-15s: %-30s %-30s", "name", commodity.getName(), comparingCommodity.getName());
+            System.out.format("%-15s: %-30s %-30s", "brand", commodity.getBrand(), comparingCommodity.getBrand());
+            System.out.format("%-15s: %-30s %-30s", "price", commodity.getPrice(), comparingCommodity.getPrice());
+            System.out.format("%-15s: %-30s %-30s", "seller", commodity.getSeller().getUsername(), comparingCommodity.
+                    getSeller().getUsername());
+            System.out.format("%-15s: %-30s %-30s", "amount", commodity.getInventory(), comparingCommodity.
+                    getInventory());
+            for (int i = 0; i < commodity.getCategorySpecifications().size(); i++) {
+                Field specification = commodity.getCategorySpecifications().get(i);
+                Field comparingSpecification = comparingCommodity.getCategorySpecifications().get(i);
+                System.out.format("%-15s: %-30s %-30s", specification.getTitle(), specification.getValue(),
+                        comparingSpecification.getValue());
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
