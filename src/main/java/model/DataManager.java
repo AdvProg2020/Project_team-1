@@ -7,10 +7,7 @@ import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -32,6 +29,8 @@ public class DataManager {
 
     private static File allOffsJson;
 
+    private static File allCategoryJson;
+
     static {
         initializeDataDirectory();
         allManagersJson = new File("data/accounts/allManagers.json");
@@ -41,6 +40,7 @@ public class DataManager {
         allRequestsJson = new File("data/allRequests.json");
         allCommoditiesJson = new File("data/allCommodities.json");
         allOffsJson = new File("data/allOffs.json");
+        allCategoryJson = new File("data/allCategory.json");
         initializeDataFiles();
     }
 
@@ -58,9 +58,39 @@ public class DataManager {
             gson.toJson(new ArrayList<DiscountCode>() , new FileWriter(allDiscountCodeJson));
             gson.toJson(new ArrayList<Request>(), new FileWriter(allRequestsJson));
             gson.toJson(new ArrayList<Off>(), new FileWriter(allOffsJson));
+            gson.toJson(new ArrayList<Category>() , new FileWriter(allCategoryJson));
         } catch (IOException e) {
 
         }
+    }
+
+    public static void addCategory(Category category) throws IOException {
+        ArrayList<Category> allCategories = new ArrayList<>(Arrays.asList(getAllCategories()));
+        allCategories.add(category);
+        Gson gson = new Gson();
+        gson.toJson(allCategories, new FileWriter(allCategoryJson));
+    }
+
+    public static void removeCategory(Category category) throws IOException {
+        ArrayList<Category> allCategories = new ArrayList<>(Arrays.asList(getAllCategories()));
+        allCategories.remove(category);
+        Gson gson = new Gson();
+        gson.toJson(allCategories, new FileWriter(allCategoryJson));
+    }
+
+    public static boolean isCategoryExist(String name) throws FileNotFoundException {
+        for (Category category : getAllCategories()) {
+            if (category.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
+    public static Category[] getAllCategories() throws FileNotFoundException {
+        FileReader fileReader = new FileReader(allCategoryJson);
+        JsonReader jsonReader = new JsonReader(fileReader);
+        Gson gson = new Gson();
+        return gson.fromJson(jsonReader, Category[].class);
     }
 
     public static void deleteRequest(Request request) throws IOException {
