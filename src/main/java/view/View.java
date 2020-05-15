@@ -1,6 +1,7 @@
 package view;
 
 import controller.*;
+import controller.commodity.DigestMenu;
 import controller.customer.CartMenu;
 import controller.customer.OrderMenu;
 import controller.reseller.ManageResellerOffsMenu;
@@ -38,6 +39,7 @@ public class View {
     public static final ManageResellerProductsMenu manageResellerProductsMenu = new ManageResellerProductsMenu();
     public static final ManageResellerOffsMenu manageResellerOffMenu = new ManageResellerOffsMenu();
     public static final OffMenu offMenu = new OffMenu();
+    public static final DigestMenu digestMenu = new DigestMenu();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {
@@ -54,6 +56,34 @@ public class View {
         initializeCartMenu();
         initializeOrderMenu();
         initializeOffMenu();
+        initializeCommodityMenu();
+    }
+
+    private void initializeCommodityMenu() {
+        commodityMenu.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.equals("digest")) {
+                    digest();
+                } else if (command.equals("attributes")) {
+
+                } else if (command.matches("compare (?<id>\\d+))")) {
+
+                } else if (command.equals("comments")) {
+
+                }
+            }
+        };
+    }
+
+    private void digest() {
+        Commodity commodity = commodityMenu.getCommodity();
+        System.out.println("description: " + commodity.getDescription() + '\n' +
+                "price: " + commodity.getPrice() + '\n' +
+                "seller: " + commodity.getSeller().getInformation() + '\n' +
+                "category: " + commodity.getCategory().getName() + '\n' +
+                "average score: " + commodity.getAverageScore());
+        commodityMenu.goToDigestMenu(digestMenu);
     }
 
     private void manageRequests(ManagerMenu managerMenu) throws IOException {
