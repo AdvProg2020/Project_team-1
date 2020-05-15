@@ -134,6 +134,7 @@ public class View {
             Commodity comparingCommodity = commodityMenu.compare(id);
             Commodity commodity = commodityMenu.getCommodity();
             Category category = commodity.getCategory();
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
