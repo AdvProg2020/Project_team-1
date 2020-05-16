@@ -5,7 +5,7 @@ import model.log.SellLog;
 
 import java.util.ArrayList;
 
-public class BusinessAccount extends SimpleAccount implements Requestable {
+public class BusinessAccount extends SimpleAccount {
     private final String VALID_BUSINESS_NAME = "^\\w{4,20}$";
     private String businessName;
     private ArrayList<SellLog> sellLogs;
@@ -27,11 +27,6 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    @Override
-    public void addObj() throws Exception {
-        DataManager.addResellerAccount(this);
     }
 
     public ArrayList<SellLog> getSellLogs() {
