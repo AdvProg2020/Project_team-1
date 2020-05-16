@@ -1266,6 +1266,8 @@ public class View {
                         showOffProduct(command);
                     } else if (command.equalsIgnoreCase("back")) {
                         offMenu.goToPreviousMenu();
+                    } else if (command.equalsIgnoreCase("help")) {
+                        offMenuHelp();
                     } else {
                         throw new Exception("Invalid command");
                     }
@@ -1287,6 +1289,11 @@ public class View {
         matcher.matches();
         int productId = Integer.parseInt(matcher.group("productId"));
         DataManager.getCommodityById(productId).toString();
+    }
+
+    private void offMenuHelp() {
+        System.out.println("1 - offs\n" +
+                "2 - show product [productId]");
     }
 
     private void initializeManageRequestMenuCommandProcessor() {
