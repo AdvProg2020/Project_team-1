@@ -1510,9 +1510,11 @@ public class View {
         };
     }
 
-
-
-    public void run() {
-
+    public void run() throws Exception {
+        MenuHandler.getInstance().setCurrentMenu(loginRegisterMenu);
+        String command;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("exit")) {
+            MenuHandler.getInstance().getCurrentMenu().commandProcess(command);
+        }
     }
 }
