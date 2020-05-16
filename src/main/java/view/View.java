@@ -523,15 +523,22 @@ public class View {
             Set<BusinessAccount> sellers = buyLog.getSellers();
             for (BusinessAccount seller : sellers) {
                 Set<Commodity> commodities = new HashSet<>();
-                int received = 0;
+                double received = 0;
+                double deducted = 0;
+                double discount = 0;
                 for (Commodity commodity : account.getCart().keySet()) {
                     if (commodity.getSeller().getUsername().equals(seller.getUsername())) {
                         commodities.add(commodity);
-                        received += commodity.getPrice();
+                        try {
+                            discount = (double) cartMenu.getDiscountPercentage(commodity) / 100;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        deducted += discount * commodity.getPrice();
+                        received += commodity.getPrice() - deducted;
                     }
                 }
-                // to do
-                seller.addSellLog(new SellLog(new Date(), received, 0, commodities, account));
+                seller.addSellLog(new SellLog(new Date(), (int) received, (int) deducted, commodities, account));
             }
             return;
         }

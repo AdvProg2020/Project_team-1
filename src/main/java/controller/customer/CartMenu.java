@@ -1,12 +1,10 @@
 package controller.customer;
 
 import controller.Menu;
-import model.Commodity;
-import model.DataManager;
-import model.DiscountCode;
-import model.Session;
+import model.*;
 import model.account.PersonalAccount;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class CartMenu extends Menu {
@@ -57,5 +55,16 @@ public class CartMenu extends Menu {
             return discountCode;
         }
         return null;
+    }
+
+    public int getDiscountPercentage(Commodity commodity) throws IOException {
+        for (Off off : DataManager.getAllOffs()) {
+            for (Commodity offCommodity : off.getCommodities()) {
+                if (offCommodity.getCommodityId() == commodity.getCommodityId()) {
+                    return off.getDiscountPercent();
+                }
+            }
+        }
+        return 0;
     }
 }
