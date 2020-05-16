@@ -43,6 +43,14 @@
             <version>2.8.6</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.gilecode.yagson/yagson -->
+        <dependency>
+            <groupId>com.gilecode.yagson</groupId>
+            <artifactId>yagson</artifactId>
+            <version>0.5.1</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>

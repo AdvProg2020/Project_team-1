@@ -21,7 +21,6 @@ import model.log.BuyLog;
 import model.log.SellLog;
 
 import java.io.IOException;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -85,9 +84,15 @@ public class View {
         digestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    commentsMenu.products();
+                    return;
+                }
                 if (command.equals("add comment")) {
                     addComment();
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -104,9 +109,15 @@ public class View {
         digestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    digestMenu.products();
+                    return;
+                }
                 if (command.equals("add to cart")) {
                     addToCart();
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -124,7 +135,9 @@ public class View {
         commodityMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.equals("digest")) {
+                if (command.matches("product")) {
+                    commodityMenu.products();
+                } else if (command.equals("digest")) {
                     digest();
                 } else if (command.equals("attributes")) {
                     attributes();
@@ -132,7 +145,7 @@ public class View {
                     compare(command);
                 } else if (command.equals("comments")) {
                     comments();
-                }
+                } else System.out.println("invalid command");
             }
         };
     }
@@ -257,26 +270,38 @@ public class View {
         getDiscountCode.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    getDiscountCode.products();
+                }
+                if (command.matches("products")) {
+                    getDiscountCode.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     getDiscountCode.goToPreviousMenu();
+                    return;
                 }
                 if (command.equals("^view discount code (?<code>\\S+)$")) {
                     Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
                     matcher.matches();
                     viewDiscountCode(getDiscountCode, matcher.group("code"));
+                    return;
                 }
                 if (command.equals("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField> \\S+)$")) {
                     Matcher matcher = Pattern.compile("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField> \\S+)$").matcher(command);
                     matcher.matches();
                     DiscountCode discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
                     editDiscountCode(discountCode, command);
+                    return;
                 }
                 if (command.equals("remove discount code (?<code>\\S+)")) {
                     Matcher matcher = Pattern.compile("remove discount code (?<code>\\S+)").matcher(command);
                     matcher.matches();
                     DiscountCode discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
                     deleteDiscountCode(discountCode);
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -285,12 +310,23 @@ public class View {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    viewPersonalInfoMenu.products();
+                    return;
+                }
+                if (command.matches("products")) {
+                    viewPersonalInfoMenu.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     viewPersonalInfoMenu.goToPreviousMenu();
+                    return;
                 }
                 if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
                     editManagerAccountFields(viewPersonalInfoMenu, command);
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -300,30 +336,43 @@ public class View {
         managerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    managerMenu.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     managerMenu.goToPreviousMenu();
+                    return;
                 }
                 if (command.equals("view personal info")) {
                     viewPersonalInfo(managerMenu);
+                    return;
                 }
                 if (command.matches("^manage users$")) {
                     manageUsers(manageUsersMenu);
+                    return;
                 }
                 if (command.matches("^create discount code$")) {
                     createDiscountCode(managerMenu);
+                    return;
                 }
                 if (command.matches("^view discount codes$")) {
                     viewDiscountCodes(managerMenu);
+                    return;
                 }
                 if (command.matches("^manage requests$")) {
                     manageRequests(managerMenu);
+                    return;
                 }
                 if (command.matches("^manage categories$")) {
                     manageCategories();
+                    return;
                 }
                 if (command.matches("^manage all products")) {
                     manageAllProducts();
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -378,12 +427,19 @@ public class View {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    viewPersonalInfoMenu.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     viewPersonalInfoMenu.goToPreviousMenu();
+                    return;
                 }
                 if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
                     editFields(viewPersonalInfoMenu, command);
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -392,21 +448,30 @@ public class View {
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    manageUsersMenu.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     manageUsersMenu.goToPreviousMenu();
+                    return;
                 }
                 if (command.matches("view (?<username>\\S+)")) {
                     Matcher matcher = Pattern.compile("^view (?<username>\\S+)$").matcher(command);
                     matcher.matches();
                     SimpleAccount simpleAccount = manageUsersMenu.getAccountWithUserNameFromDatabase(matcher.group("username"));
                     System.out.println(simpleAccount.toString());
+                    return;
                 }
                 if (command.matches("^delete user (?<username> \\S+)")) {
                     deleteUser(command, manageUsersMenu);
+                    return;
                 }
                 if (command.matches("^create manager profile$")) {
                     createManagerProfile(manageUsersMenu);
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -415,11 +480,15 @@ public class View {
         orderMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    orderMenu.products();
+                    return;
+                }
                 if (command.matches("show order (?<id>\\S+)")) {
                     showOrder(command);
                 } else if (command.matches("rate (?<id>\\d+) (?<rate>[1-5])")) {
                     rate(command);
-                }
+                } else System.out.println("invalid command");
             }
         };
     }
@@ -453,6 +522,10 @@ public class View {
         customerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    customerMenu.products();
+                    return;
+                }
                 if (command.equals("view personal info")) {
                     viewPersonalInfo(customerMenu);
                 } else if (command.equals("view cart")) {
@@ -463,8 +536,9 @@ public class View {
                     viewOrders();
                 } else if (command.equals("view balance")) {
                     System.out.println("your balance is " + customerMenu.getBalance());
-                } else if (command.equals("view discount codes"))
+                } else if (command.equals("view discount codes")) {
                     viewMyDiscountCodes();
+                } else System.out.println("invalid command");
             }
         };
     }
@@ -473,6 +547,10 @@ public class View {
         cartMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    cartMenu.products();
+                    return;
+                }
                 if (command.equals("show products")) {
                     showProducts();
                 } else if (command.matches("view (?<id>\\d+)")) {
@@ -485,7 +563,7 @@ public class View {
                     System.out.println("total price is " + cartMenu.calculateTotalPrice());
                 } else if (command.equals("purchase")) {
                     purchase();
-                }
+                } else System.out.println("invalid command");
             }
         };
     }
@@ -761,6 +839,10 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
+                    if (command.matches("product")) {
+                        loginRegisterMenu.products();
+                        return;
+                    }
                     if (command.matches("create account (personal|reseller|manager) (\\S+)")) {
                         registerCommand(command);
                     } else if (command.matches("^login \\S+$")) {
@@ -843,6 +925,10 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
+                    if (command.matches("product")) {
+                        resellerMenu.products();
+                        return;
+                    }
                     if (command.equalsIgnoreCase("view personal info")) {
                         viewPersonalInfo(resellerMenu);
                     } else if (command.equalsIgnoreCase("view company info")) {
@@ -949,6 +1035,10 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
+                    if (command.matches("product")) {
+                        manageResellerProductsMenu.products();
+                        return;
+                    }
                     if (command.matches("^view (\\d+)$")) {
                         viewResellerProduct(command);
                     } else if (command.matches("^view buyers (\\d+)$")) {
@@ -1040,6 +1130,10 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
+                    if (command.matches("product")) {
+                        manageResellerOffMenu.products();
+                        return;
+                    }
                     if (command.matches("^view \\d+$")) {
                         viewResellerOff(command);
                     } else if (command.matches("^edit \\w+$")) {
@@ -1125,6 +1219,10 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
+                    if (command.matches("product")) {
+                        offMenu.products();
+                        return;
+                    }
                     if (command.equalsIgnoreCase("offs")) {
                         showOffs();
                     } else if (command.matches("^show product \\w+$")) {
@@ -1158,24 +1256,33 @@ public class View {
         manageRequestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    manageRequestMenu.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     manageRequestMenu.goToPreviousMenu();
+                    return;
                 }
                 if (command.matches("^details (?<requestId> \\S+)")) {
                     Matcher matcher = Pattern.compile("^details (?<requestId> \\S+)").matcher(command);
                     matcher.matches();
                     viewRequestDetails(Integer.parseInt(matcher.group("requestId")));
+                    return;
                 }
                 if (command.matches("^accept (?<requestId> \\S+)")) {
                     Matcher matcher = Pattern.compile("^accept (?<requestId> \\S+)").matcher(command);
                     matcher.matches();
                     acceptRequest(Integer.parseInt(matcher.group("requestId")));
+                    return;
                 }
                 if (command.matches("^decline (?<requestId> \\S+)")) {
                     Matcher matcher = Pattern.compile("^decline (?<requestId> \\S+)").matcher(command);
                     matcher.matches();
                     declineRequest(Integer.parseInt(matcher.group("requestId")));
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -1211,17 +1318,25 @@ public class View {
         productsMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    productsMenu.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     productsMenu.goToPreviousMenu();
+                    return;
                 }
                 if (command.matches("^view categories$")) {
                     viewCategory();
+                    return;
                 }
                 if (command.matches("^filtering$")) {
                     productsMenu.filtering();
+                    return;
                 }
                 if (command.matches("^sorting$")) {
                     productsMenu.sorting();
+                    return;
                 }
                 if (command.matches("^show products$")) {
                     String output = "products";
@@ -1229,6 +1344,7 @@ public class View {
                         output += "\n" + product.toString();
                     }
                     System.out.println(output);
+                    return;
                 }
                 if (command.matches("^show product (?<productID> \\d+)$")) {
                     Matcher matcher = Pattern.compile("^show roduct (?<productID> \\d+)$").matcher(command);
@@ -1239,7 +1355,9 @@ public class View {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -1256,24 +1374,33 @@ public class View {
         manageCategoryMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")) {
+                    manageCategoryMenu.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     manageCategoryMenu.goToPreviousMenu();
+                    return;
                 }
                 if (command.matches("edit (?<category> \\S+)")) {
                     Matcher matcher = Pattern.compile("edit (?<category> \\S+)").matcher(command);
                     matcher.matches();
                     editCategory(matcher.group("category"));
+                    return;
                 }
                 if (command.matches("add (?<category> \\S+)")) {
                     Matcher matcher = Pattern.compile("add (?<category> \\S+)").matcher(command);
                     matcher.matches();
                     addCategory(matcher.group("category"));
+                    return;
                 }
                 if (command.matches("remove (?<category> \\S+)")) {
                     Matcher matcher = Pattern.compile("remove (?<category> \\S+)").matcher(command);
                     matcher.matches();
                     removeCategory(matcher.group("category"));
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -1390,24 +1517,31 @@ public class View {
         filteringMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")){
+                    filteringMenu.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     filteringMenu.goToPreviousMenu();
+                    return;
                 }
                 if (command.matches("show available filters")) {
                     System.out.println("Filter by name, by category, by category specification\n");
+                    return;
                 }
                 if (command.matches("filter (?<filter> \\S+ ?\\S+)")) {
                     Matcher matcher = Pattern.compile("filter (?<filter> \\S+ ?\\S+)").matcher(command);
                     matcher.matches();
                     filter(matcher.group("filter"));
+                    return;
                 }
                 if (command.matches("currentfilters")) {
                     for (Filter filter : FilteringMenu.getCurrentFilters()) {
                         System.out.println("\n" + filter.getFilterName());
                     }
+                    return;
                 }
-                if (command.matches("delete filter (?<filterName> \\.+)")) ;
-                {
+                if (command.matches("delete filter (?<filterName> \\.+)")) {
                     Matcher matcher = Pattern.compile("delete filter (?<filterName> \\.+)").matcher(command);
                     matcher.matches();
                     try {
@@ -1415,7 +1549,9 @@ public class View {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
+                return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -1494,11 +1630,17 @@ public class View {
         sortingMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")){
+                    sortingMenu.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     sortingMenu.goToPreviousMenu();
+                    return;
                 }
                 if (command.matches("^show available sorts$")) {
                     System.out.println("price, number of visits, average score");
+                    return;
                 }
                 if (command.matches("sort (?<sort> \\S+)")) {
                     Matcher matcher = Pattern.compile("sort (?<sort> \\S+)").matcher(command);
@@ -1508,14 +1650,18 @@ public class View {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
+                    return;
                 }
                 if (command.matches("current sort")) {
                     System.out.println(SortingMenu.getCurrentSort());
+                    return;
                 }
                 if (command.matches("disable sort")) {
                     sortingMenu.disableSort();
                     System.out.println("sort successfully disabled");
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
@@ -1528,8 +1674,13 @@ public class View {
         manageAllProducts.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("product")){
+                    manageAllProducts.products();
+                    return;
+                }
                 if (command.matches("back")) {
                     manageAllProducts.goToPreviousMenu();
+                    return;
                 }
                 if (command.matches("remove (?<productId> \\d+)")) {
                     Matcher matcher = Pattern.compile("remove (?<prooductId>)").matcher(command);
@@ -1539,7 +1690,9 @@ public class View {
                     } catch (Exception e) {
                         System.out.println("invalid commodity id");
                     }
+                    return;
                 }
+                System.out.println("invalid command");
             }
         };
     }
