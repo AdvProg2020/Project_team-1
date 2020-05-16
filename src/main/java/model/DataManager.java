@@ -90,6 +90,11 @@ public class DataManager {
                 gson.toJson(new ArrayList<Commodity>(), allCommoditiesFileWriter);
                 allCommoditiesFileWriter.close();
             }
+            if (!allRequestsJson.exists()) {
+                FileWriter allRequestFileWriter = new FileWriter(allRequestsJson);
+                gson.toJson(new ArrayList<Request>(), allRequestFileWriter);
+                allRequestFileWriter.close();
+            }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
