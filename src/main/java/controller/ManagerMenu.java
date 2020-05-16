@@ -16,8 +16,9 @@ public class ManagerMenu extends Menu {
     }
 
     public void viewPersonalInfo(){
+        View.viewPersonalInfoMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.viewPersonalInfoMenu);
-        View.viewPersonalInfoMenu.setPreviousMenu(View.managerMenu);
+
     }
 
     public void manageAllProducts(){

@@ -345,7 +345,7 @@ public class View {
                     return;
                 }
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo(managerMenu);
+                    viewPersonalInfo();
                     return;
                 }
                 if (command.matches("^manage users$")) {
@@ -527,7 +527,7 @@ public class View {
                     return;
                 }
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo(customerMenu);
+                    viewPersonalInfo();
                 } else if (command.equals("view cart")) {
                     goToCartMenu();
                 } else if (command.equals("purchase")) {
@@ -775,7 +775,7 @@ public class View {
         managerMenu.manageUsers();
     }
 
-    private void viewPersonalInfo(Menu menu) {
+    private void viewPersonalInfo() {
         System.out.println(Session.getOnlineAccount().getInformation());
         managerMenu.viewPersonalInfo();
     }
@@ -954,7 +954,7 @@ public class View {
                         return;
                     }
                     if (command.equalsIgnoreCase("view personal info")) {
-                        viewPersonalInfo(resellerMenu);
+                        viewPersonalInfo();
                     } else if (command.equalsIgnoreCase("view company info")) {
                         viewCompanyInfo();
                     } else if (command.equalsIgnoreCase("view sales history")) {
