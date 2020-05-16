@@ -1739,7 +1739,7 @@ public class View {
                     return;
                 }
                 if (command.matches("remove (?<productId> \\d+)")) {
-                    Matcher matcher = Pattern.compile("remove (?<prooductId>)").matcher(command);
+                    Matcher matcher = Pattern.compile("remove (?<prooductId>\\d+)").matcher(command);
                     matcher.matches();
                     try {
                         manageAllProducts.removeCommodity(Integer.parseInt(matcher.group("productId")));
