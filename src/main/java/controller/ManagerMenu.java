@@ -1,9 +1,6 @@
 package controller;
 
-import model.Category;
-import model.DataManager;
-import model.DiscountCode;
-import model.Request;
+import model.*;
 import model.account.SimpleAccount;
 import view.View;
 
@@ -76,7 +73,7 @@ public class ManagerMenu extends Menu {
     }
 
     public SimpleAccount getOnlineAccount() {
-        return DataManager.getOnlineAccount();
+        return Session.getOnlineAccount();
     }
 
     public DiscountCode[] viewDiscountCodesCommand() throws Exception {

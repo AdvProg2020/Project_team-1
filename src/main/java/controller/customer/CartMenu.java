@@ -20,7 +20,7 @@ import static view.View.commodityMenu;
 public class CartMenu extends Menu {
     public int calculateTotalPrice() {
         int price = 0;
-        PersonalAccount account = (PersonalAccount) DataManager.getOnlineAccount();
+        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         HashMap<Commodity, Integer> cart = account.getCart();
         for (Commodity commodity : cart.keySet()) {
             price += commodity.getPrice() * cart.get(commodity);

@@ -237,19 +237,19 @@ public class View {
         Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$").matcher(command);
         matcher.matches();
         if (matcher.group("field").equals("first name")) {
-            viewPersonalInfoMenu.editFirstName(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
+            viewPersonalInfoMenu.editFirstName(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("last name")) {
-            viewPersonalInfoMenu.editLastName(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
+            viewPersonalInfoMenu.editLastName(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("email")) {
-            viewPersonalInfoMenu.editEmail(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
+            viewPersonalInfoMenu.editEmail(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("password")) {
-            viewPersonalInfoMenu.editPassword(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
+            viewPersonalInfoMenu.editPassword(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("phone number")) {
-            viewPersonalInfoMenu.editPhoneNumber(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
+            viewPersonalInfoMenu.editPhoneNumber(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
         }
     }
 
@@ -585,7 +585,7 @@ public class View {
 
     private void showProducts() {
         String respond = "";
-        PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
+        PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         for (Commodity commodity : personalAccount.getCart().keySet()) {
             respond += "[" + commodity.toString() + "]";
         }
@@ -643,19 +643,19 @@ public class View {
         Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$").matcher(command);
         matcher.matches();
         if (matcher.group("field").equals("first name")) {
-            viewPersonalInfoMenu.editFirstName(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
+            viewPersonalInfoMenu.editFirstName(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("last name")) {
-            viewPersonalInfoMenu.editLastName(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
+            viewPersonalInfoMenu.editLastName(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("email")) {
-            viewPersonalInfoMenu.editEmail(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
+            viewPersonalInfoMenu.editEmail(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("password")) {
-            viewPersonalInfoMenu.editPassword(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
+            viewPersonalInfoMenu.editPassword(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("phone number")) {
-            viewPersonalInfoMenu.editPhoneNumber(matcher.group("new field"), (ManagerAccount) DataManager.getOnlineAccount());
+            viewPersonalInfoMenu.editPhoneNumber(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
         }
     }
 
@@ -681,7 +681,7 @@ public class View {
     }
 
     private void viewPersonalInfo(Menu menu) {
-        System.out.println(DataManager.getOnlineAccount().toString());
+        System.out.println(Session.getOnlineAccount().toString());
         managerMenu.viewPrsonalInfo();
     }
 
