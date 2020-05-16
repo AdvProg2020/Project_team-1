@@ -5,7 +5,6 @@ import model.DataManager;
 import model.filter.Filter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FilteringMenu extends Menu {
     public void disableFilter(String filterName) throws Exception {
@@ -22,14 +21,19 @@ public class FilteringMenu extends Menu {
 
     }
 
-    private static ArrayList<Commodity> filteredCommodities;
+    private static ArrayList<Commodity> filteredCommodities = new ArrayList<Commodity>();
 
-    static {
+    public FilteringMenu() {
         try {
-            filteredCommodities = (ArrayList<Commodity>) Arrays.asList(DataManager.getAllCommodities().clone());
+          //  filteredCommodities = (ArrayList<Commodity>) asList(DataManager.getAllCommodities());
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    static {
+
     }
 
     public static ArrayList<Filter> currentFilters = new ArrayList<Filter>();

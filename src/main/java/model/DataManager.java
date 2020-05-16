@@ -59,7 +59,7 @@ public class DataManager {
             gson.toJson(new ArrayList<Request>(), new FileWriter(allRequestsJson));
             gson.toJson(new ArrayList<Off>(), new FileWriter(allOffsJson));
             gson.toJson(new ArrayList<Category>() , new FileWriter(allCategoryJson));
-            gson.toJson(new ArrayList<Category>() , new FileWriter(allCommoditiesJson));
+            gson.toJson(new ArrayList<Commodity>() , new FileWriter(allCommoditiesJson));
         } catch (IOException e) {
 
         }
