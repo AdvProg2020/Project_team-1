@@ -767,6 +767,8 @@ public class View {
                         loginCommand(command);
                     } else if (command.equalsIgnoreCase("back")) {
                         loginRegisterMenu.goToPreviousMenu();
+                    } else if (command.equalsIgnoreCase("help")) {
+                        loginRegisterMenuHelp();
                     } else {
                         System.out.println("Command not found!");
                     }
@@ -838,6 +840,11 @@ public class View {
         System.out.println("You registered successfully.");
     }
 
+    private void loginRegisterMenuHelp() {
+        System.out.println("1 - create account [personal|reseller|manager] [username]\n" +
+                "2 - login [username]");
+    }
+
     private void initializeResellerMenu() {
         resellerMenu.commandProcess = new CommandProcess() {
             @Override
@@ -863,6 +870,8 @@ public class View {
                         viewResellerBalance();
                     } else if (command.equalsIgnoreCase("back")) {
                         resellerMenu.goToPreviousMenu();
+                    } else if (command.equalsIgnoreCase("help")) {
+                        resellerMenuHelp();
                     } else {
                         throw new Exception("Invalid command");
                     }
@@ -944,6 +953,18 @@ public class View {
         System.out.println(resellerMenu.getBusinessAccount().getCredit());
     }
 
+    private void resellerMenuHelp() {
+        System.out.println("1 - view personal info\n" +
+                "2 - view company info\n" +
+                "3 - view sales history\n" +
+                "4 - manage products\n" +
+                "5 - add product\n" +
+                "6 - remove product [productId]\n" +
+                "7 - show categories\n" +
+                "8 - view offs\n" +
+                "9 - view balance");
+    }
+
     private void initializeManageResellerProductMenu() {
         manageResellerProductsMenu.commandProcess = new CommandProcess() {
             @Override
@@ -957,6 +978,8 @@ public class View {
                         editResellerProduct(command);
                     } else if (command.equalsIgnoreCase("back")) {
                         manageResellerProductsMenu.goToPreviousMenu();
+                    } else if (command.equalsIgnoreCase("help")) {
+                        manageResellerProductsMenuHelp();
                     } else {
                         throw new Exception("Invalid command");
                     }
@@ -1035,6 +1058,12 @@ public class View {
                 description, amount);
     }
 
+    private void manageResellerProductsMenuHelp() {
+        System.out.println("1 - view [productId]\n" +
+                "2 - view buyers [productId]\n" +
+                "3 - edit [productId]");
+    }
+
     private void initializeManageResellerOffMenu() {
         manageResellerOffMenu.commandProcess = new CommandProcess() {
             @Override
@@ -1048,6 +1077,8 @@ public class View {
                         addOff();
                     } else if (command.equalsIgnoreCase("back")) {
                         manageResellerOffMenu.goToPreviousMenu();
+                    } else if (command.equalsIgnoreCase("help")) {
+                        manageResellerOffMenuHelp();
                     } else {
                         throw new Exception("Invalid command");
                     }
@@ -1118,6 +1149,12 @@ public class View {
             scanner.nextLine();
         }
         manageResellerOffMenu.addOff(commoditiesInOff, startTime, endTime, offPercent);
+    }
+
+    private void manageResellerOffMenuHelp() {
+        System.out.println("1 - view [offId]\n" +
+                "2 - edit [offId]\n" +
+                "3 - add off");
     }
 
     private void initializeOffMenu() {
