@@ -792,6 +792,7 @@ public class View {
 
         Pattern pattern = Pattern.compile("create account (?<type>personal|reseller|manager) (?<username>\\S+)");
         Matcher matcher = pattern.matcher(command);
+        matcher.matches();
         String accountType = matcher.group("type");
         String username = matcher.group("username");
 
