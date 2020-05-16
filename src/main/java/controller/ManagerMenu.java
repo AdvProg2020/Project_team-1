@@ -5,7 +5,6 @@ import model.account.SimpleAccount;
 import view.View;
 
 import java.io.IOException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -16,7 +15,7 @@ public class ManagerMenu extends Menu {
         View.managerMenu.setPreviousMenu(View.managerMenu);
     }
 
-    public void viewPrsonalInfo(){
+    public void viewPersonalInfo(){
         MenuHandler.getInstance().setCurrentMenu(View.viewPersonalInfoMenu);
         View.viewPersonalInfoMenu.setPreviousMenu(View.managerMenu);
     }

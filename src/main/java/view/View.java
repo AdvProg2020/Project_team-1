@@ -760,7 +760,7 @@ public class View {
 
     private void viewPersonalInfo(Menu menu) {
         System.out.println(Session.getOnlineAccount().toString());
-        managerMenu.viewPrsonalInfo();
+        managerMenu.viewPersonalInfo();
     }
 
     private void createDiscountCode(ManagerMenu managerMenu) throws IOException {

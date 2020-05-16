@@ -126,6 +126,15 @@ public class DataManager {
         writer.close();
     }
 
+    public static void deleteOff(Off off) throws Exception {
+        ArrayList<Off> allOffs = new ArrayList<>(Arrays.asList(getAllOffs()));
+        allOffs.remove(off);
+        Gson gson = new Gson();
+        FileWriter writer = new FileWriter(allOffsJson);
+        gson.toJson(allOffs , writer);
+        writer.close();
+    }
+
     public static Request getRequest(int id) throws Exception {
         for (Request request : getAllRequests()) {
             if (request.getId() == id ){
