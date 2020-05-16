@@ -14,6 +14,8 @@ import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 import model.field.Field;
+import model.field.NumericalField;
+import model.field.OptionalField;
 import model.filter.*;
 import model.log.BuyLog;
 import model.log.SellLog;
@@ -47,6 +49,7 @@ public class View {
     public static final ManageCategoryMenu manageCategoryMenu = new ManageCategoryMenu();
     public static final FilteringMenu filteringMenu = new FilteringMenu();
     public static final SortingMenu sortingMenu = new SortingMenu();
+    public static final ManageAllProducts manageAllProducts =  new ManageAllProducts();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {
@@ -61,6 +64,9 @@ public class View {
         initializeCustomerMenu();
         initializeCartMenu();
         initializeOrderMenu();
+        initializeResellerMenu();
+        initializeManageResellerProductMenu();
+        initializeManageResellerOffMenu();
         initializeOffMenu();
         initializeCommodityMenu();
         initializeDigestMenu();
@@ -69,6 +75,7 @@ public class View {
         initializeSortingMenu();
         initializeFilteringMenu();
         initializeCommentsMenu();
+        initializeManageAllProductsMenu();
     }
 
     private void initializeCommentsMenu() {
@@ -181,7 +188,7 @@ public class View {
 
     private void manageRequests(ManagerMenu managerMenu) throws IOException {
         String output = "";
-        Request[] allRequests = managerMenu.getAllRequests();
+        Request[] allRequests = managerMenu.manageRequest();
         for (Request request : allRequests) {
             output += "[" + request.getSimpleAccount().getUsername() + "]";
         }
@@ -246,6 +253,9 @@ public class View {
         getDiscountCode.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    getDiscountCode.goToPreviousMenu();
+                }
                 if (command.equals("^view discount code (?<code>\\S+)$")) {
                     Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
                     viewDiscountCode(getDiscountCode, matcher.group("code"));
@@ -268,6 +278,9 @@ public class View {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    viewPersonalInfoMenu.goToPreviousMenu();
+                }
                 if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
                     editManagerAccountFields(viewPersonalInfoMenu, command);
                 }
@@ -280,6 +293,9 @@ public class View {
         managerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    managerMenu.goToPreviousMenu();
+                }
                 if (command.equals("view personal info")) {
                     viewPersonalInfo();
                 }
@@ -297,6 +313,9 @@ public class View {
                 }
                 if (command.matches("^manage categories$")) {
                     manageCategories();
+                }
+                if (command.matches("^manage all products")){
+                    manageAllProducts();
                 }
             }
         };
@@ -351,6 +370,9 @@ public class View {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    viewPersonalInfoMenu.goToPreviousMenu();
+                }
                 if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
                     editFields(viewPersonalInfoMenu, command);
                 }
@@ -362,6 +384,9 @@ public class View {
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    manageUsersMenu.goToPreviousMenu();
+                }
                 if (command.matches("view (?<username>\\S+)")) {
                     Matcher matcher = Pattern.compile("^view (?<username>\\S+)$").matcher(command);
                     SimpleAccount simpleAccount = manageUsersMenu.getAccountWithUserNameFromDatabase(matcher.group("username"));
@@ -589,7 +614,7 @@ public class View {
     }
 
     private void viewDiscountCodes(ManagerMenu managerMenu) throws Exception {
-        DiscountCode[] discountCodes = managerMenu.getAllDiscountCodes();
+        DiscountCode[] discountCodes = managerMenu.viewDiscountCodesCommand();
         for (DiscountCode discountCode : discountCodes) {
             System.out.println(discountCode.toString() + "\n");
         }
@@ -850,7 +875,7 @@ public class View {
                     } else if (command.equalsIgnoreCase("show categories")) {
                         showCategories();
                     } else if (command.equalsIgnoreCase("view offs")) {
-                        viewResellerOff();
+                        viewResellerOffs();
                     } else if (command.equalsIgnoreCase("view balance")) {
                         viewResellerBalance();
                     } else if (command.equalsIgnoreCase("back")) {
@@ -896,13 +921,21 @@ public class View {
         System.out.println("enter product specification:");
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
         for (int i = 0; i < category.getFieldOptions().size(); ++i) {
-            System.out.println("Enter product " + category.getFieldOptions() + ":");
+            CategorySpecification categorySpecification = category.getFieldOptions().get(i);
+            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
+            if (categorySpecification.getOptions().isEmpty()) {
+                productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), scanner.nextInt()));
+                scanner.nextLine();
+            } else {
+                productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), scanner.nextLine()));
+            }
         }
         System.out.println("enter product description:");
         String description = scanner.nextLine();
         System.out.println("enter product amount:");
         int amount = scanner.nextInt();
         scanner.nextLine();
+        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount);
     }
 
     private void removeProduct(String command) throws Exception {
@@ -914,6 +947,12 @@ public class View {
     private void showCategories() throws Exception {
         for (Category category : DataManager.getAllCategories()) {
             System.out.println(category.toString());
+        }
+    }
+
+    public void viewResellerOffs() throws Exception {
+        for (Off off : resellerMenu.manageOffs()) {
+            System.out.println(off.toString());
         }
     }
 
@@ -958,10 +997,37 @@ public class View {
         }
     }
 
-    public void editResellerProduct(String command) {
+    public void editResellerProduct(String command) throws Exception {
         Matcher matcher = Pattern.compile("^edit (?<productId>\\d+)$").matcher(command);
         int productId = Integer.parseInt(matcher.group("productId"));
+        Commodity commodity = DataManager.getCommodityById(productId);
+        System.out.println("enter product brand (put '-' for previous value):");
+        String brand = scanner.nextLine();
+        System.out.println("enter product name (put '-' for previous value):");
+        String name = scanner.nextLine();
+        System.out.println("enter product price (put '-' for previous value):");
+        int price = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("enter product category (put '-' for previous value):");
+        String categoryString = scanner.nextLine();
+        Category category;
+        if (categoryString.equalsIgnoreCase("-")) {
+            category = commodity.getCategory();
+        } else {
+            category = resellerMenu.getCategoryByName(categoryString);
+        }
+        System.out.println("enter product specification (put '-' for previous value):");
+        ArrayList<Field> productCategorySpecification = new ArrayList<>();
+        for (int i = 0; i < category.getFieldOptions().size(); ++i) {
+            System.out.println("Enter product " + category.getFieldOptions() + ":");
 
+        }
+        System.out.println("enter product description:");
+        String description = scanner.nextLine();
+        System.out.println("enter product amount:");
+        int amount = scanner.nextInt();
+        scanner.nextLine();
+        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount);
     }
 
     private void initializeManageResellerOffMenu() {
@@ -969,12 +1035,12 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
-                    if (command.matches("^view \\w+$")) {
-
+                    if (command.matches("^view \\d+$")) {
+                        viewResellerOff(command);
                     } else if (command.matches("^edit \\w+$")) {
-
+                        editResellerOff(command);
                     } else if (command.equalsIgnoreCase("add off")) {
-
+                        addOff();
                     } else if (command.equalsIgnoreCase("back")) {
                         manageResellerOffMenu.goToPreviousMenu();
                     } else {
@@ -987,16 +1053,64 @@ public class View {
         };
     }
 
-    public void viewResellerOff() {
-
+    public void viewResellerOff(String command) throws Exception {
+        Matcher matcher = Pattern.compile("^view (?<offId>\\d+)$").matcher(command);
+        int offId = Integer.parseInt(matcher.group("offId"));
+        System.out.println(manageResellerOffMenu.getOffById(offId).toString());
     }
 
-    public void editResellerOff(String command) {
+    public void editResellerOff(String command) throws Exception {
+        Matcher matcher = Pattern.compile("^edit (?<offId>\\d+)$").matcher(command);
+        int offId = Integer.parseInt(matcher.group("offId"));
+        Off oldOff = manageResellerOffMenu.getOffById(offId);
+        System.out.println("enter off start time (put '-' for previous value):");
+        System.out.println("(enter date in format : 'MMM d HH:mm:ss yyyy' ex. Jun 18 10:30:00 2020)");
+        String startTime = scanner.nextLine();
+        System.out.println("enter off end time (put '-' for previous value):");
+        System.out.println("(enter date in format : 'MMM d HH:mm:ss yyyy' ex. Jun 18 10:30:00 2020)");
+        String endTime = scanner.nextLine();
+        System.out.println("enter off percent (put '-1' for previous value):");
+        int offPercent = Integer.parseInt(scanner.nextLine());
+        ArrayList<Commodity> addedProduct = new ArrayList<>();
+        System.out.println("enter products id that you want to add to off");
+        System.out.println("(type -1 when finished)");
+        int productId = 0;
 
+        while ((productId = scanner.nextInt()) != -1) {
+            addedProduct.add(manageResellerProductsMenu.getCommodityById(productId));
+            scanner.nextLine();
+        }
+
+        ArrayList<Commodity> removedProduct = new ArrayList<>();
+        System.out.println("enter products id that you want to remove from off");
+        System.out.println("(type -1 when finished)");
+
+        while ((productId = scanner.nextInt()) != -1) {
+            removedProduct.add(manageResellerProductsMenu.getCommodityById(productId));
+            scanner.nextLine();
+        }
+
+        manageResellerOffMenu.editOff(oldOff, removedProduct, addedProduct, startTime, endTime, offPercent);
     }
 
-    public void addOff() {
-
+    public void addOff() throws Exception {
+        System.out.println("enter off start time:");
+        System.out.println("(enter date in format : 'MMM d HH:mm:ss yyyy' ex. Jun 18 10:30:00 2020)");
+        String startTime = scanner.nextLine();
+        System.out.println("enter off end time:");
+        System.out.println("(enter date in format : 'MMM d HH:mm:ss yyyy' ex. Jun 18 10:30:00 2020)");
+        String endTime = scanner.nextLine();
+        System.out.println("enter off percent:");
+        int offPercent = Integer.parseInt(scanner.nextLine());
+        ArrayList<Commodity> commoditiesInOff = new ArrayList<>();
+        System.out.println("enter products id that you want to add to off");
+        System.out.println("(type -1 when finished)");
+        int productId = 0;
+        while ((productId = scanner.nextInt()) != -1) {
+            commoditiesInOff.add(manageResellerProductsMenu.getCommodityById(productId));
+            scanner.nextLine();
+        }
+        manageResellerOffMenu.addOff(commoditiesInOff, startTime, endTime, offPercent);
     }
 
     private void initializeOffMenu() {
@@ -1036,6 +1150,9 @@ public class View {
         manageRequestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                   manageRequestMenu.goToPreviousMenu();
+                }
                 if (command.matches("^details (?<requestId> \\S+)")) {
                     Matcher matcher = Pattern.compile("^details (?<requestId> \\S+)").matcher(command);
                     viewRequestDetails(Integer.parseInt(matcher.group("requestId")));
@@ -1083,6 +1200,9 @@ public class View {
         productsMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                   productsMenu.goToPreviousMenu();
+                }
                 if (command.matches("^view categories$")) {
                     viewCategory();
                 }
@@ -1124,6 +1244,9 @@ public class View {
         manageCategoryMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    manageCategoryMenu.goToPreviousMenu();
+                }
                 if (command.matches("edit (?<category> \\S+)")) {
                     Matcher matcher = Pattern.compile("edit (?<category> \\S+)").matcher(command);
                     editCategory(matcher.group("category"));
@@ -1252,6 +1375,9 @@ public class View {
         filteringMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    filteringMenu.goToPreviousMenu();
+                }
                 if (command.matches("show available filters")) {
                     System.out.println("Filter by name, by category, by category specification\n");
                 }
@@ -1350,6 +1476,9 @@ public class View {
         sortingMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    sortingMenu.goToPreviousMenu();
+                }
                 if (command.matches("^show available sorts$")){
                     System.out.println("price, number of visits, average score");
                 }
@@ -1371,6 +1500,30 @@ public class View {
             }
         };
     }
+
+    private void manageAllProducts(){
+        managerMenu.manageAllProducts();
+    }
+
+    private void initializeManageAllProductsMenu(){
+        manageAllProducts.commandProcess = new CommandProcess() {
+            @Override
+            public void commandProcessor(String command) throws Exception {
+                if (command.matches("back")){
+                    manageAllProducts.goToPreviousMenu();
+                }
+                if (command.matches("remove (?<productId> \\d+)")){
+                    Matcher matcher = Pattern.compile("remove (?<prooductId>)").matcher(command);
+                    try {
+                        manageAllProducts.removeCommodity(Integer.parseInt(matcher.group("productId")));
+                    }catch (Exception e){
+                        System.out.println("invalid commodity id");
+                    }
+                }
+            }
+        };
+    }
+
 
 
     public void run() {
