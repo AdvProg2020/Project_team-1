@@ -25,4 +25,8 @@ public class Menu {
     public void products(){
         HandleMenu.setMenu(View.productsMenu);
     }
+
+    public void commandProcess(String command) throws Exception {
+        commandProcess.commandProcessor(command);
+    }
 }

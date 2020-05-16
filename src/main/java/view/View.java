@@ -24,7 +24,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,6 +67,9 @@ public class View {
         initializeCustomerMenu();
         initializeCartMenu();
         initializeOrderMenu();
+        initializeResellerMenu();
+        initializeManageResellerProductMenu();
+        initializeManageResellerOffMenu();
         initializeOffMenu();
         initializeCommodityMenu();
         initializeDigestMenu();
@@ -137,7 +143,6 @@ public class View {
         try {
             Commodity comparingCommodity = commodityMenu.compare(id);
             Commodity commodity = commodityMenu.getCommodity();
-            Category category = commodity.getCategory();
             System.out.format("%-15s: %-30s %-30s", "name", commodity.getName(), comparingCommodity.getName());
             System.out.format("%-15s: %-30s %-30s", "brand", commodity.getBrand(), comparingCommodity.getBrand());
             System.out.format("%-15s: %-30s %-30s", "price", commodity.getPrice(), comparingCommodity.getPrice());
@@ -294,7 +299,7 @@ public class View {
                     managerMenu.goToPreviousMenu();
                 }
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo();
+                    viewPersonalInfo(managerMenu);
                 }
                 if (command.matches("^manage users$")) {
                     manageUsers(manageUsersMenu);
@@ -440,18 +445,17 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("view personal info")) {
-                    viewPersonalInfo();
+                    viewPersonalInfo(customerMenu);
                 } else if (command.equals("view cart")) {
-                    goToCartMenu(cartMenu, customerMenu);
+                    goToCartMenu();
                 } else if (command.equals("purchase")) {
-                    purchase(cartMenu);
+                    purchase();
                 } else if (command.equals("view orders")) {
-                    viewOrders(orderMenu, customerMenu);
+                    viewOrders();
                 } else if (command.equals("view balance")) {
-                    System.out.println("your balance is " + customerMenu.getBalance() + "\n" +
-                            "enter your command");
+                    System.out.println("your balance is " + customerMenu.getBalance());
                 } else if (command.equals("view discount codes"))
-                    viewMyDiscountCodes(customerMenu);
+                    viewMyDiscountCodes();
             }
         };
     }
@@ -461,35 +465,33 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.equals("show products")) {
-                    showProducts(cartMenu);
+                    showProducts();
                 } else if (command.matches("view (?<id>\\d+)")) {
-                    viewProduct(command, commodityMenu, cartMenu);
+                    viewProduct(command);
                 } else if (command.matches("increase (?<id>\\d+)")) {
-                    increaseCommodityInCart(command, cartMenu);
+                    increaseCommodityInCart(command);
                 } else if (command.matches("decrease (?<id>\\d+)")) {
-                    decreaseCommodityInCart(command, cartMenu);
+                    decreaseCommodityInCart(command);
                 } else if (command.equals("show total price")) {
-                    System.out.println("total price is " + cartMenu.calculateTotalPrice() + "\n" +
-                            "enter next command");
+                    System.out.println("total price is " + cartMenu.calculateTotalPrice());
                 } else if (command.equals("purchase")) {
-                    purchase(cartMenu);
+                    purchase();
                 }
             }
         };
     }
 
-    private void viewOrders(OrderMenu orderMenu, CustomerMenu customerMenu) {
+    private void viewOrders() {
         String output = "your orders:";
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         for (BuyLog log : account.getBuyLogs()) {
             output += "\n" + log.toString();
         }
-        System.out.println(output + "\nenter your command:");
-        MenuHandler.getInstance().setCurrentMenu(orderMenu);
-        orderMenu.setPreviousMenu(customerMenu);
+        System.out.println(output);
+        customerMenu.goToOrderMenu();
     }
 
-    private void viewMyDiscountCodes(CustomerMenu customerMenu) {
+    private void viewMyDiscountCodes() {
         String output = "your discount codes:";
         for (DiscountCode discount : customerMenu.getMyDiscounts()) {
             output += "\n" + discount.toString();
@@ -497,13 +499,12 @@ public class View {
         System.out.println(output);
     }
 
-    private void goToCartMenu(CartMenu cartMenu, CustomerMenu customerMenu) {
+    private void goToCartMenu() {
         System.out.println("enter your command");
-        cartMenu.setPreviousMenu(customerMenu);
-        MenuHandler.getInstance().setCurrentMenu(cartMenu);
+        customerMenu.goToCartMenu();
     }
 
-    private void purchase(CartMenu cartMenu) {
+    private void purchase() {
         System.out.println("please enter your address");
         String address = scanner.nextLine();
         System.out.println("please enter your phone number");
@@ -525,43 +526,23 @@ public class View {
         DiscountCode discountCode = null;
         while (!done) {
             try {
-                discountCode = cartMenu.checkDiscountCode(code);
-                if (discountCode.getMaximumDiscountPrice() <= discountCode.getDiscountPercentage() * price / 100) {
-                    price -= discountCode.getMaximumDiscountPrice();
-                } else {
-                    price -= discountCode.getDiscountPercentage() * price / 100;
-                }
+                discountCode = cartMenu.getDiscountCodeWithCode(code);
+                price = cartMenu.useDiscountCode(price, discountCode);
                 done = true;
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        if (price <= account.getCredit()) {
-            account.addToCredit(-price);
-            BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, discountCode, address, phone,
-                    postalCode);
-            account.addBuyLog(buyLog);
-            Set<BusinessAccount> sellers = buyLog.getSellers();
-            for (BusinessAccount seller : sellers) {
-                Set<Commodity> commodities = new HashSet<>();
-                int received = 0;
-                for (Commodity commodity : account.getCart().keySet()) {
-                    if (commodity.getSeller().getUsername().equals(seller.getUsername())) {
-                        commodities.add(commodity);
-                        received += commodity.getPrice();
-                    }
-                }
-                // to do
-                seller.addSellLog(new SellLog(new Date(), received, 0, commodities, account));
-            }
-            return;
+        try {
+            cartMenu.purchase(price, discountCode, address, phone, postalCode);
+            System.out.println("thanks for your purchase, see you soon!");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        System.out.println("you don't have enough money to pay");
     }
 
 
-    private void decreaseCommodityInCart(String command, CartMenu cartMenu) {
+    private void decreaseCommodityInCart(String command) {
         Matcher matcher = Pattern.compile("decrease (?<id>\\d+)").matcher(command);
         int id = Integer.parseInt(matcher.group("id"));
         try {
@@ -571,7 +552,7 @@ public class View {
         }
     }
 
-    private void increaseCommodityInCart(String command, CartMenu cartMenu) {
+    private void increaseCommodityInCart(String command) {
         Matcher matcher = Pattern.compile("increase (?<id>\\d+)").matcher(command);
         int id = Integer.parseInt(matcher.group("id"));
         try {
@@ -581,20 +562,16 @@ public class View {
         }
     }
 
-    private void viewProduct(String command, CommodityMenu commodityMenu, CartMenu cartMenu) {
+    private void viewProduct(String command) {
         Matcher matcher = Pattern.compile("view (?<id>\\d+)").matcher(command);
         try {
-            int id = Integer.parseInt(matcher.group("id"));
-            Commodity commodity = DataManager.getCommodityById(id);
-            MenuHandler.getInstance().setCurrentMenu(commodityMenu);
-            commodityMenu.setCommodity(commodity);
-            commodityMenu.setPreviousMenu(cartMenu);
+            cartMenu.goToCommodityMenu(Integer.parseInt(matcher.group("id")));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private void showProducts(CartMenu cartMenu) {
+    private void showProducts() {
         String respond = "";
         PersonalAccount personalAccount = (PersonalAccount) DataManager.getOnlineAccount();
         for (Commodity commodity : personalAccount.getCart().keySet()) {
@@ -669,10 +646,11 @@ public class View {
     }
 
     private void manageUsers(ManageUsersMenu manageUsersMenu) throws IOException {
-        ManagerMenu menu = ((ManagerMenu) MenuHandler.getInstance().getCurrentMenu());
+        ManagerMenu menu = ((ManagerMenu) HandleMenu.getMenu());
         ManagerAccount[] managerAccounts = DataManager.getAllManagers();
         PersonalAccount[] personalAccounts = DataManager.getAllPersonalAccounts();
         BusinessAccount[] businessAccounts = DataManager.getAllResellers();
+        HandleMenu.setMenu(new ManageUsersMenu());
         String output = "Managers";
         for (int i = 0; i < managerAccounts.length; i++) {
             output += "\n" + managerAccounts[i].getUsername();
@@ -686,12 +664,13 @@ public class View {
             output += "\n" + personalAccounts[i].getUsername();
         }
         System.out.println(output);
-        MenuHandler.getInstance().setCurrentMenu(manageUsersMenu);
+        HandleMenu.setMenu(manageUsersMenu);
     }
 
-    private void viewPersonalInfo() {
+    private void viewPersonalInfo(Menu menu) {
         System.out.println(DataManager.getOnlineAccount().toString());
-        MenuHandler.getInstance().setCurrentMenu(viewPersonalInfoMenu);
+        HandleMenu.setMenu(viewPersonalInfoMenu);
+        viewPersonalInfoMenu.setPreviousMenu(menu);
     }
 
     private void createDiscountCode(ManagerMenu managerMenu) throws IOException {
@@ -850,7 +829,7 @@ public class View {
             public void commandProcessor(String command) throws Exception {
                 try {
                     if (command.equalsIgnoreCase("view personal info")) {
-                        viewPersonalInfo();
+                        viewPersonalInfo(resellerMenu);
                     } else if (command.equalsIgnoreCase("view company info")) {
                         viewCompanyInfo();
                     } else if (command.equalsIgnoreCase("view sales history")) {
@@ -989,34 +968,52 @@ public class View {
     public void editResellerProduct(String command) throws Exception {
         Matcher matcher = Pattern.compile("^edit (?<productId>\\d+)$").matcher(command);
         int productId = Integer.parseInt(matcher.group("productId"));
-        Commodity commodity = DataManager.getCommodityById(productId);
-        System.out.println("enter product brand (put '-' for previous value):");
+        Commodity oldCommodity = DataManager.getCommodityById(productId);
+        System.out.println("enter product brand (type '-' if this field remained unchanged):");
         String brand = scanner.nextLine();
-        System.out.println("enter product name (put '-' for previous value):");
+        System.out.println("enter product name (type '-' if this field remained unchanged):");
         String name = scanner.nextLine();
-        System.out.println("enter product price (put '-' for previous value):");
+        System.out.println("enter product price (type '-' if this field remained unchanged):");
         int price = scanner.nextInt();
         scanner.nextLine();
-        System.out.println("enter product category (put '-' for previous value):");
+        System.out.println("enter product category (type '-' if this field remained unchanged):");
         String categoryString = scanner.nextLine();
         Category category;
-        if (categoryString.equalsIgnoreCase("-")) {
-            category = commodity.getCategory();
+        if (categoryString.equals("-")) {
+            category = oldCommodity.getCategory();
         } else {
             category = resellerMenu.getCategoryByName(categoryString);
         }
-        System.out.println("enter product specification (put '-' for previous value):");
+        System.out.println("is product available?(y/n)");
+        boolean availability = (scanner.nextLine().equals("y")) ? true:false;
+        System.out.println("enter product specification:\n" +
+                "(type '-' if optional field remained unchanged and '-1' if numerical field remained unchanged)");
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
         for (int i = 0; i < category.getFieldOptions().size(); ++i) {
-            System.out.println("Enter product " + category.getFieldOptions() + ":");
-
+            CategorySpecification categorySpecification = category.getFieldOptions().get(i);
+            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
+            if (categorySpecification.getOptions().isEmpty()) {
+                int val = scanner.nextInt();
+                if (val == -1) {
+                    val = ((NumericalField)oldCommodity.getCategorySpecifications().get(i)).getValue();
+                }
+                productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), val));
+                scanner.nextLine();
+            } else {
+                String val = scanner.nextLine();
+                if (val.equals("-")) {
+                    val = ((OptionalField)oldCommodity.getCategorySpecifications().get(i)).getValue();
+                }
+                productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), val));
+            }
         }
-        System.out.println("enter product description:");
+        System.out.println("enter product description (type '-' if this field remained unchanged):");
         String description = scanner.nextLine();
-        System.out.println("enter product amount:");
+        System.out.println("enter product amount (type '-1' if this field remained unchanged):");
         int amount = scanner.nextInt();
         scanner.nextLine();
-        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount);
+        manageResellerProductsMenu.editProduct(oldCommodity, brand, name, price, availability, category, productCategorySpecification,
+                description, amount);
     }
 
     private void initializeManageResellerOffMenu() {
@@ -1513,9 +1510,11 @@ public class View {
         };
     }
 
-
-
-    public void run() {
-
+    public void run() throws Exception {
+        MenuHandler.getInstance().setCurrentMenu(loginRegisterMenu);
+        String command;
+        while (!(command = scanner.nextLine()).equalsIgnoreCase("exit")) {
+            MenuHandler.getInstance().getCurrentMenu().commandProcess(command);
+        }
     }
 }
