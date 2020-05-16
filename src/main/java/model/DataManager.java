@@ -15,21 +15,21 @@ public class DataManager {
 
 
 
-    private static File allManagersJson;
+    private static final File allManagersJson;
 
-    private static File allResellersJson;
+    private static final File allResellersJson;
 
-    private static File allPersonalAccountsJson;
+    private static final File allPersonalAccountsJson;
 
-    private static File allDiscountCodeJson;
+    private static final File allDiscountCodeJson;
 
-    private static File allCommoditiesJson;
+    private static final File allCommoditiesJson;
 
-    private static File allRequestsJson;
+    private static final File allRequestsJson;
 
-    private static File allOffsJson;
+    private static final File allOffsJson;
 
-    private static File allCategoryJson;
+    private static final File allCategoryJson;
 
     static {
         initializeDataDirectory();
@@ -52,16 +52,32 @@ public class DataManager {
     private static void initializeDataFiles() {
         try {
             Gson gson = new Gson();
-            gson.toJson(new ArrayList<ManagerAccount>(), new FileWriter(allManagersJson));
-            gson.toJson(new ArrayList<BusinessAccount>(), new FileWriter(allResellersJson));
-            gson.toJson(new ArrayList<PersonalAccount>(), new FileWriter(allPersonalAccountsJson));
-            gson.toJson(new ArrayList<DiscountCode>() , new FileWriter(allDiscountCodeJson));
-            gson.toJson(new ArrayList<Request>(), new FileWriter(allRequestsJson));
-            gson.toJson(new ArrayList<Off>(), new FileWriter(allOffsJson));
-            gson.toJson(new ArrayList<Category>() , new FileWriter(allCategoryJson));
-            gson.toJson(new ArrayList<Commodity>() , new FileWriter(allCommoditiesJson));
+            FileWriter allManagersFileWriter = new FileWriter(allManagersJson);
+            gson.toJson(new ArrayList<ManagerAccount>(), allManagersFileWriter);
+            allManagersFileWriter.close();
+            FileWriter allResellerFileWriter = new FileWriter(allResellersJson);
+            gson.toJson(new ArrayList<BusinessAccount>(), allResellerFileWriter);
+            allResellerFileWriter.close();
+            FileWriter allPersonalAccountFileWriter = new FileWriter(allPersonalAccountsJson);
+            gson.toJson(new ArrayList<PersonalAccount>(), allPersonalAccountFileWriter);
+            allPersonalAccountFileWriter.close();
+            FileWriter allDiscountCodeFileWriter = new FileWriter(allDiscountCodeJson);
+            gson.toJson(new ArrayList<DiscountCode>() , allDiscountCodeFileWriter);
+            allDiscountCodeFileWriter.close();
+            FileWriter allRequestsFileWriter = new FileWriter(allRequestsJson);
+            gson.toJson(new ArrayList<Request>(), allRequestsFileWriter);
+            allRequestsFileWriter.close();
+            FileWriter allOffsFileWriter = new FileWriter(allOffsJson);
+            gson.toJson(new ArrayList<Off>(), allOffsFileWriter);
+            allOffsFileWriter.close();
+            FileWriter allCategoriesFileWriter = new FileWriter(allCategoryJson);
+            gson.toJson(new ArrayList<Category>() , allCategoriesFileWriter);
+            allCategoriesFileWriter.close();
+            FileWriter allCommoditiesFileWriter = new FileWriter(allCommoditiesJson);
+            gson.toJson(new ArrayList<Commodity>() , allCommoditiesFileWriter);
+            allCommoditiesFileWriter.close();
         } catch (IOException e) {
-
+            System.out.println(e.getMessage());
         }
     }
 
@@ -69,17 +85,21 @@ public class DataManager {
         ArrayList<Category> allCategories = new ArrayList<>(Arrays.asList(getAllCategories()));
         allCategories.add(category);
         Gson gson = new Gson();
-        gson.toJson(allCategories, new FileWriter(allCategoryJson));
+        FileWriter writer = new FileWriter(allCategoryJson);
+        gson.toJson(allCategories, writer);
+        writer.close();
     }
 
     public static void removeCategory(Category category) throws IOException {
         ArrayList<Category> allCategories = new ArrayList<>(Arrays.asList(getAllCategories()));
         allCategories.remove(category);
         Gson gson = new Gson();
-        gson.toJson(allCategories, new FileWriter(allCategoryJson));
+        FileWriter writer = new FileWriter(allCategoryJson);
+        gson.toJson(allCategories, writer);
+        writer.close();
     }
 
-    public static boolean isCategoryExist(String name) throws FileNotFoundException {
+    public static boolean isCategoryExist(String name) throws IOException {
         for (Category category : getAllCategories()) {
             if (category.getName().equals(name))
                 return true;
@@ -87,18 +107,23 @@ public class DataManager {
         return false;
     }
 
-    public static Category[] getAllCategories() throws FileNotFoundException {
+    public static Category[] getAllCategories() throws IOException {
         FileReader fileReader = new FileReader(allCategoryJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, Category[].class);
+        Category[] categories = gson.fromJson(jsonReader, Category[].class);
+        jsonReader.close();
+        fileReader.close();
+        return categories;
     }
 
     public static void deleteRequest(Request request) throws IOException {
         ArrayList<Request> allRequests = new ArrayList<>(Arrays.asList(getAllRequests()));
         allRequests.remove(request);
         Gson gson = new Gson();
-        gson.toJson(allRequests, new FileWriter(allRequestsJson));
+        FileWriter writer = new FileWriter(allRequestsJson);
+        gson.toJson(allRequests, writer);
+        writer.close();
     }
 
     public static Request getRequest(int id) throws Exception {
@@ -107,15 +132,16 @@ public class DataManager {
                 return request;
             }
         }
-        Exception e  = new Exception("Request doesn't exist");
-        throw e;
+       throw new Exception("Request doesn't exist");
     }
 
     public static void addRequest(Request request) throws Exception {
         ArrayList<Request> allRequests = new ArrayList<>(Arrays.asList(getAllRequests()));
         allRequests.add(request);
         Gson gson = new Gson();
-        gson.toJson(allRequests, new FileWriter(allRequestsJson));
+        FileWriter writer = new FileWriter(allRequestsJson);
+        gson.toJson(allRequests, writer);
+        writer.close();
     }
 
     public static boolean isCommodityExist(int id) throws Exception {
@@ -130,23 +156,29 @@ public class DataManager {
         FileReader fileReader = new FileReader(allRequestsJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, Request[].class);
+        Request[] requests = gson.fromJson(jsonReader, Request[].class);
+        jsonReader.close();
+        fileReader.close();
+        return requests;
     }
 
     public static ManagerAccount[] getAllManagers() throws IOException{
         FileReader fileReader = new FileReader(allManagersJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, ManagerAccount[].class);
+        ManagerAccount[] managerAccounts =  gson.fromJson(jsonReader, ManagerAccount[].class);
+        jsonReader.close();
+        fileReader.close();
+        return managerAccounts;
     }
-
-
 
     public static void addManagerAccount(ManagerAccount managerAccount) throws Exception{
         ArrayList<ManagerAccount> allManagerAccounts = new ArrayList<>(Arrays.asList(getAllManagers()));
         allManagerAccounts.add(managerAccount);
         Gson gson = new Gson();
-        gson.toJson(allManagerAccounts, new FileWriter(allManagersJson));
+        FileWriter writer = new FileWriter(allManagersJson);
+        gson.toJson(allManagerAccounts, writer);
+        writer.close();
     }
 
     public static SimpleAccount getAccountWithUserName(String username) throws IOException {
@@ -169,7 +201,10 @@ public class DataManager {
         FileReader fileReader = new FileReader(allResellersJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, BusinessAccount[].class);
+        BusinessAccount[] businessAccounts = gson.fromJson(jsonReader, BusinessAccount[].class);
+        jsonReader.close();
+        fileReader.close();
+        return businessAccounts;
     }
 
     public static boolean deleteManagerAccount(String username) throws IOException {
@@ -180,7 +215,9 @@ public class DataManager {
                 ArrayList<ManagerAccount> allManagerAccounts = new ArrayList<>(Arrays.asList(getAllManagers()));
                 allManagerAccounts.remove(managerAccount);
                 Gson gson = new Gson();
-                gson.toJson(allManagerAccounts, new FileWriter(allManagersJson));
+                FileWriter writer = new FileWriter(allManagersJson);
+                gson.toJson(allManagerAccounts, writer);
+                writer.close();
                 return true;
             }
         }
@@ -195,7 +232,9 @@ public class DataManager {
                 ArrayList<PersonalAccount> allPersonalAccounts = new ArrayList<>(Arrays.asList(getAllPersonalAccounts()));
                 allPersonalAccounts.remove(personalAccount);
                 Gson gson = new Gson();
-                gson.toJson(allPersonalAccounts, new FileWriter(allPersonalAccountsJson));
+                FileWriter writer = new FileWriter(allPersonalAccountsJson);
+                gson.toJson(allPersonalAccounts, writer);
+                writer.close();
                 return true;
             }
         }
@@ -206,14 +245,18 @@ public class DataManager {
         ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>(Arrays.asList(getAllDiscountCodes()));
         allDiscountCodes.add(discountCode);
         Gson gson = new Gson();
-        gson.toJson(allDiscountCodes, new FileWriter(allDiscountCodeJson));
+        FileWriter writer = new FileWriter(allDiscountCodeJson);
+        gson.toJson(allDiscountCodes, writer);
+        writer.close();
     }
 
     public static void deleteDiscountCode(DiscountCode discountCode) throws Exception {
         ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>(Arrays.asList(getAllDiscountCodes()));
         allDiscountCodes.remove(discountCode);
         Gson gson = new Gson();
-        gson.toJson(allDiscountCodes, new FileWriter(allDiscountCodeJson));
+        FileWriter writer = new FileWriter(allDiscountCodeJson);
+        gson.toJson(allDiscountCodes, writer);
+        writer.close();
     }
 
     public static boolean deleteBusinessAccount(String username) throws IOException {
@@ -224,7 +267,9 @@ public class DataManager {
                 ArrayList<BusinessAccount> allResellersAccounts = new ArrayList<>(Arrays.asList(getAllResellers()));
                 allResellersAccounts.remove(businessAccount);
                 Gson gson = new Gson();
-                gson.toJson(allResellersAccounts, new FileWriter(allResellersJson));
+                FileWriter writer = new FileWriter(allResellersJson);
+                gson.toJson(allResellersAccounts, writer);
+                writer.close();
                 return true;
             }
         }
@@ -258,21 +303,29 @@ public class DataManager {
         ArrayList<BusinessAccount> allResellersAccounts = new ArrayList<>(Arrays.asList(getAllResellers()));
         allResellersAccounts.add(businessAccount);
         Gson gson = new Gson();
-        gson.toJson(allResellersAccounts, new FileWriter(allResellersJson));
+        FileWriter writer = new FileWriter(allResellersJson);
+        gson.toJson(allResellersAccounts, writer);
+        writer.close();
     }
 
     public static PersonalAccount[] getAllPersonalAccounts() throws IOException {
         FileReader fileReader = new FileReader(allPersonalAccountsJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, PersonalAccount[].class);
+        PersonalAccount[] personalAccounts = gson.fromJson(jsonReader, PersonalAccount[].class);
+        jsonReader.close();
+        fileReader.close();
+        return personalAccounts;
     }
 
     public static DiscountCode[] getAllDiscountCodes() throws Exception{
         FileReader fileReader = new FileReader(allDiscountCodeJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, DiscountCode[].class);
+        DiscountCode[] discountCodes = gson.fromJson(jsonReader, DiscountCode[].class);
+        jsonReader.close();
+        fileReader.close();
+        return discountCodes;
     }
 
 
@@ -280,14 +333,19 @@ public class DataManager {
         ArrayList<PersonalAccount> allPersonalAccounts = new ArrayList<>(Arrays.asList(getAllPersonalAccounts()));
         allPersonalAccounts.add(personalAccount);
         Gson gson = new Gson();
-        gson.toJson(allPersonalAccounts, new FileWriter(allPersonalAccountsJson));
+        FileWriter writer = new FileWriter(allPersonalAccountsJson);
+        gson.toJson(allPersonalAccounts, writer);
+        writer.close();
     }
 
     public static Commodity[] getAllCommodities() throws Exception {
         FileReader fileReader = new FileReader(allCommoditiesJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, Commodity[].class);
+        Commodity[] commodities = gson.fromJson(jsonReader, Commodity[].class);
+        jsonReader.close();
+        fileReader.close();
+        return commodities;
     }
 
     public static Commodity getCommodityById(int id) throws Exception {
@@ -303,14 +361,18 @@ public class DataManager {
         ArrayList<Commodity> allCommodities = new ArrayList<>(Arrays.asList(getAllCommodities()));
         allCommodities.add(commodity);
         Gson gson = new Gson();
-        gson.toJson(allCommodities, new FileWriter(allCommoditiesJson));
+        FileWriter writer = new FileWriter(allCommoditiesJson);
+        gson.toJson(allCommodities, writer);
+        writer.close();
     }
 
     public static void deleteCommodity(Commodity commodity) throws Exception {
         ArrayList<Commodity> allCommodities = new ArrayList<>(Arrays.asList(getAllCommodities()));
         allCommodities.remove(commodity);
         Gson gson = new Gson();
-        gson.toJson(allCommodities, new FileWriter(allCommoditiesJson));
+        FileWriter writer = new FileWriter(allCommoditiesJson);
+        gson.toJson(allCommodities, writer);
+        writer.close();
     }
 
     public static boolean isUsernameExist(String username) throws IOException {
@@ -331,32 +393,23 @@ public class DataManager {
         }
         return false;
     }
-    private static SimpleAccount onlineAccount;
-
-    public static void setOnlineAccount(SimpleAccount onlineAccount) {
-        DataManager.onlineAccount = onlineAccount;
-    }
-
-    public static SimpleAccount getOnlineAccount() {
-        return onlineAccount;
-    }
 
     public static Off[] getAllOffs() throws IOException {
         FileReader fileReader = new FileReader(allOffsJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();
-        return gson.fromJson(jsonReader, Off[].class);
+        Off[] offs = gson.fromJson(jsonReader, Off[].class);
+        jsonReader.close();
+        fileReader.close();
+        return offs;
     }
-
 
     public static void addOff(Off off) throws Exception {
         ArrayList<Off> allOffs = new ArrayList<>(Arrays.asList(getAllOffs()));
         allOffs.add(off);
         Gson gson = new Gson();
-        gson.toJson(allOffs, new FileWriter(allOffsJson));
+        FileWriter writer = new FileWriter(allOffsJson);
+        gson.toJson(allOffs, writer);
+        writer.close();
     }
-
-    
-
 }
-

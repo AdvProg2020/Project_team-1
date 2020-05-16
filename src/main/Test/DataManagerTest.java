@@ -1,6 +1,9 @@
+import model.Category;
 import model.DataManager;
 import model.account.BusinessAccount;
 import org.junit.Assert;
+
+import java.io.IOException;
 
 public class DataManagerTest {
 
@@ -18,7 +21,12 @@ public class DataManagerTest {
 
     @org.junit.Test
     public void getAllCategories() {
-
+        try {
+            Category[] categories = DataManager.getAllCategories();
+            Assert.assertFalse(categories == null);
+        } catch (Exception e) {
+            System.out.println("***" + e.getMessage());
+        }
     }
 
     @org.junit.Test

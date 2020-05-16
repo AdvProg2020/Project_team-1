@@ -5,7 +5,7 @@ import model.CategorySpecification;
 import model.Commodity;
 import model.DataManager;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,7 +22,7 @@ public class ManageCategoryMenu extends Menu {
     }
 
 
-    public boolean checkCategoryName(String name) throws FileNotFoundException {
+    public boolean checkCategoryName(String name) throws IOException {
         return DataManager.isCategoryExist(name);
     }
 
@@ -81,7 +81,7 @@ public class ManageCategoryMenu extends Menu {
         Category category = new Category(name,commodities,categorySpecifications);
         DataManager.addCategory(category);
     }
-    public Category getCategory(String name) throws FileNotFoundException {
+    public Category getCategory(String name) throws IOException {
         for (Category allCategory : DataManager.getAllCategories()) {
             if (allCategory.getName().equalsIgnoreCase(name))
                 return allCategory;

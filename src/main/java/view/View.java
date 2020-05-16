@@ -20,7 +20,7 @@ import model.filter.*;
 import model.log.BuyLog;
 import model.log.SellLog;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1243,7 +1243,7 @@ public class View {
         };
     }
 
-    private void manageCategories() throws FileNotFoundException {
+    private void manageCategories() throws IOException {
         Category[] categories = managerMenu.manageCategory();
         System.out.println("all categories:");
         for (Category category : categories) {
@@ -1314,7 +1314,7 @@ public class View {
         }
     }
 
-    private void editCategory(String categoryName) throws FileNotFoundException {
+    private void editCategory(String categoryName) throws IOException {
         if (!manageCategoryMenu.checkCategoryName(categoryName)) {
             System.out.println("invalid category name");
             return;
@@ -1377,7 +1377,7 @@ public class View {
         }
     }
 
-    private void viewCategory() throws FileNotFoundException {
+    private void viewCategory() throws IOException {
         Category[] categories = productsMenu.getAllCategories();
         System.out.println("all categories:");
         for (Category category : categories) {

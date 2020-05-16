@@ -5,14 +5,15 @@ import model.Commodity;
 import model.DataManager;
 import view.View;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import static model.Commodity.Comparators.*;
 
 public class ProductsMenu extends Menu {
-    public Category[] getAllCategories() throws FileNotFoundException {
+    public Category[] getAllCategories() throws IOException {
         return DataManager.getAllCategories();
     }
 

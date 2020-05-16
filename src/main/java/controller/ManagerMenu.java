@@ -7,7 +7,7 @@ import model.Request;
 import model.account.SimpleAccount;
 import view.View;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,13 +55,13 @@ public class ManagerMenu extends Menu {
 
     }
 
-    public Category[] manageCategory() throws FileNotFoundException {
+    public Category[] manageCategory() throws IOException {
         MenuHandler.getInstance().setCurrentMenu(View.manageCategoryMenu);
         View.manageCategoryMenu.setPreviousMenu(View.managerMenu);
         return getAllCategories();
     }
 
-    public Category[] getAllCategories() throws FileNotFoundException {
+    public Category[] getAllCategories() throws IOException {
         return DataManager.getAllCategories();
     }
 
