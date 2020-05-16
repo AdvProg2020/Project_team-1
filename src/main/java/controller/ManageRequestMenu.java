@@ -11,6 +11,7 @@ public class ManageRequestMenu extends Menu {
     public void accept(int id) throws Exception {
         Request request = getRequestById(id);
         request.getObj().setStatus(Status.VERIFIED);
+        deleteLastObjInDataManager(request);
         request.getObj().addObj();
         DataManager.deleteRequest(request);
     }
