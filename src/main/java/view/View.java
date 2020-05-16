@@ -63,6 +63,9 @@ public class View {
         initializeCustomerMenu();
         initializeCartMenu();
         initializeOrderMenu();
+        initializeResellerMenu();
+        initializeManageResellerProductMenu();
+        initializeManageResellerOffMenu();
         initializeOffMenu();
         initializeCommodityMenu();
         initializeDigestMenu();
