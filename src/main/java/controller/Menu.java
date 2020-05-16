@@ -23,7 +23,7 @@ public class Menu {
     }
 
     public void products(){
-        HandleMenu.setMenu(View.productsMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
     }
 
     public void commandProcess(String command) throws Exception {

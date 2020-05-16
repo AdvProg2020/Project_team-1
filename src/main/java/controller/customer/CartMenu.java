@@ -1,6 +1,7 @@
 package controller.customer;
 
 import controller.Menu;
+import controller.MenuHandler;
 import model.*;
 import model.account.BusinessAccount;
 import model.account.PersonalAccount;
@@ -120,7 +121,7 @@ public class CartMenu extends Menu {
 
     public void goToCommodityMenu(int id) throws Exception {
         Commodity commodity = DataManager.getCommodityById(id);
-        HandleMenu.setMenu(commodityMenu);
+        MenuHandler.getInstance().setCurrentMenu(commodityMenu);
         commodityMenu.setCommodity(commodity);
         commodityMenu.setPreviousMenu(cartMenu);
     }

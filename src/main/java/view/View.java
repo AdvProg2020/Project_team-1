@@ -646,7 +646,7 @@ public class View {
     }
 
     private void manageUsers(ManageUsersMenu manageUsersMenu) throws IOException {
-        ManagerMenu menu = ((ManagerMenu) HandleMenu.getMenu());
+        ManagerMenu menu = ((ManagerMenu) MenuHandler.getInstance().getCurrentMenu());
         ManagerAccount[] managerAccounts = DataManager.getAllManagers();
         PersonalAccount[] personalAccounts = DataManager.getAllPersonalAccounts();
         BusinessAccount[] businessAccounts = DataManager.getAllResellers();
