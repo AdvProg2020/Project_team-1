@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public abstract class SimpleAccount {
     protected final String VALID_USERNAME = "^\\w{4,10}$";
-    protected final String VALID_FIRST_NAME_AND_LAST_NAME = "^[a-zA-z ]$";
+    protected final String VALID_FIRST_NAME_AND_LAST_NAME = "^[a-zA-z ]{1,20}$";
     protected final String VALID_EMAIL = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
     protected final String VALID_PHONE_NUMBER = "^(/+98|98|0)\\d{10}$";
     protected final String VALID_PASSWORD = "^.{4,8}$";
