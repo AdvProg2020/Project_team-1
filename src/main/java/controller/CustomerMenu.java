@@ -21,11 +21,11 @@ public class CustomerMenu extends Menu {
 
     public void goToCartMenu() {
         cartMenu.setPreviousMenu(customerMenu);
-        HandleMenu.setMenu(cartMenu);
+        MenuHandler.getInstance().setCurrentMenu(cartMenu);
     }
 
     public void goToOrderMenu() {
-        HandleMenu.setMenu(orderMenu);
+        MenuHandler.getInstance().setCurrentMenu(orderMenu);
         orderMenu.setPreviousMenu(customerMenu);
     }
 }

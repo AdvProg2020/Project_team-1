@@ -14,6 +14,16 @@ import java.util.Date;
 
 public class ManagerMenu extends Menu {
 
+    public void manageUsers(){
+        MenuHandler.getInstance().setCurrentMenu(View.manageUsersMenu);
+        View.managerMenu.setPreviousMenu(View.managerMenu);
+    }
+
+    public void viewPrsonalInfo(){
+        MenuHandler.getInstance().setCurrentMenu(View.viewPersonalInfoMenu);
+        View.viewPersonalInfoMenu.setPreviousMenu(View.managerMenu);
+    }
+
     public void manageAllProducts(){
         MenuHandler.getInstance().setCurrentMenu(View.manageAllProducts);
         View.manageAllProducts.setPreviousMenu(View.managerMenu);

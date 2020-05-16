@@ -650,7 +650,6 @@ public class View {
         ManagerAccount[] managerAccounts = DataManager.getAllManagers();
         PersonalAccount[] personalAccounts = DataManager.getAllPersonalAccounts();
         BusinessAccount[] businessAccounts = DataManager.getAllResellers();
-        HandleMenu.setMenu(new ManageUsersMenu());
         String output = "Managers";
         for (int i = 0; i < managerAccounts.length; i++) {
             output += "\n" + managerAccounts[i].getUsername();
@@ -664,13 +663,12 @@ public class View {
             output += "\n" + personalAccounts[i].getUsername();
         }
         System.out.println(output);
-        HandleMenu.setMenu(manageUsersMenu);
+        managerMenu.manageUsers();
     }
 
     private void viewPersonalInfo(Menu menu) {
         System.out.println(DataManager.getOnlineAccount().toString());
-        HandleMenu.setMenu(viewPersonalInfoMenu);
-        viewPersonalInfoMenu.setPreviousMenu(menu);
+        managerMenu.viewPrsonalInfo();
     }
 
     private void createDiscountCode(ManagerMenu managerMenu) throws IOException {
