@@ -39,8 +39,7 @@ public class LoginRegisterMenu extends Menu{
                                         String phoneNumber, String password, String businessName) throws Exception{
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
                 phoneNumber, password, businessName);
-        Request request = new Request(newAccount, null);
-        DataManager.addRequest(request);
+        DataManager.addResellerAccount(newAccount);
     }
 
     public void login(String username, String password) throws Exception{

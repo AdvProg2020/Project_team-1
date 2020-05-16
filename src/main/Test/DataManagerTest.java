@@ -3,8 +3,6 @@ import model.DataManager;
 import model.account.BusinessAccount;
 import org.junit.Assert;
 
-import java.io.IOException;
-
 public class DataManagerTest {
 
     @org.junit.Test
