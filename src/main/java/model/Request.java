@@ -28,6 +28,7 @@ public class Request {
         this.id = DataManager.getAllRequests().length + 1;
     }
 
+
     public Requestable getObj() {
         return obj;
     }
