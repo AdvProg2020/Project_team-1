@@ -17,7 +17,7 @@ public class LoginRegisterMenu extends Menu{
     }
 
     public void isThereManagerAccount() throws Exception{
-        if (DataManager.getAllManagers().length == 0) {
+        if (DataManager.getAllManagers().length > 0) {
             throw new Exception("You can't create manager account. Contact holy manager to create manager account.");
         }
     }

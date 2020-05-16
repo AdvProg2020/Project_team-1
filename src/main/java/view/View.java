@@ -84,7 +84,7 @@ public class View {
         digestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     commentsMenu.products();
                     return;
                 }
@@ -109,7 +109,7 @@ public class View {
         digestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     digestMenu.products();
                     return;
                 }
@@ -135,7 +135,7 @@ public class View {
         commodityMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     commodityMenu.products();
                 } else if (command.equals("digest")) {
                     digest();
@@ -270,7 +270,7 @@ public class View {
         getDiscountCode.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     getDiscountCode.products();
                 }
                 if (command.matches("products")) {
@@ -310,7 +310,7 @@ public class View {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     viewPersonalInfoMenu.products();
                     return;
                 }
@@ -336,7 +336,7 @@ public class View {
         managerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     managerMenu.products();
                     return;
                 }
@@ -427,7 +427,7 @@ public class View {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     viewPersonalInfoMenu.products();
                     return;
                 }
@@ -448,7 +448,7 @@ public class View {
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     manageUsersMenu.products();
                     return;
                 }
@@ -480,7 +480,7 @@ public class View {
         orderMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     orderMenu.products();
                     return;
                 }
@@ -522,7 +522,7 @@ public class View {
         customerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     customerMenu.products();
                     return;
                 }
@@ -547,7 +547,7 @@ public class View {
         cartMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     cartMenu.products();
                     return;
                 }
@@ -839,7 +839,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
-                    if (command.matches("product")) {
+                    if (command.matches("products")) {
                         loginRegisterMenu.products();
                         return;
                     }
@@ -925,7 +925,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
-                    if (command.matches("product")) {
+                    if (command.matches("products")) {
                         resellerMenu.products();
                         return;
                     }
@@ -1035,7 +1035,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
-                    if (command.matches("product")) {
+                    if (command.matches("products")) {
                         manageResellerProductsMenu.products();
                         return;
                     }
@@ -1130,7 +1130,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
-                    if (command.matches("product")) {
+                    if (command.matches("products")) {
                         manageResellerOffMenu.products();
                         return;
                     }
@@ -1219,7 +1219,7 @@ public class View {
             @Override
             public void commandProcessor(String command) throws Exception {
                 try {
-                    if (command.matches("product")) {
+                    if (command.matches("products")) {
                         offMenu.products();
                         return;
                     }
@@ -1256,7 +1256,7 @@ public class View {
         manageRequestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     manageRequestMenu.products();
                     return;
                 }
@@ -1318,7 +1318,7 @@ public class View {
         productsMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     productsMenu.products();
                     return;
                 }
@@ -1374,7 +1374,7 @@ public class View {
         manageCategoryMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")) {
+                if (command.matches("products")) {
                     manageCategoryMenu.products();
                     return;
                 }
@@ -1517,7 +1517,7 @@ public class View {
         filteringMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")){
+                if (command.matches("products")){
                     filteringMenu.products();
                     return;
                 }
@@ -1630,7 +1630,7 @@ public class View {
         sortingMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")){
+                if (command.matches("products")){
                     sortingMenu.products();
                     return;
                 }
@@ -1674,7 +1674,7 @@ public class View {
         manageAllProducts.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("product")){
+                if (command.matches("products")){
                     manageAllProducts.products();
                     return;
                 }
