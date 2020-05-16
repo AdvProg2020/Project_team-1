@@ -2,7 +2,6 @@ package model.log;
 
 import model.Commodity;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
@@ -34,7 +33,7 @@ public abstract class TransactionLog {
         return date;
     }
 
-    public ArrayList<Commodity> getCommodities() {
+    public Set<Commodity> getCommodities() {
         return commodities;
     }
 
