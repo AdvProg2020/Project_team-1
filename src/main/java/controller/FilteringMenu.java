@@ -25,7 +25,7 @@ public class FilteringMenu extends Menu {
 
     public FilteringMenu() {
         try {
-          //  filteredCommodities = (ArrayList<Commodity>) asList(DataManager.getAllCommodities());
+            //filteredCommodities = (ArrayList<Commodity>) Arrays.asList(DataManager.getAllCommodities());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

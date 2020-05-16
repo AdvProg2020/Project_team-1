@@ -7,6 +7,7 @@ import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+import view.View;
 
 public class LoginRegisterMenu extends Menu{
 
@@ -17,7 +18,7 @@ public class LoginRegisterMenu extends Menu{
     }
 
     public void isThereManagerAccount() throws Exception{
-        if (DataManager.getAllManagers().length == 0) {
+        if (DataManager.getAllManagers().length > 0) {
             throw new Exception("You can't create manager account. Contact holy manager to create manager account.");
         }
     }
@@ -50,6 +51,12 @@ public class LoginRegisterMenu extends Menu{
             throw new Exception("Invalid password");
         }
         Session.setOnlineAccount(simpleAccount);
-        goToPreviousMenu();
+        if (simpleAccount instanceof ManagerAccount){
+            MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
+        }else if (simpleAccount instanceof  BusinessAccount){
+            MenuHandler.getInstance().setCurrentMenu(View.resellerMenu);
+        }else if (simpleAccount instanceof  PersonalAccount){
+            MenuHandler.getInstance().setCurrentMenu(View.customerMenu);
+        }
     }
 }
