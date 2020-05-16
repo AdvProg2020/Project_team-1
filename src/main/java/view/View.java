@@ -993,34 +993,52 @@ public class View {
     public void editResellerProduct(String command) throws Exception {
         Matcher matcher = Pattern.compile("^edit (?<productId>\\d+)$").matcher(command);
         int productId = Integer.parseInt(matcher.group("productId"));
-        Commodity commodity = DataManager.getCommodityById(productId);
-        System.out.println("enter product brand (put '-' for previous value):");
+        Commodity oldCommodity = DataManager.getCommodityById(productId);
+        System.out.println("enter product brand (type '-' if this field remained unchanged):");
         String brand = scanner.nextLine();
-        System.out.println("enter product name (put '-' for previous value):");
+        System.out.println("enter product name (type '-' if this field remained unchanged):");
         String name = scanner.nextLine();
-        System.out.println("enter product price (put '-' for previous value):");
+        System.out.println("enter product price (type '-' if this field remained unchanged):");
         int price = scanner.nextInt();
         scanner.nextLine();
-        System.out.println("enter product category (put '-' for previous value):");
+        System.out.println("enter product category (type '-' if this field remained unchanged):");
         String categoryString = scanner.nextLine();
         Category category;
-        if (categoryString.equalsIgnoreCase("-")) {
-            category = commodity.getCategory();
+        if (categoryString.equals("-")) {
+            category = oldCommodity.getCategory();
         } else {
             category = resellerMenu.getCategoryByName(categoryString);
         }
-        System.out.println("enter product specification (put '-' for previous value):");
+        System.out.println("is product available?(y/n)");
+        boolean availability = (scanner.nextLine().equals("y")) ? true:false;
+        System.out.println("enter product specification:\n" +
+                "(type '-' if optional field remained unchanged and '-1' if numerical field remained unchanged)");
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
         for (int i = 0; i < category.getFieldOptions().size(); ++i) {
-            System.out.println("Enter product " + category.getFieldOptions() + ":");
-
+            CategorySpecification categorySpecification = category.getFieldOptions().get(i);
+            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
+            if (categorySpecification.getOptions().isEmpty()) {
+                int val = scanner.nextInt();
+                if (val == -1) {
+                    val = ((NumericalField)oldCommodity.getCategorySpecifications().get(i)).getValue();
+                }
+                productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), val));
+                scanner.nextLine();
+            } else {
+                String val = scanner.nextLine();
+                if (val.equals("-")) {
+                    val = ((OptionalField)oldCommodity.getCategorySpecifications().get(i)).getValue();
+                }
+                productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), val));
+            }
         }
-        System.out.println("enter product description:");
+        System.out.println("enter product description (type '-' if this field remained unchanged):");
         String description = scanner.nextLine();
-        System.out.println("enter product amount:");
+        System.out.println("enter product amount (type '-1' if this field remained unchanged):");
         int amount = scanner.nextInt();
         scanner.nextLine();
-        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount);
+        manageResellerProductsMenu.editProduct(oldCommodity, brand, name, price, availability, category, productCategorySpecification,
+                description, amount);
     }
 
     private void initializeManageResellerOffMenu() {

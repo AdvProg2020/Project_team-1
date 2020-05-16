@@ -1,10 +1,10 @@
 package controller.reseller;
 
 import controller.Menu;
-import model.Commodity;
-import model.Session;
+import model.*;
 import model.account.BusinessAccount;
 import model.account.SimpleAccount;
+import model.field.Field;
 import model.log.SellLog;
 import view.View;
 
@@ -32,9 +32,21 @@ public class ManageResellerProductsMenu extends Menu {
         return simpleAccountArrayList;
     }
 
-    /*
-        viewProduct
-        viewBuyers
-        editProduct
-     */
+    public void editProduct(Commodity oldProduct, String brand, String name, int price,boolean availability, Category category,
+                            ArrayList<Field> categorySpecifications, String description, int amount) throws Exception {
+        BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
+        Commodity editedProduct = new Commodity((brand.equals("-"))?(oldProduct.getBrand()):(brand),
+                (name.equals("-"))?(oldProduct.getName()):(name),
+                (price == -1)?(oldProduct.getPrice()):(price),
+                businessAccount,
+                availability,
+                category,
+                categorySpecifications,
+                (description.equals("-"))?(oldProduct.getDescription()):(description),
+                (amount == -1)?(oldProduct.getInventory()):(amount));
+        Request request = new Request(editedProduct, businessAccount);
+        DataManager.addRequest(request);
+        // Todo delete old product
+    }
+
 }
