@@ -15,7 +15,7 @@ import java.util.Date;
 public class ManagerMenu extends Menu {
 
     public void manageAllProducts(){
-        HandleMenu.setMenu(View.manageAllProducts);
+        MenuHandler.getInstance().setCurrentMenu(View.manageAllProducts);
         View.manageAllProducts.setPreviousMenu(View.managerMenu);
     }
 
@@ -46,7 +46,7 @@ public class ManagerMenu extends Menu {
     }
 
     public Category[] manageCategory() throws FileNotFoundException {
-        HandleMenu.setMenu(View.manageCategoryMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.manageCategoryMenu);
         View.manageCategoryMenu.setPreviousMenu(View.managerMenu);
         return getAllCategories();
     }
@@ -56,7 +56,7 @@ public class ManagerMenu extends Menu {
     }
 
     public Request[] manageRequest() throws IOException {
-        HandleMenu.setMenu(View.manageRequestMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.manageRequestMenu);
         View.manageRequestMenu.setPreviousMenu(View.managerMenu);
         return getAllRequests();
     }
@@ -70,7 +70,7 @@ public class ManagerMenu extends Menu {
     }
 
     public DiscountCode[] viewDiscountCodesCommand() throws Exception {
-        HandleMenu.setMenu(View.getDiscountCode);
+        MenuHandler.getInstance().setCurrentMenu(View.getDiscountCode);
         View.getDiscountCode.setPreviousMenu(View.managerMenu);
         return getAllDiscountCodes();
     }

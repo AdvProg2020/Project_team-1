@@ -18,11 +18,11 @@ public class ProductsMenu extends Menu {
 
 
     public void filtering(){
-            HandleMenu.setMenu(View.filteringMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.filteringMenu);
     }
 
     public void sorting(){
-            HandleMenu.setMenu(View.sortingMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.sortingMenu);
     }
 
     public ArrayList<Commodity> getProducts() {

@@ -228,12 +228,6 @@ public class Commodity implements Requestable {
             }
         };
 
-        public static Comparator<Commodity> date = new Comparator<Commodity>() {
-            @Override
-            public int compare(Commodity o1, Commodity o2) {
-
-            }
-        };
         public static Comparator<Commodity> score = new Comparator<Commodity>() {
             @Override
             public int compare(Commodity o1, Commodity o2) {

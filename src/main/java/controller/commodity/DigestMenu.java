@@ -1,7 +1,7 @@
 package controller.commodity;
 
-import controller.HandleMenu;
 import controller.Menu;
+import controller.MenuHandler;
 import model.Commodity;
 import model.DataManager;
 import model.account.PersonalAccount;
@@ -16,7 +16,7 @@ public class DigestMenu extends Menu {
 
     public void addToCart() throws Exception {
         if (DataManager.getOnlineAccount() == null) {
-            HandleMenu.setMenu(View.loginRegisterMenu);
+            MenuHandler.getInstance().setCurrentMenu(View.loginRegisterMenu);
             View.loginRegisterMenu.setPreviousMenu(this);
             throw new Exception("you have to login or register first");
         }

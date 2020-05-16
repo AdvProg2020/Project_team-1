@@ -485,7 +485,7 @@ public class View {
             output += "\n" + log.toString();
         }
         System.out.println(output + "\nenter your command:");
-        HandleMenu.setMenu(orderMenu);
+        MenuHandler.getInstance().setCurrentMenu(orderMenu);
         orderMenu.setPreviousMenu(customerMenu);
     }
 
@@ -500,7 +500,7 @@ public class View {
     private void goToCartMenu(CartMenu cartMenu, CustomerMenu customerMenu) {
         System.out.println("enter your command");
         cartMenu.setPreviousMenu(customerMenu);
-        HandleMenu.setMenu(cartMenu);
+        MenuHandler.getInstance().setCurrentMenu(cartMenu);
     }
 
     private void purchase(CartMenu cartMenu) {
@@ -586,7 +586,7 @@ public class View {
         try {
             int id = Integer.parseInt(matcher.group("id"));
             Commodity commodity = DataManager.getCommodityById(id);
-            HandleMenu.setMenu(commodityMenu);
+            MenuHandler.getInstance().setCurrentMenu(commodityMenu);
             commodityMenu.setCommodity(commodity);
             commodityMenu.setPreviousMenu(cartMenu);
         } catch (Exception e) {
@@ -669,11 +669,10 @@ public class View {
     }
 
     private void manageUsers(ManageUsersMenu manageUsersMenu) throws IOException {
-        ManagerMenu menu = ((ManagerMenu) HandleMenu.getMenu());
+        ManagerMenu menu = ((ManagerMenu) MenuHandler.getInstance().getCurrentMenu());
         ManagerAccount[] managerAccounts = DataManager.getAllManagers();
         PersonalAccount[] personalAccounts = DataManager.getAllPersonalAccounts();
         BusinessAccount[] businessAccounts = DataManager.getAllResellers();
-        HandleMenu.setMenu(new ManageUsersMenu());
         String output = "Managers";
         for (int i = 0; i < managerAccounts.length; i++) {
             output += "\n" + managerAccounts[i].getUsername();
@@ -687,12 +686,12 @@ public class View {
             output += "\n" + personalAccounts[i].getUsername();
         }
         System.out.println(output);
-        HandleMenu.setMenu(manageUsersMenu);
+        MenuHandler.getInstance().setCurrentMenu(manageUsersMenu);
     }
 
     private void viewPersonalInfo() {
         System.out.println(DataManager.getOnlineAccount().toString());
-        HandleMenu.setMenu(viewPersonalInfoMenu);
+        MenuHandler.getInstance().setCurrentMenu(viewPersonalInfoMenu);
     }
 
     private void createDiscountCode(ManagerMenu managerMenu) throws IOException {
