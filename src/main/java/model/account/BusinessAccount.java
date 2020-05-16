@@ -25,6 +25,9 @@ public class BusinessAccount extends SimpleAccount {
         credit = 0;
     }
 
+
+
+    @Override
     public void setStatus(Status status) {
         this.status = status;
     }
