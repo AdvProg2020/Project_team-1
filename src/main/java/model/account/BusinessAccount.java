@@ -11,7 +11,6 @@ public class BusinessAccount extends SimpleAccount {
     private ArrayList<SellLog> sellLogs;
     private ArrayList<Commodity> commodities;
     private ArrayList<Off> offs;
-    private Status status;
     private double credit;
 
     public BusinessAccount(String username, String firstName, String lastName, String email, String phoneNumber,
@@ -21,15 +20,7 @@ public class BusinessAccount extends SimpleAccount {
         sellLogs = new ArrayList<SellLog>();
         commodities = new ArrayList<Commodity>();
         offs = new ArrayList<Off>();
-        this.status = Status.UNDER_CHECKING_FOR_CREATE;
         credit = 0;
-    }
-
-
-
-    @Override
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public ArrayList<SellLog> getSellLogs() {
