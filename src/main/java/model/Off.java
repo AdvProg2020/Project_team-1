@@ -77,8 +77,8 @@ public class Off implements Requestable {
     }
 
     @Override
-    public void addObj() {
-
+    public void addObj() throws Exception {
+        DataManager.addOff(this);
     }
 
     public Date getStartTime() {

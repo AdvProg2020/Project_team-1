@@ -1,9 +1,6 @@
 package model.account;
 
-import model.Commodity;
-import model.Off;
-import model.Requestable;
-import model.Status;
+import model.*;
 import model.log.SellLog;
 
 import java.util.ArrayList;
@@ -34,7 +31,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
 
     @Override
     public void addObj() throws Exception {
-
+        DataManager.addResellerAccount(this);
     }
 
     public ArrayList<SellLog> getSellLogs() {
