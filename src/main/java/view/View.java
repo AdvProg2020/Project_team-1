@@ -189,7 +189,7 @@ public class View {
 
     private void attributes() {
         Commodity commodity = commodityMenu.getCommodity();
-        String respond = commodity.toString();
+        String respond = commodity.getInformation();
         for (Field categorySpecification : commodity.getCategorySpecifications()) {
             respond += "[" + categorySpecification.toString() + "]";
         }
@@ -198,7 +198,7 @@ public class View {
 
     private void digest() {
         Commodity commodity = commodityMenu.getCommodity();
-        System.out.println(commodity.toString());
+        System.out.println(commodity.getInformation());
         commodityMenu.goToDigestMenu(digestMenu);
     }
 
@@ -224,7 +224,7 @@ public class View {
         SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
         Date startDate = null;
         try {
-            startDate = format.parse(matcher.group("new field"));
+            startDate = format.parse(matcher.group("newfield"));
         } catch (ParseException e) {
             System.out.println("invalid date format");
             return true;
@@ -237,7 +237,7 @@ public class View {
         SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
         Date finishDate = null;
         try {
-            finishDate = format.parse(matcher.group("new field"));
+            finishDate = format.parse(matcher.group("newfield"));
         } catch (ParseException e) {
             System.out.println("invalid date format");
             return;
@@ -247,22 +247,22 @@ public class View {
 
 
     private void editManagerAccountFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) throws Exception {
-        Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$").matcher(command);
+        Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield>\\S+)$").matcher(command);
         matcher.matches();
         if (matcher.group("field").equals("first name")) {
-            viewPersonalInfoMenu.editFirstName(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editFirstName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("last name")) {
-            viewPersonalInfoMenu.editLastName(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editLastName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("email")) {
-            viewPersonalInfoMenu.editEmail(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editEmail(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("password")) {
-            viewPersonalInfoMenu.editPassword(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editPassword(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("phone number")) {
-            viewPersonalInfoMenu.editPhoneNumber(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editPhoneNumber(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
         }
     }
 
@@ -287,8 +287,8 @@ public class View {
                     viewDiscountCode(getDiscountCode, matcher.group("code"));
                     return;
                 }
-                if (command.equals("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField> \\S+)$")) {
-                    Matcher matcher = Pattern.compile("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField> \\S+)$").matcher(command);
+                if (command.equals("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField>\\S+)$")) {
+                    Matcher matcher = Pattern.compile("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField>\\S+)$").matcher(command);
                     matcher.matches();
                     DiscountCode discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
                     editDiscountCode(discountCode, command);
@@ -322,7 +322,7 @@ public class View {
                     viewPersonalInfoMenu.goToPreviousMenu();
                     return;
                 }
-                if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
+                if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield>\\S+)$")) {
                     editManagerAccountFields(viewPersonalInfoMenu, command);
                     return;
                 }
@@ -378,21 +378,21 @@ public class View {
     }
 
     private void editDiscountCode(DiscountCode discountCode, String command) throws Exception {
-        Matcher matcher = Pattern.compile("^edit (?<code>\\S+) (?<field>\\S+ ?\\S+ ?\\S+ ?\\S+) (?<newfield> \\S+)$").matcher(command);
+        Matcher matcher = Pattern.compile("^edit (?<code>\\S+) (?<field>\\S+ ?\\S+ ?\\S+ ?\\S+) (?<newfield>\\S+)$").matcher(command);
         matcher.matches();
         if (matcher.group("field").equals("code")) {
-            getDiscountCode.changeCode(matcher.group("new field"), discountCode);
+            getDiscountCode.changeCode(matcher.group("newfield"), discountCode);
         }
         if (matcher.group("field").equals("maximum discount price")) {
             try {
-                getDiscountCode.changeMaximumDiscountPrice(Integer.parseInt(matcher.group("new field")), discountCode);
+                getDiscountCode.changeMaximumDiscountPrice(Integer.parseInt(matcher.group("newfield")), discountCode);
             } catch (Exception e) {
                 System.out.println("invalid maximum discount price");
             }
         }
         if (matcher.group("field").equals("maximum number of uses")) {
             try {
-                getDiscountCode.changeMaximumNumberOfUses(Integer.parseInt(matcher.group("new field")), discountCode);
+                getDiscountCode.changeMaximumNumberOfUses(Integer.parseInt(matcher.group("newfield")), discountCode);
             } catch (Exception e) {
                 System.out.println("invalid maximum number of uses");
             }
@@ -404,7 +404,7 @@ public class View {
             changeStartDate(discountCode, getDiscountCode, matcher);
         }
         if (matcher.group("field").equals("add account")) {
-            String userName = matcher.group("new field");
+            String userName = matcher.group("newfield");
             try {
                 getDiscountCode.addAccount(userName, discountCode);
                 System.out.println("Account added successfully");
@@ -413,7 +413,7 @@ public class View {
             }
         }
         if (matcher.group("field").equals("delete account")) {
-            String userName = matcher.group("new field");
+            String userName = matcher.group("newfield");
             try {
                 getDiscountCode.deleteAccount(userName, discountCode);
                 System.out.println("Account deleted successfully");
@@ -435,7 +435,7 @@ public class View {
                     viewPersonalInfoMenu.goToPreviousMenu();
                     return;
                 }
-                if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$")) {
+                if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield>\\S+)$")) {
                     editFields(viewPersonalInfoMenu, command);
                     return;
                 }
@@ -460,10 +460,10 @@ public class View {
                     Matcher matcher = Pattern.compile("^view (?<username>\\S+)$").matcher(command);
                     matcher.matches();
                     SimpleAccount simpleAccount = manageUsersMenu.getAccountWithUserNameFromDatabase(matcher.group("username"));
-                    System.out.println(simpleAccount.toString());
+                    System.out.println(simpleAccount.getInformation());
                     return;
                 }
-                if (command.matches("^delete user (?<username> \\S+)")) {
+                if (command.matches("^delete user (?<username>\\S+)")) {
                     deleteUser(command, manageUsersMenu);
                     return;
                 }
@@ -665,7 +665,7 @@ public class View {
         String respond = "";
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         for (Commodity commodity : personalAccount.getCart().keySet()) {
-            respond += "[" + commodity.toString() + "]";
+            respond += "[" + commodity.getInformation() + "]";
         }
         System.out.println(respond);
     }
@@ -686,7 +686,7 @@ public class View {
     }
 
     private void deleteUser(String command, ManageUsersMenu manageUsersMenu) throws Exception {
-        Matcher matcher = Pattern.compile("^delete user (?<username> \\S+)").matcher(command);
+        Matcher matcher = Pattern.compile("^delete user (?<username>\\S+)").matcher(command);
         matcher.matches();
         try {
             manageUsersMenu.deleteUser(matcher.group("username"));
@@ -718,23 +718,35 @@ public class View {
     }
 
     private void editFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) throws Exception {
-        Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield> \\S+)$").matcher(command);
+        Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield>\\S+)$").matcher(command);
         matcher.matches();
         if (matcher.group("field").equals("first name")) {
-            viewPersonalInfoMenu.editFirstName(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editFirstName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.updateFile();
+            return;
         }
         if (matcher.group("field").equals("last name")) {
-            viewPersonalInfoMenu.editLastName(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editLastName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.updateFile();
+            return;
         }
         if (matcher.group("field").equals("email")) {
-            viewPersonalInfoMenu.editEmail(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editEmail(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.updateFile();
+            return;
         }
         if (matcher.group("field").equals("password")) {
-            viewPersonalInfoMenu.editPassword(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editPassword(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.updateFile();
+            return;
         }
         if (matcher.group("field").equals("phone number")) {
-            viewPersonalInfoMenu.editPhoneNumber(matcher.group("new field"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editPhoneNumber(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.updateFile();
+            return;
         }
+        System.out.println("wrong field");
+
     }
 
     private void manageUsers(ManageUsersMenu manageUsersMenu) throws IOException {
@@ -742,15 +754,15 @@ public class View {
         ManagerAccount[] managerAccounts = DataManager.getAllManagers();
         PersonalAccount[] personalAccounts = DataManager.getAllPersonalAccounts();
         BusinessAccount[] businessAccounts = DataManager.getAllResellers();
-        String output = "Managers";
+        String output = "Managers;";
         for (int i = 0; i < managerAccounts.length; i++) {
             output += "\n" + managerAccounts[i].getUsername();
         }
-        output += "\n" + "Business accounts";
+        output += "\n" + "Business accounts:";
         for (int i = 0; i < businessAccounts.length; i++) {
             output += "\n" + businessAccounts[i].getUsername();
         }
-        output += "\n" + "Personal accounts";
+        output += "\n" + "Personal accounts:";
         for (int i = 0; i < personalAccounts.length; i++) {
             output += "\n" + personalAccounts[i].getUsername();
         }
@@ -759,7 +771,7 @@ public class View {
     }
 
     private void viewPersonalInfo(Menu menu) {
-        System.out.println(Session.getOnlineAccount().toString());
+        System.out.println(Session.getOnlineAccount().getInformation());
         managerMenu.viewPersonalInfo();
     }
 
@@ -981,7 +993,7 @@ public class View {
 
     private void manageResellerProduct() throws Exception {
         for (Commodity commodity : resellerMenu.manageCommodities()) {
-            System.out.println(commodity.toString());
+            System.out.println(commodity.getInformation());
         }
     }
 
@@ -1084,7 +1096,7 @@ public class View {
         Matcher matcher = Pattern.compile("^view (?<productId>\\d+)$").matcher(command);
         matcher.matches();
         int productId = Integer.parseInt(matcher.group("productId"));
-        System.out.println(manageResellerProductsMenu.getCommodityById(productId).toString());
+        System.out.println(manageResellerProductsMenu.getCommodityById(productId).getInformation());
     }
 
     public void viewResellerProductBuyers(String command) throws Exception {
@@ -1288,7 +1300,7 @@ public class View {
         Matcher matcher = Pattern.compile("^show product (?<productId>\\w+)$").matcher(command);
         matcher.matches();
         int productId = Integer.parseInt(matcher.group("productId"));
-        DataManager.getCommodityById(productId).toString();
+        DataManager.getCommodityById(productId).getInformation();
     }
 
     private void offMenuHelp() {
@@ -1308,20 +1320,20 @@ public class View {
                     manageRequestMenu.goToPreviousMenu();
                     return;
                 }
-                if (command.matches("^details (?<requestId> \\S+)")) {
-                    Matcher matcher = Pattern.compile("^details (?<requestId> \\S+)").matcher(command);
+                if (command.matches("^details (?<requestId>\\S+)")) {
+                    Matcher matcher = Pattern.compile("^details (?<requestId>\\S+)").matcher(command);
                     matcher.matches();
                     viewRequestDetails(Integer.parseInt(matcher.group("requestId")));
                     return;
                 }
-                if (command.matches("^accept (?<requestId> \\S+)")) {
-                    Matcher matcher = Pattern.compile("^accept (?<requestId> \\S+)").matcher(command);
+                if (command.matches("^accept (?<requestId>\\S+)")) {
+                    Matcher matcher = Pattern.compile("^accept (?<requestId>\\S+)").matcher(command);
                     matcher.matches();
                     acceptRequest(Integer.parseInt(matcher.group("requestId")));
                     return;
                 }
-                if (command.matches("^decline (?<requestId> \\S+)")) {
-                    Matcher matcher = Pattern.compile("^decline (?<requestId> \\S+)").matcher(command);
+                if (command.matches("^decline (?<requestId>\\S+)")) {
+                    Matcher matcher = Pattern.compile("^decline (?<requestId>\\S+)").matcher(command);
                     matcher.matches();
                     declineRequest(Integer.parseInt(matcher.group("requestId")));
                     return;
@@ -1385,17 +1397,17 @@ public class View {
                 if (command.matches("^show products$")) {
                     String output = "products";
                     for (Commodity product : productsMenu.getProducts()) {
-                        output += "\n" + product.toString();
+                        output += "\n" + product.getInformation();
                     }
                     System.out.println(output);
                     return;
                 }
-                if (command.matches("^show product (?<productID> \\d+)$")) {
-                    Matcher matcher = Pattern.compile("^show roduct (?<productID> \\d+)$").matcher(command);
+                if (command.matches("^show product (?<productID>\\d+)$")) {
+                    Matcher matcher = Pattern.compile("^show roduct (?<productID>\\d+)$").matcher(command);
                     matcher.matches();
                     try {
                         Commodity commodity = productsMenu.getProducts(Integer.parseInt(matcher.group("productID")));
-                        System.out.println(commodity.toString());
+                        System.out.println(commodity.getInformation());
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -1426,20 +1438,20 @@ public class View {
                     manageCategoryMenu.goToPreviousMenu();
                     return;
                 }
-                if (command.matches("edit (?<category> \\S+)")) {
-                    Matcher matcher = Pattern.compile("edit (?<category> \\S+)").matcher(command);
+                if (command.matches("edit (?<category>\\S+)")) {
+                    Matcher matcher = Pattern.compile("edit (?<category>\\S+)").matcher(command);
                     matcher.matches();
                     editCategory(matcher.group("category"));
                     return;
                 }
-                if (command.matches("add (?<category> \\S+)")) {
-                    Matcher matcher = Pattern.compile("add (?<category> \\S+)").matcher(command);
+                if (command.matches("add (?<category>\\S+)")) {
+                    Matcher matcher = Pattern.compile("add (?<category>\\S+)").matcher(command);
                     matcher.matches();
                     addCategory(matcher.group("category"));
                     return;
                 }
-                if (command.matches("remove (?<category> \\S+)")) {
-                    Matcher matcher = Pattern.compile("remove (?<category> \\S+)").matcher(command);
+                if (command.matches("remove (?<category>\\S+)")) {
+                    Matcher matcher = Pattern.compile("remove (?<category>\\S+)").matcher(command);
                     matcher.matches();
                     removeCategory(matcher.group("category"));
                     return;
@@ -1573,8 +1585,8 @@ public class View {
                     System.out.println("Filter by name, by category, by category specification\n");
                     return;
                 }
-                if (command.matches("filter (?<filter> \\S+ ?\\S+)")) {
-                    Matcher matcher = Pattern.compile("filter (?<filter> \\S+ ?\\S+)").matcher(command);
+                if (command.matches("filter (?<filter>\\S+ ?\\S+)")) {
+                    Matcher matcher = Pattern.compile("filter (?<filter>\\S+ ?\\S+)").matcher(command);
                     matcher.matches();
                     filter(matcher.group("filter"));
                     return;
@@ -1686,8 +1698,8 @@ public class View {
                     System.out.println("price, number of visits, average score");
                     return;
                 }
-                if (command.matches("sort (?<sort> \\S+)")) {
-                    Matcher matcher = Pattern.compile("sort (?<sort> \\S+)").matcher(command);
+                if (command.matches("sort (?<sort>\\S+)")) {
+                    Matcher matcher = Pattern.compile("sort (?<sort>\\S+)").matcher(command);
                     matcher.matches();
                     try {
                         sortingMenu.sort(matcher.group("sort"));
