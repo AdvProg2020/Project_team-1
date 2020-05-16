@@ -13,8 +13,6 @@ import java.util.Arrays;
 
 public class DataManager {
 
-
-
     private static final File allManagersJson;
 
     private static final File allResellersJson;
@@ -52,30 +50,46 @@ public class DataManager {
     private static void initializeDataFiles() {
         try {
             Gson gson = new Gson();
-            FileWriter allManagersFileWriter = new FileWriter(allManagersJson);
-            gson.toJson(new ArrayList<ManagerAccount>(), allManagersFileWriter);
-            allManagersFileWriter.close();
-            FileWriter allResellerFileWriter = new FileWriter(allResellersJson);
-            gson.toJson(new ArrayList<BusinessAccount>(), allResellerFileWriter);
-            allResellerFileWriter.close();
-            FileWriter allPersonalAccountFileWriter = new FileWriter(allPersonalAccountsJson);
-            gson.toJson(new ArrayList<PersonalAccount>(), allPersonalAccountFileWriter);
-            allPersonalAccountFileWriter.close();
-            FileWriter allDiscountCodeFileWriter = new FileWriter(allDiscountCodeJson);
-            gson.toJson(new ArrayList<DiscountCode>() , allDiscountCodeFileWriter);
-            allDiscountCodeFileWriter.close();
-            FileWriter allRequestsFileWriter = new FileWriter(allRequestsJson);
-            gson.toJson(new ArrayList<Request>(), allRequestsFileWriter);
-            allRequestsFileWriter.close();
-            FileWriter allOffsFileWriter = new FileWriter(allOffsJson);
-            gson.toJson(new ArrayList<Off>(), allOffsFileWriter);
-            allOffsFileWriter.close();
-            FileWriter allCategoriesFileWriter = new FileWriter(allCategoryJson);
-            gson.toJson(new ArrayList<Category>() , allCategoriesFileWriter);
-            allCategoriesFileWriter.close();
-            FileWriter allCommoditiesFileWriter = new FileWriter(allCommoditiesJson);
-            gson.toJson(new ArrayList<Commodity>() , allCommoditiesFileWriter);
-            allCommoditiesFileWriter.close();
+            if (!allManagersJson.exists()) {
+                FileWriter allManagersFileWriter = new FileWriter(allManagersJson);
+                gson.toJson(new ArrayList<ManagerAccount>(), allManagersFileWriter);
+                allManagersFileWriter.close();
+            }
+            if (!allResellersJson.exists()) {
+                FileWriter allResellerFileWriter = new FileWriter(allResellersJson);
+                gson.toJson(new ArrayList<BusinessAccount>(), allResellerFileWriter);
+                allResellerFileWriter.close();
+            }
+            if (!allPersonalAccountsJson.exists()) {
+                FileWriter allPersonalAccountFileWriter = new FileWriter(allPersonalAccountsJson);
+                gson.toJson(new ArrayList<PersonalAccount>(), allPersonalAccountFileWriter);
+                allPersonalAccountFileWriter.close();
+            }
+            if (!allDiscountCodeJson.exists()) {
+                FileWriter allDiscountCodeFileWriter = new FileWriter(allDiscountCodeJson);
+                gson.toJson(new ArrayList<DiscountCode>(), allDiscountCodeFileWriter);
+                allDiscountCodeFileWriter.close();
+            }
+            if (!allResellersJson.exists()) {
+                FileWriter allRequestsFileWriter = new FileWriter(allRequestsJson);
+                gson.toJson(new ArrayList<Request>(), allRequestsFileWriter);
+                allRequestsFileWriter.close();
+            }
+            if (!allOffsJson.exists()) {
+                FileWriter allOffsFileWriter = new FileWriter(allOffsJson);
+                gson.toJson(new ArrayList<Off>(), allOffsFileWriter);
+                allOffsFileWriter.close();
+            }
+            if (!allCategoryJson.exists()) {
+                FileWriter allCategoriesFileWriter = new FileWriter(allCategoryJson);
+                gson.toJson(new ArrayList<Category>(), allCategoriesFileWriter);
+                allCategoriesFileWriter.close();
+            }
+            if (!allCommoditiesJson.exists()) {
+                FileWriter allCommoditiesFileWriter = new FileWriter(allCommoditiesJson);
+                gson.toJson(new ArrayList<Commodity>(), allCommoditiesFileWriter);
+                allCommoditiesFileWriter.close();
+            }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
