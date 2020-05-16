@@ -12,7 +12,7 @@ public class ManagerMenu extends Menu {
 
     public void manageUsers(){
         MenuHandler.getInstance().setCurrentMenu(View.manageUsersMenu);
-        View.managerMenu.setPreviousMenu(View.managerMenu);
+        View.manageUsersMenu.setPreviousMenu(View.managerMenu);
     }
 
     public void viewPersonalInfo(){

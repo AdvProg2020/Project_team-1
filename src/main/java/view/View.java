@@ -711,10 +711,15 @@ public class View {
         String lastName = scanner.nextLine();
         System.out.println("Please enter you email");
         String email = scanner.nextLine();
+        if (manageUsersMenu.checkEmail(email)){
+            System.out.println("This email is unavailable");
+            return;
+        }
         System.out.println("Please enter you phone number");
         String phoneNumber = scanner.nextLine();
         ManagerAccount managerAccount = new ManagerAccount(userName, firstName, lastName, email, phoneNumber, password);
         manageUsersMenu.createNewManager(managerAccount);
+        System.out.println("Manager profile successfully created");
     }
 
     private void editFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) throws Exception {
