@@ -19,8 +19,10 @@ public class Menu {
     }
 
     public void goToPreviousMenu() {
-        MenuHandler.getInstance().setCurrentMenu(previousMenu);
-        previousMenu = null;
+        if (previousMenu != null) {
+            MenuHandler.getInstance().setCurrentMenu(previousMenu);
+            previousMenu = null;
+        }
     }
 
     public void products(){
