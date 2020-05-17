@@ -29,7 +29,10 @@ public class Menu {
         MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
     }
 
-    public void logout() {
+    public void logout() throws Exception {
+        if (Session.getOnlineAccount() == null) {
+            throw new Exception("You are not logged in");
+        }
         Session.setOnlineAccount(null);
         MenuHandler.getInstance().setCurrentMenu(View.loginRegisterMenu);
         MenuHandler.getInstance().getCurrentMenu().setPreviousMenu(null);

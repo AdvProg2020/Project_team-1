@@ -1776,10 +1776,23 @@ public class View {
         };
     }
 
+    private void logout() {
+        try {
+            MenuHandler.getInstance().getCurrentMenu().logout();
+            System.out.println("You logged out successfully");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void run() throws Exception {
         MenuHandler.getInstance().setCurrentMenu(loginRegisterMenu);
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("exit")) {
+            if (command.equalsIgnoreCase("logout")) {
+                logout();
+                continue;
+            }
             MenuHandler.getInstance().getCurrentMenu().commandProcess(command);
         }
     }
