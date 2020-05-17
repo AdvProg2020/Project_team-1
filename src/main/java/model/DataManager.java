@@ -2,15 +2,18 @@ package model;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import com.sun.net.httpserver.Filter;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+import model.log.TransactionLog;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -154,6 +157,9 @@ public class DataManager {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
                 gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
+                gsonBuilder.registerTypeAdapter(TransactionLog.class, new InterfaceAdapter<TransactionLog>());
+                gsonBuilder.registerTypeAdapter(Field.class, new InterfaceAdapter<Field>());
+                gsonBuilder.registerTypeAdapter(Filter.class, new InterfaceAdapter<Filter>());
                 Gson gson = gsonBuilder.create();
                 FileWriter writer = new FileWriter(allRequestsJson);
                 gson.toJson(allRequests, writer);
@@ -196,6 +202,9 @@ public class DataManager {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
         gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
+        gsonBuilder.registerTypeAdapter(TransactionLog.class, new InterfaceAdapter<TransactionLog>());
+        gsonBuilder.registerTypeAdapter(Field.class, new InterfaceAdapter<Field>());
+        gsonBuilder.registerTypeAdapter(Filter.class, new InterfaceAdapter<Filter>());
         Gson gson = gsonBuilder.create();
         FileWriter writer = new FileWriter(allRequestsJson);
         gson.toJson(allRequests, writer);
@@ -216,6 +225,9 @@ public class DataManager {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
         gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
+        gsonBuilder.registerTypeAdapter(TransactionLog.class, new InterfaceAdapter<TransactionLog>());
+        gsonBuilder.registerTypeAdapter(Field.class, new InterfaceAdapter<Field>());
+        gsonBuilder.registerTypeAdapter(Filter.class, new InterfaceAdapter<Filter>());
         Gson gson = gsonBuilder.create();
         Request[] requests = gson.fromJson(jsonReader, Request[].class);
         jsonReader.close();
