@@ -1,6 +1,7 @@
 package controller.reseller;
 
 import controller.Menu;
+import controller.comparator.Sort;
 import model.*;
 import model.account.BusinessAccount;
 import model.account.SimpleAccount;
@@ -11,6 +12,12 @@ import view.View;
 import java.util.ArrayList;
 
 public class ManageResellerProductsMenu extends Menu {
+
+    public ArrayList<Commodity> sort(String field) throws Exception {
+        ArrayList<Commodity> commodities = View.resellerMenu.manageCommodities();
+        Sort.sortProductArrayList(commodities, field);
+        return commodities;
+    }
 
     public Commodity getCommodityById(int productId) throws Exception {
         Commodity commodity = View.resellerMenu.getBusinessAccount().getCommodityById(productId);

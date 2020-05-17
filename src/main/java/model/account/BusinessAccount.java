@@ -7,7 +7,7 @@ import model.log.SellLog;
 import java.util.ArrayList;
 
 public class BusinessAccount extends SimpleAccount {
-    private final String VALID_BUSINESS_NAME = "^\\w{4,20}$";
+    private final transient String VALID_BUSINESS_NAME = "^\\w{4,20}$";
     private String businessName;
     private ArrayList<SellLog> sellLogs;
     private ArrayList<Commodity> commodities;

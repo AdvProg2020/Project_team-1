@@ -1,6 +1,8 @@
 package controller.reseller;
 
 import controller.Menu;
+import controller.MenuHandler;
+import controller.comparator.Sort;
 import model.Commodity;
 import model.DataManager;
 import model.Off;
@@ -14,6 +16,12 @@ import java.util.ArrayList;
 public class ManageResellerOffsMenu extends Menu {
 
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d HH:mm:ss yyyy");
+
+    public ArrayList<Off> sort(String field) throws Exception {
+        ArrayList<Off> offs = View.resellerMenu.manageOffs();
+        Sort.sortOffArrayList(offs, field);
+        return offs;
+    }
 
     public Off getOffById(int offId) throws Exception {
         Off off = View.resellerMenu.getBusinessAccount().getOffById(offId);
