@@ -57,7 +57,6 @@ public class View {
     public View() {
         initializeManageRequestMenuCommandProcessor();
         initializeGetDiscountCodeMenu();
-        initializeManageUsersMenu();
         initializeViewPersonalMenu();
         initializeLoginRegisterMenu();
         initializeManageUsersMenu();
@@ -81,7 +80,7 @@ public class View {
     }
 
     private void initializeCommentsMenu() {
-        digestMenu.commandProcess = new CommandProcess() {
+        commentsMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
                 if (command.matches("products")) {
@@ -90,6 +89,12 @@ public class View {
                 }
                 if (command.equals("add comment")) {
                     addComment();
+                    return;
+                }
+                if (command.equals("back")) {
+                    commentsMenu.goToPreviousMenu();
+                } else if (command.equals("help")) {
+
                     return;
                 }
                 System.out.println("invalid command");
@@ -115,6 +120,12 @@ public class View {
                 }
                 if (command.equals("add to cart")) {
                     addToCart();
+                    return;
+                }
+                if (command.equals("back")) {
+                    digestMenu.goToPreviousMenu();
+                } else if (command.equals("help")) {
+                    digestMenuHelp();
                     return;
                 }
                 System.out.println("invalid command");
@@ -318,10 +329,6 @@ public class View {
                     viewPersonalInfoMenu.products();
                     return;
                 }
-                if (command.matches("products")) {
-                    viewPersonalInfoMenu.products();
-                    return;
-                }
                 if (command.matches("back")) {
                     viewPersonalInfoMenu.goToPreviousMenu();
                     return;
@@ -504,6 +511,10 @@ public class View {
                     showOrder(command);
                 } else if (command.matches("rate (?<id>\\d+) (?<rate>[1-5])")) {
                     rate(command);
+                } else if (command.equals("back")) {
+                    orderMenu.goToPreviousMenu();
+                } else if (command.equals("help")) {
+                    orderMenuHelp();
                 } else System.out.println("invalid command");
             }
         };
@@ -554,6 +565,10 @@ public class View {
                     System.out.println("your balance is " + customerMenu.getBalance());
                 } else if (command.equals("view discount codes")) {
                     viewMyDiscountCodes();
+                } else if (command.equals("back")) {
+                    customerMenu.goToPreviousMenu();
+                } else if (command.equals("help")) {
+                    customerMenuHelp();
                 } else System.out.println("invalid command");
             }
         };
@@ -579,6 +594,10 @@ public class View {
                     System.out.println("total price is " + cartMenu.calculateTotalPrice());
                 } else if (command.equals("purchase")) {
                     purchase();
+                } else if (command.equals("back")) {
+                    cartMenu.goToPreviousMenu();
+                } else if (command.equals("help")) {
+                    cartMenuHelp();
                 } else System.out.println("invalid command");
             }
         };
@@ -1814,6 +1833,52 @@ public class View {
                 System.out.println("invalid command");
             }
         };
+    }
+
+    private void customerMenuHelp() {
+        System.out.println("back\n" +
+                "help\n" +
+                "products\n" +
+                "purchase\n" +
+                "view balance\n" +
+                "view cart\n" +
+                "view discount codes\n" +
+                "view orders\n" +
+                "view personal info");
+    }
+
+    private void cartMenuHelp() {
+        System.out.println("back\n" +
+                "decrease [productId]\n" +
+                "increase [productId]\n" +
+                "help\n" +
+                "products\n" +
+                "purchase\n" +
+                "show products\n" +
+                "show total price\n" +
+                "view [productId]");
+    }
+
+    private void orderMenuHelp() {
+        System.out.println("back\n" +
+                "help\n" +
+                "products\n" +
+                "rate [productId] [1-5]\n" +
+                "show order [orderId]");
+    }
+
+    private void digestMenuHelp() {
+        System.out.println("add to cart\n" +
+                "back\n" +
+                "help\n" +
+                "products");
+    }
+
+    private void commentsMenuHelp() {
+        System.out.println("add comment\n" +
+                "back\n" +
+                "help\n" +
+                "products");
     }
 
     private void logout() {
