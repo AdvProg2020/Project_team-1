@@ -154,12 +154,7 @@ public class DataManager {
         for (Request allRequest : allRequests) {
             if (allRequest.getId() == request.getId()) {
                 allRequests.remove(allRequest);
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
-                gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
-                gsonBuilder.registerTypeAdapter(TransactionLog.class, new InterfaceAdapter<TransactionLog>());
-                gsonBuilder.registerTypeAdapter(Field.class, new InterfaceAdapter<Field>());
-                gsonBuilder.registerTypeAdapter(Filter.class, new InterfaceAdapter<Filter>());
+                GsonBuilder gsonBuilder = getRequestGsonBuilder();
                 Gson gson = gsonBuilder.create();
                 FileWriter writer = new FileWriter(allRequestsJson);
                 gson.toJson(allRequests, writer);
@@ -199,12 +194,7 @@ public class DataManager {
     public static void addRequest(Request request) throws Exception {
         ArrayList<Request> allRequests = new ArrayList<>(Arrays.asList(getAllRequests()));
         allRequests.add(request);
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
-        gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
-        gsonBuilder.registerTypeAdapter(TransactionLog.class, new InterfaceAdapter<TransactionLog>());
-        gsonBuilder.registerTypeAdapter(Field.class, new InterfaceAdapter<Field>());
-        gsonBuilder.registerTypeAdapter(Filter.class, new InterfaceAdapter<Filter>());
+        GsonBuilder gsonBuilder = getRequestGsonBuilder();
         Gson gson = gsonBuilder.create();
         FileWriter writer = new FileWriter(allRequestsJson);
         gson.toJson(allRequests, writer);
@@ -222,17 +212,23 @@ public class DataManager {
     public static Request[] getAllRequests() throws IOException {
         FileReader fileReader = new FileReader(allRequestsJson);
         JsonReader jsonReader = new JsonReader(fileReader);
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
-        gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
-        gsonBuilder.registerTypeAdapter(TransactionLog.class, new InterfaceAdapter<TransactionLog>());
-        gsonBuilder.registerTypeAdapter(Field.class, new InterfaceAdapter<Field>());
-        gsonBuilder.registerTypeAdapter(Filter.class, new InterfaceAdapter<Filter>());
+        GsonBuilder gsonBuilder = getRequestGsonBuilder();
         Gson gson = gsonBuilder.create();
         Request[] requests = gson.fromJson(jsonReader, Request[].class);
         jsonReader.close();
         fileReader.close();
         return requests;
+    }
+
+    private static GsonBuilder getRequestGsonBuilder() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
+        gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
+        gsonBuilder.registerTypeAdapter(TransactionLog.class, new InterfaceAdapter<TransactionLog>());
+        gsonBuilder.registerTypeAdapter(Field.class, new InterfaceAdapter<Field>());
+        gsonBuilder.registerTypeAdapter(Field[].class, new InterfaceAdapter<Field[]>());
+        gsonBuilder.registerTypeAdapter(Filter.class, new InterfaceAdapter<Filter>());
+        return gsonBuilder;
     }
 
     public static ManagerAccount[] getAllManagers() throws IOException {
