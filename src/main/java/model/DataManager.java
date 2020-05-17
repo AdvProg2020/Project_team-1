@@ -153,6 +153,7 @@ public class DataManager {
                 allRequests.remove(allRequest);
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
+                gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
                 Gson gson = gsonBuilder.create();
                 FileWriter writer = new FileWriter(allRequestsJson);
                 gson.toJson(allRequests, writer);
@@ -170,6 +171,7 @@ public class DataManager {
                 allOffs.remove(allOff);
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
+                gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
                 Gson gson = gsonBuilder.create();
                 FileWriter writer = new FileWriter(allOffsJson);
                 gson.toJson(allOffs, writer);
@@ -193,6 +195,7 @@ public class DataManager {
         allRequests.add(request);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
+        gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
         Gson gson = gsonBuilder.create();
         FileWriter writer = new FileWriter(allRequestsJson);
         gson.toJson(allRequests, writer);
@@ -212,6 +215,7 @@ public class DataManager {
         JsonReader jsonReader = new JsonReader(fileReader);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
+        gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
         Gson gson = gsonBuilder.create();
         Request[] requests = gson.fromJson(jsonReader, Request[].class);
         jsonReader.close();
