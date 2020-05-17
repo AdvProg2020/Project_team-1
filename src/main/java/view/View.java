@@ -177,13 +177,13 @@ public class View {
 
     private void comments() {
         Commodity commodity = commodityMenu.getCommodity();
-        String output = "";
+        String output = "rating: " + commodity.getAverageScore() + "comments: \n";
         for (Comment comment : commodity.getAllComments()) {
             if (comment.getStatus() == Status.VERIFIED) {
-                output += comment.getInformation() + '\n';
+                output += '\n' + comment.getInformation();
             }
         }
-        System.out.print(output);
+        System.out.println(output);
         commodityMenu.goToCommentsMenu(commentsMenu);
     }
 
