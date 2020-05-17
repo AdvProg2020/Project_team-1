@@ -270,6 +270,10 @@ public class View {
         getDiscountCode.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("help")) {
+                    viewDiscountCodeHelp();
+                    return;
+                }
                 if (command.matches("products")) {
                     getDiscountCode.products();
                 }
@@ -336,6 +340,10 @@ public class View {
         managerMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("help")) {
+                    managerMenuHelp();
+                    return;
+                }
                 if (command.matches("products")) {
                     managerMenu.products();
                     return;
@@ -427,6 +435,10 @@ public class View {
         viewPersonalInfoMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("help")) {
+                    viewPersonalInfoHelp();
+                    return;
+                }
                 if (command.matches("products")) {
                     viewPersonalInfoMenu.products();
                     return;
@@ -448,6 +460,10 @@ public class View {
         manageUsersMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("help")) {
+                    manageUsersHelp();
+                    return;
+                }
                 if (command.matches("products")) {
                     manageUsersMenu.products();
                     return;
@@ -1322,6 +1338,10 @@ public class View {
         manageRequestMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("help")) {
+                    manageRequestsHelp();
+                    return;
+                }
                 if (command.matches("products")) {
                     manageRequestMenu.products();
                     return;
@@ -1384,6 +1404,10 @@ public class View {
         productsMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("help")) {
+                    productsMenuHelp();
+                    return;
+                }
                 if (command.matches("products")) {
                     productsMenu.products();
                     return;
@@ -1440,6 +1464,10 @@ public class View {
         manageCategoryMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("help")) {
+                    manageCategoriesHelp();
+                    return;
+                }
                 if (command.matches("products")) {
                     manageCategoryMenu.products();
                     return;
@@ -1497,7 +1525,7 @@ public class View {
             System.out.println("wrong commodities id");
             return;
         }
-        String tmp= scanner.nextLine();
+        String tmp = scanner.nextLine();
         manageCategoryMenu.addCategory(categoryName, commoditiesId, categorySpecifications);
         System.out.println("category created");
     }
@@ -1596,6 +1624,10 @@ public class View {
         filteringMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("help")) {
+                    filteringMenuHelp();
+                    return;
+                }
                 if (command.matches("products")) {
                     filteringMenu.products();
                     return;
@@ -1709,6 +1741,10 @@ public class View {
         sortingMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("help")) {
+                    sortingMenuHelp();
+                    return;
+                }
                 if (command.matches("products")) {
                     sortingMenu.products();
                     return;
@@ -1753,6 +1789,10 @@ public class View {
         manageAllProducts.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
+                if (command.matches("help")) {
+                    manageAllProductsHelp();
+                    return;
+                }
                 if (command.matches("products")) {
                     manageAllProducts.products();
                     return;
@@ -1783,6 +1823,70 @@ public class View {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void managerMenuHelp() {
+        System.out.println("View personal info");
+        System.out.println("manage users");
+        System.out.println("manage all products");
+        System.out.println("view discount codes");
+        System.out.println("manage requests");
+        System.out.println("manage categories");
+    }
+
+    private void viewPersonalInfoHelp() {
+        System.out.println("edit (first name, last name, email, phone number ...)");
+    }
+
+    private void manageUsersHelp() {
+        System.out.println("view [user name]");
+        System.out.println("delete user [user name]");
+        System.out.println("create manager profile");
+    }
+
+    private void manageAllProductsHelp() {
+        System.out.println("remove [productId]");
+    }
+
+    private void viewDiscountCodeHelp() {
+        System.out.println("view discount code [code]");
+        System.out.println("edit discount code [code]");
+        System.out.println("remove discount code [code]");
+    }
+
+    private void manageRequestsHelp() {
+        System.out.println("details [requestId]");
+        System.out.println("accept [requestId]");
+        System.out.println("decline [requestId]");
+    }
+
+    private void manageCategoriesHelp() {
+        System.out.println("edit [category]");
+        System.out.println("add [category]");
+        System.out.println("remove [category]");
+    }
+
+    private void productsMenuHelp() {
+        System.out.println("products");
+        System.out.println("view categories");
+        System.out.println("filtering");
+        System.out.println("sorting");
+        System.out.println("show products");
+        System.out.println("show product [productId]");
+    }
+
+    private void filteringMenuHelp() {
+        System.out.println("show available filter");
+        System.out.println("filter [an available filter]");
+        System.out.println("current filters");
+        System.out.println("disable filter [a selected filter]");
+    }
+
+    private void sortingMenuHelp() {
+        System.out.println("show available sorts");
+        System.out.println("sort [an available sort]");
+        System.out.println("current sort");
+        System.out.println("disable sort");
     }
 
     public void run() throws Exception {
