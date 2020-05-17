@@ -15,7 +15,7 @@ public class PersonalAccount extends SimpleAccount {
     private double credit;
 
     public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password) throws Exception {
-        super(username, firstName, lastName, email, phoneNumber, password);
+        super(username, firstName, lastName, email, phoneNumber, password, "personal");
         discountCodes = new HashMap<>();
         buyLogs = new ArrayList<>();
         cart = new HashMap<>();

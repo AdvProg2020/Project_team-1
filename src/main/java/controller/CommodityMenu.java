@@ -4,6 +4,7 @@ import controller.commodity.CommentsMenu;
 import controller.commodity.DigestMenu;
 import model.Commodity;
 import model.DataManager;
+import model.Session;
 
 public class CommodityMenu extends Menu {
     private Commodity commodity;
@@ -17,9 +18,11 @@ public class CommodityMenu extends Menu {
     }
 
     public void goToDigestMenu(DigestMenu digestMenu) {
-        MenuHandler.getInstance().setCurrentMenu(digestMenu);
-        digestMenu.setCommodity(this.commodity);
-        digestMenu.setPreviousMenu(this);
+        if (Session.getOnlineAccount().getAccountType().equals("personal")) {
+            MenuHandler.getInstance().setCurrentMenu(digestMenu);
+            digestMenu.setCommodity(this.commodity);
+            digestMenu.setPreviousMenu(this);
+        }
     }
 
     public void goToCommentsMenu(CommentsMenu commentsMenu) {

@@ -1,6 +1,7 @@
 package model.account;
 
-import model.*;
+import model.Commodity;
+import model.Off;
 import model.log.SellLog;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class BusinessAccount extends SimpleAccount {
 
     public BusinessAccount(String username, String firstName, String lastName, String email, String phoneNumber,
                            String password, String businessName) throws Exception {
-        super(username, firstName, lastName, email, phoneNumber, password);
+        super(username, firstName, lastName, email, phoneNumber, password, "reseller");
         changeBusinessName(businessName);
         sellLogs = new ArrayList<SellLog>();
         commodities = new ArrayList<Commodity>();

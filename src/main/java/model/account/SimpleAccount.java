@@ -17,15 +17,21 @@ public abstract class SimpleAccount {
     protected String email;
     protected String phoneNumber;
     protected String hashedPassword;
+    private String accountType;
 
     public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
-                         String password) throws Exception {
+                         String password, String accountType) throws Exception {
         changeUsername(username);
         changeFirstName(firstName);
         changeLastName(lastName);
         changeEmail(email);
         changePhoneNumber(phoneNumber);
         changePassword(password);
+        this.accountType = accountType;
+    }
+
+    public String getAccountType() {
+        return accountType;
     }
 
     public String getUsername() {
