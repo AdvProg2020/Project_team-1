@@ -19,6 +19,11 @@ public class CustomerMenu extends Menu {
         return account.getDiscountCodes();
     }
 
+    public int getNumberOfTimesUsedDiscount(DiscountCode discountCode) {
+        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+        return account.getNumberOfTimesUsed(discountCode);
+    }
+
     public void goToCartMenu() {
         cartMenu.setPreviousMenu(customerMenu);
         MenuHandler.getInstance().setCurrentMenu(cartMenu);

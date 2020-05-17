@@ -127,4 +127,13 @@ public class DiscountCode {
                 ", accounts=" + accounts +
                 '}';
     }
+
+    public String getInformation() {
+        return "code = " + code +
+                ", startDate = " + startDate +
+                ", finishDate = " + finishDate +
+                ", discountPercentage = " + discountPercentage +
+                ", maximumDiscountPrice = " + maximumDiscountPrice +
+                ", maximumNumberOfUses = " + maximumNumberOfUses;
+    }
 }

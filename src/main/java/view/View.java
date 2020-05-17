@@ -581,7 +581,8 @@ public class View {
     private void viewMyDiscountCodes() {
         String output = "your discount codes:";
         for (DiscountCode discount : customerMenu.getMyDiscounts()) {
-            output += "\n" + discount.toString();
+            output += "\n" + discount.getInformation() + ", numberOfTimesUsed = " + customerMenu.
+                    getNumberOfTimesUsedDiscount(discount);
         }
         System.out.println(output);
     }

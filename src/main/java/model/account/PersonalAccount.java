@@ -97,6 +97,10 @@ public class PersonalAccount extends SimpleAccount {
         discountCodes.put(discountCode, numberOfTimesUsed);
     }
 
+    public int getNumberOfTimesUsed(DiscountCode discountCode) {
+        return discountCodes.get(discountCode);
+    }
+
     @Override
     public String toString() {
         return super.toString();
