@@ -1220,7 +1220,9 @@ public class View {
                         manageResellerOffMenu.products();
                         return;
                     }
-                    if (command.matches("^view \\d+$")) {
+                    if (command.matches("sort \\w+ \\w+")) {
+                        sortResellerOff(command);
+                    } else if (command.matches("^view \\d+$")) {
                         viewResellerOff(command);
                     } else if (command.matches("^edit \\w+$")) {
                         editResellerOff(command);
@@ -1238,6 +1240,14 @@ public class View {
                 }
             }
         };
+    }
+
+    public void sortResellerOff(String command) throws Exception {
+        Matcher matcher = Pattern.compile("sort (?<field>\\w+ \\w+)").matcher(command);
+        matcher.matches();
+        for (Off off : manageResellerOffMenu.sort(matcher.group("field"))) {
+            System.out.println(off.toString());
+        }
     }
 
     public void viewResellerOff(String command) throws Exception {
