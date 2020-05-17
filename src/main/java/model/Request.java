@@ -9,6 +9,7 @@ public class Request {
     private Requestable obj;
     private SimpleAccount simpleAccount;
     private int id;
+    private static int counter = 0;
 
     public int getId() {
         return id;
@@ -18,7 +19,7 @@ public class Request {
     public String toString() {
         return "Request{" +
                 "obj=" + obj.toString() +
-                ", simpleAccount=" + simpleAccount +
+                ", simpleAccount=" + simpleAccount.toString() +
                 '}';
     }
 

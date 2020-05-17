@@ -165,7 +165,6 @@ public class DataManager {
         for (Off allOff : allOffs) {
             if (allOff.getOffID() == off.getOffID()) {
                 allOffs.remove(allOff);
-
                 Gson gson = new Gson();
                 FileWriter writer = new FileWriter(allOffsJson);
                 gson.toJson(allOffs, writer);

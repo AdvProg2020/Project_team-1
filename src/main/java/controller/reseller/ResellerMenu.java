@@ -4,7 +4,6 @@ import controller.Menu;
 import controller.MenuHandler;
 import model.*;
 import model.account.BusinessAccount;
-import model.account.SimpleAccount;
 import model.field.Field;
 import view.View;
 
