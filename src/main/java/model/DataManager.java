@@ -151,7 +151,9 @@ public class DataManager {
         for (Request allRequest : allRequests) {
             if (allRequest.getId() == request.getId()) {
                 allRequests.remove(allRequest);
-                Gson gson = new Gson();
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
+                Gson gson = gsonBuilder.create();
                 FileWriter writer = new FileWriter(allRequestsJson);
                 gson.toJson(allRequests, writer);
                 writer.close();
@@ -166,7 +168,9 @@ public class DataManager {
         for (Off allOff : allOffs) {
             if (allOff.getOffID() == off.getOffID()) {
                 allOffs.remove(allOff);
-                Gson gson = new Gson();
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
+                Gson gson = gsonBuilder.create();
                 FileWriter writer = new FileWriter(allOffsJson);
                 gson.toJson(allOffs, writer);
                 writer.close();
@@ -187,7 +191,9 @@ public class DataManager {
     public static void addRequest(Request request) throws Exception {
         ArrayList<Request> allRequests = new ArrayList<>(Arrays.asList(getAllRequests()));
         allRequests.add(request);
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
+        Gson gson = gsonBuilder.create();
         FileWriter writer = new FileWriter(allRequestsJson);
         gson.toJson(allRequests, writer);
         writer.close();
