@@ -54,11 +54,18 @@ public class PersonalAccount extends SimpleAccount {
         return cart.containsKey(commodity);
     }
 
-    public void addToCart(Commodity commodity) {
-        if (isCommodityInTheCart(commodity))
-            cart.put(commodity, 1);
-        else
-            cart.put(commodity, cart.get(commodity) + 1);
+    public void addToCart(Commodity commodity) throws Exception {
+        if (isCommodityInTheCart(commodity)) {
+            if (commodity.getInventory() > 0)
+                cart.put(commodity, 1);
+            else
+                throw new Exception("we don't enough number of this commodity, excuse us");
+        } else {
+            if (cart.get(commodity) < commodity.getInventory())
+                cart.put(commodity, cart.get(commodity) + 1);
+            else
+                throw new Exception("we don't enough number of this commodity, excuse us");
+        }
     }
 
     public void removeFromCart(Commodity commodity) {
