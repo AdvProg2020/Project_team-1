@@ -302,14 +302,14 @@ public class View {
                     viewDiscountCode(getDiscountCode, matcher.group("code"));
                     return;
                 }
-                if (command.equals("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField>\\S+)$")) {
+                if (command.matches("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField>\\S+)$")) {
                     Matcher matcher = Pattern.compile("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField>\\S+)$").matcher(command);
                     matcher.matches();
                     DiscountCode discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
                     editDiscountCode(discountCode, command);
                     return;
                 }
-                if (command.equals("remove discount code (?<code>\\S+)")) {
+                if (command.matches("remove discount code (?<code>\\S+)")) {
                     Matcher matcher = Pattern.compile("remove discount code (?<code>\\S+)").matcher(command);
                     matcher.matches();
                     DiscountCode discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
@@ -736,62 +736,70 @@ public class View {
         System.out.println("user deleted");
     }
 
-    private void createManagerProfile(ManageUsersMenu manageUsersMenu) throws Exception {
-        System.out.println("Please enter your user name");
-        String userName = scanner.nextLine();
-        if (DataManager.isUsernameExist(userName)) {
-            System.out.println("invalid username");
-            return;
+    private void createManagerProfile(ManageUsersMenu manageUsersMenu) {
+        try {
+            System.out.println("Please enter your user name");
+            String userName = scanner.nextLine();
+            if (DataManager.isUsernameExist(userName)) {
+                System.out.println("invalid username");
+                return;
+            }
+            System.out.println("Please enter your password");
+            String password = scanner.nextLine();
+            System.out.println("Please enter you first name");
+            String firstName = scanner.nextLine();
+            System.out.println("Please enter you last name");
+            String lastName = scanner.nextLine();
+            System.out.println("Please enter you email");
+            String email = scanner.nextLine();
+            if (manageUsersMenu.checkEmail(email)) {
+                System.out.println("This email is unavailable");
+                return;
+            }
+            System.out.println("Please enter you phone number");
+            String phoneNumber = scanner.nextLine();
+            ManagerAccount managerAccount = new ManagerAccount(userName, firstName, lastName, email, phoneNumber, password);
+            manageUsersMenu.createNewManager(managerAccount);
+            System.out.println("Manager profile successfully created");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        System.out.println("Please enter your password");
-        String password = scanner.nextLine();
-        System.out.println("Please enter you first name");
-        String firstName = scanner.nextLine();
-        System.out.println("Please enter you last name");
-        String lastName = scanner.nextLine();
-        System.out.println("Please enter you email");
-        String email = scanner.nextLine();
-        if (manageUsersMenu.checkEmail(email)) {
-            System.out.println("This email is unavailable");
-            return;
-        }
-        System.out.println("Please enter you phone number");
-        String phoneNumber = scanner.nextLine();
-        ManagerAccount managerAccount = new ManagerAccount(userName, firstName, lastName, email, phoneNumber, password);
-        manageUsersMenu.createNewManager(managerAccount);
-        System.out.println("Manager profile successfully created");
     }
 
-    private void editFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) throws Exception {
+    private void editFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) {
         Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield>\\S+)$").matcher(command);
         matcher.matches();
-        if (matcher.group("field").equals("first name")) {
-            viewPersonalInfoMenu.editFirstName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
-            viewPersonalInfoMenu.updateFile();
-            return;
-        }
-        if (matcher.group("field").equals("last name")) {
-            viewPersonalInfoMenu.editLastName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
-            viewPersonalInfoMenu.updateFile();
-            return;
-        }
-        if (matcher.group("field").equals("email")) {
-            viewPersonalInfoMenu.editEmail(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
-            viewPersonalInfoMenu.updateFile();
-            return;
-        }
-        if (matcher.group("field").equals("password")) {
-            viewPersonalInfoMenu.editPassword(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
-            viewPersonalInfoMenu.updateFile();
-            return;
-        }
-        if (matcher.group("field").equals("phone number")) {
-            viewPersonalInfoMenu.editPhoneNumber(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
-            viewPersonalInfoMenu.updateFile();
+        try {
+            if (matcher.group("field").equals("first name")) {
+                viewPersonalInfoMenu.editFirstName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+                viewPersonalInfoMenu.updateFile();
+                return;
+            }
+            if (matcher.group("field").equals("last name")) {
+                viewPersonalInfoMenu.editLastName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+                viewPersonalInfoMenu.updateFile();
+                return;
+            }
+            if (matcher.group("field").equals("email")) {
+                viewPersonalInfoMenu.editEmail(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+                viewPersonalInfoMenu.updateFile();
+                return;
+            }
+            if (matcher.group("field").equals("password")) {
+                viewPersonalInfoMenu.editPassword(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+                viewPersonalInfoMenu.updateFile();
+                return;
+            }
+            if (matcher.group("field").equals("phone number")) {
+                viewPersonalInfoMenu.editPhoneNumber(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+                viewPersonalInfoMenu.updateFile();
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return;
         }
         System.out.println("wrong field");
-
     }
 
     private void manageUsers(ManageUsersMenu manageUsersMenu) throws IOException {
@@ -799,7 +807,7 @@ public class View {
         ManagerAccount[] managerAccounts = DataManager.getAllManagers();
         PersonalAccount[] personalAccounts = DataManager.getAllPersonalAccounts();
         BusinessAccount[] businessAccounts = DataManager.getAllResellers();
-        String output = "Managers;";
+        String output = "Managers:";
         for (int i = 0; i < managerAccounts.length; i++) {
             output += "\n" + managerAccounts[i].getUsername();
         }
@@ -1893,7 +1901,7 @@ public class View {
                     manageAllProducts.goToPreviousMenu();
                     return;
                 }
-                if (command.matches("remove (?<productId> \\d+)")) {
+                if (command.matches("remove (?<productId>\\d+)")) {
                     Matcher matcher = Pattern.compile("remove (?<prooductId>\\d+)").matcher(command);
                     matcher.matches();
                     try {
