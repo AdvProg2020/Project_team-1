@@ -35,12 +35,14 @@ public class ManageCategoryMenu extends Menu {
         category.getFieldOptions().add(categorySpecification);
     }
 
-    public void removeCategorySpecification(String title ,  Category category){
+    public void removeCategorySpecification(String title ,  Category category) throws Exception {
         for (CategorySpecification fieldOption : category.getFieldOptions()) {
             if (fieldOption.getTitle().equals(title)){
                 category.getFieldOptions().remove(fieldOption);
+                return;
             }
         }
+        throw new Exception("there is no category specification with this title");
     }
 
     public void addCommodity(int commodityId , Category category) throws Exception {
@@ -100,5 +102,9 @@ public class ManageCategoryMenu extends Menu {
                 return allCategory;
         }
         return null;
+    }
+
+    public void updateFile(Category category) throws IOException {
+        DataManager.addCategory(category);
     }
 }

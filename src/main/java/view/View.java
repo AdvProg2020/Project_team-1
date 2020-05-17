@@ -1524,6 +1524,7 @@ public class View {
             return;
         }
         manageCategoryMenu.removeCategory(categoryName);
+        System.out.println("category removed");
     }
 
     private void addCategory(String categoryName) throws Exception {
@@ -1580,55 +1581,90 @@ public class View {
             System.out.println("Enter your new name");
             String newName = scanner.nextLine();
             manageCategoryMenu.changeName(newName, category);
+            manageCategoryMenu.removeCategory(categoryName);
+            manageCategoryMenu.updateFile(category);
+            System.out.println("category updated");
+            return;
         }
         if (field.equalsIgnoreCase("add category specification")) {
             addCategorySpecification(category);
+            manageCategoryMenu.removeCategory(categoryName);
+            manageCategoryMenu.updateFile(category);
+            System.out.println("category updated");
+            return;
         }
         if (field.equalsIgnoreCase("remove category specification")) {
-            removeCategorySpecification(category);
+
+            try {
+                removeCategorySpecification(category);
+                manageCategoryMenu.removeCategory(categoryName);
+                manageCategoryMenu.updateFile(category);
+                System.out.println("category updated");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return;
         }
         if (field.equalsIgnoreCase("add commodity")) {
-            addCommodityToCategory(category);
+            try {
+                addCommodityToCategory(category);
+                manageCategoryMenu.removeCategory(categoryName);
+                manageCategoryMenu.updateFile(category);
+                System.out.println("category updated");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            return;
         }
         if (field.equalsIgnoreCase("remove commodity")) {
-            removeCommodityFromCategory(category);
+            try {
+                removeCommodityFromCategory(category);
+                manageCategoryMenu.removeCategory(categoryName);
+                manageCategoryMenu.updateFile(category);
+                System.out.println("category updated");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            return;
         }
+        System.out.println("wrong field");
+
     }
 
     private void addCategorySpecification(Category category) {
-        System.out.println("Enter your new title");
+        System.out.println("Enter title");
         String title = scanner.nextLine();
         System.out.println("Enter options");
         HashSet<String> options = new HashSet<String>();
-        while (scanner.hasNext())
-            options.add(scanner.next());
+        String input = scanner.next();
+        while (!input.equals("end")) {
+            options.add(input);
+            input = scanner.next();
+        }
+        String tmp = scanner.nextLine();
         manageCategoryMenu.addCategorySpecification(options, title, category);
     }
 
-    private void removeCategorySpecification(Category category) {
+    private void removeCategorySpecification(Category category) throws Exception {
         System.out.println("Enter category specification title");
         String title = scanner.nextLine();
         manageCategoryMenu.removeCategorySpecification(title, category);
     }
 
-    private void addCommodityToCategory(Category category) {
+    private void addCommodityToCategory(Category category) throws Exception {
         System.out.println("Enter commodityID");
         int id = scanner.nextInt();
-        try {
-            manageCategoryMenu.addCommodity(id, category);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        String tmp = scanner.nextLine();
+        manageCategoryMenu.addCommodity(id, category);
     }
 
-    private void removeCommodityFromCategory(Category category) {
+    private void removeCommodityFromCategory(Category category) throws Exception {
         System.out.println("Enter commodityID");
         int id = scanner.nextInt();
-        try {
-            manageCategoryMenu.removeCommodity(id, category);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        String tmp = scanner.nextLine();
+        manageCategoryMenu.removeCommodity(id, category);
     }
 
     private void viewCategory() throws IOException {
