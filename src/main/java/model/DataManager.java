@@ -226,7 +226,7 @@ public class DataManager {
         gsonBuilder.registerTypeAdapter(SimpleAccount.class, new InterfaceAdapter<SimpleAccount>());
         gsonBuilder.registerTypeAdapter(TransactionLog.class, new InterfaceAdapter<TransactionLog>());
         gsonBuilder.registerTypeAdapter(Field.class, new InterfaceAdapter<Field>());
-        gsonBuilder.registerTypeAdapter(Field[].class, new InterfaceAdapter<Field[]>());
+        gsonBuilder.registerTypeAdapter(ArrayList.class, new InterfaceAdapter<ArrayList>());
         gsonBuilder.registerTypeAdapter(Filter.class, new InterfaceAdapter<Filter>());
         return gsonBuilder;
     }
