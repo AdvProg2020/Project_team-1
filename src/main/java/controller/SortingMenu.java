@@ -8,7 +8,7 @@ import static model.Commodity.Comparators.*;
 import static model.Commodity.Comparators.numberOfVisits;
 
 public class SortingMenu extends Menu {
-    private static String currentSort;
+    private static String currentSort = "number of visits";
 
 
 

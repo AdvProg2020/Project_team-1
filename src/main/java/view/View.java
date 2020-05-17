@@ -1947,7 +1947,7 @@ public class View {
     }
 
     private void managerMenuHelp() {
-        System.out.println("View personal info");
+        System.out.println("view personal info");
         System.out.println("manage users");
         System.out.println("manage all products");
         System.out.println("view discount codes");
