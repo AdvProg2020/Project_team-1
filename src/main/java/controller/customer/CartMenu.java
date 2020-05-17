@@ -89,7 +89,7 @@ public class CartMenu extends Menu {
         return price;
     }
 
-    public void purchase(int price, DiscountCode discountCode, String address, String phone, String postalCode) throws
+    public void purchase(int price, int deducted, DiscountCode discountCode, String address, String phone, String postalCode) throws
             Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         if (price > account.getCredit()) {
@@ -97,7 +97,7 @@ public class CartMenu extends Menu {
             throw new Exception("you don't have enough money to pay");
         }
         account.addToCredit(-price);
-        BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, discountCode, address, phone,
+        BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, deducted, discountCode, address, phone,
                 postalCode);
         account.addBuyLog(buyLog);
         makeSellLogs(buyLog.getSellers(), account);

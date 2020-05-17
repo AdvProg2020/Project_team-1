@@ -610,18 +610,22 @@ public class View {
         String code = scanner.nextLine();
         boolean done = false;
         int price = cartMenu.calculateTotalPrice();
+        int deducted = 0;
         DiscountCode discountCode = null;
         while (!done) {
             try {
                 discountCode = cartMenu.getDiscountCodeWithCode(code);
-                price = cartMenu.useDiscountCode(price, discountCode);
+                deducted = price - cartMenu.useDiscountCode(price, discountCode);
+                price -= deducted;
                 done = true;
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println(e.getMessage() + '\n' +
+                        "please enter a discount code or enter nothing");
+                code = scanner.nextLine();
             }
         }
         try {
-            cartMenu.purchase(price, discountCode, address, phone, postalCode);
+            cartMenu.purchase(price, deducted, discountCode, address, phone, postalCode);
             System.out.println("thanks for your purchase, see you soon!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -1134,7 +1138,7 @@ public class View {
             category = resellerMenu.getCategoryByName(categoryString);
         }
         System.out.println("is product available?(y/n)");
-        boolean availability = (scanner.nextLine().equals("y")) ? true : false;
+        boolean availability = scanner.nextLine().equals("y");
         System.out.println("enter product specification:\n" +
                 "(type '-' if optional field remained unchanged and '-1' if numerical field remained unchanged)");
         ArrayList<Field> productCategorySpecification = new ArrayList<>();

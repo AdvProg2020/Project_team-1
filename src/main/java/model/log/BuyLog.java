@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class BuyLog extends TransactionLog {
     private double payedMoney;
+    private double deductedMoney;
     private DiscountCode discountByCode;
     private Set<BusinessAccount> sellers;
     private Boolean isCommodityDelivered;
@@ -17,10 +18,11 @@ public class BuyLog extends TransactionLog {
     private String phone;
     private String postalCode;
 
-    public BuyLog(Date date, Set<Commodity> commodities, double payedMoney, DiscountCode discountByCode,
+    public BuyLog(Date date, Set<Commodity> commodities, double payedMoney, double deductedMoney, DiscountCode discountByCode,
                   String address, String phone, String postalCode) {
         super(date, commodities);
         this.payedMoney = payedMoney;
+        this.deductedMoney = deductedMoney;
         this.discountByCode = discountByCode;
         this.sellers = null;
         for (Commodity commodity : commodities) {
