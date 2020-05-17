@@ -18,7 +18,7 @@ public class CommentsMenu extends Menu {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         for (BuyLog log : account.getBuyLogs()) {
             for (Commodity logCommodity : log.getCommodities()) {
-                if (logCommodity.equals(this.commodity)) {
+                if (logCommodity.getCommodityId() == this.commodity.getCommodityId()) {
                     return true;
                 }
             }
