@@ -94,7 +94,7 @@ public class View {
                 if (command.equals("back")) {
                     commentsMenu.goToPreviousMenu();
                 } else if (command.equals("help")) {
-
+                    commentsMenuHelp();
                     return;
                 }
                 System.out.println("invalid command");
