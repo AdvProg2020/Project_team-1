@@ -6,7 +6,6 @@ import model.Commodity;
 import model.DataManager;
 
 import java.io.IOException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -46,16 +45,20 @@ public class ManageCategoryMenu extends Menu {
 
     public void addCommodity(int commodityId , Category category) throws Exception {
         for (Commodity commodity : DataManager.getAllCommodities()) {
-            if (commodity.getCommodityId() == commodityId)
+            if (commodity.getCommodityId() == commodityId) {
                 category.getCommodities().add(commodity);
+                return;
+            }
         }
         throw new Exception("invalid commodity ID");
     }
 
     public void removeCommodity(int commodityId , Category category) throws Exception {
         for (Commodity commodity : DataManager.getAllCommodities()) {
-            if (commodity.getCommodityId() == commodityId)
+            if (commodity.getCommodityId() == commodityId) {
                 category.getCommodities().remove(commodity);
+                return;
+            }
         }
         throw new Exception("invalid commodity ID");
     }
@@ -68,6 +71,16 @@ public class ManageCategoryMenu extends Menu {
         Category category = getCategory(categoryName);
         DataManager.removeCategory(category);
 
+    }
+
+
+
+    public boolean checkCommoditiesId(ArrayList<Integer> commoditiesId) throws Exception {
+        for (Integer integer : commoditiesId) {
+            if (!DataManager.isCommodityExist(integer))
+                return false;
+        }
+        return true;
     }
 
     public void addCategory(String name , ArrayList<Integer> commodityIds , ArrayList<CategorySpecification> categorySpecifications) throws Exception {

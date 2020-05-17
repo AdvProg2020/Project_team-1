@@ -711,7 +711,7 @@ public class View {
         String lastName = scanner.nextLine();
         System.out.println("Please enter you email");
         String email = scanner.nextLine();
-        if (manageUsersMenu.checkEmail(email)){
+        if (manageUsersMenu.checkEmail(email)) {
             System.out.println("This email is unavailable");
             return;
         }
@@ -1427,7 +1427,7 @@ public class View {
         Category[] categories = managerMenu.manageCategory();
         System.out.println("all categories:");
         for (Category category : categories) {
-            System.out.println("\n" + category.getName());
+            System.out.println(category.getName());
         }
     }
 
@@ -1481,24 +1481,37 @@ public class View {
         }
         ArrayList<CategorySpecification> categorySpecifications = new ArrayList<>();
         getCategorySpecificationFromUser(categorySpecifications);
-        System.out.println("Enter commodities id in a line");
+        System.out.println("Enter commodities id with the first non-numerical input scanner stops.");
         ArrayList<Integer> commoditiesId = new ArrayList<Integer>();
-        while (scanner.hasNextInt())
-            commoditiesId.add(scanner.nextInt());
+        String input = scanner.next();
+        while (input.matches("^\\d+$")) {
+            commoditiesId.add(Integer.parseInt(input));
+            input = scanner.next();
+        }
+        if (!manageCategoryMenu.checkCommoditiesId(commoditiesId)) {
+            System.out.println("wrong commodities id");
+            return;
+        }
+        String tmp= scanner.nextLine();
         manageCategoryMenu.addCategory(categoryName, commoditiesId, categorySpecifications);
+        System.out.println("category created");
     }
 
     private void getCategorySpecificationFromUser(ArrayList<CategorySpecification> categorySpecifications) {
-        String tmp = "NO";
-        while (tmp.equalsIgnoreCase("NO")) {
+        String tmp = "yes";
+        while (tmp.equalsIgnoreCase("Yes")) {
             System.out.println("Enter title");
             String title = scanner.nextLine();
             System.out.println("Enter options");
             HashSet<String> options = new HashSet<String>();
-            while (scanner.hasNext())
-                options.add(scanner.next());
+            String input = scanner.next();
+            while (!input.equals("end")) {
+                options.add(input);
+                input = scanner.next();
+            }
             categorySpecifications.add(manageCategoryMenu.createCategorySpecification(title, options));
-            System.out.println("Do you want to add another category specification");
+            System.out.println("Do you want to add another category specification?");
+            tmp = scanner.nextLine();
             tmp = scanner.nextLine();
         }
     }
@@ -1578,7 +1591,7 @@ public class View {
         filteringMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("products")){
+                if (command.matches("products")) {
                     filteringMenu.products();
                     return;
                 }
@@ -1610,7 +1623,7 @@ public class View {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
-                return;
+                    return;
                 }
                 System.out.println("invalid command");
             }
@@ -1691,7 +1704,7 @@ public class View {
         sortingMenu.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("products")){
+                if (command.matches("products")) {
                     sortingMenu.products();
                     return;
                 }
@@ -1735,7 +1748,7 @@ public class View {
         manageAllProducts.commandProcess = new CommandProcess() {
             @Override
             public void commandProcessor(String command) throws Exception {
-                if (command.matches("products")){
+                if (command.matches("products")) {
                     manageAllProducts.products();
                     return;
                 }
