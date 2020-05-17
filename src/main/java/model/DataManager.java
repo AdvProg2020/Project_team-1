@@ -1,6 +1,6 @@
 package model;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -203,7 +204,9 @@ public class DataManager {
     public static Request[] getAllRequests() throws IOException {
         FileReader fileReader = new FileReader(allRequestsJson);
         JsonReader jsonReader = new JsonReader(fileReader);
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Requestable.class, new InterfaceAdapter<Requestable>());
+        Gson gson = gsonBuilder.create();
         Request[] requests = gson.fromJson(jsonReader, Request[].class);
         jsonReader.close();
         fileReader.close();
@@ -471,5 +474,36 @@ public class DataManager {
         FileWriter writer = new FileWriter(allOffsJson);
         gson.toJson(allOffs, writer);
         writer.close();
+    }
+}
+
+class InterfaceAdapter<T> implements JsonSerializer, JsonDeserializer {
+
+    private static final String CLASSNAME = "CLASSNAME";
+    private static final String DATA = "DATA";
+
+    public T deserialize(JsonElement jsonElement, Type type,
+                         JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        JsonPrimitive prim = (JsonPrimitive) jsonObject.get(CLASSNAME);
+        String className = prim.getAsString();
+        Class klass = getObjectClass(className);
+        return jsonDeserializationContext.deserialize(jsonObject.get(DATA), klass);
+    }
+    public JsonElement serialize(Object jsonElement, Type type, JsonSerializationContext jsonSerializationContext) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(CLASSNAME, jsonElement.getClass().getName());
+        jsonObject.add(DATA, jsonSerializationContext.serialize(jsonElement));
+        return jsonObject;
+    }
+    /****** Helper method to get the className of the object to be deserialized *****/
+    public Class getObjectClass(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            //e.printStackTrace();
+            throw new JsonParseException(e.getMessage());
+        }
     }
 }
