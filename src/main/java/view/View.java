@@ -1105,7 +1105,9 @@ public class View {
                 "6 - remove product [productId]\n" +
                 "7 - show categories\n" +
                 "8 - view offs\n" +
-                "9 - view balance");
+                "9 - view balance\n" +
+                "10 - logout\n" +
+                "11 - back");
     }
 
     private void initializeManageResellerProductMenu() {
@@ -1218,7 +1220,10 @@ public class View {
     private void manageResellerProductsMenuHelp() {
         System.out.println("1 - view [productId]\n" +
                 "2 - view buyers [productId]\n" +
-                "3 - edit [productId]");
+                "3 - edit [productId]\n" +
+                "4 - sort [brand | name | id | price]\n" +
+                "5 - logout\n" +
+                "6 - back");
     }
 
     private void initializeManageResellerOffMenu() {
@@ -1325,7 +1330,10 @@ public class View {
     private void manageResellerOffMenuHelp() {
         System.out.println("1 - view [offId]\n" +
                 "2 - edit [offId]\n" +
-                "3 - add off");
+                "3 - add off\n" +
+                "4 - sort[off id | start time | end time | discount percent]\n" +
+                "5 - logout\n" +
+                "6 - back");
     }
 
     private void initializeOffMenu() {
@@ -1370,7 +1378,9 @@ public class View {
 
     private void offMenuHelp() {
         System.out.println("1 - offs\n" +
-                "2 - show product [productId]");
+                "2 - show product [productId]\n" +
+                "3 - logout\n" +
+                "4 - help");
     }
 
     private void initializeManageRequestMenuCommandProcessor() {
