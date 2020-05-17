@@ -6,7 +6,6 @@ import model.DataManager;
 import view.View;
 
 import java.io.IOException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -20,10 +19,12 @@ public class ProductsMenu extends Menu {
 
     public void filtering(){
         MenuHandler.getInstance().setCurrentMenu(View.filteringMenu);
+        View.filteringMenu.setPreviousMenu(View.productsMenu);
     }
 
     public void sorting(){
         MenuHandler.getInstance().setCurrentMenu(View.sortingMenu);
+        View.sortingMenu.setPreviousMenu(View.productsMenu);
     }
 
     public ArrayList<Commodity> getProducts() {

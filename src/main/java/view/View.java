@@ -2010,6 +2010,10 @@ public class View {
         System.out.println("disable sort");
     }
 
+    private void setLoginRegisterMenu(){
+        MenuHandler.getInstance().getCurrentMenu().setLoginAndRegisterMenu();
+    }
+
     public void run() throws Exception {
         MenuHandler.getInstance().setCurrentMenu(loginRegisterMenu);
         String command;
@@ -2017,6 +2021,10 @@ public class View {
             if (command.equalsIgnoreCase("logout")) {
                 logout();
                 continue;
+            }
+            if (command.equalsIgnoreCase("login") || command.equalsIgnoreCase("register")){
+                setLoginRegisterMenu();
+                return;
             }
             MenuHandler.getInstance().getCurrentMenu().commandProcess(command);
         }

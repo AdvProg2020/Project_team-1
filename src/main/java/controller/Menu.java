@@ -25,6 +25,10 @@ public class Menu {
         }
     }
 
+    public void setLoginAndRegisterMenu(){
+        MenuHandler.getInstance().setCurrentMenu(View.loginRegisterMenu);
+    }
+
     public void products(){
         MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
     }
