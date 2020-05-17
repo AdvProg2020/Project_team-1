@@ -81,6 +81,11 @@ public class Off implements Requestable {
         DataManager.addOff(this);
     }
 
+    public boolean isActive() {
+        Date now = new Date();
+        return this.startTime.compareTo(now) < 0 && now.compareTo(this.endTime) < 0;
+    }
+
     public Date getStartTime() {
         return startTime;
     }
