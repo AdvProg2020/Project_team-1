@@ -11,7 +11,7 @@ import java.util.Set;
 public class PersonalAccount extends SimpleAccount {
     private HashMap<DiscountCode, Integer> discountCodes;
     private ArrayList<BuyLog> buyLogs;
-    private HashMap<Commodity,Integer> cart;
+    private HashMap<Commodity, Integer> cart;
     private double credit;
 
     public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password) throws Exception {
@@ -50,15 +50,15 @@ public class PersonalAccount extends SimpleAccount {
         return price;
     }
 
-    private boolean isCommodityInTheCart(Commodity commodity){
-        return cart.keySet().contains(commodity);
+    private boolean isCommodityInTheCart(Commodity commodity) {
+        return cart.containsKey(commodity);
     }
 
     public void addToCart(Commodity commodity) {
         if (isCommodityInTheCart(commodity))
             cart.put(commodity, 1);
         else
-            cart.put(commodity , cart.get(commodity) + 1);
+            cart.put(commodity, cart.get(commodity) + 1);
     }
 
     public void removeFromCart(Commodity commodity) {
@@ -74,7 +74,7 @@ public class PersonalAccount extends SimpleAccount {
     }
 
     public void doesHaveThisDiscount(DiscountCode discountCode) throws Exception {
-        if (discountCodes.containsKey(discountCode)) {
+        if (discountCodes.containsKey(discountCode) && discountCodes.get(discountCode) < discountCode.getMaximumNumberOfUses()) {
             return;
         }
         throw new Exception("you can't use this discount code");
@@ -82,12 +82,13 @@ public class PersonalAccount extends SimpleAccount {
 
     public void useThisDiscount(DiscountCode discountCode) {
         int numberOfTimesUsed = discountCodes.get(discountCode) + 1;
-        discountCodes.remove(discountCode);
-        if (numberOfTimesUsed < discountCode.getMaximumNumberOfUses()) {
-            discountCodes.put(discountCode, numberOfTimesUsed);
-        }
+        discountCodes.put(discountCode, numberOfTimesUsed);
     }
 
+    public void dontUseDiscountCode(DiscountCode discountCode) {
+        int numberOfTimesUsed = discountCodes.get(discountCode) - 1;
+        discountCodes.put(discountCode, numberOfTimesUsed);
+    }
 
     @Override
     public String toString() {

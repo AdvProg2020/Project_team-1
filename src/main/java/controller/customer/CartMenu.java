@@ -81,7 +81,6 @@ public class CartMenu extends Menu {
     }
 
     public int useDiscountCode(int price, DiscountCode discountCode) {
-        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         if (discountCode.getMaximumDiscountPrice() <= discountCode.getDiscountPercentage() * price / 100) {
             price -= discountCode.getMaximumDiscountPrice();
         } else {
@@ -94,6 +93,7 @@ public class CartMenu extends Menu {
             Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         if (price > account.getCredit()) {
+            account.dontUseDiscountCode(discountCode);
             throw new Exception("you don't have enough money to pay");
         }
         account.addToCredit(-price);
