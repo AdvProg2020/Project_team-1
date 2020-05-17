@@ -7,7 +7,10 @@ import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -366,7 +369,7 @@ public class DataManager {
         writer.close();
     }
 
-    public static Commodity[] getAllCommodities() throws Exception {
+    public static Commodity[] getAllCommodities() throws IOException {
         FileReader fileReader = new FileReader(allCommoditiesJson);
         JsonReader jsonReader = new JsonReader(fileReader);
         Gson gson = new Gson();

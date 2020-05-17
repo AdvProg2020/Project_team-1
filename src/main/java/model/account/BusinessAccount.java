@@ -5,13 +5,12 @@ import model.log.SellLog;
 
 import java.util.ArrayList;
 
-public class BusinessAccount extends SimpleAccount implements Requestable {
+public class BusinessAccount extends SimpleAccount {
     private final String VALID_BUSINESS_NAME = "^\\w{4,20}$";
     private String businessName;
     private ArrayList<SellLog> sellLogs;
     private ArrayList<Commodity> commodities;
     private ArrayList<Off> offs;
-    private Status status;
     private double credit;
 
     public BusinessAccount(String username, String firstName, String lastName, String email, String phoneNumber,
@@ -21,20 +20,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         sellLogs = new ArrayList<SellLog>();
         commodities = new ArrayList<Commodity>();
         offs = new ArrayList<Off>();
-        this.status = Status.UNDER_CHECKING_FOR_CREATE;
         credit = 0;
-    }
-
-
-
-    @Override
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    @Override
-    public void addObj() throws Exception {
-        DataManager.addResellerAccount(this);
     }
 
     public ArrayList<SellLog> getSellLogs() {

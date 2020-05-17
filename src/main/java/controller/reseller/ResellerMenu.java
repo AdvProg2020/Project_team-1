@@ -17,12 +17,14 @@ public class ResellerMenu extends Menu {
 
     public ArrayList<Commodity> manageCommodities() throws Exception {
         ArrayList<Commodity> commodityArrayList = getBusinessAccount().getCommodities();
+        View.manageResellerProductsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.manageResellerProductsMenu);
         return commodityArrayList;
     }
 
     public ArrayList<Off> manageOffs() throws Exception {
         ArrayList<Off> offArrayList = getBusinessAccount().getOffs();
+        View.manageResellerOffMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.manageResellerOffMenu);
         return offArrayList;
     }
