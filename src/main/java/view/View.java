@@ -296,7 +296,7 @@ public class View {
                     getDiscountCode.goToPreviousMenu();
                     return;
                 }
-                if (command.equals("^view discount code (?<code>\\S+)$")) {
+                if (command.matches("^view discount code (?<code>\\S+)$")) {
                     Matcher matcher = Pattern.compile("^view discount code (?<code>\\S+)$").matcher(command);
                     matcher.matches();
                     viewDiscountCode(getDiscountCode, matcher.group("code"));
@@ -866,6 +866,7 @@ public class View {
             System.out.println("invalid maximum number of user");
             return;
         }
+        scanner.nextLine();
         if (managerMenu.checkCreateDiscountCodeErrors(start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse)) {
             System.out.println("invalid input");
             return;
@@ -1772,6 +1773,7 @@ public class View {
             System.out.println("Enter you correspondingFieldNumber\n");
             int correspondingFieldNumber = scanner.nextInt();
             System.out.println("Numerical filter or optional filter?\n");
+            scanner.nextLine();
             String type = scanner.nextLine();
             if (type.equalsIgnoreCase("Numerical")) {
                 filterByNumericalField(categoryName, correspondingFieldNumber);
@@ -1786,8 +1788,12 @@ public class View {
     private void filterByOptionalField(String categoryName, int correspondingFieldNumber) {
         System.out.println("Enter acceptable options");
         ArrayList<String> options = new ArrayList<String>();
-        while (scanner.hasNext())
-            options.add(scanner.next());
+        String input = scanner.next();
+        while (!input.equals("end")){
+            options.add(input);
+            input = scanner.next();
+        }
+        scanner.nextLine();
         OptionalFilter optionalFilter = new OptionalFilter("Optional filter " + categoryName + " " + correspondingFieldNumber, options, correspondingFieldNumber);
     }
 
@@ -1796,6 +1802,7 @@ public class View {
         int startRange = scanner.nextInt();
         System.out.println("Enter finish range");
         int finishRange = scanner.nextInt();
+        scanner.nextLine();
         Category category = manageCategoryMenu.getCategory(categoryName);
         NumericalFilter numericalFilter = new NumericalFilter("Numerical filter " + categoryName + " " + correspondingFieldNumber + " " + startRange + " " + finishRange, startRange, finishRange, correspondingFieldNumber);
         filteringMenu.filter(numericalFilter);
