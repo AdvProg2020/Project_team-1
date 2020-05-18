@@ -37,6 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class View {
+
     public static final GetDiscountCode getDiscountCode = new GetDiscountCode();
     public static final ManagerMenu managerMenu = new ManagerMenu();
     public static final ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
@@ -86,25 +87,22 @@ public class View {
     }
 
     private void initializeCommentsMenu() {
-        commentsMenu.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.matches("products")) {
-                    commentsMenu.products();
-                    return;
-                }
-                if (command.equals("add comment")) {
-                    addComment();
-                    return;
-                }
-                if (command.equals("back")) {
-                    commentsMenu.goToPreviousMenu();
-                } else if (command.equals("help")) {
-                    commentsMenuHelp();
-                    return;
-                }
-                System.out.println("invalid command");
+        commentsMenu.commandProcess = command -> {
+            if (command.matches("products")) {
+                commentsMenu.products();
+                return;
             }
+            if (command.equals("add comment")) {
+                addComment();
+                return;
+            }
+            if (command.equals("back")) {
+                commentsMenu.goToPreviousMenu();
+            } else if (command.equals("help")) {
+                commentsMenuHelp();
+                return;
+            }
+            System.out.println("invalid command");
         };
     }
 
@@ -117,25 +115,22 @@ public class View {
     }
 
     private void initializeDigestMenu() {
-        digestMenu.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.matches("products")) {
-                    digestMenu.products();
-                    return;
-                }
-                if (command.equals("add to cart")) {
-                    addToCart();
-                    return;
-                }
-                if (command.equals("back")) {
-                    digestMenu.goToPreviousMenu();
-                } else if (command.equals("help")) {
-                    digestMenuHelp();
-                    return;
-                }
-                System.out.println("invalid command");
+        digestMenu.commandProcess = command -> {
+            if (command.matches("products")) {
+                digestMenu.products();
+                return;
             }
+            if (command.equals("add to cart")) {
+                addToCart();
+                return;
+            }
+            if (command.equals("back")) {
+                digestMenu.goToPreviousMenu();
+            } else if (command.equals("help")) {
+                digestMenuHelp();
+                return;
+            }
+            System.out.println("invalid command");
         };
     }
 
@@ -149,23 +144,20 @@ public class View {
     }
 
     private void initializeCommodityMenu() {
-        commodityMenu.commandProcess = new CommandProcess() {
-            @Override
-            public void commandProcessor(String command) throws Exception {
-                if (command.matches("products")) {
-                    commodityMenu.products();
-                } else if (command.equals("digest")) {
-                    digest();
-                } else if (command.equals("attributes")) {
-                    attributes();
-                } else if (command.matches("compare (?<id>\\d+)")) {
-                    compare(command);
-                } else if (command.equals("comments")) {
-                    comments();
-                } else if (command.matches("sort comments by (?<field>\\w+)")) {
-                    sortComments(command);
-                } else System.out.println("invalid command");
-            }
+        commodityMenu.commandProcess = command -> {
+            if (command.matches("products")) {
+                commodityMenu.products();
+            } else if (command.equals("digest")) {
+                digest();
+            } else if (command.equals("attributes")) {
+                attributes();
+            } else if (command.matches("compare (?<id>\\d+)")) {
+                compare(command);
+            } else if (command.equals("comments")) {
+                comments();
+            } else if (command.matches("sort comments by (?<field>\\w+)")) {
+                sortComments(command);
+            } else System.out.println("invalid command");
         };
     }
 
