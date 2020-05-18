@@ -267,4 +267,12 @@ public class Commodity implements Requestable {
         return "commodity ID: " + this.commodityId + "\n" +
                 "commodity name: " + this.name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Commodity)) return false;
+        Commodity commodity = (Commodity) o;
+        return getCommodityId() == commodity.getCommodityId();
+    }
 }
