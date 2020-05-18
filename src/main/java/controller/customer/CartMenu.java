@@ -35,13 +35,15 @@ public class CartMenu extends Menu {
         Commodity commodity = YaDataManager.getCommodityById(id);
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
-        personalAccount.removeFromCart(commodity);
-        YaDataManager.removePerson(personalAccount);
         if (personalAccount.hasThisInCart(commodity)) {
             if (personalAccount.getAmount(commodity) == 1) {
+                personalAccount.removeFromCart(commodity);
+                YaDataManager.removePerson(personalAccount);
                 YaDataManager.addPerson(personalAccount);
                 throw new Exception("successfully removed");
             }
+            personalAccount.removeFromCart(commodity);
+            YaDataManager.removePerson(personalAccount);
             cart.put(commodity, personalAccount.getAmount(commodity) - 1);
             YaDataManager.addPerson(personalAccount);
             throw new Exception("successfully decreased");
