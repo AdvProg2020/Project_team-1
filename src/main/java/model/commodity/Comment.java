@@ -24,12 +24,11 @@ public class Comment implements Requestable {
     @Override
     public String toString() {
         return "Comment{" +
-                "account=" + account +
-                ", commodity=" + commodity +
+                "account=" + account.getUsername() +
+                ", commodity=" + commodity.getName() +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", isABuyer=" + isABuyer +
-                ", status=" + status +
                 '}';
     }
 

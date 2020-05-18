@@ -1,18 +1,22 @@
 package model.account;
 
+import controller.data.YaDataManager;
 import model.commodity.Commodity;
 import model.commodity.Off;
 import model.log.SellLog;
+import model.share.Requestable;
+import model.share.Status;
 
 import java.util.ArrayList;
 
-public class BusinessAccount extends SimpleAccount {
+public class BusinessAccount extends SimpleAccount implements Requestable {
     private final transient String VALID_BUSINESS_NAME = "^\\w{4,20}$";
     private String businessName;
     private ArrayList<SellLog> sellLogs;
     private ArrayList<Commodity> commodities;
     private ArrayList<Off> offs;
     private double credit;
+    private Status status;
 
     public BusinessAccount(String username, String firstName, String lastName, String email, String phoneNumber,
                            String password, String businessName) throws Exception {
@@ -22,6 +26,7 @@ public class BusinessAccount extends SimpleAccount {
         commodities = new ArrayList<Commodity>();
         offs = new ArrayList<Off>();
         credit = 0;
+        status = Status.UNDER_CHECKING_FOR_CREATE;
     }
 
     public ArrayList<SellLog> getSellLogs() {
@@ -92,13 +97,29 @@ public class BusinessAccount extends SimpleAccount {
 
     @Override
     public String toString() {
-        return "businessName=" + businessName + "\n" +
-                super.toString();
-
+        return "BusinessAccount{" +
+                "businessName='" + businessName + '\'' +
+                ", credit=" + credit +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 
     @Override
     public String getInformation() {
         return super.getInformation() + "\ncompany name: " + this.businessName;
+    }
+
+    @Override
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public void addObj() throws Exception {
+        YaDataManager.addBusiness(this);
     }
 }

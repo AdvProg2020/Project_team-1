@@ -115,6 +115,13 @@ public class PersonalAccount extends SimpleAccount {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "PersonalAccount{" +
+                "credit=" + credit +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }

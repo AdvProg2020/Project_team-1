@@ -103,13 +103,18 @@ public class Off implements Requestable {
 
     @Override
     public String toString() {
+        StringBuilder commoditiesNames = new StringBuilder();
+        for (Commodity commodity : commodities) {
+            commoditiesNames.append(commodity.getName());
+            commoditiesNames.append("-");
+        }
         return "Off{" +
                 "offID='" + offID + '\'' +
-                ", owner=" + owner +
-                ", commodities=" + commodities +
+                ", owner=" + owner.getUsername() +
+                ", commodities=" + commoditiesNames.toString() +
                 ", status=" + status +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
+                ", startTime=" + startTime.toString() +
+                ", endTime=" + endTime.toString() +
                 ", discountPercent=" + discountPercent +
                 '}';
     }

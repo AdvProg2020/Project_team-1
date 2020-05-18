@@ -20,9 +20,9 @@ public class Score {
     @Override
     public String toString() {
         return "Score{" +
-                "account=" + account +
+                "account=" + account.getUsername() +
                 ", score=" + score +
-                ", commodity=" + commodity +
+                ", commodity=" + commodity.getName() +
                 '}';
     }
 

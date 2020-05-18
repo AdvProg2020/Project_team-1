@@ -4,25 +4,19 @@ import java.util.ArrayList;
 
 public class Category {
     private String name;
-    private ArrayList<Category> subCategories;
-    private Category father;
     private ArrayList<Commodity> commodities;
     private ArrayList<CategorySpecification> fieldOptions;
 
-    public Category(String name, int numberOfFields, Category father) {
+    public Category(String name, int numberOfFields) {
         this.name = name;
-        this.father = father;
-        this.commodities = new ArrayList<Commodity>();
-        this.fieldOptions = new ArrayList<CategorySpecification>();
-        this.subCategories = new ArrayList<Category>();
+        this.commodities = new ArrayList<>();
+        this.fieldOptions = new ArrayList<>();
     }
 
     public Category(String name, ArrayList<Commodity> commodities , ArrayList<CategorySpecification> categorySpecifications) {
         this.name = name;
-        this.father = null;
         this.commodities = commodities;
         this.fieldOptions = categorySpecifications;
-        this.subCategories = new ArrayList<Category>();
     }
 
     public String getName() {
@@ -31,22 +25,6 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ArrayList<Category> getSubCategories() {
-        return subCategories;
-    }
-
-    public void setSubCategories(ArrayList<Category> subCategories) {
-        this.subCategories = subCategories;
-    }
-
-    public Category getFather() {
-        return father;
-    }
-
-    public void setFather(Category father) {
-        this.father = father;
     }
 
     public ArrayList<Commodity> getCommodities() {
@@ -67,12 +45,20 @@ public class Category {
 
     @Override
     public String toString() {
+        StringBuilder commoditiesNames = new StringBuilder();
+        for (Commodity commodity : commodities) {
+            commoditiesNames.append(commodity.getName());
+            commoditiesNames.append("-");
+        }
+        StringBuilder options = new StringBuilder();
+        for (CategorySpecification fieldOption : fieldOptions) {
+            options.append(fieldOption.getTitle());
+            options.append("-");
+        }
         return "Category{" +
                 "name='" + name + '\'' +
-                ", subCategories=" + subCategories +
-                ", father=" + father +
-                ", commodities=" + commodities +
-                ", fieldOptions=" + fieldOptions +
+                ", commodities=" + commoditiesNames.toString() +
+                ", fieldOptions=" + options.toString() +
                 '}';
     }
 }
