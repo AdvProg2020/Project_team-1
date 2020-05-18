@@ -1,5 +1,6 @@
 package controller.reseller;
 
+import controller.comparator.Sort;
 import controller.data.YaDataManager;
 import controller.share.Menu;
 import controller.share.MenuHandler;
@@ -9,6 +10,7 @@ import model.commodity.Category;
 import model.commodity.Commodity;
 import model.commodity.Off;
 import model.field.Field;
+import model.log.SellLog;
 import model.share.Request;
 import view.View;
 
@@ -26,6 +28,12 @@ public class ResellerMenu extends Menu {
         return commodityArrayList;
     }
 
+    public ArrayList<SellLog> sortSalesHistory(String field) throws Exception {
+        ArrayList<SellLog> sellLogs = getBusinessAccount().getSellLogs();
+        Sort.sortSellLogArrayList(sellLogs, field);
+        return sellLogs;
+    }
+
     public ArrayList<Off> manageOffs() throws Exception {
         ArrayList<Off> offArrayList = getBusinessAccount().getOffs();
         View.manageResellerOffMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
@@ -40,6 +48,12 @@ public class ResellerMenu extends Menu {
             }
         }
         throw new Exception("Category not found");
+    }
+
+    public ArrayList<Category> sortCategories(String field) throws Exception {
+        ArrayList<Category> categories = YaDataManager.getCategories();
+        Sort.sortCategoryArrayList(categories, field);
+        return categories;
     }
 
     public void addProduct(String brand, String name, int price, Category category,

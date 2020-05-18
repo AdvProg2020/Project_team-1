@@ -2,6 +2,7 @@ package controller.comparator;
 
 import controller.comparator.buy_log.DeductedMoneyComparator;
 import controller.comparator.buy_log.PayedMoneyComparator;
+import controller.comparator.category.CategoryNameComparator;
 import controller.comparator.comment.ContentComparator;
 import controller.comparator.comment.TitleComparator;
 import controller.comparator.off.OffDiscountPercentComparator;
@@ -9,10 +10,12 @@ import controller.comparator.off.OffEndTimeComparator;
 import controller.comparator.off.OffIdComparator;
 import controller.comparator.off.OffStartTimeComparator;
 import controller.comparator.product.*;
+import model.commodity.Category;
 import model.commodity.Comment;
 import model.commodity.Commodity;
 import model.commodity.Off;
 import model.log.BuyLog;
+import model.log.SellLog;
 
 import java.util.ArrayList;
 
@@ -78,6 +81,19 @@ public class Sort {
         }
     }
 
+    public static void sortSellLogArrayList(ArrayList<SellLog> sellLogs, String field) throws Exception {
+        switch (field) {
+            case "payed":
+                sellLogs.sort(new PayedMoneyComparator());
+                break;
+            case "discount":
+                sellLogs.sort(new DeductedMoneyComparator());
+                break;
+            default:
+                throw new Exception("field not found");
+        }
+    }
+
     public static void sortCommentArrayList(ArrayList<Comment> comments, String field) throws Exception {
         switch (field) {
             case "title":
@@ -86,6 +102,17 @@ public class Sort {
             case "content":
                 comments.sort(new ContentComparator());
                 break;
+            default:
+                throw new Exception("field not found");
+        }
+    }
+
+    public static void sortCategoryArrayList(ArrayList<Category> categories, String field) throws Exception {
+        switch (field) {
+            case "name":
+                categories.sort(new CategoryNameComparator());
+                break;
+
             default:
                 throw new Exception("field not found");
         }

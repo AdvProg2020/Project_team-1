@@ -1035,6 +1035,8 @@ public class View {
                         viewCompanyInfo();
                     } else if (command.equalsIgnoreCase("view sales history")) {
                         viewSalesHistory();
+                    } else if (command.matches("sort sales history by (\\S+)")) {
+                        sortSalesHistory(command);
                     } else if (command.equalsIgnoreCase("manage products")) {
                         manageResellerProduct();
                     } else if (command.equalsIgnoreCase("add product")) {
@@ -1043,6 +1045,8 @@ public class View {
                         removeProduct(command);
                     } else if (command.equalsIgnoreCase("show categories")) {
                         showCategories();
+                    } else if (command.matches("sort categories (\\S+)")) {
+                        sortCategories(command);
                     } else if (command.equalsIgnoreCase("view offs")) {
                         viewResellerOffs();
                     } else if (command.equalsIgnoreCase("view balance")) {
@@ -1068,6 +1072,14 @@ public class View {
     private void viewSalesHistory() {
         BusinessAccount businessAccount = resellerMenu.getBusinessAccount();
         for (SellLog sellLog : businessAccount.getSellLogs()) {
+            System.out.println(sellLog.toString());
+        }
+    }
+
+    private void sortSalesHistory(String command) throws Exception {
+        Matcher matcher = Pattern.compile("sort sales history by (?<field>\\S+)").matcher(command);
+        matcher.matches();
+        for (SellLog sellLog : resellerMenu.sortSalesHistory(matcher.group("field"))) {
             System.out.println(sellLog.toString());
         }
     }
@@ -1122,6 +1134,14 @@ public class View {
         }
     }
 
+    private void sortCategories(String command) throws Exception {
+        Matcher matcher = Pattern.compile("sort categories (?<field>\\S+)").matcher(command);
+        matcher.matches();
+        for (Category category : resellerMenu.sortCategories(matcher.group("field"))) {
+            System.out.println(category.toString());
+        }
+    }
+
     public void viewResellerOffs() throws Exception {
         for (Off off : resellerMenu.manageOffs()) {
             System.out.println(off.toString());
@@ -1136,14 +1156,16 @@ public class View {
         System.out.println("1 - view personal info\n" +
                 "2 - view company info\n" +
                 "3 - view sales history\n" +
-                "4 - manage products\n" +
-                "5 - add product\n" +
-                "6 - remove product [productId]\n" +
-                "7 - show categories\n" +
-                "8 - view offs\n" +
-                "9 - view balance\n" +
-                "10 - logout\n" +
-                "11 - back");
+                "4 - sort sales history by [payed|discount]\n" +
+                "5 - manage products\n" +
+                "6 - add product\n" +
+                "7 - remove product [productId]\n" +
+                "8 - show categories\n" +
+                "9 - sort categories [name]\n" +
+                "10 - view offs\n" +
+                "11 - view balance\n" +
+                "12 - logout\n" +
+                "13 - back");
     }
 
     private void initializeManageResellerProductMenu() {
