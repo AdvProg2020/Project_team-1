@@ -4,6 +4,7 @@ import model.account.SimpleAccount;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class DiscountCode {
     private String code;
@@ -145,5 +146,13 @@ public class DiscountCode {
                 ", discountPercentage = " + discountPercentage +
                 ", maximumDiscountPrice = " + maximumDiscountPrice +
                 ", maximumNumberOfUses = " + maximumNumberOfUses;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DiscountCode)) return false;
+        DiscountCode code1 = (DiscountCode) o;
+        return Objects.equals(code, code1.code);
     }
 }

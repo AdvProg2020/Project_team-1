@@ -34,6 +34,14 @@ public class PersonalAccount extends SimpleAccount {
         discountCodes.put(discountCode, 0);
     }
 
+    public void removeDiscountCode(DiscountCode discountCode) {
+        for (DiscountCode code : discountCodes.keySet()) {
+            if (code.equals(discountCode)) {
+                discountCodes.remove(code);
+            }
+        }
+    }
+
     public ArrayList<BuyLog> getBuyLogs() {
         return buyLogs;
     }

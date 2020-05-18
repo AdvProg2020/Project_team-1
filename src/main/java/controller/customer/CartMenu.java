@@ -56,7 +56,9 @@ public class CartMenu extends Menu {
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
         YaDataManager.removePerson(personalAccount);
         if (cart.containsKey(commodity)) {
-            cart.put(commodity, cart.get(commodity) + 1);
+            int amount = cart.get(commodity);
+            cart.remove(commodity);
+            cart.put(commodity, amount + 1);
             YaDataManager.addPerson(personalAccount);
             throw new Exception("successfully increased");
         }
@@ -91,7 +93,11 @@ public class CartMenu extends Menu {
     }
 
     private int useDiscountCode(int price, DiscountCode discountCode) {
-        price -= Math.min(discountCode.getMaximumDiscountPrice(), discountCode.getDiscountPercentage() * price / 100);
+        if (discountCode.getMaximumDiscountPrice() <= discountCode.getDiscountPercentage() * price / 100) {
+            price -= discountCode.getMaximumDiscountPrice();
+        } else {
+            price -= discountCode.getDiscountPercentage() * price / 100;
+        }
         return price;
     }
 
@@ -152,7 +158,8 @@ public class CartMenu extends Menu {
 
     public ArrayList<Commodity> getCartProducts() throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        ArrayList<Commodity> commodities = new ArrayList<>(account.getCart().keySet());
+        ArrayList<Commodity> commodities = new ArrayList<>();
+        commodities.addAll(account.getCart().keySet());
         Sort.sortProductArrayList(commodities, this.productSortType);
         return commodities;
     }
