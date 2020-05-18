@@ -35,7 +35,7 @@ public class CommodityMenu extends Menu {
     }
 
     public Commodity compare(int id) throws Exception {
-        Commodity comparingCommodity = DataManager.getCommodityById(id);
+        Commodity comparingCommodity =YaDataManager.getCommodityById(id);
         if (!commodity.getCategory().equals(comparingCommodity.getCategory())) {
             throw new Exception("to compare two products, they have to in the same category");
         }

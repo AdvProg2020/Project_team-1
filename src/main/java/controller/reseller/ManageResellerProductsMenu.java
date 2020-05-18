@@ -52,7 +52,7 @@ public class ManageResellerProductsMenu extends Menu {
                 (description.equals("-"))?(oldProduct.getDescription()):(description),
                 (amount == -1)?(oldProduct.getInventory()):(amount));
         Request request = new Request(editedProduct, businessAccount);
-        DataManager.addRequest(request);
+        YaDataManager.addRequest(request);
         // Todo delete old product
     }
 

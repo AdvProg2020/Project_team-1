@@ -1,11 +1,10 @@
 package controller;
 
-import model.DataManager;
+import model.YaDataManager;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import static model.Commodity.Comparators.*;
-import static model.Commodity.Comparators.numberOfVisits;
 
 public class SortingMenu extends Menu {
     private static String currentSort = "number of visits";
@@ -21,15 +20,15 @@ public class SortingMenu extends Menu {
     public void sort(String sort) throws Exception {
         currentSort = sort;
         if (sort.equals("price")) {
-            Arrays.sort(DataManager.getAllCommodities(), price);
+            Collections.sort(YaDataManager.getCommodities(), price);
             return;
         }
         if (sort.equals("Number of visits")) {
-            Arrays.sort(DataManager.getAllCommodities(), numberOfVisits);
+            Collections.sort(YaDataManager.getCommodities(), numberOfVisits);
             return;
         }
         if (sort.equals("Average score")) {
-            Arrays.sort(DataManager.getAllCommodities(), score);
+            Collections.sort(YaDataManager.getCommodities(), score);
             return;
         }
         throw new Exception("invalid sort");
@@ -37,6 +36,6 @@ public class SortingMenu extends Menu {
 
     public void disableSort() throws Exception {
         currentSort = "Number of visits";
-        Arrays.sort(DataManager.getAllCommodities(), numberOfVisits);
+        Collections.sort(YaDataManager.getCommodities(), numberOfVisits);
     }
 }

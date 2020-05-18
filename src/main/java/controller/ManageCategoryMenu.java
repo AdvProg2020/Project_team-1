@@ -1,9 +1,6 @@
 package controller;
 
-import model.Category;
-import model.CategorySpecification;
-import model.Commodity;
-import model.DataManager;
+import model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +19,7 @@ public class ManageCategoryMenu extends Menu {
 
 
     public boolean checkCategoryName(String name) throws IOException {
-        return DataManager.isCategoryExist(name);
+        return YaDataManager.isCategoryExist(name);
     }
 
     public String changeName(String name , Category category){
@@ -46,7 +43,7 @@ public class ManageCategoryMenu extends Menu {
     }
 
     public void addCommodity(int commodityId , Category category) throws Exception {
-        for (Commodity commodity : DataManager.getAllCommodities()) {
+        for (Commodity commodity : YaDataManager.getCommodities()) {
             if (commodity.getCommodityId() == commodityId) {
                 category.getCommodities().add(commodity);
                 return;
@@ -56,7 +53,7 @@ public class ManageCategoryMenu extends Menu {
     }
 
     public void removeCommodity(int commodityId , Category category) throws Exception {
-        for (Commodity commodity : DataManager.getAllCommodities()) {
+        for (Commodity commodity : YaDataManager.getCommodities()) {
             if (commodity.getCommodityId() == commodityId) {
                 category.getCommodities().remove(commodity);
                 return;
@@ -71,7 +68,7 @@ public class ManageCategoryMenu extends Menu {
 
     public void removeCategory(String categoryName) throws IOException {
         Category category = getCategory(categoryName);
-        DataManager.removeCategory(category);
+        YaDataManager.removeCategory(category);
 
     }
 
@@ -79,7 +76,7 @@ public class ManageCategoryMenu extends Menu {
 
     public boolean checkCommoditiesId(ArrayList<Integer> commoditiesId) throws Exception {
         for (Integer integer : commoditiesId) {
-            if (!DataManager.isCommodityExist(integer))
+            if (!YaDataManager.isCommodityExist(integer))
                 return false;
         }
         return true;
@@ -87,17 +84,17 @@ public class ManageCategoryMenu extends Menu {
 
     public void addCategory(String name , ArrayList<Integer> commodityIds , ArrayList<CategorySpecification> categorySpecifications) throws Exception {
         ArrayList<Commodity> commodities = new ArrayList<Commodity>();
-        for (Commodity commodity : DataManager.getAllCommodities()) {
+        for (Commodity commodity : YaDataManager.getCommodities()) {
             for (Integer commodityId : commodityIds) {
                 if (commodityId == commodity.getCommodityId())
                   commodities.add(commodity);
             }
         }
         Category category = new Category(name,commodities,categorySpecifications);
-        DataManager.addCategory(category);
+        YaDataManager.addCategory(category);
     }
     public Category getCategory(String name) throws IOException {
-        for (Category allCategory : DataManager.getAllCategories()) {
+        for (Category allCategory : YaDataManager.getCategories()) {
             if (allCategory.getName().equalsIgnoreCase(name))
                 return allCategory;
         }
@@ -105,6 +102,6 @@ public class ManageCategoryMenu extends Menu {
     }
 
     public void updateFile(Category category) throws IOException {
-        DataManager.addCategory(category);
+        YaDataManager.addCategory(category);
     }
 }

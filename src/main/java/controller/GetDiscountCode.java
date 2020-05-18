@@ -1,7 +1,7 @@
 package controller;
 
-import model.DataManager;
 import model.DiscountCode;
+import model.YaDataManager;
 import model.account.SimpleAccount;
 
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class GetDiscountCode extends Menu {
     public DiscountCode getDiscountCode(String code) throws Exception {
-        return DataManager.getDiscountCodeWithCode(code);
+        return YaDataManager.getDiscountCodeWithCode(code);
     }
 
     public void changeCode(String code, DiscountCode discountCode) {
@@ -33,14 +33,14 @@ public class GetDiscountCode extends Menu {
     }
 
     public void deleteAccount(String userName, DiscountCode discountCode) throws Exception {
-        if (DataManager.isUsernameExist(userName))
+        if (YaDataManager.isUsernameExist(userName))
             discountCode.deleteAccount(getAccountWithUserNameFromDatabase(userName));
         else
             throw new Exception();
     }
 
     public void addAccount(String userName, DiscountCode discountCode) throws Exception {
-        if (DataManager.isUsernameExist(userName))
+        if (YaDataManager.isUsernameExist(userName))
             discountCode.addAccount(getAccountWithUserNameFromDatabase(userName));
         else
             throw new Exception();
@@ -48,11 +48,11 @@ public class GetDiscountCode extends Menu {
 
 
     public void deleteDiscountCode(DiscountCode discountCode) throws Exception {
-        DataManager.deleteDiscountCode(discountCode);
+        YaDataManager.removeDiscountCode(discountCode);
     }
 
     public SimpleAccount getAccountWithUserNameFromDatabase(String username) throws IOException {
-        return DataManager.getAccountWithUserName(username);
+        return YaDataManager.getAccountWithUserName(username);
     }
 
 

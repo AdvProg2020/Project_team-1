@@ -224,7 +224,7 @@ public class View {
 
     private void manageRequests(ManagerMenu managerMenu) throws IOException {
         String output = "";
-        Request[] allRequests = managerMenu.manageRequest();
+        ArrayList<Request> allRequests = managerMenu.manageRequest();
         for (Request request : allRequests) {
             output += "[" + request.getSimpleAccount().getUsername() + "]";
         }
@@ -738,7 +738,7 @@ public class View {
     }
 
     private void viewDiscountCodes(ManagerMenu managerMenu) throws Exception {
-        DiscountCode[] discountCodes = managerMenu.viewDiscountCodesCommand();
+        ArrayList<DiscountCode> discountCodes = managerMenu.viewDiscountCodesCommand();
         for (DiscountCode discountCode : discountCodes) {
             System.out.println(discountCode.toString() + "\n");
         }
@@ -767,7 +767,7 @@ public class View {
         try {
             System.out.println("Please enter your user name");
             String userName = scanner.nextLine();
-            if (DataManager.isUsernameExist(userName)) {
+            if (YaDataManager.isUsernameExist(userName)) {
                 System.out.println("invalid username");
                 return;
             }
@@ -831,20 +831,20 @@ public class View {
 
     private void manageUsers(ManageUsersMenu manageUsersMenu) throws IOException {
         ManagerMenu menu = ((ManagerMenu) MenuHandler.getInstance().getCurrentMenu());
-        ManagerAccount[] managerAccounts = DataManager.getAllManagers();
-        PersonalAccount[] personalAccounts = DataManager.getAllPersonalAccounts();
-        BusinessAccount[] businessAccounts = DataManager.getAllResellers();
+        ArrayList<ManagerAccount> managerAccounts = YaDataManager.getManagers();
+        ArrayList<PersonalAccount> personalAccounts = YaDataManager.getPersons();
+        ArrayList<BusinessAccount> businessAccounts = YaDataManager.getBusinesses();
         String output = "Managers:";
-        for (int i = 0; i < managerAccounts.length; i++) {
-            output += "\n" + managerAccounts[i].getUsername();
+        for (int i = 0; i < managerAccounts.size(); i++) {
+            output += "\n" + managerAccounts.get(i).getUsername();
         }
         output += "\n" + "Business accounts:";
-        for (int i = 0; i < businessAccounts.length; i++) {
-            output += "\n" + businessAccounts[i].getUsername();
+        for (int i = 0; i < businessAccounts.size(); i++) {
+            output += "\n" + businessAccounts.get(i).getUsername();
         }
         output += "\n" + "Personal accounts:";
-        for (int i = 0; i < personalAccounts.length; i++) {
-            output += "\n" + personalAccounts[i].getUsername();
+        for (int i = 0; i < personalAccounts.size(); i++) {
+            output += "\n" + personalAccounts.get(i).getUsername();
         }
         System.out.println(output);
         managerMenu.manageUsers();
@@ -911,7 +911,7 @@ public class View {
         String[] splitCommand = accounts.split(" ");
         ArrayList<SimpleAccount> allAccount = new ArrayList<SimpleAccount>();
         for (int i = 0; i < splitCommand.length; i++) {
-            SimpleAccount simpleAccount = DataManager.getAccountWithUserName(splitCommand[i]);
+            SimpleAccount simpleAccount = YaDataManager.getAccountWithUserName(splitCommand[i]);
             if (simpleAccount == null) {
                 System.out.println("user name " + splitCommand[i] + " not found");
                 i--;
@@ -1118,7 +1118,7 @@ public class View {
     }
 
     private void showCategories() throws Exception {
-        for (Category category : DataManager.getAllCategories()) {
+        for (Category category : YaDataManager.getCategories()) {
             System.out.println(category.toString());
         }
     }
@@ -1206,7 +1206,7 @@ public class View {
         Matcher matcher = Pattern.compile("^edit (?<productId>\\d+)$").matcher(command);
         matcher.matches();
         int productId = Integer.parseInt(matcher.group("productId"));
-        Commodity oldCommodity = DataManager.getCommodityById(productId);
+        Commodity oldCommodity = YaDataManager.getCommodityById(productId);
         System.out.println("enter product brand (type '-' if this field remained unchanged):");
         String brand = scanner.nextLine();
         System.out.println("enter product name (type '-' if this field remained unchanged):");
@@ -1401,7 +1401,7 @@ public class View {
     }
 
     private void showOffs() throws Exception {
-        for (Off off : DataManager.getAllOffs()) {
+        for (Off off : YaDataManager.getOffs()) {
             System.out.println(off.toString());
         }
     }
@@ -1410,7 +1410,7 @@ public class View {
         Matcher matcher = Pattern.compile("^show product (?<productId>\\w+)$").matcher(command);
         matcher.matches();
         int productId = Integer.parseInt(matcher.group("productId"));
-        DataManager.getCommodityById(productId).getInformation();
+        YaDataManager.getCommodityById(productId).getInformation();
     }
 
     private void offMenuHelp() {
@@ -1539,7 +1539,7 @@ public class View {
     }
 
     private void manageCategories() throws IOException {
-        Category[] categories = managerMenu.manageCategory();
+        ArrayList<Category> categories = managerMenu.manageCategory();
         System.out.println("all categories:");
         for (Category category : categories) {
             System.out.println(category.getName());
@@ -1735,7 +1735,7 @@ public class View {
     }
 
     private void viewCategory() throws IOException {
-        Category[] categories = productsMenu.getAllCategories();
+        ArrayList<Category> categories = productsMenu.getAllCategories();
         System.out.println("all categories:");
         for (Category category : categories) {
             System.out.println(category.getName());

@@ -29,7 +29,7 @@ public class ResellerMenu extends Menu {
     }
 
     public Category getCategoryByName(String categoryString) throws Exception {
-        for (Category category : DataManager.getAllCategories()) {
+        for (Category category : YaDataManager.getCategories()) {
             if (category.getName().equalsIgnoreCase(categoryString)) {
                 return category;
             }
@@ -43,12 +43,12 @@ public class ResellerMenu extends Menu {
         Commodity newCommodity = new Commodity(brand, name, price, businessAccount, true,
                 category, categorySpecifications, description, amount);
         Request request = new Request(newCommodity, businessAccount);
-        DataManager.addRequest(request);
+        YaDataManager.addRequest(request);
     }
 
     public void removeProduct(int productId) throws Exception {
-        Commodity commodity = DataManager.getCommodityById(productId);
+        Commodity commodity = YaDataManager.getCommodityById(productId);
         getBusinessAccount().removeCommodity(commodity);
-        DataManager.deleteCommodity(commodity);
+        YaDataManager.removeCommodity(commodity);
     }
 }

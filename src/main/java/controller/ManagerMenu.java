@@ -47,42 +47,42 @@ public class ManagerMenu extends Menu {
 
     public void addDiscountCode(String code, Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
                                 int maximumNumberOfUse, ArrayList<SimpleAccount> accountArrayList) throws Exception {
-        DataManager.addDiscountCode(new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accountArrayList));
+        YaDataManager.addDiscountCode(new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accountArrayList));
 
     }
 
-    public Category[] manageCategory() throws IOException {
+    public ArrayList<Category> manageCategory() throws IOException {
         MenuHandler.getInstance().setCurrentMenu(View.manageCategoryMenu);
         View.manageCategoryMenu.setPreviousMenu(View.managerMenu);
         return getAllCategories();
     }
 
-    public Category[] getAllCategories() throws IOException {
-        return DataManager.getAllCategories();
+    public ArrayList<Category> getAllCategories() throws IOException {
+        return YaDataManager.getCategories();
     }
 
-    public Request[] manageRequest() throws IOException {
+    public ArrayList<Request> manageRequest() throws IOException {
         MenuHandler.getInstance().setCurrentMenu(View.manageRequestMenu);
         View.manageRequestMenu.setPreviousMenu(View.managerMenu);
         return getAllRequests();
     }
 
-    public Request[] getAllRequests() throws IOException {
-        return DataManager.getAllRequests();
+    public ArrayList<Request> getAllRequests() throws IOException {
+        return YaDataManager.getRequests();
     }
 
     public SimpleAccount getOnlineAccount() {
         return Session.getOnlineAccount();
     }
 
-    public DiscountCode[] viewDiscountCodesCommand() throws Exception {
+    public ArrayList<DiscountCode> viewDiscountCodesCommand() throws Exception {
         MenuHandler.getInstance().setCurrentMenu(View.getDiscountCode);
         View.getDiscountCode.setPreviousMenu(View.managerMenu);
         return getAllDiscountCodes();
     }
 
-    public DiscountCode[] getAllDiscountCodes() throws Exception {
-        return DataManager.getAllDiscountCodes();
+    public ArrayList<DiscountCode> getAllDiscountCodes() throws Exception {
+        return YaDataManager.getDiscountCodes();
     }
 
 

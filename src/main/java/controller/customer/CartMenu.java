@@ -28,7 +28,7 @@ public class CartMenu extends Menu {
     }
 
     public void decrease(int id) throws Exception {
-        Commodity commodity = DataManager.getCommodityById(id);
+        Commodity commodity = YaDataManager.getCommodityById(id);
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
         if (cart.containsKey(commodity)) {
@@ -43,7 +43,7 @@ public class CartMenu extends Menu {
     }
 
     public void increase(int id) throws Exception {
-        Commodity commodity = DataManager.getCommodityById(id);
+        Commodity commodity = YaDataManager.getCommodityById(id);
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
         if (cart.containsKey(commodity)) {
@@ -57,7 +57,7 @@ public class CartMenu extends Menu {
     public DiscountCode getDiscountCodeWithCode(String code) throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         if (!code.equals("")) {
-            DiscountCode discountCode = DataManager.getDiscountCodeWithCode(code);
+            DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(code);
             account.doesHaveThisDiscount(discountCode);
             discountCode.isStillValid();
             account.useThisDiscount(discountCode);
@@ -67,7 +67,7 @@ public class CartMenu extends Menu {
     }
 
     public int getDiscountPercentage(Commodity commodity) throws IOException {
-        for (Off off : DataManager.getAllOffs()) {
+        for (Off off : YaDataManager.getOffs()) {
             if (off.isActive()) {
                 for (Commodity offCommodity : off.getCommodities()) {
                     if (offCommodity.getCommodityId() == commodity.getCommodityId()) {
@@ -120,7 +120,7 @@ public class CartMenu extends Menu {
     }
 
     public void goToCommodityMenu(int id) throws Exception {
-        Commodity commodity = DataManager.getCommodityById(id);
+        Commodity commodity = YaDataManager.getCommodityById(id);
         commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
         MenuHandler.getInstance().setCurrentMenu(commodityMenu);
         commodityMenu.setCommodity(commodity);

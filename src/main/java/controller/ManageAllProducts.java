@@ -1,11 +1,11 @@
 package controller;
 
 import model.Commodity;
-import model.DataManager;
+import model.YaDataManager;
 
 public class ManageAllProducts extends Menu {
     public void removeCommodity(int commodityId) throws Exception {
-        Commodity commodity = DataManager.getCommodityById(commodityId);
-        DataManager.deleteCommodity(commodity);
+        Commodity commodity = YaDataManager.getCommodityById(commodityId);
+        YaDataManager.removeCommodity(commodity);
     }
 }

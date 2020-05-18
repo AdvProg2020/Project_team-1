@@ -2,7 +2,7 @@ package controller;
 
 import model.Category;
 import model.Commodity;
-import model.DataManager;
+import model.YaDataManager;
 import view.View;
 
 import java.io.IOException;
@@ -12,8 +12,8 @@ import java.util.Collections;
 import static model.Commodity.Comparators.*;
 
 public class ProductsMenu extends Menu {
-    public Category[] getAllCategories() throws IOException {
-        return DataManager.getAllCategories();
+    public ArrayList<Category> getAllCategories() throws IOException {
+        return YaDataManager.getCategories();
     }
 
 
@@ -41,10 +41,10 @@ public class ProductsMenu extends Menu {
     }
 
     public Commodity getProducts(int id) throws Exception {
-            if (!DataManager.isCommodityExist(id)){
+            if (!YaDataManager.isCommodityExist(id)){
                  throw new Exception("invalid id");
             }
-            return DataManager.getCommodityById(id);
+            return YaDataManager.getCommodityById(id);
     }
 
 

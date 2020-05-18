@@ -78,7 +78,7 @@ public class Off implements Requestable {
 
     @Override
     public void addObj() throws Exception {
-        DataManager.addOff(this);
+        YaDataManager.addOff(this);
     }
 
     public boolean isActive() {

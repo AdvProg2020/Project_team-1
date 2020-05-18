@@ -26,7 +26,7 @@ public class Request {
     public Request(Requestable obj, SimpleAccount simpleAccount) throws IOException {
         this.obj = obj;
         this.simpleAccount = simpleAccount;
-        this.id = DataManager.getAllRequests().length + 1;
+        this.id = YaDataManager.getRequests().size() + 1;
     }
 
 

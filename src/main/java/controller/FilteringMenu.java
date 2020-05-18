@@ -1,11 +1,10 @@
 package controller;
 
 import model.Commodity;
-import model.DataManager;
+import model.YaDataManager;
 import model.filter.Filter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FilteringMenu extends Menu {
     public void disableFilter(String filterName) throws Exception {
@@ -26,7 +25,7 @@ public class FilteringMenu extends Menu {
 
     static {
         try {
-            filteredCommodities = new ArrayList<Commodity>(Arrays.asList(DataManager.getAllCommodities()));
+            filteredCommodities = new ArrayList<Commodity>(YaDataManager.getCommodities());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,7 +48,7 @@ public class FilteringMenu extends Menu {
 
     public  void updateFilteredCommodities() throws Exception {
         filteredCommodities = new ArrayList<Commodity>();
-        for (Commodity commodity : DataManager.getAllCommodities()) {
+        for (Commodity commodity : YaDataManager.getCommodities()) {
             if (canCommodityPassFilter(commodity))
                 filteredCommodities.add(commodity);
         }

@@ -1,12 +1,11 @@
 package controller.reseller;
 
 import controller.Menu;
-import controller.MenuHandler;
 import controller.comparator.Sort;
 import model.Commodity;
-import model.DataManager;
 import model.Off;
 import model.Request;
+import model.YaDataManager;
 import model.account.BusinessAccount;
 import view.View;
 
@@ -37,7 +36,7 @@ public class ManageResellerOffsMenu extends Menu {
         Off newOff = new Off(businessAccount, commodities, simpleDateFormat.parse(startTime),
                 simpleDateFormat.parse(endTime), discountPercent);
         Request request = new Request(newOff, businessAccount);
-        DataManager.addRequest(request);
+        YaDataManager.addRequest(request);
     }
 
     public void editOff(Off oldOff, ArrayList<Commodity> removedProduct, ArrayList<Commodity> addedProduct, String startTime,
@@ -55,7 +54,7 @@ public class ManageResellerOffsMenu extends Menu {
                 (endTime.equals("-"))?(oldOff.getEndTime()):(simpleDateFormat.parse(endTime)),
                 (discountPercent == -1)?(oldOff.getDiscountPercent()):(discountPercent));
         Request request = new Request(newOff, businessAccount);
-        DataManager.addRequest(request);
+        YaDataManager.addRequest(request);
         // Todo remove old off????????????
     }
 }

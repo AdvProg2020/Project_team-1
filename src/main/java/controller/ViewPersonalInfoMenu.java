@@ -1,7 +1,7 @@
 package controller;
 
-import model.DataManager;
 import model.Session;
+import model.YaDataManager;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
@@ -28,16 +28,16 @@ public class ViewPersonalInfoMenu extends Menu{
 
     public void updateFile() throws Exception {
         if (Session.getOnlineAccount() instanceof BusinessAccount){
-            DataManager.deleteAccountWithUserName(Session.getOnlineAccount().getUsername());
-            DataManager.addResellerAccount((BusinessAccount) Session.getOnlineAccount());
+            YaDataManager.deleteAccountWithUserName(Session.getOnlineAccount().getUsername());
+            YaDataManager.addBusiness((BusinessAccount) Session.getOnlineAccount());
         }
         if (Session.getOnlineAccount() instanceof PersonalAccount){
-            DataManager.deleteAccountWithUserName(Session.getOnlineAccount().getUsername());
-            DataManager.addPersonalAccount((PersonalAccount) Session.getOnlineAccount());
+            YaDataManager.deleteAccountWithUserName(Session.getOnlineAccount().getUsername());
+            YaDataManager.addPerson((PersonalAccount) Session.getOnlineAccount());
         }
         if (Session.getOnlineAccount() instanceof ManagerAccount){
-            DataManager.deleteAccountWithUserName(Session.getOnlineAccount().getUsername());
-            DataManager.addManagerAccount((ManagerAccount) Session.getOnlineAccount());
+            YaDataManager.deleteAccountWithUserName(Session.getOnlineAccount().getUsername());
+            YaDataManager.addManager((ManagerAccount) Session.getOnlineAccount());
         }
     }
 

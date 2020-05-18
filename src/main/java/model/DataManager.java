@@ -1,22 +1,11 @@
 package model;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-import com.sun.net.httpserver.Filter;
-import model.account.BusinessAccount;
-import model.account.ManagerAccount;
-import model.account.PersonalAccount;
-import model.account.SimpleAccount;
-import model.log.TransactionLog;
 
-import java.io.*;
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DataManager {
+    /*
 
     private static final File allManagersJson;
 
@@ -494,7 +483,7 @@ public class DataManager {
         FileWriter writer = new FileWriter(allOffsJson);
         gson.toJson(allOffs, writer);
         writer.close();
-    }
+    }*/
 }
 
 class InterfaceAdapter<T> implements JsonSerializer, JsonDeserializer {
