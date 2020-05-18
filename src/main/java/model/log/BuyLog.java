@@ -5,6 +5,7 @@ import model.commodity.DiscountCode;
 import model.account.BusinessAccount;
 import model.account.SimpleAccount;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class BuyLog extends TransactionLog {
     private boolean isCommodityDelivered;
 
     public BuyLog(Date date, Set<Commodity> commodities, double payedMoney, double deductedMoney,
-                  DiscountCode discountByCode) {
+                  DiscountCode discountByCode) throws IOException {
         super(date, commodities);
         this.payedMoney = payedMoney;
         this.deductedMoney = deductedMoney;
@@ -25,7 +26,6 @@ public class BuyLog extends TransactionLog {
         for (Commodity commodity : commodities) {
             sellers.add((BusinessAccount) commodity.getSeller());
         }
-        logId = generateLogID();
         isCommodityDelivered = false;
     }
 

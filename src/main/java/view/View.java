@@ -543,7 +543,7 @@ public class View {
     private void showOrder(String command) {
         Matcher matcher = Pattern.compile("show order (?<id>\\S+)").matcher(command);
         matcher.matches();
-        String id = matcher.group("id");
+        int id = Integer.parseInt(matcher.group("id"));
         try {
             BuyLog log = orderMenu.getOrderWithId(id);
             System.out.println(log.toString());
@@ -1380,7 +1380,9 @@ public class View {
                         offMenu.products();
                         return;
                     }
-                    if (command.equalsIgnoreCase("offs")) {
+                    if (command.matches("sort \\w+ \\w+")) {
+                        sortOffs(command);
+                    } else if (command.equalsIgnoreCase("offs")) {
                         showOffs();
                     } else if (command.matches("^show product \\w+$")) {
                         showOffProduct(command);
@@ -1396,6 +1398,14 @@ public class View {
                 }
             }
         };
+    }
+
+    public void sortOffs(String command) throws Exception {
+        Matcher matcher = Pattern.compile("sort (?<field>\\w+ \\w+)").matcher(command);
+        matcher.matches();
+        for (Off off : offMenu.sortOffs(matcher.group("field"))) {
+            System.out.println(off.toString());
+        }
     }
 
     private void showOffs() throws Exception {
@@ -1415,7 +1425,9 @@ public class View {
         System.out.println("1 - offs\n" +
                 "2 - show product [productId]\n" +
                 "3 - logout\n" +
-                "4 - help");
+                "4 - sort[off id | start time | end time | discount percent]\n" +
+                "5 - help\n" +
+                "6 - logout");
     }
 
     private void initializeManageRequestMenuCommandProcessor() {

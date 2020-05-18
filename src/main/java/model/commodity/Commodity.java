@@ -1,17 +1,18 @@
 package model.commodity;
 
+import model.Statistics;
 import model.share.Requestable;
 import model.share.Status;
 import controller.data.YaDataManager;
 import model.account.SimpleAccount;
 import model.field.Field;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Commodity implements Requestable {
 
-    private static int counter = 0;
     private int commodityId;
     private Status status;
     private String brand;
@@ -31,8 +32,8 @@ public class Commodity implements Requestable {
 
     public Commodity(String brand, String name, int price,
                      SimpleAccount seller, Boolean isCommodityAvailable, Category category,
-                     ArrayList<Field> categorySpecifications, String description, int amount) {
-        this.commodityId = ++counter;
+                     ArrayList<Field> categorySpecifications, String description, int amount) throws IOException {
+        this.commodityId = Statistics.updatedStats.commodityId();
         status = Status.UNDER_CHECKING_FOR_CREATE;
         this.brand = brand;
         this.name = name;

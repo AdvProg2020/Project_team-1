@@ -1,6 +1,7 @@
 package model.share;
 
 import controller.data.YaDataManager;
+import model.Statistics;
 import model.account.SimpleAccount;
 
 import java.io.IOException;
@@ -10,7 +11,6 @@ public class Request {
     private Requestable obj;
     private SimpleAccount simpleAccount;
     private int id;
-    private static int counter = 0;
 
     public int getId() {
         return id;
@@ -27,7 +27,7 @@ public class Request {
     public Request(Requestable obj, SimpleAccount simpleAccount) throws IOException {
         this.obj = obj;
         this.simpleAccount = simpleAccount;
-        this.id = YaDataManager.getRequests().size() + 1;
+        this.id = Statistics.updatedStats.requestId();
     }
 
 
