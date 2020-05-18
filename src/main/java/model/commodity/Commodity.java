@@ -1,7 +1,9 @@
 package model.commodity;
 
+import com.gilecode.yagson.YaGson;
 import controller.data.YaDataManager;
 import model.Statistics;
+import model.account.BusinessAccount;
 import model.account.SimpleAccount;
 import model.field.Field;
 import model.share.Requestable;
@@ -19,7 +21,7 @@ public class Commodity implements Requestable {
     private String name;
     private int price;
     private int inventory;
-    private SimpleAccount seller;
+    private BusinessAccount seller;
     private Boolean isCommodityAvailable;
     private Category category;
     private ArrayList<Field> categorySpecifications;
@@ -31,7 +33,7 @@ public class Commodity implements Requestable {
     private int numberOfVisits;
 
     public Commodity(String brand, String name, int price,
-                     SimpleAccount seller, Boolean isCommodityAvailable, Category category,
+                     BusinessAccount seller, Boolean isCommodityAvailable, Category category,
                      ArrayList<Field> categorySpecifications, String description, int amount) throws IOException {
         this.commodityId = Statistics.updatedStats.commodityId();
         status = Status.UNDER_CHECKING_FOR_CREATE;
@@ -120,6 +122,9 @@ public class Commodity implements Requestable {
     @Override
     public void addObj() throws Exception {
         YaDataManager.addCommodity(this);
+        YaDataManager.removeBusiness(seller);
+        seller.addCommodity(this);
+        YaDataManager.addBusiness(seller);
     }
 
     public String getBrand() {
@@ -210,7 +215,7 @@ public class Commodity implements Requestable {
         this.brand = brand;
     }
 
-    public void setSeller(SimpleAccount seller) {
+    public void setSeller(BusinessAccount seller) {
         this.seller = seller;
     }
 
@@ -264,8 +269,8 @@ public class Commodity implements Requestable {
     }
 
     public String getInformation() {
-        return "commodity ID: " + this.commodityId + "\n" +
-                "commodity name: " + this.name;
+        return "commodity ID: " + this.commodityId +
+                " ,commodity name: " + this.name;
     }
 
     @Override

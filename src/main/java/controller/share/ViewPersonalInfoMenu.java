@@ -5,24 +5,25 @@ import controller.data.YaDataManager;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
+import model.account.SimpleAccount;
 
 public class ViewPersonalInfoMenu extends Menu{
-    public void editFirstName(String newFirstName, ManagerAccount account) throws Exception {
+    public void editFirstName(String newFirstName, SimpleAccount account) throws Exception {
         account.changeFirstName(newFirstName);
     }
 
-    public void editLastName(String newLastName, ManagerAccount account) throws Exception {
+    public void editLastName(String newLastName, SimpleAccount account) throws Exception {
         account.changeLastName(newLastName);
     }
 
-    public void editEmail(String newEmail, ManagerAccount account) throws Exception {
+    public void editEmail(String newEmail, SimpleAccount account) throws Exception {
         account.changeEmail(newEmail);
     }
 
-    public void editPassword(String newPassword, ManagerAccount account) throws Exception {
+    public void editPassword(String newPassword, SimpleAccount account) throws Exception {
         account.changePassword(newPassword);
     }
-    public void editPhoneNumber(String newPhoneNumber, ManagerAccount account) throws Exception {
+    public void editPhoneNumber(String newPhoneNumber, SimpleAccount account) throws Exception {
         account.changePhoneNumber(newPhoneNumber);
     }
 

@@ -22,6 +22,24 @@ public class PersonalAccount extends SimpleAccount {
         credit = 0.0;
     }
 
+    public boolean hasThisInCart(Commodity commodity) {
+        for (Commodity commodity1 : cart.keySet()) {
+            if (commodity.equals(commodity1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getAmount(Commodity commodity) throws Exception {
+        for (Commodity commodity1 : cart.keySet()) {
+            if (commodity.equals(commodity1)) {
+                return cart.get(commodity1);
+            }
+        }
+        throw new Exception("this product is not in your cart");
+    }
+
     public HashMap<DiscountCode, Integer> discountCodeIntegerHashMap() {
         return discountCodes;
     }
@@ -81,8 +99,14 @@ public class PersonalAccount extends SimpleAccount {
         }
     }
 
-    public void removeFromCart(Commodity commodity) {
-        cart.remove(commodity);
+    public void removeFromCart(Commodity commodity) throws Exception {
+        for (Commodity commodity1 : cart.keySet()) {
+            if (commodity.equals(commodity1)) {
+                cart.remove(commodity1);
+                return;
+            }
+        }
+        throw new Exception("this product is not in your cart");
     }
 
     public double getCredit() {
@@ -94,8 +118,12 @@ public class PersonalAccount extends SimpleAccount {
     }
 
     public void doesHaveThisDiscount(DiscountCode discountCode) throws Exception {
-        if (discountCodes.containsKey(discountCode) && discountCodes.get(discountCode) < discountCode.getMaximumNumberOfUses()) {
-            return;
+        for (DiscountCode code : discountCodes.keySet()) {
+            if (code.equals(discountCode)) {
+                if (discountCodes.get(code) < code.getMaximumNumberOfUses()) {
+                    return;
+                }
+            }
         }
         throw new Exception("you can't use this discount code");
     }

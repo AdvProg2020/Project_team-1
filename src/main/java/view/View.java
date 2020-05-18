@@ -279,23 +279,23 @@ public class View {
     }
 
 
-    private void editManagerAccountFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) throws Exception {
+    private void editAccountInfo(String command) throws Exception {
         Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield>\\S+)$").matcher(command);
         matcher.matches();
         if (matcher.group("field").equals("first name")) {
-            viewPersonalInfoMenu.editFirstName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editFirstName(matcher.group("newfield"), Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("last name")) {
-            viewPersonalInfoMenu.editLastName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editLastName(matcher.group("newfield"), Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("email")) {
-            viewPersonalInfoMenu.editEmail(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editEmail(matcher.group("newfield"), Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("password")) {
-            viewPersonalInfoMenu.editPassword(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editPassword(matcher.group("newfield"), Session.getOnlineAccount());
         }
         if (matcher.group("field").equals("phone number")) {
-            viewPersonalInfoMenu.editPhoneNumber(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+            viewPersonalInfoMenu.editPhoneNumber(matcher.group("newfield"), Session.getOnlineAccount());
         }
     }
 
@@ -363,7 +363,7 @@ public class View {
                     return;
                 }
                 if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield>\\S+)$")) {
-                    editManagerAccountFields(viewPersonalInfoMenu, command);
+                    editAccountInfo(command);
                     return;
                 }
                 System.out.println("invalid command");
@@ -700,7 +700,6 @@ public class View {
     }
 
     private void goToCartMenu() {
-        System.out.println("enter your command");
         customerMenu.goToCartMenu();
     }
 
@@ -778,7 +777,7 @@ public class View {
         String respond = "products in cart: ";
         try {
             for (Commodity commodity : cartMenu.getCartProducts())
-                respond += "[" + commodity.getInformation() + "]";
+                respond += '\n' + commodity.getInformation() + " ,amount: " + cartMenu.getAmountInCart(commodity);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -1119,7 +1118,8 @@ public class View {
                         throw new Exception("Invalid command");
                     }
                 } catch (Exception e) {
-                    System.out.println(e.getMessage() + "salam");
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
                 }
             }
         };
@@ -1161,15 +1161,21 @@ public class View {
         System.out.println("enter product category:");
         String categoryString = scanner.nextLine();
         Category category = resellerMenu.getCategoryByName(categoryString);
-        System.out.println("enter product specification:");
+        System.out.println("enter product specification bellow");
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
         for (int i = 0; i < category.getFieldOptions().size(); ++i) {
             CategorySpecification categorySpecification = category.getFieldOptions().get(i);
-            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
-            if (categorySpecification.getOptions().isEmpty()) {
+            System.out.println("Enter product " + categorySpecification.getTitle() + ":" );
+            if (categorySpecification.getOptions() == null) {
                 productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), scanner.nextInt()));
                 scanner.nextLine();
             } else {
+                StringBuilder options = new StringBuilder();
+                for (String option : categorySpecification.getOptions()) {
+                    options.append(option);
+                    options.append('-');
+                }
+                System.out.println("(" + options.toString() + ")");
                 productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), scanner.nextLine()));
             }
         }
@@ -1179,6 +1185,7 @@ public class View {
         int amount = scanner.nextInt();
         scanner.nextLine();
         resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount);
+        System.out.println("product request had been sent to managers");
     }
 
     private void removeProduct(String command) throws Exception {
@@ -2219,6 +2226,7 @@ public class View {
                 continue;
             }
             MenuHandler.getInstance().getCurrentMenu().commandProcess(command);
+            System.out.println("please enter your command");
         }
     }
 }

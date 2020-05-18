@@ -77,14 +77,14 @@ public class YaDataManagerTest {
 
     @Test
     public void getRequests() throws Exception {
-        SimpleAccount simpleAccount = new BusinessAccount("username", "f", "l", "email@email.com",
+        BusinessAccount businessAccount = new BusinessAccount("username", "f", "l", "email@email.com",
                 "09122222222", "12345", "business");
         Category category = new Category("n", 1);
         ArrayList<Field> fields = new ArrayList<>();
         fields.add(new OptionalField("t", "v"));
-        Commodity commodity = new Commodity("b", "n", 1, simpleAccount, true,
+        Commodity commodity = new Commodity("b", "n", 1, businessAccount, true,
                 category, fields, "d", 1);
-        Request request = new Request(commodity, simpleAccount);
+        Request request = new Request(commodity, businessAccount);
         YaDataManager.addRequest(request);
         Assert.assertFalse(YaDataManager.getRequests().size() != 1);
     }
