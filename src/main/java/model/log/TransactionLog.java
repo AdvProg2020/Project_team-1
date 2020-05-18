@@ -10,16 +10,6 @@ import java.util.Set;
 public abstract class TransactionLog {
     protected int logId;
     protected Date date;
-
-    @Override
-    public String toString() {
-        return "TransactionLog{" +
-                "logId='" + logId + '\'' +
-                ", date=" + date +
-                ", commodities=" + commodities +
-                '}';
-    }
-
     protected Set<Commodity> commodities;
 
     public TransactionLog(Date date, Set<Commodity> commodities) throws IOException {
@@ -38,9 +28,5 @@ public abstract class TransactionLog {
 
     public Set<Commodity> getCommodities() {
         return commodities;
-    }
-
-    protected String generateLogID() {
-        return date.toString();
     }
 }

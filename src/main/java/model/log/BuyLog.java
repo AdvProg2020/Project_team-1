@@ -54,13 +54,20 @@ public class BuyLog extends TransactionLog {
     }
 
     @Override
-    protected String generateLogID() {
-        String output = "BuyLog" + super.generateLogID();
-        if (sellers != null) {
-            for (SimpleAccount seller : sellers) {
-                output += seller.getUsername();
-            }
+    public String toString() {
+        StringBuilder commoditiesNames = new StringBuilder();
+        for (Commodity commodity : commodities) {
+            commoditiesNames.append(commodity.getName());
+            commoditiesNames.append("-");
         }
-        return output;
+        return "BuyLog{" +
+                "payedMoney=" + payedMoney +
+                ", deductedMoney=" + deductedMoney +
+                ", sellers=" + sellers +
+                ", isCommodityDelivered=" + isCommodityDelivered +
+                ", logId=" + logId +
+                ", date=" + date +
+                ", commodities=" + commoditiesNames.toString() +
+                '}';
     }
 }

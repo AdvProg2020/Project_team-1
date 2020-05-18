@@ -43,15 +43,11 @@ public class SellLog extends TransactionLog {
     }
 
     @Override
-    protected String generateLogID() {
-        return "SellLog" + super.generateLogID() + buyer.getUsername();
-    }
-
-    @Override
     public String toString() {
         StringBuilder commoditiesNames = new StringBuilder();
         for (Commodity commodity : commodities) {
             commoditiesNames.append(commodity.getName());
+            commoditiesNames.append("-");
         }
         return "SellLog{" +
                 "receivedMoney=" + receivedMoney +

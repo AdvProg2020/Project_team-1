@@ -5,6 +5,7 @@ import model.account.SimpleAccount;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class DiscountCode {
     private String code;
@@ -108,24 +109,34 @@ public class DiscountCode {
         this.code = code;
     }
 
-    public void isStillValid() throws Exception {
+    public void isActive() throws Exception {
         Date now = new Date();
-        if (this.startDate.compareTo(now) >= 0 && this.finishDate.compareTo(now) <= 0) {
+        if (this.startDate.compareTo(now) <= 0 && this.finishDate.compareTo(now) >= 0) {
             return;
         }
         throw new Exception("you can't use this code right now");
     }
 
+    public boolean isOnTime() {
+        Date now = new Date();
+        return this.startDate.compareTo(now) <= 0 && this.finishDate.compareTo(now) >= 0;
+    }
+
     @Override
     public String toString() {
+        StringBuilder accountsUserName = new StringBuilder();
+        for (SimpleAccount account : accounts) {
+            accountsUserName.append(account.getUsername());
+            accountsUserName.append('-');
+        }
         return "DiscountCode{" +
                 "code='" + code + '\'' +
-                ", startDate=" + startDate +
-                ", finishDate=" + finishDate +
+                ", startDate=" + startDate.toString() +
+                ", finishDate=" + finishDate.toString() +
                 ", discountPercentage=" + discountPercentage +
                 ", maximumDiscountPrice=" + maximumDiscountPrice +
                 ", maximumNumberOfUses=" + maximumNumberOfUses +
-                ", accounts=" + accounts +
+                ", accounts=" + accountsUserName.toString() +
                 '}';
     }
 
@@ -136,5 +147,13 @@ public class DiscountCode {
                 ", discountPercentage = " + discountPercentage +
                 ", maximumDiscountPrice = " + maximumDiscountPrice +
                 ", maximumNumberOfUses = " + maximumNumberOfUses;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DiscountCode)) return false;
+        DiscountCode code1 = (DiscountCode) o;
+        return Objects.equals(code, code1.code);
     }
 }

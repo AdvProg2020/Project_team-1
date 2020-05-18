@@ -16,20 +16,11 @@ public class Request {
         return id;
     }
 
-    @Override
-    public String toString() {
-        return "Request{" +
-                "obj=" + obj.toString() +
-                ", simpleAccount=" + simpleAccount.toString() +
-                '}';
-    }
-
     public Request(Requestable obj, SimpleAccount simpleAccount) throws IOException {
         this.obj = obj;
         this.simpleAccount = simpleAccount;
         this.id = Statistics.updatedStats.requestId();
     }
-
 
     public Requestable getObj() {
         return obj;
@@ -37,5 +28,13 @@ public class Request {
 
     public SimpleAccount getSimpleAccount() {
         return simpleAccount;
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "obj=" + obj.toString() +
+                ", id=" + id +
+                '}';
     }
 }

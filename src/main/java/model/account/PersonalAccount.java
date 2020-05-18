@@ -22,12 +22,24 @@ public class PersonalAccount extends SimpleAccount {
         credit = 0.0;
     }
 
+    public HashMap<DiscountCode, Integer> discountCodeIntegerHashMap() {
+        return discountCodes;
+    }
+
     public Set<DiscountCode> getDiscountCodes() {
         return discountCodes.keySet();
     }
 
     public void addDiscountCode(DiscountCode discountCode) {
         discountCodes.put(discountCode, 0);
+    }
+
+    public void removeDiscountCode(DiscountCode discountCode) {
+        for (DiscountCode code : discountCodes.keySet()) {
+            if (code.equals(discountCode)) {
+                discountCodes.remove(code);
+            }
+        }
     }
 
     public ArrayList<BuyLog> getBuyLogs() {
@@ -103,6 +115,13 @@ public class PersonalAccount extends SimpleAccount {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "PersonalAccount{" +
+                "credit=" + credit +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }

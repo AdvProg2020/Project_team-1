@@ -56,7 +56,9 @@ public class CartMenu extends Menu {
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
         YaDataManager.removePerson(personalAccount);
         if (cart.containsKey(commodity)) {
-            cart.put(commodity, cart.get(commodity) + 1);
+            int amount = cart.get(commodity);
+            cart.remove(commodity);
+            cart.put(commodity, amount + 1);
             YaDataManager.addPerson(personalAccount);
             throw new Exception("successfully increased");
         }
@@ -70,7 +72,7 @@ public class CartMenu extends Menu {
         if (!code.equals("")) {
             DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(code);
             account.doesHaveThisDiscount(discountCode);
-            discountCode.isStillValid();
+            discountCode.isActive();
             account.useThisDiscount(discountCode);
             return discountCode;
         }

@@ -5,11 +5,11 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.Objects;
 
 public abstract class SimpleAccount {
-    protected final transient String VALID_USERNAME = "^\\w{4,10}$";
+    protected final transient String VALID_USERNAME = "^\\w{2,20}$";
     protected final transient String VALID_FIRST_NAME_AND_LAST_NAME = "^[a-zA-z ]{1,20}$";
     protected final transient String VALID_EMAIL = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
     protected final transient String VALID_PHONE_NUMBER = "^(/+98|0098|0)\\d{10}$";
-    protected final transient String VALID_PASSWORD = "^.{4,8}$";
+    protected final transient String VALID_PASSWORD = "^.{4,20}$";
     // Todo test password strength
     protected String username;
     protected String firstName;

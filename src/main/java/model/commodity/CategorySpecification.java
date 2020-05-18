@@ -13,9 +13,14 @@ public class CategorySpecification {
 
     @Override
     public String toString() {
+        StringBuilder optionsString = new StringBuilder();
+        for (String option : options) {
+            optionsString.append(option);
+            optionsString.append("-");
+        }
         return "CategorySpecification{" +
                 "title='" + title + '\'' +
-                ", options=" + options +
+                ", options=" + optionsString +
                 '}';
     }
 

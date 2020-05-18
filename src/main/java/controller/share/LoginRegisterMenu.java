@@ -6,6 +6,7 @@ import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+import model.share.Request;
 import view.View;
 
 public class LoginRegisterMenu extends Menu{
@@ -38,7 +39,8 @@ public class LoginRegisterMenu extends Menu{
                                         String phoneNumber, String password, String businessName) throws Exception{
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
                 phoneNumber, password, businessName);
-        YaDataManager.addBusiness(newAccount);
+        Request request = new Request(newAccount, null);
+        YaDataManager.addRequest(request);
     }
 
     public void login(String username, String password) throws Exception{
