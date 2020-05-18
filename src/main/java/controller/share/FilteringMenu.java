@@ -46,7 +46,7 @@ public class FilteringMenu extends Menu {
         updateFilteredCommodities();
     }
 
-    public  void updateFilteredCommodities() throws Exception {
+    public static   void updateFilteredCommodities() throws Exception {
         filteredCommodities = new ArrayList<Commodity>();
         for (Commodity commodity : YaDataManager.getCommodities()) {
             if (canCommodityPassFilter(commodity))
@@ -54,7 +54,7 @@ public class FilteringMenu extends Menu {
         }
     }
 
-    public boolean canCommodityPassFilter(Commodity commodity) {
+    public static boolean canCommodityPassFilter(Commodity commodity) {
         for (Filter filter : currentFilters) {
             if (!filter.isCommodityMatches(commodity))
                 return false;
