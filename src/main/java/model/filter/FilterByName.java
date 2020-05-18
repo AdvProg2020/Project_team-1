@@ -1,6 +1,6 @@
 package model.filter;
 
-import model.Commodity;
+import model.commodity.Commodity;
 
 public class FilterByName extends Filter {
     private String commodityName;

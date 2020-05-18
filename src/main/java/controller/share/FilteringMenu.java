@@ -1,7 +1,7 @@
-package controller;
+package controller.share;
 
-import model.Commodity;
-import model.YaDataManager;
+import model.commodity.Commodity;
+import controller.data.YaDataManager;
 import model.filter.Filter;
 
 import java.util.ArrayList;

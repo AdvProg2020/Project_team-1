@@ -1,7 +1,7 @@
 package model.filter;
 
-import model.Category;
-import model.Commodity;
+import model.commodity.Category;
+import model.commodity.Commodity;
 
 public class FilterByCategory extends Filter {
     private Category category;

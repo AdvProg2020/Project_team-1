@@ -1,8 +1,8 @@
 package controller.customer;
 
-import controller.Menu;
-import model.Commodity;
-import model.Score;
+import controller.share.Menu;
+import model.commodity.Commodity;
+import model.commodity.Score;
 import model.Session;
 import model.account.PersonalAccount;
 import model.log.BuyLog;

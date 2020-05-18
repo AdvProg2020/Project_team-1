@@ -1,6 +1,6 @@
 package model.log;
 
-import model.Commodity;
+import model.commodity.Commodity;
 import model.account.SimpleAccount;
 
 import java.util.Date;

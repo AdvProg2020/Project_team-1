@@ -1,7 +1,7 @@
 package model.account;
 
-import model.Commodity;
-import model.Off;
+import model.commodity.Commodity;
+import model.commodity.Off;
 import model.log.SellLog;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package controller.comparator.product;
 
-import model.Commodity;
+import model.commodity.Commodity;
 
 import java.util.Comparator;
 

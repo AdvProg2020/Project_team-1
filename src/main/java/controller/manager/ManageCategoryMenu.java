@@ -1,6 +1,10 @@
-package controller;
+package controller.manager;
 
-import model.*;
+import controller.data.YaDataManager;
+import controller.share.Menu;
+import model.commodity.Category;
+import model.commodity.CategorySpecification;
+import model.commodity.Commodity;
 
 import java.io.IOException;
 import java.util.ArrayList;

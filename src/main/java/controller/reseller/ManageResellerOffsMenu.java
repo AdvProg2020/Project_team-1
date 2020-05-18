@@ -1,11 +1,11 @@
 package controller.reseller;
 
-import controller.Menu;
+import controller.share.Menu;
 import controller.comparator.Sort;
-import model.Commodity;
-import model.Off;
-import model.Request;
-import model.YaDataManager;
+import model.commodity.Commodity;
+import model.commodity.Off;
+import model.share.Request;
+import controller.data.YaDataManager;
 import model.account.BusinessAccount;
 import view.View;
 

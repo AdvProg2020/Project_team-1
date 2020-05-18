@@ -1,6 +1,6 @@
 package model.filter;
 
-import model.Commodity;
+import model.commodity.Commodity;
 import model.field.NumericalField;
 
 public class NumericalFilter extends Filter {

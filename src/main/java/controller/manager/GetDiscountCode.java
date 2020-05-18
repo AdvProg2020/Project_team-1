@@ -1,7 +1,8 @@
-package controller;
+package controller.manager;
 
-import model.DiscountCode;
-import model.YaDataManager;
+import controller.share.Menu;
+import model.commodity.DiscountCode;
+import controller.data.YaDataManager;
 import model.account.SimpleAccount;
 
 import java.io.IOException;

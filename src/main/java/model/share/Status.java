@@ -1,4 +1,4 @@
-package model;
+package model.share;
 
 public enum Status {
     UNDER_CHECKING_FOR_CREATE,

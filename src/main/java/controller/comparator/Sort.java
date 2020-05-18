@@ -9,9 +9,9 @@ import controller.comparator.off.OffEndTimeComparator;
 import controller.comparator.off.OffIdComparator;
 import controller.comparator.off.OffStartTimeComparator;
 import controller.comparator.product.*;
-import model.Comment;
-import model.Commodity;
-import model.Off;
+import model.commodity.Comment;
+import model.commodity.Commodity;
+import model.commodity.Off;
 import model.log.BuyLog;
 
 import java.util.ArrayList;

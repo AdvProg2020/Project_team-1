@@ -1,7 +1,7 @@
-package controller;
+package controller.share;
 
 import model.Session;
-import model.YaDataManager;
+import controller.data.YaDataManager;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;

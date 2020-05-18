@@ -1,12 +1,10 @@
 package controller.commodity;
 
-import controller.Menu;
-import controller.MenuHandler;
-import model.Commodity;
-import model.DataManager;
+import controller.share.Menu;
+import controller.share.MenuHandler;
+import model.commodity.Commodity;
 import model.Session;
 import model.account.PersonalAccount;
-import model.log.SellLog;
 import view.View;
 
 public class DigestMenu extends Menu {

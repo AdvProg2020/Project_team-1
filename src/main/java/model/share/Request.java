@@ -1,5 +1,6 @@
-package model;
+package model.share;
 
+import controller.data.YaDataManager;
 import model.account.SimpleAccount;
 
 import java.io.IOException;

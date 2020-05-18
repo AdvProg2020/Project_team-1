@@ -1,8 +1,8 @@
 package controller.commodity;
 
-import controller.Menu;
-import model.Comment;
-import model.Commodity;
+import controller.share.Menu;
+import model.commodity.Comment;
+import model.commodity.Commodity;
 import model.Session;
 import model.account.PersonalAccount;
 import model.log.BuyLog;

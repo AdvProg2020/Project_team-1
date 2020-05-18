@@ -1,4 +1,4 @@
-package model;
+package model.commodity;
 
 import model.account.SimpleAccount;
 

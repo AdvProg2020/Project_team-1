@@ -1,6 +1,6 @@
 package controller.comparator.comment;
 
-import model.Comment;
+import model.commodity.Comment;
 
 import java.util.Comparator;
 

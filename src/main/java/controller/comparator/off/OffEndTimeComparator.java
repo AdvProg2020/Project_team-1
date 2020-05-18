@@ -1,6 +1,6 @@
 package controller.comparator.off;
 
-import model.Off;
+import model.commodity.Off;
 
 import java.util.Comparator;
 

@@ -1,4 +1,4 @@
-package controller;
+package controller.share;
 
 import model.Session;
 import view.View;
