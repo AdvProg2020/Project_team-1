@@ -855,7 +855,7 @@ public class View {
         managerMenu.viewPersonalInfo();
     }
 
-    private void createDiscountCode(ManagerMenu managerMenu) throws IOException {
+    private void createDiscountCode(ManagerMenu managerMenu) throws Exception {
         System.out.println("Enter code");
         String code = scanner.nextLine();
         System.out.println("Enter start date in dd-mm-yyyy format");
@@ -909,14 +909,14 @@ public class View {
         System.out.println("Enter accounts username in next line");
         String accounts = scanner.nextLine();
         String[] splitCommand = accounts.split(" ");
-        ArrayList<SimpleAccount> allAccount = new ArrayList<SimpleAccount>();
+        ArrayList<PersonalAccount> allAccount = new ArrayList<PersonalAccount>();
         for (int i = 0; i < splitCommand.length; i++) {
-            SimpleAccount simpleAccount = YaDataManager.getAccountWithUserName(splitCommand[i]);
-            if (simpleAccount == null) {
+            PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(splitCommand[i]);
+            if (personalAccount == null) {
                 System.out.println("user name " + splitCommand[i] + " not found");
                 i--;
             }
-            allAccount.add(simpleAccount);
+            allAccount.add(personalAccount);
         }
         try {
             managerMenu.addDiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, allAccount);
@@ -2078,67 +2078,68 @@ public class View {
     }
 
     private void managerMenuHelp() {
-        System.out.println("view personal info");
-        System.out.println("manage users");
-        System.out.println("manage all products");
-        System.out.println("view discount codes");
-        System.out.println("manage requests");
-        System.out.println("manage categories");
+        System.out.println("1-view personal info");
+        System.out.println("2-manage users");
+        System.out.println("3-manage all products");
+        System.out.println("4-view discount codes");
+        System.out.println("5-manage requests");
+        System.out.println("6-manage categories");
+        System.out.println("7-create discount code");
     }
 
     private void viewPersonalInfoHelp() {
-        System.out.println("edit (first name, last name, email, phone number ...)");
+        System.out.println("1-edit (first name, last name, email, phone number ...)");
     }
 
     private void manageUsersHelp() {
-        System.out.println("view [user name]");
-        System.out.println("delete user [user name]");
-        System.out.println("create manager profile");
+        System.out.println("1-view [user name]");
+        System.out.println("2-delete user [user name]");
+        System.out.println("3-create manager profile");
     }
 
     private void manageAllProductsHelp() {
-        System.out.println("remove [productId]");
+        System.out.println("1-remove [productId]");
     }
 
     private void viewDiscountCodeHelp() {
-        System.out.println("view discount code [code]");
-        System.out.println("edit discount code [code]");
-        System.out.println("remove discount code [code]");
+        System.out.println("1-view discount code [code]");
+        System.out.println("2-edit discount code [code]");
+        System.out.println("3-remove discount code [code]");
     }
 
     private void manageRequestsHelp() {
-        System.out.println("details [requestId]");
-        System.out.println("accept [requestId]");
-        System.out.println("decline [requestId]");
+        System.out.println("1-details [requestId]");
+        System.out.println("2-accept [requestId]");
+        System.out.println("3-decline [requestId]");
     }
 
     private void manageCategoriesHelp() {
-        System.out.println("edit [category]");
-        System.out.println("add [category]");
-        System.out.println("remove [category]");
+        System.out.println("1-edit [category]");
+        System.out.println("2-add [category]");
+        System.out.println("3-remove [category]");
     }
 
     private void productsMenuHelp() {
-        System.out.println("products");
-        System.out.println("view categories");
-        System.out.println("filtering");
-        System.out.println("sorting");
-        System.out.println("show products");
-        System.out.println("show product [productId]");
+        System.out.println("1-products");
+        System.out.println("2-view categories");
+        System.out.println("3-filtering");
+        System.out.println("4-sorting");
+        System.out.println("5-show products");
+        System.out.println("6-show product [productId]");
     }
 
     private void filteringMenuHelp() {
-        System.out.println("show available filter");
-        System.out.println("filter [an available filter]");
-        System.out.println("current filters");
-        System.out.println("disable filter [a selected filter]");
+        System.out.println("1-show available filter");
+        System.out.println("2-filter [an available filter]");
+        System.out.println("3-current filters");
+        System.out.println("4-disable filter [a selected filter]");
     }
 
     private void sortingMenuHelp() {
-        System.out.println("show available sorts");
-        System.out.println("sort [an available sort]");
-        System.out.println("current sort");
-        System.out.println("disable sort");
+        System.out.println("1-show available sorts");
+        System.out.println("2-sort [an available sort]");
+        System.out.println("3-current sort");
+        System.out.println("4-disable sort");
     }
 
     private void setLoginRegisterMenu() {

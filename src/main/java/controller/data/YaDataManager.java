@@ -517,4 +517,12 @@ public class YaDataManager {
         yaGson.toJson(Statistics.updatedStats, statisticsFileWriter);
         statisticsFileWriter.close();
     }
+
+    public static PersonalAccount getPersonWithUserName(String username) throws Exception {
+        for (PersonalAccount personalAccount : getPersons()) {
+            if (personalAccount.getUsername().equals(username))
+                return personalAccount;
+        }
+        return null;
+    }
 }
