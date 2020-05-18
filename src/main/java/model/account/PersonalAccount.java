@@ -22,6 +22,10 @@ public class PersonalAccount extends SimpleAccount {
         credit = 0.0;
     }
 
+    public HashMap<DiscountCode, Integer> discountCodeIntegerHashMap() {
+        return discountCodes;
+    }
+
     public Set<DiscountCode> getDiscountCodes() {
         return discountCodes.keySet();
     }

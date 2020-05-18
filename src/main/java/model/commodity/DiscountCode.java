@@ -107,12 +107,17 @@ public class DiscountCode {
         this.code = code;
     }
 
-    public void isStillValid() throws Exception {
+    public void isActive() throws Exception {
         Date now = new Date();
-        if (this.startDate.compareTo(now) >= 0 && this.finishDate.compareTo(now) <= 0) {
+        if (this.startDate.compareTo(now) <= 0 && this.finishDate.compareTo(now) >= 0) {
             return;
         }
         throw new Exception("you can't use this code right now");
+    }
+
+    public boolean isOnTime() {
+        Date now = new Date();
+        return this.startDate.compareTo(now) <= 0 && this.finishDate.compareTo(now) >= 0;
     }
 
     @Override

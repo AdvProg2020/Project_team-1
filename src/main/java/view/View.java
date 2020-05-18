@@ -580,11 +580,19 @@ public class View {
                     customerMenu.goToPreviousMenu();
                 } else if (command.equals("help")) {
                     customerMenuHelp();
+                } else if (command.matches("sort discounts by (?<field>.+))")) {
+                    sortDiscountsCustomerMenu(command);
                 } else if (command.matches("sort orders by (?<field>\\w+)")) {
                     sortOrdersCustomerMenu(command);
                 } else System.out.println("invalid command");
             }
         };
+    }
+
+    private void sortDiscountsCustomerMenu(String command) {
+        Matcher matcher = Pattern.compile("sort discounts by (?<field>.+)").matcher(command);
+        matcher.matches();
+        customerMenu.setDiscountsSortType(matcher.group("field"));
     }
 
     private void initializeCartMenu() {
@@ -644,9 +652,12 @@ public class View {
 
     private void viewMyDiscountCodes() {
         String output = "your discount codes:";
-        for (DiscountCode discount : customerMenu.getMyDiscounts()) {
-            output += "\n" + discount.getInformation() + ", numberOfTimesUsed = " + customerMenu.
-                    getNumberOfTimesUsedDiscount(discount);
+        try {
+            for (DiscountCode discount : customerMenu.getMyDiscounts())
+                output += "\n" + discount.getInformation() + ", numberOfTimesUsed = " + customerMenu.
+                        getNumberOfTimesUsedDiscount(discount);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         System.out.println(output);
     }
@@ -1707,7 +1718,7 @@ public class View {
                 manageCategoryMenu.updateFile(category);
                 System.out.println("category updated");
             } catch (Exception e) {
-                System.out.println(e.getMessage());;
+                System.out.println(e.getMessage());
             }
 
             return;
@@ -1995,7 +2006,7 @@ public class View {
                 "3 - logout\n" +
                 "4 - products\n" +
                 "5 - purchase\n" +
-                "6 - sort discounts by []\n" +
+                "6 - sort discounts by [code|finish date|max price|percentage|start date|times used|max of uses]\n" +
                 "7 - sort orders by [discount|payed]\n" +
                 "8 - view balance\n" +
                 "9 - view cart\n" +

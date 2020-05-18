@@ -70,7 +70,7 @@ public class CartMenu extends Menu {
         if (!code.equals("")) {
             DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(code);
             account.doesHaveThisDiscount(discountCode);
-            discountCode.isStillValid();
+            discountCode.isActive();
             account.useThisDiscount(discountCode);
             return discountCode;
         }
@@ -91,11 +91,7 @@ public class CartMenu extends Menu {
     }
 
     private int useDiscountCode(int price, DiscountCode discountCode) {
-        if (discountCode.getMaximumDiscountPrice() <= discountCode.getDiscountPercentage() * price / 100) {
-            price -= discountCode.getMaximumDiscountPrice();
-        } else {
-            price -= discountCode.getDiscountPercentage() * price / 100;
-        }
+        price -= Math.min(discountCode.getMaximumDiscountPrice(), discountCode.getDiscountPercentage() * price / 100);
         return price;
     }
 
@@ -156,8 +152,7 @@ public class CartMenu extends Menu {
 
     public ArrayList<Commodity> getCartProducts() throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        ArrayList<Commodity> commodities = new ArrayList<>();
-        commodities.addAll(account.getCart().keySet());
+        ArrayList<Commodity> commodities = new ArrayList<>(account.getCart().keySet());
         Sort.sortProductArrayList(commodities, this.productSortType);
         return commodities;
     }

@@ -9,20 +9,23 @@ import model.commodity.DiscountCode;
 import model.log.BuyLog;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import static view.View.*;
 
 public class CustomerMenu extends Menu {
     private String orderSortType = "payed";
+    private String discountsSortType = "code";
     public double getBalance() {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         return account.getCredit();
     }
 
-    public Set<DiscountCode> getMyDiscounts() {
+    public ArrayList<DiscountCode> getMyDiscounts() throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        return account.getDiscountCodes();
+        ArrayList<DiscountCode> discountCodes = new ArrayList<>(account.getDiscountCodes());
+        Sort.sortDiscountArrayList(discountCodes, this.discountsSortType);
+        discountCodes.removeIf(discountCode -> !discountCode.isOnTime());
+        return discountCodes;
     }
 
     public int getNumberOfTimesUsedDiscount(DiscountCode discountCode) {
@@ -49,5 +52,9 @@ public class CustomerMenu extends Menu {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         Sort.sortBuyLogArrayList(account.getBuyLogs(), this.orderSortType);
         return account.getBuyLogs();
+    }
+
+    public void setDiscountsSortType(String discountsSortType) {
+        this.discountsSortType = discountsSortType;
     }
 }

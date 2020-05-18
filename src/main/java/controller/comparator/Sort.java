@@ -5,15 +5,13 @@ import controller.comparator.buy_log.PayedMoneyComparator;
 import controller.comparator.category.CategoryNameComparator;
 import controller.comparator.comment.ContentComparator;
 import controller.comparator.comment.TitleComparator;
+import controller.comparator.discount.*;
 import controller.comparator.off.OffDiscountPercentComparator;
 import controller.comparator.off.OffEndTimeComparator;
 import controller.comparator.off.OffIdComparator;
 import controller.comparator.off.OffStartTimeComparator;
 import controller.comparator.product.*;
-import model.commodity.Category;
-import model.commodity.Comment;
-import model.commodity.Commodity;
-import model.commodity.Off;
+import model.commodity.*;
 import model.log.BuyLog;
 import model.log.SellLog;
 
@@ -113,6 +111,34 @@ public class Sort {
                 categories.sort(new CategoryNameComparator());
                 break;
 
+            default:
+                throw new Exception("field not found");
+        }
+    }
+
+    public static void sortDiscountArrayList(ArrayList<DiscountCode> discountCodes, String field) throws Exception {
+        switch (field) {
+            case "code":
+                discountCodes.sort(new CodeComparator());
+                break;
+            case "finish date":
+                discountCodes.sort(new FinishDateComparator());
+                break;
+            case "max price":
+                discountCodes.sort(new MaxPriceComparator());
+                break;
+            case "percentage":
+                discountCodes.sort(new PercentageComparator());
+                break;
+            case "start date":
+                discountCodes.sort(new StartDateComparator());
+                break;
+            case "times used":
+                discountCodes.sort(new UsedComparator());
+                break;
+            case "max of uses":
+                discountCodes.sort(new UsesComparator());
+                break;
             default:
                 throw new Exception("field not found");
         }
