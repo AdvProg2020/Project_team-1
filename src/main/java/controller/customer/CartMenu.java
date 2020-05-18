@@ -2,6 +2,7 @@ package controller.customer;
 
 import controller.Menu;
 import controller.MenuHandler;
+import controller.comparator.Sort;
 import model.*;
 import model.account.BusinessAccount;
 import model.account.PersonalAccount;
@@ -9,15 +10,13 @@ import model.log.BuyLog;
 import model.log.SellLog;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static view.View.cartMenu;
 import static view.View.commodityMenu;
 
 public class CartMenu extends Menu {
+    private String productSortType = null;
     public int calculateTotalPrice() {
         int price = 0;
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
@@ -126,5 +125,17 @@ public class CartMenu extends Menu {
         MenuHandler.getInstance().setCurrentMenu(commodityMenu);
         commodityMenu.setCommodity(commodity);
         commodityMenu.setPreviousMenu(cartMenu);
+    }
+
+    public void setProductSortType(String productSortType) {
+        this.productSortType = productSortType;
+    }
+
+    public ArrayList<Commodity> getCartProducts() throws Exception {
+        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+        ArrayList<Commodity> commodities = new ArrayList<>();
+        commodities.addAll(account.getCart().keySet());
+        Sort.sortProductArrayList(commodities, this.productSortType);
+        return commodities;
     }
 }

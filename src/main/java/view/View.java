@@ -598,9 +598,17 @@ public class View {
                     cartMenu.goToPreviousMenu();
                 } else if (command.equals("help")) {
                     cartMenuHelp();
+                } else if (command.matches("sort products by (?<field>\\w+)")) {
+                    sortProductsCartMenu(command);
                 } else System.out.println("invalid command");
             }
         };
+    }
+
+    private void sortProductsCartMenu(String command) {
+        Matcher matcher = Pattern.compile("sort products by (?<field>\\w+)").matcher(command);
+        matcher.matches();
+        cartMenu.setProductSortType(matcher.group("field"));
     }
 
     private void viewOrders() {
@@ -702,9 +710,8 @@ public class View {
     }
 
     private void showProducts() {
-        String respond = "";
-        PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
-        for (Commodity commodity : personalAccount.getCart().keySet()) {
+        String respond = "products in cart: ";
+        for (Commodity commodity : cartMenu.getCartProducts()) {
             respond += "[" + commodity.getInformation() + "]";
         }
         System.out.println(respond);
