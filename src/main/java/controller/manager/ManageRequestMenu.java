@@ -2,9 +2,6 @@ package controller.manager;
 
 import controller.data.YaDataManager;
 import controller.share.Menu;
-import model.account.BusinessAccount;
-import model.commodity.Commodity;
-import model.commodity.Off;
 import model.share.Request;
 import model.share.Status;
 
@@ -20,7 +17,7 @@ public class ManageRequestMenu extends Menu {
         YaDataManager.removeRequest(request);
     }
 
-    public void deleteLastObjInDataManager(Request request) throws Exception {
+   /* public void deleteLastObjInDataManager(Request request) throws Exception {
         if (request.getObj() instanceof Off){
             Off off = (Off) request.getObj();
             YaDataManager.removeOff(off);
@@ -33,7 +30,7 @@ public class ManageRequestMenu extends Menu {
             BusinessAccount businessAccount = (BusinessAccount) request.getObj();
             YaDataManager.deleteBusinessAccount(businessAccount.getUsername());
         }
-    }
+    }*/
 
 
 
