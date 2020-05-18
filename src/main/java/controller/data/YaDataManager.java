@@ -489,6 +489,7 @@ public class YaDataManager {
         }
         throw new Exception("there is no product with this ID");
     }
+    
     public static boolean isUsernameExist(String username) throws IOException {
         for (ManagerAccount manager : getManagers()) {
             if (manager.getUsername().equalsIgnoreCase(username)) {
