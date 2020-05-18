@@ -92,9 +92,15 @@ public class BusinessAccount extends SimpleAccount {
 
     @Override
     public String toString() {
-        return "businessName=" + businessName + "\n" +
-                super.toString();
-
+        return "BusinessAccount{" +
+                "businessName='" + businessName + '\'' +
+                ", credit=" + credit +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 
     @Override
