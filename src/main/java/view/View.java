@@ -324,10 +324,17 @@ public class View {
                     viewDiscountCode(getDiscountCode, matcher.group("code"));
                     return;
                 }
-                if (command.matches("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField>\\S+)$")) {
-                    Matcher matcher = Pattern.compile("^edit discount code (?<code>\\S+) (?<field>\\S+ ?\\S+ \\S+) (?<newField>\\S+)$").matcher(command);
+                if (command.matches("^edit discount code (?<code>\\S+) (?<field>code|maximum number of uses|maximum discount price|start date|finish date|add account|delete account|discount percentage) (?<newField>\\S+)$")) {
+                    Matcher matcher = Pattern.compile("^edit discount code (?<code>\\S+) (?<field>code|maximum number of uses|maximum discount price|start date|finish date|add account|delete account|discount percentage) (?<newField>\\S+)$").matcher(command);
                     matcher.matches();
-                    DiscountCode discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
+                    DiscountCode discountCode;
+                    try {
+                        discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                        return;
+                    }
+
                     editDiscountCode(discountCode, command);
                     return;
                 }
@@ -419,10 +426,17 @@ public class View {
     }
 
     private void editDiscountCode(DiscountCode discountCode, String command) throws Exception {
-        System.out.println("Enter (code|maximum discount price|invalid maximum discount price|maximum number of uses|start date|finish date|add account) (new code|new maximum discount price|new invalid maximum discount price|new maximum number of uses|new start date(dd-mm-yyyy)|new finish date(dd-mm-yyyy)|user name)");
-        Matcher matcher = Pattern.compile("^edit (?<code>\\S+) (?<field>\\S+ ?\\S+ ?\\S+ ?\\S+) (?<newfield>\\S+)$").matcher(command);
+        Matcher matcher = Pattern.compile("^edit discount code (?<code>\\S+) (?<field>code|maximum number of uses|maximum discount price|start date|finish date|add account|delete account|discount percentage) (?<newfield>\\S+)$").matcher(command);
         matcher.matches();
+
         if (matcher.group("field").equals("code")) {
+            try {
+                DiscountCode tmp = YaDataManager.getDiscountCodeWithCode(matcher.group("newfield"));
+                System.out.println("invalid new code");
+                return;
+            }catch (Exception e){
+
+            }
             getDiscountCode.changeCode(matcher.group("newfield"), discountCode);
         }
         if (matcher.group("field").equals("maximum discount price")) {
@@ -437,6 +451,13 @@ public class View {
                 getDiscountCode.changeMaximumNumberOfUses(Integer.parseInt(matcher.group("newfield")), discountCode);
             } catch (Exception e) {
                 System.out.println("invalid maximum number of uses");
+            }
+        }
+        if (matcher.group("field").equals("discount percentage")) {
+            try {
+                getDiscountCode.changeDiscountPercentage(Integer.parseInt(matcher.group("newfield")), discountCode);
+            } catch (Exception e) {
+                System.out.println("invalid discount percentage");
             }
         }
         if (matcher.group("field").equals("start date")) {
@@ -460,7 +481,7 @@ public class View {
                 getDiscountCode.deleteAccount(userName, discountCode);
                 System.out.println("Account deleted successfully");
             } catch (Exception e) {
-                System.out.println("Invalid user name");
+                e.printStackTrace();
             }
         }
     }
@@ -2127,7 +2148,7 @@ public class View {
     }
 
     private void viewPersonalInfoHelp() {
-        System.out.println("1-edit (first name, last name, email, phone number ...)");
+        System.out.println("1-edit (first name, last name, email, phone number ...) (new first name,...)");
     }
 
     private void manageUsersHelp() {
@@ -2142,7 +2163,7 @@ public class View {
 
     private void viewDiscountCodeHelp() {
         System.out.println("1-view discount code [code]");
-        System.out.println("2-edit discount code [code]");
+        System.out.println("2-edit discount code [code] (code|maximum discount price|invalid maximum discount price|maximum number of uses|start date|finish date|add account|delete account|discount percentage) (new code|new maximum discount price|new invalid maximum discount price|new maximum number of uses|new start date(dd-mm-yyyy)|new finish date(dd-mm-yyyy)|user name)");
         System.out.println("3-remove discount code [code]");
     }
 

@@ -38,6 +38,7 @@ public class PersonalAccount extends SimpleAccount {
         for (DiscountCode code : discountCodes.keySet()) {
             if (code.equals(discountCode)) {
                 discountCodes.remove(code);
+                return;
             }
         }
     }

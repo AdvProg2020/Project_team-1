@@ -98,7 +98,13 @@ public class DiscountCode {
     }
 
     public void deleteAccount(SimpleAccount simpleAccount) {
-        accounts.remove(simpleAccount);
+        for (PersonalAccount account : accounts) {
+            if(account.getUsername().equalsIgnoreCase(simpleAccount.getUsername())){
+                accounts.remove(account);
+                return;
+            }
+        }
+
     }
 
     public void addAccount(PersonalAccount simpleAccount) {
