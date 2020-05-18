@@ -580,7 +580,7 @@ public class View {
                     customerMenu.goToPreviousMenu();
                 } else if (command.equals("help")) {
                     customerMenuHelp();
-                } else if (command.matches("sort discounts by (?<field>.+))")) {
+                } else if (command.matches("sort discounts by (?<field>.+)")) {
                     sortDiscountsCustomerMenu(command);
                 } else if (command.matches("sort orders by (?<field>\\w+)")) {
                     sortOrdersCustomerMenu(command);
