@@ -209,9 +209,9 @@ public class View {
 
     private void attributes() {
         Commodity commodity = commodityMenu.getCommodity();
-        String respond = commodity.getInformation();
+        StringBuilder respond = new StringBuilder(commodity.getInformation());
         for (Field categorySpecification : commodity.getCategorySpecifications()) {
-            respond += "[" + categorySpecification.toString() + "]";
+            respond.append("[").append(categorySpecification.toString()).append("]");
         }
         System.out.println(respond);
     }
@@ -1055,7 +1055,8 @@ public class View {
                         throw new Exception("Invalid command");
                     }
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(e.getMessage() + "salam");
+                    e.printStackTrace();
                 }
             }
         };
@@ -1737,7 +1738,7 @@ public class View {
         Category[] categories = productsMenu.getAllCategories();
         System.out.println("all categories:");
         for (Category category : categories) {
-            System.out.println("\n" + category.getName());
+            System.out.println(category.getName());
         }
     }
 

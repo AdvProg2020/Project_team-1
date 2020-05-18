@@ -6,6 +6,7 @@ import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
+import model.account.SimpleAccount;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -99,15 +100,16 @@ public class YaDataManager {
             System.exit(1);
         }
     }
-    
+
     public static ArrayList<ManagerAccount> getManagers() throws IOException {
         FileReader fileReader = new FileReader(managersJson);
-        Type type = new TypeToken<ArrayList<ManagerAccount>>(){}.getType();
+        Type type = new TypeToken<ArrayList<ManagerAccount>>() {
+        }.getType();
         ArrayList<ManagerAccount> managerAccounts = yaGson.fromJson(fileReader, type);
         fileReader.close();
         return managerAccounts;
     }
-    
+
     public static void addManager(ManagerAccount managerAccount) throws IOException {
         ArrayList<ManagerAccount> managerAccounts = getManagers();
         managerAccounts.add(managerAccount);
@@ -124,17 +126,19 @@ public class YaDataManager {
         }
         updateManagers(managerAccounts);
     }
-    
+
     private static void updateManagers(ArrayList<ManagerAccount> managerAccounts) throws IOException {
         FileWriter fileWriter = new FileWriter(managersJson);
-        Type type = new TypeToken<ArrayList<ManagerAccount>>(){}.getType();
+        Type type = new TypeToken<ArrayList<ManagerAccount>>() {
+        }.getType();
         yaGson.toJson(managerAccounts, type, fileWriter);
         fileWriter.close();
     }
 
     public static ArrayList<BusinessAccount> getBusinesses() throws IOException {
         FileReader fileReader = new FileReader(businessesJson);
-        Type type = new TypeToken<ArrayList<BusinessAccount>>(){}.getType();
+        Type type = new TypeToken<ArrayList<BusinessAccount>>() {
+        }.getType();
         ArrayList<BusinessAccount> businessAccounts = yaGson.fromJson(fileReader, type);
         fileReader.close();
         return businessAccounts;
@@ -159,14 +163,16 @@ public class YaDataManager {
 
     private static void updateBusinesses(ArrayList<BusinessAccount> businessAccounts) throws IOException {
         FileWriter fileWriter = new FileWriter(businessesJson);
-        Type type = new TypeToken<ArrayList<BusinessAccount>>(){}.getType();
+        Type type = new TypeToken<ArrayList<BusinessAccount>>() {
+        }.getType();
         yaGson.toJson(businessAccounts, type, fileWriter);
         fileWriter.close();
     }
 
     public static ArrayList<PersonalAccount> getPersons() throws IOException {
         FileReader fileReader = new FileReader(personsJson);
-        Type type = new TypeToken<ArrayList<PersonalAccount>>(){}.getType();
+        Type type = new TypeToken<ArrayList<PersonalAccount>>() {
+        }.getType();
         ArrayList<PersonalAccount> personalAccounts = yaGson.fromJson(fileReader, type);
         fileReader.close();
         return personalAccounts;
@@ -191,14 +197,16 @@ public class YaDataManager {
 
     private static void updatePersons(ArrayList<PersonalAccount> personalAccounts) throws IOException {
         FileWriter fileWriter = new FileWriter(personsJson);
-        Type type = new TypeToken<ArrayList<PersonalAccount>>(){}.getType();
+        Type type = new TypeToken<ArrayList<PersonalAccount>>() {
+        }.getType();
         yaGson.toJson(personalAccounts, type, fileWriter);
         fileWriter.close();
     }
 
     public static ArrayList<DiscountCode> getDiscountCodes() throws IOException {
         FileReader fileReader = new FileReader(discountCodesJson);
-        Type type = new TypeToken<ArrayList<DiscountCode>>(){}.getType();
+        Type type = new TypeToken<ArrayList<DiscountCode>>() {
+        }.getType();
         ArrayList<DiscountCode> discountCodes = yaGson.fromJson(fileReader, type);
         fileReader.close();
         return discountCodes;
@@ -223,14 +231,16 @@ public class YaDataManager {
 
     private static void updateDiscountCodes(ArrayList<DiscountCode> discountCodes) throws IOException {
         FileWriter fileWriter = new FileWriter(discountCodesJson);
-        Type type = new TypeToken<ArrayList<DiscountCode>>(){}.getType();
+        Type type = new TypeToken<ArrayList<DiscountCode>>() {
+        }.getType();
         yaGson.toJson(discountCodes, type, fileWriter);
         fileWriter.close();
     }
 
     public static ArrayList<Commodity> getCommodities() throws IOException {
         FileReader fileReader = new FileReader(commoditiesJson);
-        Type type = new TypeToken<ArrayList<Commodity>>(){}.getType();
+        Type type = new TypeToken<ArrayList<Commodity>>() {
+        }.getType();
         ArrayList<Commodity> commodities = yaGson.fromJson(fileReader, type);
         fileReader.close();
         return commodities;
@@ -244,7 +254,7 @@ public class YaDataManager {
 
     public static void removeCommodity(Commodity commodity) throws IOException {
         ArrayList<Commodity> commodities = getCommodities();
-        for (Commodity commodityAlt: commodities) {
+        for (Commodity commodityAlt : commodities) {
             if (commodityAlt.equals(commodity)) {
                 commodities.remove(commodityAlt);
                 break;
@@ -255,14 +265,16 @@ public class YaDataManager {
 
     private static void updateCommodities(ArrayList<Commodity> commodities) throws IOException {
         FileWriter fileWriter = new FileWriter(commoditiesJson);
-        Type type = new TypeToken<ArrayList<Commodity>>(){}.getType();
+        Type type = new TypeToken<ArrayList<Commodity>>() {
+        }.getType();
         yaGson.toJson(commodities, type, fileWriter);
         fileWriter.close();
     }
 
     public static ArrayList<Request> getRequests() throws IOException {
         FileReader fileReader = new FileReader(requestsJson);
-        Type type = new TypeToken<ArrayList<Request>>(){}.getType();
+        Type type = new TypeToken<ArrayList<Request>>() {
+        }.getType();
         ArrayList<Request> requests = yaGson.fromJson(fileReader, type);
         fileReader.close();
         return requests;
@@ -276,7 +288,7 @@ public class YaDataManager {
 
     public static void removeRequest(Request request) throws IOException {
         ArrayList<Request> requests = getRequests();
-        for (Request req: requests) {
+        for (Request req : requests) {
             if (req.equals(request)) {
                 requests.remove(req);
                 break;
@@ -287,14 +299,16 @@ public class YaDataManager {
 
     private static void updateRequests(ArrayList<Request> requests) throws IOException {
         FileWriter fileWriter = new FileWriter(requestsJson);
-        Type type = new TypeToken<ArrayList<Request>>(){}.getType();
+        Type type = new TypeToken<ArrayList<Request>>() {
+        }.getType();
         yaGson.toJson(requests, type, fileWriter);
         fileWriter.close();
     }
 
     public static ArrayList<Off> getOffs() throws IOException {
         FileReader fileReader = new FileReader(offsJson);
-        Type type = new TypeToken<ArrayList<Off>>(){}.getType();
+        Type type = new TypeToken<ArrayList<Off>>() {
+        }.getType();
         ArrayList<Off> offs = yaGson.fromJson(fileReader, type);
         fileReader.close();
         return offs;
@@ -308,7 +322,7 @@ public class YaDataManager {
 
     public static void removeOff(Off off) throws IOException {
         ArrayList<Off> offs = getOffs();
-        for (Off of: offs) {
+        for (Off of : offs) {
             if (of.equals(off)) {
                 offs.remove(of);
                 break;
@@ -319,14 +333,16 @@ public class YaDataManager {
 
     private static void updateOffs(ArrayList<Off> offs) throws IOException {
         FileWriter fileWriter = new FileWriter(offsJson);
-        Type type = new TypeToken<ArrayList<Off>>(){}.getType();
+        Type type = new TypeToken<ArrayList<Off>>() {
+        }.getType();
         yaGson.toJson(offs, type, fileWriter);
         fileWriter.close();
     }
 
     public static ArrayList<Category> getCategories() throws IOException {
         FileReader fileReader = new FileReader(categoriesJson);
-        Type type = new TypeToken<ArrayList<Category>>(){}.getType();
+        Type type = new TypeToken<ArrayList<Category>>() {
+        }.getType();
         ArrayList<Category> categories = yaGson.fromJson(fileReader, type);
         fileReader.close();
         return categories;
@@ -340,7 +356,7 @@ public class YaDataManager {
 
     public static void removeCategory(Category category) throws IOException {
         ArrayList<Category> categories = getCategories();
-        for (Category cat: categories) {
+        for (Category cat : categories) {
             if (cat.equals(category)) {
                 categories.remove(cat);
                 break;
@@ -351,8 +367,129 @@ public class YaDataManager {
 
     private static void updateCategories(ArrayList<Category> categories) throws IOException {
         FileWriter fileWriter = new FileWriter(categoriesJson);
-        Type type = new TypeToken<ArrayList<Category>>(){}.getType();
+        Type type = new TypeToken<ArrayList<Category>>() {
+        }.getType();
         yaGson.toJson(categories, type, fileWriter);
         fileWriter.close();
+    }
+
+
+    public static boolean isCategoryExist(String name) throws IOException {
+        for (Category category : getCategories()) {
+            if (category.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
+    public static Request getRequest(int id) throws Exception {
+        for (Request request : getRequests()) {
+            if (request.getId() == id) {
+                return request;
+            }
+        }
+        throw new Exception("Request doesn't exist");
+    }
+
+    public static boolean isCommodityExist(int id) throws Exception {
+        for (Commodity commodity : getCommodities()) {
+            if (commodity.getCommodityId() == id)
+                return true;
+        }
+        return false;
+    }
+
+    public static SimpleAccount getAccountWithUserName(String username) throws IOException {
+        for (ManagerAccount managerAccount : getManagers()) {
+            if (managerAccount.getUsername().equals(username))
+                return managerAccount;
+        }
+        for (PersonalAccount personalAccount : getPersons()) {
+            if (personalAccount.getUsername().equals(username))
+                return personalAccount;
+        }
+        for (BusinessAccount reseller : getBusinesses()) {
+            if (reseller.getUsername().equals(username))
+                return reseller;
+        }
+        return null;
+    }
+
+    public static boolean deletePersonalAccount(String username) throws IOException {
+        for (PersonalAccount person : getPersons()) {
+            if (person.getUsername().equals(username)) {
+                removePerson(person);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean deleteManagerAccount(String username) throws IOException {
+        for (ManagerAccount manager : getManagers()) {
+            if (manager.getUsername().equals(username)) {
+                removeManager(manager);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean deleteBusinessAccount(String username) throws IOException {
+        for (BusinessAccount business : getBusinesses()) {
+            if (business.getUsername().equals(username)) {
+                removeBusiness(business);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void deleteAccountWithUserName(String username) throws Exception {
+        if (deleteBusinessAccount(username)) {
+            return;
+        }
+        if (deletePersonalAccount(username)) {
+            return;
+        }
+        if (deleteManagerAccount(username)) {
+            return;
+        }
+        throw new Exception();
+    }
+
+    public static DiscountCode getDiscountCodeWithCode(String code) throws Exception {
+        for (DiscountCode discountCode : getDiscountCodes()) {
+            if (discountCode.getCode().equals(code))
+                return discountCode;
+        }
+        throw new Exception();
+    }
+
+    public static Commodity getCommodityById(int id) throws Exception {
+        for (Commodity commodity : getCommodities()) {
+            if (commodity.getCommodityId() == id) {
+                return commodity;
+            }
+        }
+        throw new Exception("there is no product with this ID");
+    }
+    public static boolean isUsernameExist(String username) throws IOException {
+        for (ManagerAccount manager : getManagers()) {
+            if (manager.getUsername().equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+        for (BusinessAccount reseller : getBusinesses()) {
+            if (reseller.getUsername().equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+        for (PersonalAccount personalAccount : getPersons()) {
+            if (personalAccount.getUsername().equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
