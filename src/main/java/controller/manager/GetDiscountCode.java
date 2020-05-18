@@ -63,14 +63,11 @@ public class GetDiscountCode extends Menu {
     public void deleteAccount(String userName, DiscountCode discountCode) throws Exception {
         if (YaDataManager.isUsernameExist(userName)) {
             for (SimpleAccount account : discountCode.getAccounts()) {
-                System.out.println(account.getUsername());
                 if (account.getUsername().equalsIgnoreCase(userName)){
                     discountCode.deleteAccount(account);
                     updateAccountsDiscountCode(discountCode);
                     PersonalAccount personalAccount = (PersonalAccount)getAccountWithUserNameFromDatabase(userName);
                     personalAccount.removeDiscountCode(discountCode);
-                    System.out.println(discountCode.getAccounts().toString());
-                    System.out.println(personalAccount.getDiscountCodes().size());
                     YaDataManager.removePerson(personalAccount);
                     YaDataManager.addPerson(personalAccount);
                     updateAccounts(discountCode);

@@ -478,6 +478,7 @@ public class View {
         if (matcher.group("field").equals("delete account")) {
             String userName = matcher.group("newfield");
             try {
+
                 getDiscountCode.deleteAccount(userName, discountCode);
                 System.out.println("Account deleted successfully");
             } catch (Exception e) {
@@ -845,27 +846,27 @@ public class View {
         matcher.matches();
         try {
             if (matcher.group("field").equals("first name")) {
-                viewPersonalInfoMenu.editFirstName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+                viewPersonalInfoMenu.editFirstName(matcher.group("newfield"), Session.getOnlineAccount());
                 viewPersonalInfoMenu.updateFile();
                 return;
             }
             if (matcher.group("field").equals("last name")) {
-                viewPersonalInfoMenu.editLastName(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+                viewPersonalInfoMenu.editLastName(matcher.group("newfield"),Session.getOnlineAccount());
                 viewPersonalInfoMenu.updateFile();
                 return;
             }
             if (matcher.group("field").equals("email")) {
-                viewPersonalInfoMenu.editEmail(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+                viewPersonalInfoMenu.editEmail(matcher.group("newfield"),  Session.getOnlineAccount());
                 viewPersonalInfoMenu.updateFile();
                 return;
             }
             if (matcher.group("field").equals("password")) {
-                viewPersonalInfoMenu.editPassword(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+                viewPersonalInfoMenu.editPassword(matcher.group("newfield"), Session.getOnlineAccount());
                 viewPersonalInfoMenu.updateFile();
                 return;
             }
             if (matcher.group("field").equals("phone number")) {
-                viewPersonalInfoMenu.editPhoneNumber(matcher.group("newfield"), (ManagerAccount) Session.getOnlineAccount());
+                viewPersonalInfoMenu.editPhoneNumber(matcher.group("newfield"), Session.getOnlineAccount());
                 viewPersonalInfoMenu.updateFile();
                 return;
             }
