@@ -53,8 +53,9 @@ public class ManageCategoryMenu extends Menu {
     public void addCommodity(int commodityId, Category category) throws Exception {
         for (Commodity commodity : YaDataManager.getCommodities()) {
             if (commodity.getCommodityId() == commodityId) {
-                commodity.setCategory(null);
+                category.getCommodities().add(commodity);
                 YaDataManager.removeCommodity(commodity);
+                commodity.setCategory(category);
                 YaDataManager.addCommodity(commodity);
                 return;
             }

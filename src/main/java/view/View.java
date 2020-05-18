@@ -1685,7 +1685,7 @@ public class View {
                 manageCategoryMenu.updateFile(category);
                 System.out.println("category updated");
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());;
             }
 
             return;
@@ -1720,14 +1720,20 @@ public class View {
     private void addCategorySpecification(Category category) {
         System.out.println("Enter title");
         String title = scanner.nextLine();
-        System.out.println("Enter options");
-        HashSet<String> options = new HashSet<String>();
-        String input = scanner.next();
-        while (!input.equals("end")) {
-            options.add(input);
+        HashSet<String> options = null;
+        System.out.println("Is your field optional?");
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("yes")) {
+            System.out.println("Enter options");
+            options = new HashSet<String>();
             input = scanner.next();
+            while (!input.equals("end")) {
+                options.add(input);
+                input = scanner.next();
+            }
+            String tmp = scanner.nextLine();
         }
-        String tmp = scanner.nextLine();
+
         manageCategoryMenu.addCategorySpecification(options, title, category);
     }
 
