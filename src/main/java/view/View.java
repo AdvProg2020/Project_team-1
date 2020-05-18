@@ -242,7 +242,7 @@ public class View {
         }
     }
 
-    private boolean changeFinishDate(DiscountCode discountCode, GetDiscountCode getDiscountCode, Matcher matcher) throws Exception {
+    private boolean changeStartDate(DiscountCode discountCode, GetDiscountCode getDiscountCode, Matcher matcher) throws Exception {
         SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
         Date startDate = null;
         try {
@@ -251,20 +251,31 @@ public class View {
             System.out.println("invalid date format");
             return true;
         }
-        getDiscountCode.changeStartDate(startDate, discountCode);
+        try {
+            getDiscountCode.changeStartDate(startDate, discountCode);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return true;
+        }
         return false;
     }
 
-    private void changeStartDate(DiscountCode discountCode, GetDiscountCode getDiscountCode, Matcher matcher) throws Exception {
+    private boolean changeFinishDate(DiscountCode discountCode, GetDiscountCode getDiscountCode, Matcher matcher) throws Exception {
         SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
         Date finishDate = null;
         try {
             finishDate = format.parse(matcher.group("newfield"));
         } catch (ParseException e) {
             System.out.println("invalid date format");
-            return;
+            return true;
         }
-        getDiscountCode.changeFinishDate(finishDate, discountCode);
+        try {
+            getDiscountCode.changeFinishDate(finishDate, discountCode);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return true;
+        }
+        return false;
     }
 
 
@@ -379,7 +390,11 @@ public class View {
                     return;
                 }
                 if (command.matches("^create discount code$")) {
-                    createDiscountCode(managerMenu);
+                    try {
+                        createDiscountCode(managerMenu);
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
                     return;
                 }
                 if (command.matches("^view discount codes$")) {
@@ -404,6 +419,7 @@ public class View {
     }
 
     private void editDiscountCode(DiscountCode discountCode, String command) throws Exception {
+        System.out.println("Enter (code|maximum discount price|invalid maximum discount price|maximum number of uses|start date|finish date|add account) (new code|new maximum discount price|new invalid maximum discount price|new maximum number of uses|new start date(dd-mm-yyyy)|new finish date(dd-mm-yyyy)|user name)");
         Matcher matcher = Pattern.compile("^edit (?<code>\\S+) (?<field>\\S+ ?\\S+ ?\\S+ ?\\S+) (?<newfield>\\S+)$").matcher(command);
         matcher.matches();
         if (matcher.group("field").equals("code")) {
@@ -858,8 +874,18 @@ public class View {
     private void createDiscountCode(ManagerMenu managerMenu) throws Exception {
         System.out.println("Enter code");
         String code = scanner.nextLine();
+        try {
+            DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(code);
+            System.out.println("invalid code");
+            return;
+        }catch (Exception e){
+
+        }
         System.out.println("Enter start date in dd-mm-yyyy format");
         String stringStart = scanner.nextLine();
+        if (!stringStart.matches("\\d\\d-\\d\\d-\\d\\d\\d\\d")){
+            throw new Exception("invalid date format");
+        }
         SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
         Date start = null;
         try {
@@ -870,6 +896,9 @@ public class View {
         }
         System.out.println("Enter finish date in dd-mm-yyyy format");
         String stringFinish = scanner.nextLine();
+        if (!stringFinish.matches("\\d\\d-\\d\\d-\\d\\d\\d\\d")){
+            throw new Exception("invalid date format");
+        }
         Date finish = null;
         try {
             finish = format.parse(stringFinish);
@@ -880,7 +909,7 @@ public class View {
         System.out.println("Enter discount percentage");
         int discountPercentage;
         try {
-            discountPercentage = scanner.nextInt();
+            discountPercentage = Integer.parseInt(scanner.nextLine());
         } catch (Exception e) {
             System.out.println("invalid discount percentage");
             return;
@@ -888,7 +917,7 @@ public class View {
         System.out.println("Enter maximum discount price");
         int maximumDiscountPrice;
         try {
-            maximumDiscountPrice = scanner.nextInt();
+            maximumDiscountPrice = Integer.parseInt(scanner.nextLine());
         } catch (Exception e) {
             System.out.println("invalid maximum discount price");
             return;
@@ -896,12 +925,11 @@ public class View {
         System.out.println("Enter maximum number of use");
         int maximumNumberOfUse;
         try {
-            maximumNumberOfUse = scanner.nextInt();
+            maximumNumberOfUse = Integer.parseInt(scanner.nextLine());
         } catch (Exception e) {
             System.out.println("invalid maximum number of user");
             return;
         }
-        scanner.nextLine();
         if (managerMenu.checkCreateDiscountCodeErrors(start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse)) {
             System.out.println("invalid input");
             return;
@@ -913,8 +941,7 @@ public class View {
         for (int i = 0; i < splitCommand.length; i++) {
             PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(splitCommand[i]);
             if (personalAccount == null) {
-                System.out.println("user name " + splitCommand[i] + " not found");
-                i--;
+                throw new Exception("user name " + splitCommand[i] + " not found");
             }
             allAccount.add(personalAccount);
         }
@@ -922,6 +949,7 @@ public class View {
             managerMenu.addDiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, allAccount);
         } catch (Exception e) {
             System.out.println("Invalid entry please try again");
+            e.printStackTrace();
             return;
         }
         System.out.println("Discount code successfully added");

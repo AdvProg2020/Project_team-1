@@ -4,6 +4,7 @@ import controller.data.YaDataManager;
 import controller.share.Menu;
 import controller.share.MenuHandler;
 import model.*;
+import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 import model.commodity.Category;
 import model.commodity.DiscountCode;
@@ -42,19 +43,24 @@ public class ManagerMenu extends Menu {
 
     public boolean checkCreateDiscountCodeErrors(Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
                                                  int maximumNumberOfUse) {
-        if (finish.compareTo(start) > 0)
+        if (finish.compareTo(start) < 0) {
             return false;
+        }
         if (discountPercentage <= 0)
             return false;
         if (maximumDiscountPrice <= 0)
             return false;
-        return maximumNumberOfUse > 0;
+        return maximumNumberOfUse <= 0;
     }
 
     public void addDiscountCode(String code, Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
-                                int maximumNumberOfUse, ArrayList<SimpleAccount> accountArrayList) throws Exception {
-        YaDataManager.addDiscountCode(new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accountArrayList));
-
+                                int maximumNumberOfUse, ArrayList<PersonalAccount> accountArrayList) throws Exception {
+        DiscountCode discountCode = new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accountArrayList);
+        YaDataManager.addDiscountCode(discountCode);
+        for (PersonalAccount account : discountCode.getAccounts()) {
+            account.addDiscountCode(discountCode);
+        }
+        View.getDiscountCode.updateAccounts(discountCode);
     }
 
     public ArrayList<Category> manageCategory() throws IOException {

@@ -21,6 +21,9 @@ public class GetDiscountCode extends Menu {
     }
 
     public void changeStartDate(Date startDate, DiscountCode discountCode) throws Exception {
+        if (discountCode.getFinishDate().compareTo(discountCode.getStartDate()) < 0){
+            throw new Exception("invalid start date");
+        }
         discountCode.setStartDate(startDate);
         updateAccounts(discountCode);
         updateDiscountCode(discountCode);
@@ -64,7 +67,7 @@ public class GetDiscountCode extends Menu {
 
     public void addAccount(String userName, DiscountCode discountCode) throws Exception {
         if (YaDataManager.isUsernameExist(userName)) {
-            discountCode.addAccount(getAccountWithUserNameFromDatabase(userName));
+            discountCode.addAccount((PersonalAccount) getAccountWithUserNameFromDatabase(userName));
             ((PersonalAccount)getAccountWithUserNameFromDatabase(userName)).addDiscountCode(discountCode);
             updateDiscountCode(discountCode);
             updateAccounts(discountCode);
@@ -91,6 +94,7 @@ public class GetDiscountCode extends Menu {
 
     public void updateAccounts(DiscountCode discountCode) throws IOException {
         for (SimpleAccount account : discountCode.getAccounts()) {
+            ((PersonalAccount) account).r
             YaDataManager.removePerson((PersonalAccount) account);
             YaDataManager.addPerson((PersonalAccount) account);
         }

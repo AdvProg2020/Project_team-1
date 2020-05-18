@@ -1,5 +1,6 @@
 package model.commodity;
 
+import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 
 import java.util.ArrayList;
@@ -12,10 +13,10 @@ public class DiscountCode {
     private int discountPercentage;
     private int maximumDiscountPrice;
     private int maximumNumberOfUses;
-    private ArrayList<SimpleAccount> accounts;
+    private ArrayList<PersonalAccount> accounts;
 
     public DiscountCode(String code, Date startDate, Date finishDate, int discountPercentage, int maximumDiscountPrice,
-                        int maximumNumberOfUses, ArrayList<SimpleAccount> accounts) throws Exception {
+                        int maximumNumberOfUses, ArrayList<PersonalAccount> accounts) throws Exception {
         if (finishDate.compareTo(startDate) < 0) {
             throw new Exception("dates are not valid");
         }
@@ -87,11 +88,11 @@ public class DiscountCode {
         this.maximumNumberOfUses = maximumNumberOfUses;
     }
 
-    public ArrayList<SimpleAccount> getAccounts() {
+    public ArrayList<PersonalAccount> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(ArrayList<SimpleAccount> accounts) {
+    public void setAccounts(ArrayList<PersonalAccount> accounts) {
         this.accounts = accounts;
     }
 
@@ -99,7 +100,7 @@ public class DiscountCode {
         accounts.remove(simpleAccount);
     }
 
-    public void addAccount(SimpleAccount simpleAccount) {
+    public void addAccount(PersonalAccount simpleAccount) {
         accounts.add(simpleAccount);
     }
 
