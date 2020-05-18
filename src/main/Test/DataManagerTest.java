@@ -1,8 +1,3 @@
-import model.commodity.Category;
-import controller.data.DataManager;
-import model.account.BusinessAccount;
-import org.junit.Assert;
-
 public class DataManagerTest {
 
     @org.junit.Test
@@ -16,7 +11,7 @@ public class DataManagerTest {
     @org.junit.Test
     public void isCategoryExist() {
     }
-
+/*
     @org.junit.Test
     public void getAllCategories() {
         try {
@@ -25,7 +20,7 @@ public class DataManagerTest {
         } catch (Exception e) {
             System.out.println("***" + e.getMessage());
         }
-    }
+    }*/
 
     @org.junit.Test
     public void deleteRequest() {
@@ -58,7 +53,7 @@ public class DataManagerTest {
     @org.junit.Test
     public void getAccountWithUserName() {
     }
-
+/*
     @org.junit.Test
     public void getAllResellers() {
         try {
@@ -67,7 +62,7 @@ public class DataManagerTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
+    }*/
 
     @org.junit.Test
     public void deleteManagerAccount() {
