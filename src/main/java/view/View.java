@@ -917,7 +917,7 @@ public class View {
             System.out.println("invalid input");
             return;
         }
-        System.out.println("Enter accounts");
+        System.out.println("Enter accounts username in next line");
         String accounts = scanner.nextLine();
         String[] splitCommand = accounts.split(" ");
         ArrayList<SimpleAccount> allAccount = new ArrayList<SimpleAccount>();
@@ -1646,7 +1646,7 @@ public class View {
         }
         ArrayList<CategorySpecification> categorySpecifications = new ArrayList<>();
         getCategorySpecificationFromUser(categorySpecifications);
-        System.out.println("Enter commodities id with the first non-numerical input scanner stops.");
+        System.out.println("Enter commodities id, with the first non-numerical input scanner stops.");
         ArrayList<Integer> commoditiesId = new ArrayList<Integer>();
         String input = scanner.next();
         while (input.matches("^\\d+$")) {
@@ -1672,7 +1672,7 @@ public class View {
             String input = scanner.next();
             if (input.equalsIgnoreCase("Yes")) {
                 options = new HashSet<String>();
-                System.out.println("Enter options");
+                System.out.println("Enter options[end for exit]");
                 input = scanner.next();
                 while (!input.equals("end")) {
                     options.add(input);
@@ -1692,7 +1692,11 @@ public class View {
             return;
         }
         Category category = manageCategoryMenu.getCategory(categoryName);
-        System.out.println("Which field do you want to edit");
+        System.out.println("1-name");
+        System.out.println("2-add category specification");
+        System.out.println("3-remove category specification");
+        System.out.println("4-add commodity");
+        System.out.println("5-remove commodity");
         String field = scanner.nextLine();
         if (field.equalsIgnoreCase("name")) {
             System.out.println("Enter your new name");
@@ -1757,7 +1761,7 @@ public class View {
         System.out.println("Is your field optional?");
         String input = scanner.nextLine();
         if (input.equalsIgnoreCase("yes")) {
-            System.out.println("Enter options");
+            System.out.println("Enter options [end for exit]");
             options = new HashSet<String>();
             input = scanner.next();
             while (!input.equals("end")) {
@@ -1992,6 +1996,8 @@ public class View {
                         manageAllProducts.removeCommodity(Integer.parseInt(matcher.group("productId")));
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
+                        System.out.println(Integer.parseInt(matcher.group("productId")));
+                        e.printStackTrace();
                     }
                     return;
                 }
