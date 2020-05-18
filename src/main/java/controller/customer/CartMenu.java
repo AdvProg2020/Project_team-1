@@ -42,12 +42,18 @@ public class CartMenu extends Menu {
                 YaDataManager.addPerson(personalAccount);
                 throw new Exception("successfully removed");
             }
+            int amount = personalAccount.getAmount(commodity) - 1;
             personalAccount.removeFromCart(commodity);
             YaDataManager.removePerson(personalAccount);
-            cart.put(commodity, personalAccount.getAmount(commodity) - 1);
+            cart.put(commodity, amount);
             YaDataManager.addPerson(personalAccount);
             throw new Exception("successfully decreased");
         }
+        throw new Exception("this product isn't in your cart");
+    }
+
+    public int getAmountInCart(Commodity commodity) throws Exception {
+        return ((PersonalAccount) Session.getOnlineAccount()).getAmount(commodity);
     }
 
     public void increase(int id) throws Exception {

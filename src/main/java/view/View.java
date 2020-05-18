@@ -663,7 +663,6 @@ public class View {
     }
 
     private void goToCartMenu() {
-        System.out.println("enter your command");
         customerMenu.goToCartMenu();
     }
 
@@ -741,7 +740,7 @@ public class View {
         String respond = "products in cart: ";
         try {
             for (Commodity commodity : cartMenu.getCartProducts())
-                respond += "[" + commodity.getInformation() + "]";
+                respond += '\n' + commodity.getInformation() + " ,amount: " + cartMenu.getAmountInCart(commodity);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -2176,6 +2175,7 @@ public class View {
                 continue;
             }
             MenuHandler.getInstance().getCurrentMenu().commandProcess(command);
+            System.out.println("please enter your command");
         }
     }
 }
