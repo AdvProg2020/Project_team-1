@@ -1,13 +1,16 @@
 package controller;
 
-import controller.commodity.CommentsMenu;
-import controller.commodity.DigestMenu;
-import model.Commodity;
-import model.DataManager;
-import model.Session;
+import controller.comparator.Sort;
+import model.*;
+
+import java.util.ArrayList;
+
+import static view.View.commentsMenu;
+import static view.View.digestMenu;
 
 public class CommodityMenu extends Menu {
     private Commodity commodity;
+    private String CommentsSortType = "title";
 
     public void setCommodity(Commodity commodity) {
         this.commodity = commodity;
@@ -17,7 +20,7 @@ public class CommodityMenu extends Menu {
         return this.commodity;
     }
 
-    public void goToDigestMenu(DigestMenu digestMenu) {
+    public void goToDigestMenu() {
         if (Session.getOnlineAccount().getAccountType().equals("personal")) {
             MenuHandler.getInstance().setCurrentMenu(digestMenu);
             digestMenu.setCommodity(this.commodity);
@@ -25,7 +28,7 @@ public class CommodityMenu extends Menu {
         }
     }
 
-    public void goToCommentsMenu(CommentsMenu commentsMenu) {
+    private void goToCommentsMenu() {
         MenuHandler.getInstance().setCurrentMenu(commentsMenu);
         commentsMenu.setCommodity(this.commodity);
         commentsMenu.setPreviousMenu(this);
@@ -40,5 +43,18 @@ public class CommodityMenu extends Menu {
             throw new Exception("these two products are identical");
         }
         return comparingCommodity;
+    }
+
+    public void setCommentsSortType(String commentsSortType) {
+        CommentsSortType = commentsSortType;
+    }
+
+    public ArrayList<Comment> getComments() throws Exception {
+        goToCommentsMenu();
+        ArrayList<Comment> comments = new ArrayList<>();
+        comments.addAll(commodity.getAllComments());
+        comments.removeIf(comment -> comment.getStatus() != Status.VERIFIED);
+        Sort.sortCommentArrayList(comments, this.CommentsSortType);
+        return comments;
     }
 }

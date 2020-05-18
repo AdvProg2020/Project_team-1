@@ -6,9 +6,18 @@ public class Comment implements Requestable {
     private SimpleAccount account;
     private Commodity commodity;
     private String title;
-    private String string;
+    private String content;
     private boolean isABuyer;
     private Status status;
+
+    public Comment(SimpleAccount account, Commodity commodity, String title, String content, boolean isABuyer) {
+        this.account = account;
+        this.commodity = commodity;
+        this.title = title;
+        this.content = content;
+        this.isABuyer = isABuyer;
+        this.status = Status.UNDER_CHECKING_FOR_CREATE;
+    }
 
     @Override
     public String toString() {
@@ -16,7 +25,7 @@ public class Comment implements Requestable {
                 "account=" + account +
                 ", commodity=" + commodity +
                 ", title='" + title + '\'' +
-                ", string='" + string + '\'' +
+                ", content='" + content + '\'' +
                 ", isABuyer=" + isABuyer +
                 ", status=" + status +
                 '}';
@@ -27,21 +36,12 @@ public class Comment implements Requestable {
             return "account: " + this.account.getUsername() + '\n' +
                     "did buy this? true\n" +
                     "title: " + this.title + '\n' +
-                    "comment: " + this.string;
+                    "comment: " + this.content;
         }
         return "account: " + this.account.getUsername() + '\n' +
                 "did buy this? false\n" +
                 "title: " + this.title + '\n' +
-                "comment: " + this.string;
-    }
-
-    public Comment(SimpleAccount account, Commodity commodity, String title, String string, boolean isABuyer) {
-        this.account = account;
-        this.commodity = commodity;
-        this.title = title;
-        this.string = string;
-        this.isABuyer = isABuyer;
-        this.status = Status.UNDER_CHECKING_FOR_CREATE;
+                "comment: " + this.content;
     }
 
     public SimpleAccount getAccount() {
@@ -52,8 +52,8 @@ public class Comment implements Requestable {
         return title;
     }
 
-    public String getString() {
-        return string;
+    public String getContent() {
+        return content;
     }
 
     public boolean isABuyer() {

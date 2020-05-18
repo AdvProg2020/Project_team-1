@@ -156,9 +156,17 @@ public class View {
                     compare(command);
                 } else if (command.equals("comments")) {
                     comments();
+                } else if (command.matches("sort comments by (?<field>\\w+)")) {
+                    sortComments(command);
                 } else System.out.println("invalid command");
             }
         };
+    }
+
+    private void sortComments(String command) {
+        Matcher matcher = Pattern.compile("sort comments by (?<field>\\w+)").matcher(command);
+        matcher.matches();
+        commodityMenu.setCommentsSortType(matcher.group("field"));
     }
 
     private void compare(String command) {
@@ -188,14 +196,15 @@ public class View {
 
     private void comments() {
         Commodity commodity = commodityMenu.getCommodity();
-        String output = "rating: " + commodity.getAverageScore() + "comments: \n";
-        for (Comment comment : commodity.getAllComments()) {
-            if (comment.getStatus() == Status.VERIFIED) {
+        String output = "rating: " + commodity.getAverageScore() + "\ncomments: \n";
+        try {
+            for (Comment comment : commodityMenu.getComments()) {
                 output += '\n' + comment.getInformation();
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         System.out.println(output);
-        commodityMenu.goToCommentsMenu(commentsMenu);
     }
 
     private void attributes() {
@@ -210,7 +219,7 @@ public class View {
     private void digest() {
         Commodity commodity = commodityMenu.getCommodity();
         System.out.println(commodity.getInformation());
-        commodityMenu.goToDigestMenu(digestMenu);
+        commodityMenu.goToDigestMenu();
     }
 
     private void manageRequests(ManagerMenu managerMenu) throws IOException {
@@ -1171,7 +1180,7 @@ public class View {
     public void sortResellerProduct(String command) throws Exception {
         Matcher matcher = Pattern.compile("sort (?<field>\\w+)").matcher(command);
         matcher.matches();
-        for (Commodity commodity: manageResellerProductsMenu.sort(matcher.group("field"))) {
+        for (Commodity commodity : manageResellerProductsMenu.sort(matcher.group("field"))) {
             System.out.println(commodity.toString());
         }
     }
@@ -1815,7 +1824,7 @@ public class View {
         System.out.println("Enter acceptable options");
         ArrayList<String> options = new ArrayList<String>();
         String input = scanner.next();
-        while (!input.equals("end")){
+        while (!input.equals("end")) {
             options.add(input);
             input = scanner.next();
         }
@@ -2053,7 +2062,7 @@ public class View {
         System.out.println("disable sort");
     }
 
-    private void setLoginRegisterMenu(){
+    private void setLoginRegisterMenu() {
         MenuHandler.getInstance().getCurrentMenu().setLoginAndRegisterMenu();
     }
 
@@ -2065,7 +2074,7 @@ public class View {
                 logout();
                 continue;
             }
-            if (command.equalsIgnoreCase("login") || command.equalsIgnoreCase("register")){
+            if (command.equalsIgnoreCase("login") || command.equalsIgnoreCase("register")) {
                 setLoginRegisterMenu();
                 return;
             }
