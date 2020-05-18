@@ -6,10 +6,7 @@ import controller.comparator.off.OffDiscountPercentComparator;
 import controller.comparator.off.OffEndTimeComparator;
 import controller.comparator.off.OffIdComparator;
 import controller.comparator.off.OffStartTimeComparator;
-import controller.comparator.product.ProductBrandComparator;
-import controller.comparator.product.ProductIdComparator;
-import controller.comparator.product.ProductNameComparator;
-import controller.comparator.product.ProductPriceComparator;
+import controller.comparator.product.*;
 import model.Commodity;
 import model.Off;
 import model.log.BuyLog;
@@ -50,6 +47,15 @@ public class Sort {
                 break;
             case "price":
                 commodities.sort(new ProductPriceComparator());
+                break;
+            case "number of visits":
+                commodities.sort(new ProductVisitsComparator());
+                break;
+            case "number of scores":
+                commodities.sort(new ProductNumberOfScores());
+                break;
+            case "average score":
+                commodities.sort(new ProductAverageScoreComparator());
                 break;
             default:
                 throw new Exception("field not found");

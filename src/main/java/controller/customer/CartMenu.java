@@ -121,6 +121,7 @@ public class CartMenu extends Menu {
 
     public void goToCommodityMenu(int id) throws Exception {
         Commodity commodity = DataManager.getCommodityById(id);
+        commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
         MenuHandler.getInstance().setCurrentMenu(commodityMenu);
         commodityMenu.setCommodity(commodity);
         commodityMenu.setPreviousMenu(cartMenu);

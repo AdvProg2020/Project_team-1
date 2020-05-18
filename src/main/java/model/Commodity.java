@@ -42,6 +42,9 @@ public class Commodity implements Requestable {
         this.allComments = new ArrayList<Comment>();
         this.averageScore = 0;
         this.inventory = amount;
+        this.numberOfVisits = 0;
+        this.numberOfScores = 0;
+        this.totalScores = 0;
     }
 
     public Commodity(Commodity commodity) {
@@ -55,12 +58,16 @@ public class Commodity implements Requestable {
         isCommodityAvailable = commodity.isCommodityAvailable;
         category = commodity.category;
         categorySpecifications = new ArrayList<>(commodity.categorySpecifications);
-        description = new String(commodity.description);
+        description = commodity.description;
         allComments = new ArrayList<>(commodity.allComments);
         averageScore = commodity.averageScore;
         totalScores = commodity.totalScores;
         numberOfScores = commodity.numberOfScores;
         numberOfVisits = commodity.numberOfVisits;
+    }
+
+    public int getNumberOfScores() {
+        return numberOfScores;
     }
 
     public int getCommodityId() {
