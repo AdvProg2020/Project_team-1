@@ -37,10 +37,14 @@ public class CartMenu extends Menu {
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
         if (cart.containsKey(commodity)) {
             if (cart.get(commodity) - 1 == 0) {
+                YaDataManager.removePerson(personalAccount);
                 cart.remove(commodity);
+                YaDataManager.addPerson(personalAccount);
                 throw new Exception("successfully removed");
             }
+            YaDataManager.removePerson(personalAccount);
             cart.put(commodity, cart.get(commodity) - 1);
+            YaDataManager.addPerson(personalAccount);
             throw new Exception("successfully decreased");
         }
         throw new Exception("this commodity isn't in your cart");
@@ -50,11 +54,14 @@ public class CartMenu extends Menu {
         Commodity commodity = YaDataManager.getCommodityById(id);
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
+        YaDataManager.removePerson(personalAccount);
         if (cart.containsKey(commodity)) {
             cart.put(commodity, cart.get(commodity) + 1);
+            YaDataManager.addPerson(personalAccount);
             throw new Exception("successfully increased");
         }
         cart.put(commodity, 1);
+        YaDataManager.addPerson(personalAccount);
         throw new Exception("successfully added");
     }
 
@@ -101,10 +108,12 @@ public class CartMenu extends Menu {
             account.dontUseDiscountCode(discountCode);
             throw new Exception("you don't have enough money to pay");
         }
+        YaDataManager.removePerson(account);
         account.addToCredit(-price);
         BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, calculateTotalPrice() -
                 price, discountCode);
         account.addBuyLog(buyLog);
+        YaDataManager.addPerson(account);
         makeSellLogs(buyLog.getSellers(), account);
     }
 
@@ -123,7 +132,9 @@ public class CartMenu extends Menu {
                         received += commodity.getPrice() - deducted;
                     }
                 }
+                YaDataManager.removeBusiness(seller);
                 seller.addSellLog(new SellLog(new Date(), (int) received, (int) deducted, commodities, account));
+                YaDataManager.addBusiness(seller);
             }
         } catch (NullPointerException ignored) {
         }
@@ -131,7 +142,9 @@ public class CartMenu extends Menu {
 
     public void goToCommodityMenu(int id) throws Exception {
         Commodity commodity = YaDataManager.getCommodityById(id);
+        YaDataManager.removeCommodity(commodity);
         commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
+        YaDataManager.addCommodity(commodity);
         MenuHandler.getInstance().setCurrentMenu(commodityMenu);
         commodityMenu.setCommodity(commodity);
         commodityMenu.setPreviousMenu(cartMenu);
