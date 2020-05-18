@@ -1112,15 +1112,21 @@ public class View {
         System.out.println("enter product category:");
         String categoryString = scanner.nextLine();
         Category category = resellerMenu.getCategoryByName(categoryString);
-        System.out.println("enter product specification:");
+        System.out.println("enter product specification bellow");
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
         for (int i = 0; i < category.getFieldOptions().size(); ++i) {
             CategorySpecification categorySpecification = category.getFieldOptions().get(i);
-            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
-            if (categorySpecification.getOptions().isEmpty()) {
+            System.out.println("Enter product " + categorySpecification.getTitle() + ":" );
+            if (categorySpecification.getOptions() == null) {
                 productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), scanner.nextInt()));
                 scanner.nextLine();
             } else {
+                StringBuilder options = new StringBuilder();
+                for (String option : categorySpecification.getOptions()) {
+                    options.append(option);
+                    options.append('-');
+                }
+                System.out.println("(" + options.toString() + ")");
                 productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), scanner.nextLine()));
             }
         }
@@ -1130,6 +1136,7 @@ public class View {
         int amount = scanner.nextInt();
         scanner.nextLine();
         resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount);
+        System.out.println("product request had been sent to managers");
     }
 
     private void removeProduct(String command) throws Exception {
