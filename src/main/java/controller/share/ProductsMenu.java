@@ -29,14 +29,17 @@ public class ProductsMenu extends Menu {
 
     public ArrayList<Commodity> getProducts() throws Exception {
             FilteringMenu.updateFilteredCommodities();
-            if (SortingMenu.getCurrentSort().equals("price")) {
+            if (SortingMenu.getCurrentSort().equalsIgnoreCase("price")) {
                     Collections.sort(FilteringMenu.getFilteredCommodities(), price);
             }
-            if (SortingMenu.getCurrentSort().equals("Number of visits")) {
+            if (SortingMenu.getCurrentSort().equalsIgnoreCase("Number of visits")) {
                     Collections.sort(FilteringMenu.getFilteredCommodities(), numberOfVisits);
             }
-            if (SortingMenu.getCurrentSort().equals("Average score")) {
+            if (SortingMenu.getCurrentSort().equalsIgnoreCase("Average score")) {
                     Collections.sort(FilteringMenu.getFilteredCommodities(), score);
+            }
+            if (SortingMenu.getCurrentSort().equalsIgnoreCase("Date")){
+                Collections.sort(FilteringMenu.getFilteredCommodities() , date);
             }
             return FilteringMenu.getFilteredCommodities();
     }

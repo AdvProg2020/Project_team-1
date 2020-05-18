@@ -1058,7 +1058,6 @@ public class View {
                     }
                 } catch (Exception e) {
                     System.out.println(e.getMessage() + "salam");
-                    e.printStackTrace();
                 }
             }
         };
@@ -1542,7 +1541,7 @@ public class View {
                     try {
                         Commodity commodity = productsMenu.getProducts(Integer.parseInt(matcher.group("productID")));
                         System.out.println(commodity.toString());
-                        commodity.setNumberOfVisits(commodity.getNumberOfScores()+1);
+                        commodity.setNumberOfVisits(commodity.getNumberOfScores() + 1);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -1637,16 +1636,21 @@ public class View {
         while (tmp.equalsIgnoreCase("Yes")) {
             System.out.println("Enter title");
             String title = scanner.nextLine();
-            System.out.println("Enter options");
-            HashSet<String> options = new HashSet<String>();
+            HashSet<String> options = null;
+            System.out.println("Is your field optional?");
             String input = scanner.next();
-            while (!input.equals("end")) {
-                options.add(input);
+            if (input.equalsIgnoreCase("Yes")) {
+                options = new HashSet<String>();
+                System.out.println("Enter options");
                 input = scanner.next();
+                while (!input.equals("end")) {
+                    options.add(input);
+                    input = scanner.next();
+                }
             }
             categorySpecifications.add(manageCategoryMenu.createCategorySpecification(title, options));
             System.out.println("Do you want to add another category specification?");
-            tmp = scanner.nextLine();
+            scanner.nextLine();
             tmp = scanner.nextLine();
         }
     }
@@ -1897,10 +1901,10 @@ public class View {
                     return;
                 }
                 if (command.matches("^show available sorts$")) {
-                    System.out.println("price, number of visits, average score");
+                    System.out.println("price, number of visits, average score, date");
                     return;
                 }
-                if (command.matches("sort (?<sort>\\S+)")) {
+                if (command.matches("sort (?<sort>\\S+ ?\\S+ ?\\S+)")) {
                     Matcher matcher = Pattern.compile("sort (?<sort>\\S+)").matcher(command);
                     matcher.matches();
                     try {
@@ -1958,6 +1962,7 @@ public class View {
             }
         };
     }
+
     private void customerMenuHelp() {
         System.out.println("1 - back\n" +
                 "2 - help\n" +

@@ -19,16 +19,20 @@ public class SortingMenu extends Menu {
 
     public void sort(String sort) throws Exception {
         currentSort = sort;
-        if (sort.equals("price")) {
+        if (sort.equalsIgnoreCase("price")) {
             Collections.sort(YaDataManager.getCommodities(), price);
             return;
         }
-        if (sort.equals("Number of visits")) {
+        if (sort.equalsIgnoreCase("Number of visits")) {
             Collections.sort(YaDataManager.getCommodities(), numberOfVisits);
             return;
         }
-        if (sort.equals("Average score")) {
+        if (sort.equalsIgnoreCase("Average score")) {
             Collections.sort(YaDataManager.getCommodities(), score);
+            return;
+        }
+        if (sort.equalsIgnoreCase("Date")){
+            Collections.sort(YaDataManager.getCommodities(), date);
             return;
         }
         throw new Exception("invalid sort");
