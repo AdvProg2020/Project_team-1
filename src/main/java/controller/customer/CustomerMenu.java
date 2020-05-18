@@ -1,7 +1,9 @@
-package controller;
+package controller.customer;
 
 import controller.comparator.Sort;
-import model.DiscountCode;
+import controller.share.Menu;
+import controller.share.MenuHandler;
+import model.commodity.DiscountCode;
 import model.Session;
 import model.account.PersonalAccount;
 import model.log.BuyLog;

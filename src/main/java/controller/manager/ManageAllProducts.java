@@ -1,7 +1,8 @@
-package controller;
+package controller.manager;
 
-import model.Commodity;
-import model.YaDataManager;
+import controller.share.Menu;
+import model.commodity.Commodity;
+import controller.data.YaDataManager;
 
 public class ManageAllProducts extends Menu {
     public void removeCommodity(int commodityId) throws Exception {

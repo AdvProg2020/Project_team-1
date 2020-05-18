@@ -1,4 +1,4 @@
-package model;
+package model.share;
 
 public interface Requestable {
     void setStatus(Status status);

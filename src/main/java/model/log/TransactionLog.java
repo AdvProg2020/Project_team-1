@@ -1,6 +1,6 @@
 package model.log;
 
-import model.Commodity;
+import model.commodity.Commodity;
 
 import java.util.Date;
 import java.util.Set;

@@ -1,7 +1,12 @@
-package controller;
+package controller.manager;
 
-import model.*;
+import controller.data.YaDataManager;
+import controller.share.Menu;
 import model.account.BusinessAccount;
+import model.commodity.Commodity;
+import model.commodity.Off;
+import model.share.Request;
+import model.share.Status;
 
 public class ManageRequestMenu extends Menu {
     public Request getRequestById(int id) throws Exception {

@@ -1,5 +1,5 @@
-import model.Category;
-import model.DataManager;
+import model.commodity.Category;
+import controller.data.DataManager;
 import model.account.BusinessAccount;
 import org.junit.Assert;
 

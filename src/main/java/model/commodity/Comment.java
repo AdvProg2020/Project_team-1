@@ -1,5 +1,7 @@
-package model;
+package model.commodity;
 
+import model.share.Requestable;
+import model.share.Status;
 import model.account.SimpleAccount;
 
 public class Comment implements Requestable {

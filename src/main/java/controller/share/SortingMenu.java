@@ -1,10 +1,10 @@
-package controller;
+package controller.share;
 
-import model.YaDataManager;
+import controller.data.YaDataManager;
 
 import java.util.Collections;
 
-import static model.Commodity.Comparators.*;
+import static model.commodity.Commodity.Comparators.*;
 
 public class SortingMenu extends Menu {
     private static String currentSort = "number of visits";

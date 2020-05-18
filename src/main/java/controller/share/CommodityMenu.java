@@ -1,7 +1,11 @@
-package controller;
+package controller.share;
 
 import controller.comparator.Sort;
+import controller.data.YaDataManager;
 import model.*;
+import model.commodity.Comment;
+import model.commodity.Commodity;
+import model.share.Status;
 
 import java.util.ArrayList;
 
@@ -35,7 +39,7 @@ public class CommodityMenu extends Menu {
     }
 
     public Commodity compare(int id) throws Exception {
-        Commodity comparingCommodity =YaDataManager.getCommodityById(id);
+        Commodity comparingCommodity = YaDataManager.getCommodityById(id);
         if (!commodity.getCategory().equals(comparingCommodity.getCategory())) {
             throw new Exception("to compare two products, they have to in the same category");
         }

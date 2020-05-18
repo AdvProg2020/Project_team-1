@@ -1,15 +1,17 @@
 package model;
 
+import controller.data.YaDataManager;
 import model.account.BusinessAccount;
 import model.account.SimpleAccount;
+import model.commodity.Category;
+import model.commodity.Commodity;
 import model.field.Field;
 import model.field.OptionalField;
+import model.share.Request;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class YaDataManagerTest {
 

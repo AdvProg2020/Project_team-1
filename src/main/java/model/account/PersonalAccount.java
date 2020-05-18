@@ -1,7 +1,7 @@
 package model.account;
 
-import model.Commodity;
-import model.DiscountCode;
+import model.commodity.Commodity;
+import model.commodity.DiscountCode;
 import model.log.BuyLog;
 
 import java.util.ArrayList;

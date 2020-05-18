@@ -1,5 +1,8 @@
-package model;
+package model.commodity;
 
+import model.share.Requestable;
+import model.share.Status;
+import controller.data.YaDataManager;
 import model.account.BusinessAccount;
 
 import java.util.ArrayList;

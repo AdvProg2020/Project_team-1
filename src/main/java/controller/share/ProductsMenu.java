@@ -1,15 +1,15 @@
-package controller;
+package controller.share;
 
-import model.Category;
-import model.Commodity;
-import model.YaDataManager;
+import model.commodity.Category;
+import model.commodity.Commodity;
+import controller.data.YaDataManager;
 import view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static model.Commodity.Comparators.*;
+import static model.commodity.Commodity.Comparators.*;
 
 public class ProductsMenu extends Menu {
     public ArrayList<Category> getAllCategories() throws IOException {
