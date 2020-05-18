@@ -228,7 +228,7 @@ public class View {
         String output = "";
         ArrayList<Request> allRequests = managerMenu.manageRequest();
         for (Request request : allRequests) {
-            output += "[" + request.getSimpleAccount().getUsername() + "]";
+            output += "[" + request.toString() + "]";
         }
         System.out.println(output);
     }
@@ -1464,7 +1464,7 @@ public class View {
 
     private void viewRequestDetails(int id) {
         try {
-            System.out.println(manageRequestMenu.getRequestById(id).getSimpleAccount().getUsername());
+            System.out.println(manageRequestMenu.getRequestById(id).toString());
         } catch (Exception e) {
             System.out.println("invalid id");
         }
@@ -1519,17 +1519,18 @@ public class View {
                 if (command.matches("^show products$")) {
                     String output = "products";
                     for (Commodity product : productsMenu.getProducts()) {
-                        output += "\n" + product.getInformation();
+                        output += "\n" + product.toString();
                     }
                     System.out.println(output);
                     return;
                 }
                 if (command.matches("^show product (?<productID>\\d+)$")) {
-                    Matcher matcher = Pattern.compile("^show roduct (?<productID>\\d+)$").matcher(command);
+                    Matcher matcher = Pattern.compile("^show product (?<productID>\\d+)$").matcher(command);
                     matcher.matches();
                     try {
                         Commodity commodity = productsMenu.getProducts(Integer.parseInt(matcher.group("productID")));
-                        System.out.println(commodity.getInformation());
+                        System.out.println(commodity.toString());
+                        commodity.setNumberOfVisits(commodity.getNumberOfScores()+1);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -2112,7 +2113,7 @@ public class View {
             }
             if (command.equalsIgnoreCase("login") || command.equalsIgnoreCase("register")) {
                 setLoginRegisterMenu();
-                return;
+                continue;
             }
             MenuHandler.getInstance().getCurrentMenu().commandProcess(command);
         }

@@ -124,7 +124,7 @@ public class YaDataManager {
     public static void removeManager(ManagerAccount managerAccount) throws IOException {
         ArrayList<ManagerAccount> managerAccounts = getManagers();
         for (ManagerAccount account : managerAccounts) {
-            if (account.equals(managerAccount)) {
+            if (account.getUsername().equals(managerAccount.getUsername())) {
                 managerAccounts.remove(account);
                 break;
             }
@@ -158,7 +158,7 @@ public class YaDataManager {
     public static void removeBusiness(BusinessAccount managerAccount) throws IOException {
         ArrayList<BusinessAccount> businessAccounts = getBusinesses();
         for (BusinessAccount account : businessAccounts) {
-            if (account.equals(managerAccount)) {
+            if (account.getUsername().equals(managerAccount.getUsername())) {
                 businessAccounts.remove(account);
                 break;
             }
@@ -192,7 +192,7 @@ public class YaDataManager {
     public static void removePerson(PersonalAccount personalAccount) throws IOException {
         ArrayList<PersonalAccount> personalAccounts = getPersons();
         for (PersonalAccount account : personalAccounts) {
-            if (account.equals(account)) {
+            if (account.getUsername().equals(personalAccount.getUsername())) {
                 personalAccounts.remove(account);
                 break;
             }
@@ -226,7 +226,7 @@ public class YaDataManager {
     public static void removeDiscountCode(DiscountCode discountCode) throws IOException {
         ArrayList<DiscountCode> discountCodes = getDiscountCodes();
         for (DiscountCode code : discountCodes) {
-            if (code.equals(discountCode)) {
+            if (code.getCode().equals(discountCode.getCode())) {
                 discountCodes.remove(code);
                 break;
             }
@@ -260,7 +260,7 @@ public class YaDataManager {
     public static void removeCommodity(Commodity commodity) throws IOException {
         ArrayList<Commodity> commodities = getCommodities();
         for (Commodity commodityAlt : commodities) {
-            if (commodityAlt.equals(commodity)) {
+            if (commodityAlt.getCommodityId() == commodity.getCommodityId()) {
                 commodities.remove(commodityAlt);
                 break;
             }
@@ -294,7 +294,7 @@ public class YaDataManager {
     public static void removeRequest(Request request) throws IOException {
         ArrayList<Request> requests = getRequests();
         for (Request req : requests) {
-            if (req.equals(request)) {
+            if (req.getId() == request.getId()) {
                 requests.remove(req);
                 break;
             }
@@ -328,7 +328,7 @@ public class YaDataManager {
     public static void removeOff(Off off) throws IOException {
         ArrayList<Off> offs = getOffs();
         for (Off of : offs) {
-            if (of.equals(off)) {
+            if (of.getOffID() == off.getOffID()) {
                 offs.remove(of);
                 break;
             }
@@ -362,7 +362,7 @@ public class YaDataManager {
     public static void removeCategory(Category category) throws IOException {
         ArrayList<Category> categories = getCategories();
         for (Category cat : categories) {
-            if (cat.equals(category)) {
+            if (cat.getName().equals(category.getName())) {
                 categories.remove(cat);
                 break;
             }

@@ -30,6 +30,7 @@ public class Menu {
     }
 
     public void products(){
+        View.productsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
     }
 
