@@ -1,10 +1,10 @@
 package controller.customer;
 
+import controller.comparator.Sort;
 import controller.data.YaDataManager;
 import controller.share.Menu;
 import controller.share.MenuHandler;
-import controller.comparator.Sort;
-import model.*;
+import model.Session;
 import model.account.BusinessAccount;
 import model.account.PersonalAccount;
 import model.commodity.Commodity;
@@ -20,7 +20,7 @@ import static view.View.cartMenu;
 import static view.View.commodityMenu;
 
 public class CartMenu extends Menu {
-    private String productSortType = "number of visits";
+    private String productSortType = "visits";
     public int calculateTotalPrice() {
         int price = 0;
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
@@ -37,10 +37,14 @@ public class CartMenu extends Menu {
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
         if (cart.containsKey(commodity)) {
             if (cart.get(commodity) - 1 == 0) {
+                YaDataManager.removePerson(personalAccount);
                 cart.remove(commodity);
+                YaDataManager.addPerson(personalAccount);
                 throw new Exception("successfully removed");
             }
+            YaDataManager.removePerson(personalAccount);
             cart.put(commodity, cart.get(commodity) - 1);
+            YaDataManager.addPerson(personalAccount);
             throw new Exception("successfully decreased");
         }
         throw new Exception("this commodity isn't in your cart");
@@ -50,11 +54,14 @@ public class CartMenu extends Menu {
         Commodity commodity = YaDataManager.getCommodityById(id);
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
+        YaDataManager.removePerson(personalAccount);
         if (cart.containsKey(commodity)) {
             cart.put(commodity, cart.get(commodity) + 1);
+            YaDataManager.addPerson(personalAccount);
             throw new Exception("successfully increased");
         }
         cart.put(commodity, 1);
+        YaDataManager.addPerson(personalAccount);
         throw new Exception("successfully added");
     }
 
@@ -83,7 +90,7 @@ public class CartMenu extends Menu {
         return 0;
     }
 
-    public int useDiscountCode(int price, DiscountCode discountCode) {
+    private int useDiscountCode(int price, DiscountCode discountCode) {
         if (discountCode.getMaximumDiscountPrice() <= discountCode.getDiscountPercentage() * price / 100) {
             price -= discountCode.getMaximumDiscountPrice();
         } else {
@@ -92,40 +99,52 @@ public class CartMenu extends Menu {
         return price;
     }
 
-    public void purchase(int price, DiscountCode discountCode) throws Exception {
+    public void purchase(DiscountCode discountCode) throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+        int price = calculateTotalPrice();
+        if (discountCode != null)
+            price = cartMenu.useDiscountCode(price, discountCode);
         if (price > account.getCredit()) {
             account.dontUseDiscountCode(discountCode);
             throw new Exception("you don't have enough money to pay");
         }
+        YaDataManager.removePerson(account);
         account.addToCredit(-price);
         BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, calculateTotalPrice() -
                 price, discountCode);
         account.addBuyLog(buyLog);
+        YaDataManager.addPerson(account);
         makeSellLogs(buyLog.getSellers(), account);
     }
 
     private void makeSellLogs(Set<BusinessAccount> sellers, PersonalAccount account) throws IOException {
-        for (BusinessAccount seller : sellers) {
-            Set<Commodity> commodities = new HashSet<>();
-            double received = 0;
-            double deducted = 0;
-            double discount;
-            for (Commodity commodity : account.getCart().keySet()) {
-                if (commodity.getSeller().getUsername().equals(seller.getUsername())) {
-                    commodities.add(commodity);
-                    discount = (double) getDiscountPercentage(commodity) / 100;
-                    deducted += discount * commodity.getPrice();
-                    received += commodity.getPrice() - deducted;
+        try {
+            for (BusinessAccount seller : sellers) {
+                Set<Commodity> commodities = new HashSet<>();
+                double received = 0;
+                double deducted = 0;
+                double discount;
+                for (Commodity commodity : account.getCart().keySet()) {
+                    if (commodity.getSeller().getUsername().equals(seller.getUsername())) {
+                        commodities.add(commodity);
+                        discount = (double) getDiscountPercentage(commodity) / 100;
+                        deducted += discount * commodity.getPrice();
+                        received += commodity.getPrice() - deducted;
+                    }
                 }
+                YaDataManager.removeBusiness(seller);
+                seller.addSellLog(new SellLog(new Date(), (int) received, (int) deducted, commodities, account));
+                YaDataManager.addBusiness(seller);
             }
-            seller.addSellLog(new SellLog(new Date(), (int) received, (int) deducted, commodities, account));
+        } catch (NullPointerException ignored) {
         }
     }
 
     public void goToCommodityMenu(int id) throws Exception {
         Commodity commodity = YaDataManager.getCommodityById(id);
+        YaDataManager.removeCommodity(commodity);
         commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
+        YaDataManager.addCommodity(commodity);
         MenuHandler.getInstance().setCurrentMenu(commodityMenu);
         commodityMenu.setCommodity(commodity);
         commodityMenu.setPreviousMenu(cartMenu);

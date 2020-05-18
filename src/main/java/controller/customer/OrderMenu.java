@@ -1,10 +1,11 @@
 package controller.customer;
 
+import controller.data.YaDataManager;
 import controller.share.Menu;
-import model.commodity.Commodity;
-import model.commodity.Score;
 import model.Session;
 import model.account.PersonalAccount;
+import model.commodity.Commodity;
+import model.commodity.Score;
 import model.log.BuyLog;
 
 public class OrderMenu extends Menu {
@@ -24,7 +25,9 @@ public class OrderMenu extends Menu {
             for (Commodity commodity : log.getCommodities()) {
                 if (commodity.getCommodityId() == id) {
                     new Score(account, rate, commodity);
+                    YaDataManager.removeCommodity(commodity);
                     commodity.updateAverageScore(rate);
+                    YaDataManager.addCommodity(commodity);
                     return;
                 }
             }

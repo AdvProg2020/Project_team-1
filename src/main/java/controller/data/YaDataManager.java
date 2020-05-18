@@ -14,7 +14,10 @@ import model.commodity.DiscountCode;
 import model.commodity.Off;
 import model.share.Request;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -478,7 +481,7 @@ public class YaDataManager {
             if (discountCode.getCode().equals(code))
                 return discountCode;
         }
-        throw new Exception();
+        throw new Exception("this code is not valid");
     }
 
     public static Commodity getCommodityById(int id) throws Exception {

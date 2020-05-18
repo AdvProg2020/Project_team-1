@@ -518,7 +518,7 @@ public class View {
                     orderMenu.products();
                     return;
                 }
-                if (command.matches("show order (?<id>\\S+)")) {
+                if (command.matches("show order (?<id>.+)")) {
                     showOrder(command);
                 } else if (command.matches("rate (?<id>\\d+) (?<rate>[1-5])")) {
                     rate(command);
@@ -545,7 +545,7 @@ public class View {
     }
 
     private void showOrder(String command) {
-        Matcher matcher = Pattern.compile("show order (?<id>\\S+)").matcher(command);
+        Matcher matcher = Pattern.compile("show order (?<id>.+)").matcher(command);
         matcher.matches();
         int id = Integer.parseInt(matcher.group("id"));
         try {
@@ -674,12 +674,10 @@ public class View {
         System.out.println("please enter a discount code or enter nothing");
         String code = scanner.nextLine();
         boolean done = false;
-        int price = cartMenu.calculateTotalPrice();
         DiscountCode discountCode = null;
         while (!done) {
             try {
                 discountCode = cartMenu.getDiscountCodeWithCode(code);
-                price = cartMenu.useDiscountCode(price, discountCode);
                 done = true;
             } catch (Exception e) {
                 System.out.println(e.getMessage() + '\n' +
@@ -688,7 +686,7 @@ public class View {
             }
         }
         try {
-            cartMenu.purchase(price, discountCode);
+            cartMenu.purchase(discountCode);
             System.out.println("thanks for your purchase, see you soon!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -1062,7 +1060,6 @@ public class View {
                     }
                 } catch (Exception e) {
                     System.out.println(e.getMessage() + "salam");
-                    e.printStackTrace();
                 }
             }
         };
@@ -1564,7 +1561,7 @@ public class View {
                     try {
                         Commodity commodity = productsMenu.getProducts(Integer.parseInt(matcher.group("productID")));
                         System.out.println(commodity.toString());
-                        commodity.setNumberOfVisits(commodity.getNumberOfScores()+1);
+                        commodity.setNumberOfVisits(commodity.getNumberOfScores() + 1);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -1659,16 +1656,21 @@ public class View {
         while (tmp.equalsIgnoreCase("Yes")) {
             System.out.println("Enter title");
             String title = scanner.nextLine();
-            System.out.println("Enter options");
-            HashSet<String> options = new HashSet<String>();
+            HashSet<String> options = null;
+            System.out.println("Is your field optional?");
             String input = scanner.next();
-            while (!input.equals("end")) {
-                options.add(input);
+            if (input.equalsIgnoreCase("Yes")) {
+                options = new HashSet<String>();
+                System.out.println("Enter options");
                 input = scanner.next();
+                while (!input.equals("end")) {
+                    options.add(input);
+                    input = scanner.next();
+                }
             }
             categorySpecifications.add(manageCategoryMenu.createCategorySpecification(title, options));
             System.out.println("Do you want to add another category specification?");
-            tmp = scanner.nextLine();
+            scanner.nextLine();
             tmp = scanner.nextLine();
         }
     }
@@ -1705,7 +1707,7 @@ public class View {
                 manageCategoryMenu.updateFile(category);
                 System.out.println("category updated");
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());;
             }
 
             return;
@@ -1740,14 +1742,20 @@ public class View {
     private void addCategorySpecification(Category category) {
         System.out.println("Enter title");
         String title = scanner.nextLine();
-        System.out.println("Enter options");
-        HashSet<String> options = new HashSet<String>();
-        String input = scanner.next();
-        while (!input.equals("end")) {
-            options.add(input);
+        HashSet<String> options = null;
+        System.out.println("Is your field optional?");
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("yes")) {
+            System.out.println("Enter options");
+            options = new HashSet<String>();
             input = scanner.next();
+            while (!input.equals("end")) {
+                options.add(input);
+                input = scanner.next();
+            }
+            String tmp = scanner.nextLine();
         }
-        String tmp = scanner.nextLine();
+
         manageCategoryMenu.addCategorySpecification(options, title, category);
     }
 
@@ -1919,10 +1927,10 @@ public class View {
                     return;
                 }
                 if (command.matches("^show available sorts$")) {
-                    System.out.println("price, number of visits, average score");
+                    System.out.println("price, number of visits, average score, date");
                     return;
                 }
-                if (command.matches("sort (?<sort>\\S+)")) {
+                if (command.matches("sort (?<sort>\\S+ ?\\S+ ?\\S+)")) {
                     Matcher matcher = Pattern.compile("sort (?<sort>\\S+)").matcher(command);
                     matcher.matches();
                     try {
@@ -1980,21 +1988,20 @@ public class View {
             }
         };
     }
+
     private void customerMenuHelp() {
         System.out.println("1 - back\n" +
                 "2 - help\n" +
-                "3 - login\n" +
-                "4 - logout\n" +
-                "5 - products\n" +
-                "6 - purchase\n" +
-                "7 - register\n" +
-                "8 - sort discounts by []\n" +
-                "9 - sort orders by [discount|payed]\n" +
-                "10 - view balance\n" +
-                "11 - view cart\n" +
-                "12 - view discount codes\n" +
-                "13 - view orders\n" +
-                "14 - view personal info");
+                "3 - logout\n" +
+                "4 - products\n" +
+                "5 - purchase\n" +
+                "6 - sort discounts by []\n" +
+                "7 - sort orders by [discount|payed]\n" +
+                "8 - view balance\n" +
+                "9 - view cart\n" +
+                "10 - view discount codes\n" +
+                "11 - view orders\n" +
+                "12 - view personal info");
     }
 
     private void cartMenuHelp() {
@@ -2002,26 +2009,22 @@ public class View {
                 "2 - decrease [productId]\n" +
                 "3 - increase [productId]\n" +
                 "4 - help\n" +
-                "5 - login\n" +
-                "6 - logout\n" +
-                "7 - products\n" +
-                "8 - purchase\n" +
-                "9 - register\n" +
-                "10 - show products\n" +
-                "11 - show total price\n" +
-                "12 - sort products by [average score|brand|id|name|number of scores|price|visits]\n" +
-                "13 - view [productId]");
+                "5 - logout\n" +
+                "6 - products\n" +
+                "7 - purchase\n" +
+                "8 - show products\n" +
+                "9 - show total price\n" +
+                "10 - sort products by [average score|brand|id|name|number of scores|price|visits]\n" +
+                "11 - view [productId]");
     }
 
     private void orderMenuHelp() {
         System.out.println("1 - back\n" +
-                "2- help\n" +
-                "3 - login\n" +
-                "4 - logout\n" +
-                "5 - products\n" +
-                "6 - rate [productId] [1-5]\n" +
-                "7 - register\n" +
-                "8 - show order [orderId]");
+                "2 - help\n" +
+                "3 - logout\n" +
+                "4 - products\n" +
+                "5 - rate [productId] [1-5]\n" +
+                "6 - show order [orderId]");
     }
 
     private void digestMenuHelp() {

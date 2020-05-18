@@ -1,11 +1,11 @@
 package model.commodity;
 
-import model.Statistics;
-import model.share.Requestable;
-import model.share.Status;
 import controller.data.YaDataManager;
+import model.Statistics;
 import model.account.SimpleAccount;
 import model.field.Field;
+import model.share.Requestable;
+import model.share.Status;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -231,6 +231,13 @@ public class Commodity implements Requestable {
     }
 
     public static class Comparators {
+
+        public static Comparator<Commodity> date = new Comparator<Commodity>() {
+            @Override
+            public int compare(Commodity o1, Commodity o2) {
+                return o1.getCommodityId() - o2.getCommodityId();
+            }
+        };
 
         public static Comparator<Commodity> price = new Comparator<Commodity>() {
             @Override
