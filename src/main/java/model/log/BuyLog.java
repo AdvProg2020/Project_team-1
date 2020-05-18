@@ -1,9 +1,9 @@
 package model.log;
 
-import model.commodity.Commodity;
-import model.commodity.DiscountCode;
 import model.account.BusinessAccount;
 import model.account.SimpleAccount;
+import model.commodity.Commodity;
+import model.commodity.DiscountCode;
 
 import java.io.IOException;
 import java.util.Date;
@@ -56,8 +56,10 @@ public class BuyLog extends TransactionLog {
     @Override
     protected String generateLogID() {
         String output = "BuyLog" + super.generateLogID();
-        for (SimpleAccount seller : sellers) {
-            output += seller.getUsername();
+        if (sellers != null) {
+            for (SimpleAccount seller : sellers) {
+                output += seller.getUsername();
+            }
         }
         return output;
     }

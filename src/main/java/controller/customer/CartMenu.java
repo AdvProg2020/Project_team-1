@@ -1,10 +1,10 @@
 package controller.customer;
 
+import controller.comparator.Sort;
 import controller.data.YaDataManager;
 import controller.share.Menu;
 import controller.share.MenuHandler;
-import controller.comparator.Sort;
-import model.*;
+import model.Session;
 import model.account.BusinessAccount;
 import model.account.PersonalAccount;
 import model.commodity.Commodity;
@@ -20,7 +20,7 @@ import static view.View.cartMenu;
 import static view.View.commodityMenu;
 
 public class CartMenu extends Menu {
-    private String productSortType = "number of visits";
+    private String productSortType = "visits";
     public int calculateTotalPrice() {
         int price = 0;
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
@@ -83,7 +83,7 @@ public class CartMenu extends Menu {
         return 0;
     }
 
-    public int useDiscountCode(int price, DiscountCode discountCode) {
+    private int useDiscountCode(int price, DiscountCode discountCode) {
         if (discountCode.getMaximumDiscountPrice() <= discountCode.getDiscountPercentage() * price / 100) {
             price -= discountCode.getMaximumDiscountPrice();
         } else {
@@ -92,8 +92,11 @@ public class CartMenu extends Menu {
         return price;
     }
 
-    public void purchase(int price, DiscountCode discountCode) throws Exception {
+    public void purchase(DiscountCode discountCode) throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+        int price = calculateTotalPrice();
+        if (discountCode != null)
+            price = cartMenu.useDiscountCode(price, discountCode);
         if (price > account.getCredit()) {
             account.dontUseDiscountCode(discountCode);
             throw new Exception("you don't have enough money to pay");
@@ -106,20 +109,23 @@ public class CartMenu extends Menu {
     }
 
     private void makeSellLogs(Set<BusinessAccount> sellers, PersonalAccount account) throws IOException {
-        for (BusinessAccount seller : sellers) {
-            Set<Commodity> commodities = new HashSet<>();
-            double received = 0;
-            double deducted = 0;
-            double discount;
-            for (Commodity commodity : account.getCart().keySet()) {
-                if (commodity.getSeller().getUsername().equals(seller.getUsername())) {
-                    commodities.add(commodity);
-                    discount = (double) getDiscountPercentage(commodity) / 100;
-                    deducted += discount * commodity.getPrice();
-                    received += commodity.getPrice() - deducted;
+        try {
+            for (BusinessAccount seller : sellers) {
+                Set<Commodity> commodities = new HashSet<>();
+                double received = 0;
+                double deducted = 0;
+                double discount;
+                for (Commodity commodity : account.getCart().keySet()) {
+                    if (commodity.getSeller().getUsername().equals(seller.getUsername())) {
+                        commodities.add(commodity);
+                        discount = (double) getDiscountPercentage(commodity) / 100;
+                        deducted += discount * commodity.getPrice();
+                        received += commodity.getPrice() - deducted;
+                    }
                 }
+                seller.addSellLog(new SellLog(new Date(), (int) received, (int) deducted, commodities, account));
             }
-            seller.addSellLog(new SellLog(new Date(), (int) received, (int) deducted, commodities, account));
+        } catch (NullPointerException ignored) {
         }
     }
 
