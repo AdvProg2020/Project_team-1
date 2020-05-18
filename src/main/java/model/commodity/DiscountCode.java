@@ -122,14 +122,19 @@ public class DiscountCode {
 
     @Override
     public String toString() {
+        StringBuilder accountsUserName = new StringBuilder();
+        for (SimpleAccount account : accounts) {
+            accountsUserName.append(account.getUsername());
+            accountsUserName.append('-');
+        }
         return "DiscountCode{" +
                 "code='" + code + '\'' +
-                ", startDate=" + startDate +
-                ", finishDate=" + finishDate +
+                ", startDate=" + startDate.toString() +
+                ", finishDate=" + finishDate.toString() +
                 ", discountPercentage=" + discountPercentage +
                 ", maximumDiscountPrice=" + maximumDiscountPrice +
                 ", maximumNumberOfUses=" + maximumNumberOfUses +
-                ", accounts=" + accounts +
+                ", accounts=" + accountsUserName.toString() +
                 '}';
     }
 
