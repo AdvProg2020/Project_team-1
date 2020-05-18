@@ -113,11 +113,6 @@ public abstract class SimpleAccount {
     @Override
     public String toString() {
         return "SimpleAccount{" +
-                "VALID_USERNAME='" + VALID_USERNAME + '\'' +
-                ", VALID_FIRST_NAME_AND_LAST_NAME='" + VALID_FIRST_NAME_AND_LAST_NAME + '\'' +
-                ", VALID_EMAIL='" + VALID_EMAIL + '\'' +
-                ", VALID_PHONE_NUMBER='" + VALID_PHONE_NUMBER + '\'' +
-                ", VALID_PASSWORD='" + VALID_PASSWORD + '\'' +
                 ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

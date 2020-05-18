@@ -226,7 +226,7 @@ public class View {
         String output = "";
         ArrayList<Request> allRequests = managerMenu.manageRequest();
         for (Request request : allRequests) {
-            output += "[" + request.getSimpleAccount().getUsername() + "]";
+            output += "[" + request.toString() + "]";
         }
         System.out.println(output);
     }
@@ -1462,7 +1462,7 @@ public class View {
 
     private void viewRequestDetails(int id) {
         try {
-            System.out.println(manageRequestMenu.getRequestById(id).getSimpleAccount().getUsername());
+            System.out.println(manageRequestMenu.getRequestById(id).toString());
         } catch (Exception e) {
             System.out.println("invalid id");
         }
