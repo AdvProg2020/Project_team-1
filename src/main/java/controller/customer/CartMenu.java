@@ -35,19 +35,25 @@ public class CartMenu extends Menu {
         Commodity commodity = YaDataManager.getCommodityById(id);
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
-        if (cart.containsKey(commodity)) {
-            if (cart.get(commodity) - 1 == 0) {
+        if (personalAccount.hasThisInCart(commodity)) {
+            if (personalAccount.getAmount(commodity) == 1) {
+                personalAccount.removeFromCart(commodity);
                 YaDataManager.removePerson(personalAccount);
-                cart.remove(commodity);
                 YaDataManager.addPerson(personalAccount);
                 throw new Exception("successfully removed");
             }
+            int amount = personalAccount.getAmount(commodity) - 1;
+            personalAccount.removeFromCart(commodity);
             YaDataManager.removePerson(personalAccount);
-            cart.put(commodity, cart.get(commodity) - 1);
+            cart.put(commodity, amount);
             YaDataManager.addPerson(personalAccount);
             throw new Exception("successfully decreased");
         }
-        throw new Exception("this commodity isn't in your cart");
+        throw new Exception("this product isn't in your cart");
+    }
+
+    public int getAmountInCart(Commodity commodity) throws Exception {
+        return ((PersonalAccount) Session.getOnlineAccount()).getAmount(commodity);
     }
 
     public void increase(int id) throws Exception {
@@ -55,9 +61,9 @@ public class CartMenu extends Menu {
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
         YaDataManager.removePerson(personalAccount);
-        if (cart.containsKey(commodity)) {
-            int amount = cart.get(commodity);
-            cart.remove(commodity);
+        if (personalAccount.hasThisInCart(commodity)) {
+            int amount = personalAccount.getAmount(commodity);
+            personalAccount.removeFromCart(commodity);
             cart.put(commodity, amount + 1);
             YaDataManager.addPerson(personalAccount);
             throw new Exception("successfully increased");

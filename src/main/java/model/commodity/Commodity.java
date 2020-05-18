@@ -269,8 +269,8 @@ public class Commodity implements Requestable {
     }
 
     public String getInformation() {
-        return "commodity ID: " + this.commodityId + "\n" +
-                "commodity name: " + this.name;
+        return "commodity ID: " + this.commodityId +
+                " ,commodity name: " + this.name;
     }
 
     @Override
