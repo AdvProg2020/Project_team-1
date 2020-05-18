@@ -1946,7 +1946,6 @@ public class View {
             }
         };
     }
-
     private void customerMenuHelp() {
         System.out.println("1 - back\n" +
                 "2 - help\n" +
