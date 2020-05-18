@@ -61,7 +61,9 @@ public class YaDataManager {
     private static void initializeDataFiles() {
         try {
             if (statisticsJson.exists()) {
-                updateStats();
+                FileReader fileReader = new FileReader(statisticsJson);
+                Statistics.setUpdatedStats(yaGson.fromJson(fileReader, Statistics.class));
+                fileReader.close();
             } else {
                 Statistics.setUpdatedStats(new Statistics());
                 FileWriter statisticsFileWriter = new FileWriter(statisticsJson);
@@ -507,8 +509,8 @@ public class YaDataManager {
     }
 
     public static void updateStats() throws IOException {
-        FileReader fileReader = new FileReader(statisticsJson);
-        Statistics.setUpdatedStats(yaGson.fromJson(fileReader, Statistics.class));
-        fileReader.close();
+        FileWriter statisticsFileWriter = new FileWriter(statisticsJson);
+        yaGson.toJson(Statistics.updatedStats, statisticsFileWriter);
+        statisticsFileWriter.close();
     }
 }
