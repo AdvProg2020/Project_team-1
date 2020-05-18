@@ -1,5 +1,6 @@
 package model.commodity;
 
+import model.Statistics;
 import model.share.Requestable;
 import model.share.Status;
 import controller.data.YaDataManager;
@@ -10,7 +11,6 @@ import java.util.Date;
 
 public class Off implements Requestable {
 
-    private static int lastId = 0;
     private int offID;
     private BusinessAccount owner;
     private ArrayList<Commodity> commodities;
@@ -26,7 +26,7 @@ public class Off implements Requestable {
         setDiscountPercent(discountPercent);
         status = Status.UNDER_CHECKING_FOR_CREATE;
         this.commodities = commodities;
-        offID = lastId++;
+        offID = Statistics.updatedStats.offId();
     }
 
     public Off(Off off) {

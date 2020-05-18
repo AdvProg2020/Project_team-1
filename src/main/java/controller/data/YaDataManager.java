@@ -3,6 +3,7 @@ package controller.data;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
+import model.Statistics;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 
 public class YaDataManager {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+
+    private static final File statisticsJson;
 
     private static final File managersJson;
 
@@ -38,6 +41,7 @@ public class YaDataManager {
 
     static {
         initializeDataDirectories();
+        statisticsJson = new File("data/statistics.json");
         managersJson = new File("data/accounts/managers.json");
         businessesJson = new File("data/accounts/businesses.json");
         personsJson = new File("data/accounts/persons.json");
@@ -50,16 +54,20 @@ public class YaDataManager {
     }
 
     private static void initializeDataDirectories() {
-        if (new File("data").mkdir() && new File("data/accounts").mkdir()) {
-            System.out.println("data directories created");
-        } else {
-            System.out.println("checking data directories");
-        }
-
+        new File("data").mkdir();
+        new File("data/accounts").mkdir();
     }
 
     private static void initializeDataFiles() {
         try {
+            if (statisticsJson.exists()) {
+                updateStats();
+            } else {
+                Statistics.setUpdatedStats(new Statistics());
+                FileWriter statisticsFileWriter = new FileWriter(statisticsJson);
+                yaGson.toJson(Statistics.updatedStats, statisticsFileWriter);
+                statisticsFileWriter.close();
+            }
             if (!managersJson.exists()) {
                 FileWriter allManagersFileWriter = new FileWriter(managersJson);
                 yaGson.toJson(new ArrayList<ManagerAccount>(), allManagersFileWriter);
@@ -496,5 +504,11 @@ public class YaDataManager {
             }
         }
         return false;
+    }
+
+    public static void updateStats() throws IOException {
+        FileReader fileReader = new FileReader(statisticsJson);
+        Statistics.setUpdatedStats(yaGson.fromJson(fileReader, Statistics.class));
+        fileReader.close();
     }
 }

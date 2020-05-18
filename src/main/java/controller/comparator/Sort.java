@@ -51,7 +51,7 @@ public class Sort {
             case "price":
                 commodities.sort(new ProductPriceComparator());
                 break;
-            case "number of visits":
+            case "visits":
                 commodities.sort(new ProductVisitsComparator());
                 break;
             case "number of scores":
@@ -67,10 +67,10 @@ public class Sort {
 
     public static void sortBuyLogArrayList(ArrayList<BuyLog> buyLogs, String field) throws Exception {
         switch (field) {
-            case "payed money":
+            case "payed":
                 buyLogs.sort(new PayedMoneyComparator());
                 break;
-            case "deducted money":
+            case "discount":
                 buyLogs.sort(new DeductedMoneyComparator());
                 break;
             default:

@@ -12,7 +12,7 @@ import controller.reseller.ManageResellerOffsMenu;
 import controller.reseller.ManageResellerProductsMenu;
 import controller.reseller.ResellerMenu;
 import controller.share.*;
-import model.*;
+import model.Session;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
@@ -157,6 +157,10 @@ public class View {
                 comments();
             } else if (command.matches("sort comments by (?<field>\\w+)")) {
                 sortComments(command);
+            } else if (command.equals("back")) {
+                commodityMenu.goToPreviousMenu();
+            } else if (command.equals("help")) {
+                commodityMenuHelp();
             } else System.out.println("invalid command");
         };
     }
@@ -543,7 +547,7 @@ public class View {
     private void showOrder(String command) {
         Matcher matcher = Pattern.compile("show order (?<id>\\S+)").matcher(command);
         matcher.matches();
-        String id = matcher.group("id");
+        int id = Integer.parseInt(matcher.group("id"));
         try {
             BuyLog log = orderMenu.getOrderWithId(id);
             System.out.println(log.toString());
@@ -1380,7 +1384,9 @@ public class View {
                         offMenu.products();
                         return;
                     }
-                    if (command.equalsIgnoreCase("offs")) {
+                    if (command.matches("sort \\w+ \\w+")) {
+                        sortOffs(command);
+                    } else if (command.equalsIgnoreCase("offs")) {
                         showOffs();
                     } else if (command.matches("^show product \\w+$")) {
                         showOffProduct(command);
@@ -1396,6 +1402,14 @@ public class View {
                 }
             }
         };
+    }
+
+    public void sortOffs(String command) throws Exception {
+        Matcher matcher = Pattern.compile("sort (?<field>\\w+ \\w+)").matcher(command);
+        matcher.matches();
+        for (Off off : offMenu.sortOffs(matcher.group("field"))) {
+            System.out.println(off.toString());
+        }
     }
 
     private void showOffs() throws Exception {
@@ -1415,7 +1429,9 @@ public class View {
         System.out.println("1 - offs\n" +
                 "2 - show product [productId]\n" +
                 "3 - logout\n" +
-                "4 - help");
+                "4 - sort[off id | start time | end time | discount percent]\n" +
+                "5 - help\n" +
+                "6 - logout");
     }
 
     private void initializeManageRequestMenuCommandProcessor() {
@@ -1942,51 +1958,83 @@ public class View {
             }
         };
     }
-
     private void customerMenuHelp() {
-        System.out.println("back\n" +
-                "help\n" +
-                "products\n" +
-                "purchase\n" +
-                "view balance\n" +
-                "view cart\n" +
-                "view discount codes\n" +
-                "view orders\n" +
-                "view personal info");
+        System.out.println("1 - back\n" +
+                "2 - help\n" +
+                "3 - login\n" +
+                "4 - logout\n" +
+                "5 - products\n" +
+                "6 - purchase\n" +
+                "7 - register\n" +
+                "8 - sort discounts by []\n" +
+                "9 - sort orders by [discount|payed]\n" +
+                "10 - view balance\n" +
+                "11 - view cart\n" +
+                "12 - view discount codes\n" +
+                "13 - view orders\n" +
+                "14 - view personal info");
     }
 
     private void cartMenuHelp() {
-        System.out.println("back\n" +
-                "decrease [productId]\n" +
-                "increase [productId]\n" +
-                "help\n" +
-                "products\n" +
-                "purchase\n" +
-                "show products\n" +
-                "show total price\n" +
-                "view [productId]");
+        System.out.println("1 - back\n" +
+                "2 - decrease [productId]\n" +
+                "3 - increase [productId]\n" +
+                "4 - help\n" +
+                "5 - login\n" +
+                "6 - logout\n" +
+                "7 - products\n" +
+                "8 - purchase\n" +
+                "9 - register\n" +
+                "10 - show products\n" +
+                "11 - show total price\n" +
+                "12 - sort products by [average score|brand|id|name|number of scores|price|visits]\n" +
+                "13 - view [productId]");
     }
 
     private void orderMenuHelp() {
-        System.out.println("back\n" +
-                "help\n" +
-                "products\n" +
-                "rate [productId] [1-5]\n" +
-                "show order [orderId]");
+        System.out.println("1 - back\n" +
+                "2- help\n" +
+                "3 - login\n" +
+                "4 - logout\n" +
+                "5 - products\n" +
+                "6 - rate [productId] [1-5]\n" +
+                "7 - register\n" +
+                "8 - show order [orderId]");
     }
 
     private void digestMenuHelp() {
-        System.out.println("add to cart\n" +
-                "back\n" +
-                "help\n" +
-                "products");
+        System.out.println("1 - add to cart\n" +
+                "2 - back\n" +
+                "3 - help\n" +
+                "4 - login\n" +
+                "5 - logout\n" +
+                "6 - products\n" +
+                "7 - register");
     }
 
     private void commentsMenuHelp() {
-        System.out.println("add comment\n" +
-                "back\n" +
-                "help\n" +
-                "products");
+        System.out.println("1 - add comment\n" +
+                "2 - back\n" +
+                "3 - help\n" +
+                "4 - login\n" +
+                "5 - logout\n" +
+                "6 - products\n" +
+                "7 - register");
+    }
+
+
+    private void commodityMenuHelp() {
+        System.out.println("1 - attributes\n" +
+                "2 - back\n" +
+                "3 - comments\n" +
+                "4 - compare [productId]\n" +
+                "5 - digest\n" +
+                "6 - help\n" +
+                "7 - login\n" +
+                "8 - logout\n" +
+                "9 - products\n" +
+                "10 - register\n" +
+                "11 - sort comments by [content|title]");
     }
 
     private void logout() {

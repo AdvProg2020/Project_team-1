@@ -3,6 +3,7 @@ package model.log;
 import model.commodity.Commodity;
 import model.account.SimpleAccount;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Set;
 
@@ -13,12 +14,11 @@ public class SellLog extends TransactionLog {
     private Boolean isCommodityDelivered;
 
     public SellLog(Date date, int receivedMoney, int deductedMoneyOnSale, Set<Commodity> soledCommodities,
-                   SimpleAccount buyer) {
+                   SimpleAccount buyer) throws IOException {
         super(date, soledCommodities);
         this.receivedMoney = receivedMoney;
         this.deductedMoneyOnSale = deductedMoneyOnSale;
         this.buyer = buyer;
-        logId = generateLogID();
         isCommodityDelivered = false;
     }
 

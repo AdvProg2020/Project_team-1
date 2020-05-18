@@ -8,10 +8,10 @@ import model.account.PersonalAccount;
 import model.log.BuyLog;
 
 public class OrderMenu extends Menu {
-    public BuyLog getOrderWithId(String id) throws Exception {
+    public BuyLog getOrderWithId(int id) throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         for (BuyLog log : account.getBuyLogs()) {
-            if (log.getLogId().equals(id)) {
+            if (log.getLogId() == id) {
                 return log;
             }
         }

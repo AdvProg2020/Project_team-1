@@ -3,9 +3,9 @@ package controller.customer;
 import controller.comparator.Sort;
 import controller.share.Menu;
 import controller.share.MenuHandler;
-import model.commodity.DiscountCode;
 import model.Session;
 import model.account.PersonalAccount;
+import model.commodity.DiscountCode;
 import model.log.BuyLog;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.Set;
 import static view.View.*;
 
 public class CustomerMenu extends Menu {
-    private String orderSortType = "payed money";
+    private String orderSortType = "payed";
     public double getBalance() {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         return account.getCredit();
