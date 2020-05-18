@@ -1717,7 +1717,7 @@ public class View {
 
     }
 
-    private void addCategorySpecification(Category category) {
+    private void addCategorySpecification(Category category) throws IOException {
         System.out.println("Enter title");
         String title = scanner.nextLine();
         HashSet<String> options = null;
@@ -1953,12 +1953,12 @@ public class View {
                     return;
                 }
                 if (command.matches("remove (?<productId>\\d+)")) {
-                    Matcher matcher = Pattern.compile("remove (?<prooductId>\\d+)").matcher(command);
+                    Matcher matcher = Pattern.compile("remove (?<productId>\\d+)").matcher(command);
                     matcher.matches();
                     try {
                         manageAllProducts.removeCommodity(Integer.parseInt(matcher.group("productId")));
                     } catch (Exception e) {
-                        System.out.println("invalid commodity id");
+                        System.out.println(e.getMessage());
                     }
                     return;
                 }
