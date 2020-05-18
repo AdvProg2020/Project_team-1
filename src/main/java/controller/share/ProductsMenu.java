@@ -27,7 +27,8 @@ public class ProductsMenu extends Menu {
         View.sortingMenu.setPreviousMenu(View.productsMenu);
     }
 
-    public ArrayList<Commodity> getProducts() {
+    public ArrayList<Commodity> getProducts() throws Exception {
+            FilteringMenu.updateFilteredCommodities();
             if (SortingMenu.getCurrentSort().equals("price")) {
                     Collections.sort(FilteringMenu.getFilteredCommodities(), price);
             }
