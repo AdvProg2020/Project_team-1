@@ -503,7 +503,7 @@ public class View {
                     viewPersonalInfoMenu.goToPreviousMenu();
                     return;
                 }
-                if (command.matches("^edit (?<field>\\S+ ?\\S+) (?<newfield>\\S+)$")) {
+                if (command.matches("^edit (?<field>(first name||last name||email||phone number)) (?<newfield>\\S+)$")) {
                     editFields(viewPersonalInfoMenu, command);
                     return;
                 }
@@ -842,7 +842,7 @@ public class View {
     }
 
     private void editFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) {
-        Matcher matcher = Pattern.compile("^edit (?<field>\\S+ ?\\S+) (?<newfield>\\S+)$").matcher(command);
+        Matcher matcher = Pattern.compile("^edit (?<field>(first name||last name||email||phone number)) (?<newfield>\\S+)$").matcher(command);
         matcher.matches();
         try {
             if (matcher.group("field").equals("first name")) {
