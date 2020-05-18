@@ -13,13 +13,10 @@ public class BuyLog extends TransactionLog {
     private double deductedMoney;
     private DiscountCode discountByCode;
     private Set<BusinessAccount> sellers;
-    private Boolean isCommodityDelivered;
-    private String address;
-    private String phone;
-    private String postalCode;
+    private boolean isCommodityDelivered;
 
-    public BuyLog(Date date, Set<Commodity> commodities, double payedMoney, double deductedMoney, DiscountCode discountByCode,
-                  String address, String phone, String postalCode) {
+    public BuyLog(Date date, Set<Commodity> commodities, double payedMoney, double deductedMoney,
+                  DiscountCode discountByCode) {
         super(date, commodities);
         this.payedMoney = payedMoney;
         this.deductedMoney = deductedMoney;
@@ -30,9 +27,10 @@ public class BuyLog extends TransactionLog {
         }
         logId = generateLogID();
         isCommodityDelivered = false;
-        this.phone = phone;
-        this.postalCode = postalCode;
-        this.address = address;
+    }
+
+    public double getDeductedMoney() {
+        return deductedMoney;
     }
 
     public Set<BusinessAccount> getSellers() {

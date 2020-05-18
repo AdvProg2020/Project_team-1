@@ -569,6 +569,8 @@ public class View {
                     customerMenu.goToPreviousMenu();
                 } else if (command.equals("help")) {
                     customerMenuHelp();
+                } else if (command.matches("sort orders by (?<field>\\w+)")) {
+                    sortOrdersCustomerMenu(command);
                 } else System.out.println("invalid command");
             }
         };
@@ -605,6 +607,12 @@ public class View {
         };
     }
 
+    private void sortOrdersCustomerMenu(String command) {
+        Matcher matcher = Pattern.compile("sort orders by (?<field>\\w+)").matcher(command);
+        matcher.matches();
+        customerMenu.setOrderSortType(matcher.group("field"));
+    }
+
     private void sortProductsCartMenu(String command) {
         Matcher matcher = Pattern.compile("sort products by (?<field>\\w+)").matcher(command);
         matcher.matches();
@@ -614,11 +622,13 @@ public class View {
     private void viewOrders() {
         String output = "your orders:";
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        for (BuyLog log : account.getBuyLogs()) {
-            output += "\n" + log.toString();
+        try {
+            for (BuyLog log : customerMenu.getOrders())
+                output += "\n" + log.toString();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         System.out.println(output);
-        customerMenu.goToOrderMenu();
     }
 
     private void viewMyDiscountCodes() {
@@ -654,13 +664,11 @@ public class View {
         String code = scanner.nextLine();
         boolean done = false;
         int price = cartMenu.calculateTotalPrice();
-        int deducted = 0;
         DiscountCode discountCode = null;
         while (!done) {
             try {
                 discountCode = cartMenu.getDiscountCodeWithCode(code);
-                deducted = price - cartMenu.useDiscountCode(price, discountCode);
-                price -= deducted;
+                price = cartMenu.useDiscountCode(price, discountCode);
                 done = true;
             } catch (Exception e) {
                 System.out.println(e.getMessage() + '\n' +
@@ -669,7 +677,7 @@ public class View {
             }
         }
         try {
-            cartMenu.purchase(price, deducted, discountCode, address, phone, postalCode);
+            cartMenu.purchase(price, discountCode);
             System.out.println("thanks for your purchase, see you soon!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -711,8 +719,11 @@ public class View {
 
     private void showProducts() {
         String respond = "products in cart: ";
-        for (Commodity commodity : cartMenu.getCartProducts()) {
-            respond += "[" + commodity.getInformation() + "]";
+        try {
+            for (Commodity commodity : cartMenu.getCartProducts())
+                respond += "[" + commodity.getInformation() + "]";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         System.out.println(respond);
     }

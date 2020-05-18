@@ -1,5 +1,7 @@
 package controller.comparator;
 
+import controller.comparator.buy_log.DeductedMoneyComparator;
+import controller.comparator.buy_log.PayedMoneyComparator;
 import controller.comparator.off.OffDiscountPercentComparator;
 import controller.comparator.off.OffEndTimeComparator;
 import controller.comparator.off.OffIdComparator;
@@ -10,6 +12,7 @@ import controller.comparator.product.ProductNameComparator;
 import controller.comparator.product.ProductPriceComparator;
 import model.Commodity;
 import model.Off;
+import model.log.BuyLog;
 
 import java.util.ArrayList;
 
@@ -47,6 +50,19 @@ public class Sort {
                 break;
             case "price":
                 commodities.sort(new ProductPriceComparator());
+                break;
+            default:
+                throw new Exception("field not found");
+        }
+    }
+
+    public static void sortBuyLogArrayList(ArrayList<BuyLog> buyLogs, String field) throws Exception {
+        switch (field) {
+            case "payed money":
+                buyLogs.sort(new PayedMoneyComparator());
+                break;
+            case "deducted money":
+                buyLogs.sort(new DeductedMoneyComparator());
                 break;
             default:
                 throw new Exception("field not found");

@@ -1,14 +1,18 @@
 package controller;
 
+import controller.comparator.Sort;
 import model.DiscountCode;
 import model.Session;
 import model.account.PersonalAccount;
+import model.log.BuyLog;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import static view.View.*;
 
 public class CustomerMenu extends Menu {
+    private String orderSortType = "payed money";
     public double getBalance() {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         return account.getCredit();
@@ -29,8 +33,19 @@ public class CustomerMenu extends Menu {
         MenuHandler.getInstance().setCurrentMenu(cartMenu);
     }
 
-    public void goToOrderMenu() {
+    private void goToOrderMenu() {
         MenuHandler.getInstance().setCurrentMenu(orderMenu);
         orderMenu.setPreviousMenu(customerMenu);
+    }
+
+    public void setOrderSortType(String orderSortType) {
+        this.orderSortType = orderSortType;
+    }
+
+    public ArrayList<BuyLog> getOrders() throws Exception {
+        goToOrderMenu();
+        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+        Sort.sortBuyLogArrayList(account.getBuyLogs(), this.orderSortType);
+        return account.getBuyLogs();
     }
 }

@@ -16,7 +16,7 @@ import static view.View.cartMenu;
 import static view.View.commodityMenu;
 
 public class CartMenu extends Menu {
-    private String productSortType = null;
+    private String productSortType = "number of visits";
     public int calculateTotalPrice() {
         int price = 0;
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
@@ -88,16 +88,15 @@ public class CartMenu extends Menu {
         return price;
     }
 
-    public void purchase(int price, int deducted, DiscountCode discountCode, String address, String phone, String postalCode) throws
-            Exception {
+    public void purchase(int price, DiscountCode discountCode) throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         if (price > account.getCredit()) {
             account.dontUseDiscountCode(discountCode);
             throw new Exception("you don't have enough money to pay");
         }
         account.addToCredit(-price);
-        BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, deducted, discountCode, address, phone,
-                postalCode);
+        BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, calculateTotalPrice() -
+                price, discountCode);
         account.addBuyLog(buyLog);
         makeSellLogs(buyLog.getSellers(), account);
     }
