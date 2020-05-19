@@ -55,6 +55,7 @@ public class ManageResellerProductsMenu extends Menu {
                 categorySpecifications,
                 (description.equals("-"))?(oldProduct.getDescription()):(description),
                 (amount == -1)?(oldProduct.getInventory()):(amount));
+        editedProduct.setCommodityId(oldProduct.getCommodityId());
         Request request = new Request(editedProduct, businessAccount);
         YaDataManager.addRequest(request);
         // Todo delete old product

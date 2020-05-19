@@ -1319,7 +1319,7 @@ public class View {
         for (int i = 0; i < category.getFieldOptions().size(); ++i) {
             CategorySpecification categorySpecification = category.getFieldOptions().get(i);
             System.out.println("Enter product " + categorySpecification.getTitle() + ":");
-            if (categorySpecification.getOptions().isEmpty()) {
+            if (categorySpecification.getOptions() == null) {
                 int val = scanner.nextInt();
                 if (val == -1) {
                     val = ((NumericalField) oldCommodity.getCategorySpecifications().get(i)).getValue();
@@ -1331,6 +1331,12 @@ public class View {
                 if (val.equals("-")) {
                     val = ((OptionalField) oldCommodity.getCategorySpecifications().get(i)).getValue();
                 }
+                StringBuilder options = new StringBuilder();
+                for (String option : categorySpecification.getOptions()) {
+                    options.append(option);
+                    options.append('-');
+                }
+                System.out.println("(" + options.toString() + ")");
                 productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), val));
             }
         }
@@ -1341,6 +1347,7 @@ public class View {
         scanner.nextLine();
         manageResellerProductsMenu.editProduct(oldCommodity, brand, name, price, availability, category, productCategorySpecification,
                 description, amount);
+        System.out.println("product edit request had been sent");
     }
 
     private void manageResellerProductsMenuHelp() {

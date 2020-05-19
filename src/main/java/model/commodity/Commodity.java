@@ -121,6 +121,8 @@ public class Commodity implements Requestable {
 
     @Override
     public void addObj() throws Exception {
+        YaDataManager.removeCommodity(this);
+        YaDataManager.addCommodity(this);
         YaDataManager.addCommodity(this);
         YaDataManager.removeBusiness(seller);
         seller.addCommodity(this);
