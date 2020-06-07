@@ -99,11 +99,7 @@ public class CartMenu extends Menu {
     }
 
     private int useDiscountCode(int price, DiscountCode discountCode) {
-        if (discountCode.getMaximumDiscountPrice() <= discountCode.getDiscountPercentage() * price / 100) {
-            price -= discountCode.getMaximumDiscountPrice();
-        } else {
-            price -= discountCode.getDiscountPercentage() * price / 100;
-        }
+        price -= Math.min(discountCode.getMaximumDiscountPrice(), discountCode.getDiscountPercentage() * price / 100);
         return price;
     }
 
@@ -121,8 +117,22 @@ public class CartMenu extends Menu {
         BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, calculateTotalPrice() -
                 price, discountCode);
         account.addBuyLog(buyLog);
+        reduceCommodityAmount(account.getCart());
+        account.clearCart();
         YaDataManager.addPerson(account);
         makeSellLogs(buyLog.getSellers(), account);
+    }
+
+    private void reduceCommodityAmount(HashMap<Commodity, Integer> cart) throws IOException {
+        for (Commodity commodity : cart.keySet()) {
+            for (Commodity product : YaDataManager.getCommodities()) {
+                if (product.equals(commodity)) {
+                    YaDataManager.removeCommodity(product);
+                    commodity.setInventory(commodity.getInventory() - cart.get(commodity));
+                    YaDataManager.addCommodity(commodity);
+                }
+            }
+        }
     }
 
     private void makeSellLogs(Set<BusinessAccount> sellers, PersonalAccount account) throws IOException {
@@ -148,6 +158,19 @@ public class CartMenu extends Menu {
         }
     }
 
+    public void checkIsCommoditiesAvailable() throws Exception {
+        HashMap<Commodity, Integer> cart = ((PersonalAccount) Session.getOnlineAccount()).getCart();
+        for (Commodity commodity : cart.keySet()) {
+            for (Commodity product : YaDataManager.getCommodities()) {
+                if (product.equals(commodity)) {
+                    if (product.getInventory() < cart.get(commodity)) {
+                        throw new Exception("Some of products in your cart are not available");
+                    }
+                }
+            }
+        }
+    }
+
     public void goToCommodityMenu(int id) throws Exception {
         Commodity commodity = YaDataManager.getCommodityById(id);
         YaDataManager.removeCommodity(commodity);
@@ -164,8 +187,7 @@ public class CartMenu extends Menu {
 
     public ArrayList<Commodity> getCartProducts() throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        ArrayList<Commodity> commodities = new ArrayList<>();
-        commodities.addAll(account.getCart().keySet());
+        ArrayList<Commodity> commodities = new ArrayList<>(account.getCart().keySet());
         Sort.sortProductArrayList(commodities, this.productSortType);
         return commodities;
     }

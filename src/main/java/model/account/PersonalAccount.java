@@ -1,9 +1,11 @@
 package model.account;
 
+import controller.data.YaDataManager;
 import model.commodity.Commodity;
 import model.commodity.DiscountCode;
 import model.log.BuyLog;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -20,6 +22,10 @@ public class PersonalAccount extends SimpleAccount {
         buyLogs = new ArrayList<>();
         cart = new HashMap<>();
         credit = 0.0;
+    }
+
+    public void clearCart() {
+        cart.clear();
     }
 
     public boolean hasThisInCart(Commodity commodity) {
@@ -73,14 +79,6 @@ public class PersonalAccount extends SimpleAccount {
         return cart;
     }
 
-    public int getTotalPrice() {
-        int price = 0;
-        for (Commodity commodity : cart.keySet()) {
-            price += cart.get(commodity) * commodity.getPrice();
-        }
-        return price;
-    }
-
     private boolean isCommodityInTheCart(Commodity commodity) {
         return cart.containsKey(commodity);
     }
@@ -128,14 +126,18 @@ public class PersonalAccount extends SimpleAccount {
         throw new Exception("you can't use this discount code");
     }
 
-    public void useThisDiscount(DiscountCode discountCode) {
+    public void useThisDiscount(DiscountCode discountCode) throws IOException {
+        YaDataManager.removePerson(this);
         int numberOfTimesUsed = discountCodes.get(discountCode) + 1;
         discountCodes.put(discountCode, numberOfTimesUsed);
+        YaDataManager.addPerson(this);
     }
 
-    public void dontUseDiscountCode(DiscountCode discountCode) {
+    public void dontUseDiscountCode(DiscountCode discountCode) throws IOException {
+        YaDataManager.removePerson(this);
         int numberOfTimesUsed = discountCodes.get(discountCode) - 1;
         discountCodes.put(discountCode, numberOfTimesUsed);
+        YaDataManager.addPerson(this);
     }
 
     public int getNumberOfTimesUsed(DiscountCode discountCode) {

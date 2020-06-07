@@ -636,7 +636,7 @@ public class View {
     private void initializeCartMenu() {
         cartMenu.commandProcess = new CommandProcess() {
             @Override
-            public void commandProcessor(String command) throws Exception {
+            public void commandProcessor(String command) {
                 if (command.matches("products")) {
                     cartMenu.products();
                     return;
@@ -705,37 +705,42 @@ public class View {
     }
 
     private void purchase() {
-        System.out.println("please enter your address");
-        String address = scanner.nextLine();
-        System.out.println("please enter your phone number");
-        String phone = scanner.nextLine();
-        while (!phone.matches("0\\d{10}")) {
-            System.out.println("please enter a valid phone number");
-            phone = scanner.nextLine();
-        }
-        System.out.println("please enter your postal code");
-        String postalCode = scanner.nextLine();
-        while (!postalCode.matches("\\d{10}")) {
-            System.out.println("please enter a valid postal code");
-            postalCode = scanner.nextLine();
-        }
-        System.out.println("please enter a discount code or enter nothing");
-        String code = scanner.nextLine();
-        boolean done = false;
-        DiscountCode discountCode = null;
-        while (!done) {
-            try {
-                discountCode = cartMenu.getDiscountCodeWithCode(code);
-                done = true;
-            } catch (Exception e) {
-                System.out.println(e.getMessage() + '\n' +
-                        "please enter a discount code or enter nothing");
-                code = scanner.nextLine();
-            }
-        }
         try {
-            cartMenu.purchase(discountCode);
-            System.out.println("thanks for your purchase, see you soon!");
+            cartMenu.checkIsCommoditiesAvailable();
+            System.out.println("please enter your address");
+            String address = scanner.nextLine();
+            System.out.println("please enter your phone number");
+            String phone = scanner.nextLine();
+            while (!phone.matches("0\\d{10}")) {
+                System.out.println("please enter a valid phone number");
+                phone = scanner.nextLine();
+            }
+            System.out.println("please enter your postal code");
+            String postalCode = scanner.nextLine();
+            while (!postalCode.matches("\\d{10}")) {
+                System.out.println("please enter a valid postal code");
+                postalCode = scanner.nextLine();
+            }
+            System.out.println("please enter a discount code or enter nothing");
+            String code = scanner.nextLine();
+            boolean done = false;
+            DiscountCode discountCode = null;
+            while (!done) {
+                try {
+                    discountCode = cartMenu.getDiscountCodeWithCode(code);
+                    done = true;
+                } catch (Exception e) {
+                    System.out.println(e.getMessage() + '\n' +
+                            "please enter a discount code or enter nothing");
+                    code = scanner.nextLine();
+                }
+            }
+            try {
+                cartMenu.purchase(discountCode);
+                System.out.println("thanks for your purchase, see you soon!");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
