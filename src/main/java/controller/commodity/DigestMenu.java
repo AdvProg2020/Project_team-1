@@ -3,12 +3,10 @@ package controller.commodity;
 import controller.data.YaDataManager;
 import controller.share.Menu;
 import controller.share.MenuHandler;
-import model.commodity.Commodity;
 import model.Session;
 import model.account.PersonalAccount;
-import view.commandline.View;
 import model.commodity.Commodity;
-import view.View;
+import view.commandline.View;
 
 public class DigestMenu extends Menu {
     private Commodity commodity;
