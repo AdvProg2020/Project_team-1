@@ -10,7 +10,7 @@ import model.log.BuyLog;
 
 import java.util.ArrayList;
 
-import static view.View.*;
+import static view.commandline.View.*;
 
 public class CustomerMenu extends Menu {
     private String orderSortType = "payed";

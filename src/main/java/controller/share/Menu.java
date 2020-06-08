@@ -1,7 +1,7 @@
 package controller.share;
 
 import model.Session;
-import view.View;
+import view.commandline.View;
 
 public class Menu {
 

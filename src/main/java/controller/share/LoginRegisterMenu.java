@@ -7,7 +7,7 @@ import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
 import model.share.Request;
-import view.View;
+import view.commandline.View;
 
 public class LoginRegisterMenu extends Menu{
 

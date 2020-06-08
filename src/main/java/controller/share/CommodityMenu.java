@@ -9,8 +9,8 @@ import model.share.Status;
 
 import java.util.ArrayList;
 
-import static view.View.commentsMenu;
-import static view.View.digestMenu;
+import static view.commandline.View.commentsMenu;
+import static view.commandline.View.digestMenu;
 
 public class CommodityMenu extends Menu {
     private Commodity commodity;

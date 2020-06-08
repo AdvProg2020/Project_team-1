@@ -1,4 +1,4 @@
-package view;
+package view.commandline;
 
 import controller.commodity.CommentsMenu;
 import controller.commodity.DigestMenu;
