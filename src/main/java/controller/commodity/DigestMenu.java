@@ -1,10 +1,11 @@
 package controller.commodity;
 
+import controller.data.YaDataManager;
 import controller.share.Menu;
 import controller.share.MenuHandler;
-import model.commodity.Commodity;
 import model.Session;
 import model.account.PersonalAccount;
+import model.commodity.Commodity;
 import view.View;
 
 public class DigestMenu extends Menu {
@@ -21,6 +22,8 @@ public class DigestMenu extends Menu {
             throw new Exception("you have to login or register first");
         }
         PersonalAccount personalAccount = ((PersonalAccount) Session.getOnlineAccount());
+        YaDataManager.removePerson(personalAccount);
         personalAccount.addToCart(commodity);
+        YaDataManager.addPerson(personalAccount);
     }
 }

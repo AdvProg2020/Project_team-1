@@ -106,7 +106,7 @@ public class View {
         };
     }
 
-    private void addComment() {
+    private void addComment() throws IOException {
         System.out.println("enter title:");
         String title = scanner.nextLine();
         System.out.println("enter your comment");
