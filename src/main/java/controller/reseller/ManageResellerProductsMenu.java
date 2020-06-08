@@ -11,7 +11,7 @@ import model.commodity.Commodity;
 import model.field.Field;
 import model.log.SellLog;
 import model.share.Request;
-import view.View;
+import view.commandline.View;
 
 import java.util.ArrayList;
 

@@ -3,7 +3,7 @@ package controller.share;
 import model.commodity.Category;
 import model.commodity.Commodity;
 import controller.data.YaDataManager;
-import view.View;
+import view.commandline.View;
 
 import java.io.IOException;
 import java.util.ArrayList;

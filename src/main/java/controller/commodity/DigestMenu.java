@@ -5,7 +5,7 @@ import controller.share.MenuHandler;
 import model.commodity.Commodity;
 import model.Session;
 import model.account.PersonalAccount;
-import view.View;
+import view.commandline.View;
 
 public class DigestMenu extends Menu {
     private Commodity commodity;

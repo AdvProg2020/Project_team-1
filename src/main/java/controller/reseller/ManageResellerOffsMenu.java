@@ -7,7 +7,7 @@ import model.commodity.Off;
 import model.share.Request;
 import controller.data.YaDataManager;
 import model.account.BusinessAccount;
-import view.View;
+import view.commandline.View;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

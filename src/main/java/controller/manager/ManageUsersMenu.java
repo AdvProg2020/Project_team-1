@@ -8,7 +8,7 @@ import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
-import view.View;
+import view.commandline.View;
 
 import java.io.IOException;
 

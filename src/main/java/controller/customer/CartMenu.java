@@ -16,8 +16,8 @@ import model.log.SellLog;
 import java.io.IOException;
 import java.util.*;
 
-import static view.View.cartMenu;
-import static view.View.commodityMenu;
+import static view.commandline.View.cartMenu;
+import static view.commandline.View.commodityMenu;
 
 public class CartMenu extends Menu {
     private String productSortType = "visits";

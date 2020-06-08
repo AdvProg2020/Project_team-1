@@ -9,7 +9,7 @@ import model.account.SimpleAccount;
 import model.commodity.Category;
 import model.commodity.DiscountCode;
 import model.share.Request;
-import view.View;
+import view.commandline.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
