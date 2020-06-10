@@ -1,0 +1,19 @@
+.back-button {
+    -fx-background-color: gold;
+    -fx-text-fill: red;
+    -fx-background-radius: 100 0 0 100;
+}
+
+.scene-title {
+    -fx-font-size: 20px;
+    -fx-text-fill: cornflowerblue;
+}
+
+.error-message-label {
+    -fx-text-fill: red;
+    -fx-font-size: 14px;
+}
+
+.text-field {
+    -fx-background-radius: 40%;
+}
