@@ -43,6 +43,11 @@ public class LoginRegisterMenu extends Menu{
         YaDataManager.addRequest(request);
     }
 
+    public LoginRegisterMenu() {
+        fxmlFileAddress = "../../fxml/LoginRegister.fxml";
+        stageTitle = "Login or Register";
+    }
+
     public void login(String username, String password) throws Exception{
         SimpleAccount simpleAccount = YaDataManager.getAccountWithUserName(username);
         if (simpleAccount == null) {

@@ -9,6 +9,18 @@ public class Menu {
 
     protected Menu previousMenu;
 
+    protected String fxmlFileAddress;
+
+    public String getFxmlFileAddress() {
+        return fxmlFileAddress;
+    }
+
+    public String getStageTitle() {
+        return stageTitle;
+    }
+
+    protected String stageTitle;
+
     public Menu() {
         commandProcess = null;
         previousMenu = null;
