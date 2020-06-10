@@ -6,8 +6,11 @@ import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+import model.exception.InvalidLoginInformationException;
 import model.share.Request;
 import view.commandline.View;
+
+import java.io.IOException;
 
 public class LoginRegisterMenu extends Menu{
 
@@ -48,12 +51,17 @@ public class LoginRegisterMenu extends Menu{
         stageTitle = "Login or Register";
     }
 
-    public void login(String username, String password) throws Exception{
-        SimpleAccount simpleAccount = YaDataManager.getAccountWithUserName(username);
+    public void login(String username, String password) throws InvalidLoginInformationException {
+        SimpleAccount simpleAccount = null;
+        try {
+            simpleAccount = YaDataManager.getAccountWithUserName(username);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (simpleAccount == null) {
-            throw new Exception("Invalid username.");
+            throw new InvalidLoginInformationException("Invalid username.");
         } else if (!simpleAccount.isPasswordCorrect(password)) {
-            throw new Exception("Invalid password");
+            throw new InvalidLoginInformationException("Invalid password");
         }
         Session.setOnlineAccount(simpleAccount);
         if (simpleAccount instanceof ManagerAccount){
