@@ -1,5 +1,6 @@
 package model.account;
 
+import model.exception.InvalidAccountInfoException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Objects;
@@ -20,7 +21,7 @@ public abstract class SimpleAccount {
     private String accountType;
 
     public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
-                         String password, String accountType) throws Exception {
+                         String password, String accountType) throws InvalidAccountInfoException {
         changeUsername(username);
         changeFirstName(firstName);
         changeLastName(lastName);
@@ -38,11 +39,11 @@ public abstract class SimpleAccount {
         return username;
     }
 
-    public void changeUsername(String username) throws Exception {
+    public void changeUsername(String username) throws InvalidAccountInfoException {
         if (username.matches(VALID_USERNAME)) {
             this.username = username;
         } else {
-            throw new Exception("Invalid username. User name just contain 4 to 10 alphanumerical characters.");
+            throw new InvalidAccountInfoException("Invalid username. User name just contain 4 to 10 alphanumerical characters.");
         }
     }
 
@@ -50,11 +51,11 @@ public abstract class SimpleAccount {
         return firstName;
     }
 
-    public void changeFirstName(String firstName) throws Exception {
+    public void changeFirstName(String firstName) throws InvalidAccountInfoException {
         if (firstName.matches(VALID_FIRST_NAME_AND_LAST_NAME)) {
             this.firstName = firstName;
         } else {
-            throw new Exception("Invalid first name. First name just contain alphabetical characters.");
+            throw new InvalidAccountInfoException("Invalid first name. First name just contain alphabetical characters.");
         }
     }
 
@@ -62,11 +63,11 @@ public abstract class SimpleAccount {
         return lastName;
     }
 
-    public void changeLastName(String lastName) throws Exception {
+    public void changeLastName(String lastName) throws InvalidAccountInfoException {
         if (lastName.matches(VALID_FIRST_NAME_AND_LAST_NAME)) {
             this.lastName = lastName;
         } else {
-            throw new Exception("Invalid last name. Last name just contain alphabetical characters.");
+            throw new InvalidAccountInfoException("Invalid last name. Last name just contain alphabetical characters.");
         }
     }
 
@@ -78,11 +79,11 @@ public abstract class SimpleAccount {
         return email;
     }
 
-    public void changeEmail(String email) throws Exception {
+    public void changeEmail(String email) throws InvalidAccountInfoException {
         if (email.matches(VALID_EMAIL)) {
             this.email = email;
         } else {
-            throw new Exception("Invalid email address.");
+            throw new InvalidAccountInfoException("Invalid email address.");
         }
     }
 
@@ -90,11 +91,11 @@ public abstract class SimpleAccount {
         return phoneNumber;
     }
 
-    public void changePhoneNumber(String phoneNumber) throws Exception {
+    public void changePhoneNumber(String phoneNumber) throws InvalidAccountInfoException {
         if (phoneNumber.matches(VALID_PHONE_NUMBER)) {
             this.phoneNumber = phoneNumber;
         } else {
-            throw new Exception("Invalid Iran phone number.");
+            throw new InvalidAccountInfoException("Invalid Iran phone number.");
         }
     }
 
@@ -102,11 +103,11 @@ public abstract class SimpleAccount {
         return BCrypt.checkpw(password, hashedPassword);
     }
 
-    public void changePassword(String password) throws Exception {
+    public void changePassword(String password) throws InvalidAccountInfoException {
         if (password.matches(VALID_PASSWORD)) {
             this.hashedPassword = hashPassword(password);
         } else {
-            throw new Exception("Invalid password.");
+            throw new InvalidAccountInfoException("Invalid password.");
         }
     }
 

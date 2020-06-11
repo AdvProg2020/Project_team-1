@@ -3,6 +3,7 @@ package model.account;
 import controller.data.YaDataManager;
 import model.commodity.Commodity;
 import model.commodity.Off;
+import model.exception.InvalidAccountInfoException;
 import model.log.SellLog;
 import model.share.Requestable;
 import model.share.Status;
@@ -19,7 +20,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
     private Status status;
 
     public BusinessAccount(String username, String firstName, String lastName, String email, String phoneNumber,
-                           String password, String businessName) throws Exception {
+                           String password, String businessName) throws InvalidAccountInfoException {
         super(username, firstName, lastName, email, phoneNumber, password, "reseller");
         changeBusinessName(businessName);
         sellLogs = new ArrayList<SellLog>();
@@ -79,11 +80,11 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         return businessName;
     }
 
-    public void changeBusinessName(String businessName) throws Exception {
+    public void changeBusinessName(String businessName) throws InvalidAccountInfoException {
         if (businessName.matches(VALID_BUSINESS_NAME)) {
             this.businessName = businessName;
         } else {
-            throw new Exception("Invalid business name. Business name just contain 4 to 20 alphanumerical characters.");
+            throw new InvalidAccountInfoException("Invalid business name. Business name just contain 4 to 20 alphanumerical characters");
         }
     }
 

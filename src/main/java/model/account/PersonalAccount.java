@@ -3,6 +3,7 @@ package model.account;
 import controller.data.YaDataManager;
 import model.commodity.Commodity;
 import model.commodity.DiscountCode;
+import model.exception.InvalidAccountInfoException;
 import model.log.BuyLog;
 
 import java.io.IOException;
@@ -16,7 +17,8 @@ public class PersonalAccount extends SimpleAccount {
     private HashMap<Commodity, Integer> cart;
     private double credit;
 
-    public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber, String password) throws Exception {
+    public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber,
+                           String password) throws InvalidAccountInfoException {
         super(username, firstName, lastName, email, phoneNumber, password, "personal");
         discountCodes = new HashMap<>();
         buyLogs = new ArrayList<>();

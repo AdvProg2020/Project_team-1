@@ -6,6 +6,8 @@ import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+import model.exception.InvalidAccessException;
+import model.exception.InvalidAccountInfoException;
 import model.exception.InvalidLoginInformationException;
 import model.share.Request;
 import view.commandline.View;
@@ -14,36 +16,58 @@ import java.io.IOException;
 
 public class LoginRegisterMenu extends Menu{
 
-    public void checkUserNameAvailability(String username) throws Exception{
-        if (YaDataManager.getAccountWithUserName(username) != null) {
-            throw new Exception("this username is taken.");
+    public void checkUserNameAvailability(String username) throws InvalidLoginInformationException {
+        try {
+            if (YaDataManager.getAccountWithUserName(username) != null) {
+                throw new InvalidLoginInformationException("This username is taken");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void isThereManagerAccount() throws Exception{
-        if (YaDataManager.getManagers().size() > 0) {
-            throw new Exception("You can't create manager account. Contact holy manager to create manager account.");
+    public void isThereManagerAccount() throws InvalidAccessException {
+        try {
+            if (YaDataManager.getManagers().size() > 0) {
+                throw new InvalidAccessException("You can't create manager account. Contact holy manager to create manager account");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     public void registerManagerAccount(String username, String firstName, String lastName, String email,
-                                       String phoneNumber, String password) throws Exception{
+                                       String phoneNumber, String password) throws InvalidAccountInfoException{
         ManagerAccount newAccount = new ManagerAccount(username, firstName, lastName, email, phoneNumber, password);
-        YaDataManager.addManager(newAccount);
+        try {
+            YaDataManager.addManager(newAccount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void registerPersonalAccount(String username, String firstName, String lastName, String email,
-                                        String phoneNumber, String password) throws Exception{
+                                        String phoneNumber, String password) throws InvalidAccountInfoException {
         PersonalAccount newAccount = new PersonalAccount(username, firstName, lastName, email, phoneNumber, password);
-        YaDataManager.addPerson(newAccount);
+        try {
+            YaDataManager.addPerson(newAccount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void registerResellerAccount(String username, String firstName, String lastName, String email,
-                                        String phoneNumber, String password, String businessName) throws Exception{
+                                        String phoneNumber, String password, String businessName) throws InvalidAccountInfoException {
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
                 phoneNumber, password, businessName);
-        Request request = new Request(newAccount, null);
-        YaDataManager.addRequest(request);
+        Request request = null;
+        try {
+            request = new Request(newAccount, null);
+            YaDataManager.addRequest(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public LoginRegisterMenu() {
