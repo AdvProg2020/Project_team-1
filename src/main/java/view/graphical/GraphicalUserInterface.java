@@ -9,7 +9,7 @@ import model.Session;
 public class GraphicalUserInterface extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         MenuHandler.getInstance().setCurrentMenu(new LoginRegisterMenu());
         Session.getSceneHandler().updateScene(stage);
     }

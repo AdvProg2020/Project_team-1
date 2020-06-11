@@ -15,6 +15,7 @@ import model.account.BusinessAccount;
 import model.exception.InvalidAccessException;
 import model.exception.InvalidAccountInfoException;
 import model.exception.InvalidLoginInformationException;
+import view.commandline.View;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,7 +27,7 @@ import java.util.ResourceBundle;
 public class LoginRegister implements Initializable {
 
     public TextField registerBusinessNameTf;
-    private LoginRegisterMenu loginRegisterMenu = new LoginRegisterMenu();
+    private final LoginRegisterMenu loginRegisterMenu = View.loginRegisterMenu;
     public ChoiceBox<String> accountType;
     public Label loginMessageLabel;
     public TextField loginUsernameTf;

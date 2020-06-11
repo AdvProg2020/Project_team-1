@@ -17,6 +17,11 @@ import view.commandline.View;
 import java.util.ArrayList;
 
 public class ResellerMenu extends Menu {
+    public ResellerMenu() {
+        fxmlFileAddress = "../../";
+        stageTitle = "Reseller panel";
+    }
+
     public BusinessAccount getBusinessAccount() {
         return (BusinessAccount)Session.getOnlineAccount();
     }
