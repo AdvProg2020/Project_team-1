@@ -49,10 +49,30 @@
                         <Label alignment="CENTER" contentDisplay="CENTER" styleClass="scene-title" text="Login" BorderPane.alignment="CENTER" />
                      </top>
                      <left>
-                        <Button mnemonicParsing="false" onMouseClicked="#onBackButtonClick" styleClass="back-button" text="Back" BorderPane.alignment="BOTTOM_CENTER" />
+                        <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
+                           <children>
+                              <Button mnemonicParsing="false" onMouseClicked="#onBackButtonClick" styleClass="back-button" text="Back" />
+                           </children>
+                           <BorderPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </BorderPane.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
                      </left>
                      <right>
-                        <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onLoginButtonClick" styleClass="forward-button" text="Login" BorderPane.alignment="BOTTOM_CENTER" />
+                        <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
+                           <children>
+                              <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onLoginButtonClick" styleClass="forward-button" text="Login" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <BorderPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </BorderPane.margin>
+                        </VBox>
                      </right>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -118,10 +138,30 @@
                         <Label styleClass="scene-title" text="Register" BorderPane.alignment="CENTER" />
                      </top>
                      <left>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onBackButtonClick" styleClass="back-button" text="Back" BorderPane.alignment="BOTTOM_CENTER" />
+                        <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
+                           <children>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onBackButtonClick" styleClass="back-button" text="Back" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <BorderPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </BorderPane.margin>
+                        </VBox>
                      </left>
                      <right>
-                        <Button fx:id="registerButton" mnemonicParsing="false" onMouseClicked="#onRegisterButtonClick" styleClass="forward-button" text="Register" BorderPane.alignment="BOTTOM_CENTER" />
+                        <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
+                           <children>
+                              <Button fx:id="registerButton" mnemonicParsing="false" onMouseClicked="#onRegisterButtonClick" styleClass="forward-button" text="Register" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <BorderPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </BorderPane.margin>
+                        </VBox>
                      </right>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
