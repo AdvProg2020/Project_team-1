@@ -30,7 +30,7 @@ public class Customer implements Initializable {
         lastNameLabel.setText(account.getLastName());
         emailLabel.setText(account.getEmail());
         phoneLabel.setText(account.getPhoneNumber());
-        balanceLabel.setText(String.valueOf(customerMenu.getBalance()));
+        balanceLabel.setText(customerMenu.getBalance() + " Rials");
     }
 
     public void onBackButtonClick(MouseEvent mouseEvent) {

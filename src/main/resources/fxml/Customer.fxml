@@ -52,6 +52,10 @@
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES"/>
@@ -65,29 +69,41 @@
                     </rowConstraints>
                     <children>
                         <Label styleClass="hint-label" text="Username:" GridPane.halignment="CENTER"
-                               GridPane.valignment="CENTER"/>
+                               GridPane.valignment="CENTER" GridPane.columnSpan="3"/>
                         <Label styleClass="hint-label" text="First name:" GridPane.halignment="CENTER"
-                               GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-                        <Label styleClass="hint-label" text="Last name:"
-                               GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
+                               GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.columnSpan="3"/>
+                        <Label styleClass="hint-label" text="Last name:" GridPane.halignment="CENTER"
+                               GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.columnSpan="3"/>
                         <Label styleClass="hint-label" text="Email:" GridPane.halignment="CENTER" GridPane.rowIndex="3"
-                               GridPane.valignment="CENTER"/>
+                               GridPane.valignment="CENTER" GridPane.columnSpan="3"/>
                         <Label styleClass="hint-label" text="Phone number:" GridPane.halignment="CENTER"
-                               GridPane.rowIndex="4" GridPane.valignment="CENTER"/>
+                               GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.columnSpan="3"/>
                         <Label styleClass="hint-label" text="Balance:" GridPane.halignment="CENTER"
-                               GridPane.rowIndex="5" GridPane.valignment="CENTER"/>
-                        <Label fx:id="usernameLabel" styleClass="hint-label" GridPane.columnIndex="1"
-                               GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+                               GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.columnSpan="3"/>
+                        <Label fx:id="usernameLabel" styleClass="hint-label" GridPane.columnIndex="4"
+                               GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
                         <Label fx:id="firstNameLabel" styleClass="hint-label" GridPane.columnIndex="1"
-                               GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+                               GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"
+                               GridPane.columnSpan="3"/>
                         <Label fx:id="lastNameLabel" styleClass="hint-label" GridPane.columnIndex="1"
-                               GridPane.rowIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
-                        <Label fx:id="emailLabel" styleClass="hint-label" GridPane.columnIndex="1"
-                               GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
-                        <Label fx:id="phoneLabel" styleClass="hint-label" GridPane.columnIndex="1"
-                               GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+                               GridPane.rowIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER"
+                               GridPane.columnSpan="3"/>
+                        <Label fx:id="emailLabel" styleClass="hint-label" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                               GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.columnSpan="3"/>
+                        <Label fx:id="phoneLabel" styleClass="hint-label" GridPane.columnIndex="1" GridPane.rowIndex="4"
+                               GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.columnSpan="3"/>
                         <Label fx:id="balanceLabel" styleClass="hint-label" GridPane.columnIndex="1"
-                               GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+                               GridPane.rowIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER"
+                               GridPane.columnSpan="3"/>
+                        <Button GridPane.columnSpan="2" styleClass="normal-button" mnemonicParsing="false"
+                                text="Discount Codes" GridPane.rowIndex="6" GridPane.halignment="CENTER"
+                                GridPane.valignment="CENTER"/>
+                        <Button GridPane.columnSpan="2" styleClass="normal-button" mnemonicParsing="false"
+                                text="Edit Personal Info" GridPane.rowIndex="6" GridPane.columnIndex="2"
+                                GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+                        <Button GridPane.columnSpan="2" styleClass="normal-button" mnemonicParsing="false"
+                                text="Orders History" GridPane.rowIndex="6" GridPane.columnIndex="4"
+                                GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
