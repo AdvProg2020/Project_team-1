@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class ResellerMenu extends Menu {
     public ResellerMenu() {
-        fxmlFileAddress = "../../";
+        fxmlFileAddress = "../../fxml/Reseller.fxml";
         stageTitle = "Reseller panel";
     }
 

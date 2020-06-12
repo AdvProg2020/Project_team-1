@@ -52,3 +52,18 @@
 .full-tab {
     -fx-font-size: 16;
 }
+
+.popup-pane {
+    -fx-background-color: white;
+    -fx-border-color: black;
+}
+
+.close-button {
+    -fx-font-size: 22;
+    -fx-background-color: red;
+    -fx-text-fill: white;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-max-height:  5px;
+    -fx-min-width: 200px;
+}

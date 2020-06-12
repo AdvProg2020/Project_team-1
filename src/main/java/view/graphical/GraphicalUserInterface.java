@@ -1,16 +1,16 @@
 package view.graphical;
 
-import controller.share.LoginRegisterMenu;
 import controller.share.MenuHandler;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.Session;
+import view.commandline.View;
 
 public class GraphicalUserInterface extends Application {
 
     @Override
     public void start(Stage stage) {
-        MenuHandler.getInstance().setCurrentMenu(new LoginRegisterMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.resellerMenu);
         Session.getSceneHandler().updateScene(stage);
     }
 }
