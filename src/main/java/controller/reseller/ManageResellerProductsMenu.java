@@ -54,7 +54,7 @@ public class ManageResellerProductsMenu extends Menu {
                 category,
                 categorySpecifications,
                 (description.equals("-"))?(oldProduct.getDescription()):(description),
-                (amount == -1)?(oldProduct.getInventory()):(amount));
+                (amount == -1)?(oldProduct.getInventory()):(amount) , oldProduct.getImagePath());
         editedProduct.setCommodityId(oldProduct.getCommodityId());
         Request request = new Request(editedProduct, businessAccount);
         YaDataManager.addRequest(request);

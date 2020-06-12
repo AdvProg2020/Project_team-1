@@ -2,6 +2,7 @@ package model.commodity;
 
 import com.gilecode.yagson.YaGson;
 import controller.data.YaDataManager;
+import javafx.scene.image.Image;
 import model.Statistics;
 import model.account.BusinessAccount;
 import model.account.SimpleAccount;
@@ -31,10 +32,15 @@ public class Commodity implements Requestable {
     private double totalScores;
     private int numberOfScores;
     private int numberOfVisits;
+    private String imagePath;
+
+    public String getImagePath() {
+        return imagePath;
+    }
 
     public Commodity(String brand, String name, int price,
                      BusinessAccount seller, Boolean isCommodityAvailable, Category category,
-                     ArrayList<Field> categorySpecifications, String description, int amount) throws IOException {
+                     ArrayList<Field> categorySpecifications, String description, int amount , String imagePath) throws IOException {
         this.commodityId = Statistics.updatedStats.commodityId();
         status = Status.UNDER_CHECKING_FOR_CREATE;
         this.brand = brand;
@@ -51,6 +57,7 @@ public class Commodity implements Requestable {
         this.numberOfVisits = 0;
         this.numberOfScores = 0;
         this.totalScores = 0;
+        this.imagePath = imagePath;
     }
 
     public Commodity(Commodity commodity) {

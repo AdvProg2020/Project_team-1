@@ -62,10 +62,10 @@ public class ResellerMenu extends Menu {
     }
 
     public void addProduct(String brand, String name, int price, Category category,
-                           ArrayList<Field> categorySpecifications, String description, int amount) throws Exception {
+                           ArrayList<Field> categorySpecifications, String description, int amount , String path) throws Exception {
         BusinessAccount businessAccount = getBusinessAccount();
         Commodity newCommodity = new Commodity(brand, name, price, businessAccount, true,
-                category, categorySpecifications, description, amount);
+                category, categorySpecifications, description, amount , path);
         Request request = new Request(newCommodity, businessAccount);
         YaDataManager.addRequest(request);
     }

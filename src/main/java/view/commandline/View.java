@@ -1190,7 +1190,9 @@ public class View {
         System.out.println("enter product amount:");
         int amount = scanner.nextInt();
         scanner.nextLine();
-        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount);
+        System.out.println("enter image path;");
+        String path = scanner.nextLine();
+        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount , path);
         System.out.println("product request had been sent to managers");
     }
 
@@ -1950,7 +1952,7 @@ public class View {
         }
     }
 
-    private void filterByOptionalField(String categoryName, int correspondingFieldNumber) {
+    private void filterByOptionalField(String categoryName, int correspondingFieldNumber) throws Exception {
         System.out.println("Enter acceptable options");
         ArrayList<String> options = new ArrayList<String>();
         String input = scanner.next();
@@ -1960,6 +1962,8 @@ public class View {
         }
         scanner.nextLine();
         OptionalFilter optionalFilter = new OptionalFilter("Optional filter " + categoryName + " " + correspondingFieldNumber, options, correspondingFieldNumber);
+        filteringMenu.filter(optionalFilter);
+        System.out.println("successfully filtered");
     }
 
     private void filterByNumericalField(String categoryName, int correspondingFieldNumber) throws Exception {
