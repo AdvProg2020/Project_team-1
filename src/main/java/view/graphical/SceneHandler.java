@@ -9,14 +9,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import model.Session;
+import model.account.BusinessAccount;
 import model.commodity.Category;
 import model.commodity.Commodity;
 import view.commandline.View;
@@ -28,7 +31,8 @@ public class SceneHandler {
 
     public void updateScene(Stage stage) {
         Menu menu = MenuHandler.getInstance().getCurrentMenu();
-        if (menu.getFxmlFileAddress().equals("../../Products.fxml"))
+        //menu.getFxmlFileAddress().equals("../../Products.fxml")
+        if (true)
             initializeProductsRoot(stage);
         else {
             Parent root = null;
@@ -50,6 +54,7 @@ public class SceneHandler {
             setSortMenuButton(root);
             setCategoryMenuButton(root);
             setCommodities(root);
+           setFilterMenuButton(root);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception exception) {
@@ -62,6 +67,7 @@ public class SceneHandler {
 
     private void setSortMenuButton(Pane root) {
         MenuButton sort = new MenuButton("Sort");
+        sort.setStyle("-fx-background-color: forestgreen; -fx-text-fill: rgba(156,16,16,0.71); -fx-border-radius: 0;");
         sort.setLayoutX(100);
         sort.setMinHeight(30);
         sort.setMinWidth(100);
@@ -82,12 +88,7 @@ public class SceneHandler {
             public void handle(ActionEvent actionEvent) {
                 try {
                     View.sortingMenu.sort(sortName);
-                    for (int i = 0 ; i < root.getChildren().size() ; i++) {
-                        if (root.getChildren().get(i).getLayoutY() > 40) {
-                            root.getChildren().remove(root.getChildren().get(i));
-                            i--;
-                        }
-                    }
+                    deleteCommodities(root);
                     try {
                         setCommodities(root);
                     } catch (IOException e) {
@@ -100,10 +101,21 @@ public class SceneHandler {
         });
     }
 
+    private void deleteCommodities(Pane root) {
+        for (int i = 0 ; i < root.getChildren().size() ; i++) {
+            if (root.getChildren().get(i).getLayoutY() > 40) {
+                root.getChildren().remove(root.getChildren().get(i));
+                i--;
+            }
+        }
+    }
+
     private void setCategoryMenuButton(Pane root) throws IOException {
         MenuButton categories = new MenuButton("Categories");
         categories.setMinHeight(30);
         categories.setMinWidth(100);
+        categories.setStyle("-fx-background-color: cornflowerblue; -fx-text-fill: white; -fx-border-radius: 0;");
+
         for (Category category : YaDataManager.getCategories()) {
             categories.getItems().add(new MenuItem(category.getName()));
         }
@@ -117,6 +129,12 @@ public class SceneHandler {
             FileInputStream inputStream = new FileInputStream(commodity.getImagePath());
             Image image = new Image(inputStream);
             ImageView imageView = new ImageView(image);
+            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    changeMenuToProductMenu(mouseEvent, commodity);
+                }
+            });
             imageView.setFitWidth(250);
             imageView.setFitHeight(250);
             imageView.setLayoutX(i);
@@ -134,12 +152,82 @@ public class SceneHandler {
             }
             i += 500;
         }
+        setUpdateButton(root, j);
+    }
+
+    private void setUpdateButton(Pane root, int j) {
+        Button update = new Button("Update");
+        update.setStyle("-fx-background-color: darkturquoise");
+        update.setLayoutX(800);
+        update.setLayoutY(root.getChildren().get(root.getChildren().size()-1).getLayoutY()+250);
+        update.setMinWidth(100);
+        update.setMinHeight(100);
+        update.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    deleteCommodities(root);
+                    setCommodities(root);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+        root.getChildren().add(update);
+    }
+
+    private void changeMenuToProductMenu(MouseEvent mouseEvent, Commodity commodity) {
+        commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
+        MenuHandler.getInstance().setCurrentMenu(View.commodityMenu);
+        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
     public Label createLabel(int i, int j, String labelName, String description) {
         Label label = new Label(labelName + ": " + description);
+        label.setStyle("-fx-font-weight: bold");
         label.setLayoutX(i);
         label.setLayoutY(j);
         return label;
     }
+
+    private void setFilterMenuButton(Pane root){
+        MenuButton filter = new MenuButton("Filter");
+        filter.setStyle("-fx-background-color: #dc143c");
+        filter.setMinWidth(100);
+        filter.setMinHeight(30);
+        filter.setLayoutX(200);
+        filter.setLayoutY(0);
+        filter.getItems().add(new MenuItem("Filter by name"));
+        filter(filter.getItems().get(0),root , "FilterByName");
+        filter.getItems().add(new MenuItem("Filter by category"));
+        filter(filter.getItems().get(1),root , "FilterByCategory");
+        javafx.scene.control.Menu filterByCategorySpecification = new javafx.scene.control.Menu("Filter by category specification");
+        filterByCategorySpecification.getItems().add(new MenuItem("Numerical field"));
+        filter(filterByCategorySpecification.getItems().get(0),root , "FilterByCategorySpecificationNumericalField");
+        filterByCategorySpecification.getItems().add(new MenuItem("Optional field"));
+        filter(filterByCategorySpecification.getItems().get(1),root , "FilterByCategorySpecificationOptionalField");
+        filter.getItems().add(filterByCategorySpecification);
+        filter.getItems().add(new MenuItem("Remove filter"));
+        filter.getItems().add(new MenuItem("Remove all filters"));
+        root.getChildren().add(filter);
+    }
+
+    private void filter(MenuItem filer,Pane root , String fileName){
+        filer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Parent parent = null;
+                Popup popupMenu = new Popup();
+                try {
+                    parent = FXMLLoader.load(getClass().getResource("../../fxml/" + fileName + ".fxml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                popupMenu.getContent().add(parent);
+                popupMenu.show((root.getScene().getWindow()));
+            }
+        });
+    }
+
 }
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.FilterByCategorySpecificationOptionalField">
+    <children>
+        <TextField layoutX="197.0" layoutY="109.0" prefHeight="25.0" prefWidth="247.0" promptText="Corresponding field number">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </TextField>
+        <Label layoutX="201.0" layoutY="82.0" text="Enter corresponding field number:">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Button layoutX="414.0" layoutY="244.0" mnemonicParsing="false" styleClass="normal-button" stylesheets="@Common.css" text="Filter" />
+        <Label layoutX="201.0" layoutY="162.0" text="Options">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font></Label>
+        <TextField layoutX = "197.0" layoutY = "188.0" prefHeight="27.0" prefWidth="247.0" promptText = "Options" />
+    </children>
+</AnchorPane>

@@ -7,6 +7,7 @@ import model.filter.Filter;
 import java.util.ArrayList;
 
 public class FilteringMenu extends Menu {
+
     public void disableFilter(String filterName) throws Exception {
         currentFilters.remove(getFilterByName(filterName));
         updateFilteredCommodities();
@@ -46,7 +47,7 @@ public class FilteringMenu extends Menu {
         updateFilteredCommodities();
     }
 
-    public static   void updateFilteredCommodities() throws Exception {
+    public static void updateFilteredCommodities() throws Exception {
         filteredCommodities = new ArrayList<Commodity>();
         for (Commodity commodity : YaDataManager.getCommodities()) {
             if (canCommodityPassFilter(commodity))

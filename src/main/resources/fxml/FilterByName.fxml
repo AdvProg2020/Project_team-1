@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.FilterByName">
+   <children>
+      <TextField fx:id="name" layoutX="197.0" layoutY="200.0" prefHeight="25.0" prefWidth="247.0" promptText="Name">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Label layoutX="197.0" layoutY="173.0" text="Enter commodity name">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="444.0" layoutY="265.0" mnemonicParsing="false" styleClass="normal-button" stylesheets="@Common.css" text="Filter" onAction="#filterByName"/>
+   </children>
+</AnchorPane>
