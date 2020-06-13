@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -208,7 +209,7 @@ public class SceneHandler {
         filter(filterByCategorySpecification.getItems().get(1),root , "FilterByCategorySpecificationOptionalField");
         filter.getItems().add(filterByCategorySpecification);
         filter.getItems().add(new MenuItem("Remove filter"));
-        filter.getItems().add(new MenuItem("Remove all filters"));
+        filter(filter.getItems().get(3) , root , "DisableFilter");
         root.getChildren().add(filter);
     }
 

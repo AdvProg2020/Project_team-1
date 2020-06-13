@@ -4,18 +4,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.FilterByCategorySpecificationNumericalField">
+<AnchorPane fx:id="pane" prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.FilterByCategorySpecificationNumericalField">
     <children>
-        <TextField fx:id="correspondingFieldNumberTextField" layoutX="197.0" layoutY="146.0" prefHeight="33.0" prefWidth="247.0" promptText="Corresponding field number">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </TextField>
-        <Label layoutX="197.0" layoutY="105.0" prefHeight="41.0" prefWidth="292.0" text="Enter corresponding field number:">
-            <font>
-                <Font name="System Bold" size="18.0" />
-            </font>
-        </Label>
         <Button layoutX="464.0" layoutY="331.0" mnemonicParsing="false" onAction="#filterByNumericalField" prefHeight="50.0" prefWidth="95.0" styleClass="normal-button" stylesheets="@Common.css" text="Filter" />
       <Label layoutX="201.0" layoutY="184.0" prefHeight="41.0" prefWidth="95.0" text="Start range">
          <font>
@@ -32,5 +22,6 @@
             <Font name="System Bold" size="18.0" />
          </font></Label>
       <TextField fx:id="categoryNameTextField" layoutX="197.0" layoutY="78.0" prefHeight="27.0" prefWidth="247.0" promptText="Category name" />
+      <Button layoutX="52.0" layoutY="332.0" mnemonicParsing="false" onAction="#showFields" prefHeight="48.0" prefWidth="154.0" styleClass="normal-button" text="Show fields" />
     </children>
 </AnchorPane>
