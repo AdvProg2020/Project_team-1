@@ -36,11 +36,15 @@
 .scene-title {
     -fx-font-size: 32px;
     -fx-text-fill: cornflowerblue;
+    -fx-background-color: white;
+    -fx-background-radius: 15;
 }
 
 .error-message-label {
     -fx-text-fill: red;
     -fx-font-size: 18px;
+    -fx-background-color: white;
+    -fx-background-radius: 15;
 }
 
 .text-field {
@@ -51,6 +55,8 @@
 
 .hint-label {
     -fx-font-size: 16;
+    -fx-background-color: white;
+    -fx-background-radius: 15;
 }
 
 .full-tab {

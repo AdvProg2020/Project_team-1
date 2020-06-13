@@ -15,6 +15,8 @@ import java.io.IOException;
 public class Reseller {
 
     public Label businessNameLabel;
+    public Label tableViewPopupTitleLabel;
+    public Label salesHistoryPopupTitleLabel;
     Popup popupMenu = new Popup();
 
     public void onPersonalInfoClick(MouseEvent mouseEvent) {
@@ -28,7 +30,7 @@ public class Reseller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //businessNameLabel.setText(((BusinessAccount) Session.getOnlineAccount()).getBusinessName());
+        businessNameLabel.setText(((BusinessAccount) Session.getOnlineAccount()).getBusinessName());
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
@@ -45,6 +47,18 @@ public class Reseller {
             e.printStackTrace();
         }
         businessNameLabel.setText(((BusinessAccount) Session.getOnlineAccount()).getBusinessName());
+        popupMenu.getContent().add(parent);
+        popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
+    }
+
+    public void onSalesHistoryClick(MouseEvent mouseEvent) {
+        Parent parent = null;
+        try {
+            parent = FXMLLoader.load(getClass().getResource("../../fxml/reseller/SalesHistoryPopup.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
