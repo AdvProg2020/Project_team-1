@@ -116,16 +116,12 @@ public class SceneHandler {
     }
 
     private void setCategoryMenuButton(Pane root) throws IOException {
-        MenuButton categories = new MenuButton("Categories");
+        Button categories = new Button("Categories");
         categories.setMinHeight(30);
         categories.setMinWidth(100);
         categories.setStyle(" -fx-background-color: cornflowerblue;\n" +
-                "    -fx-text-fill: white;\n" +
                 "    -fx-background-radius: 100 100 100 100;\n");
-
-        for (Category category : YaDataManager.getCategories()) {
-            categories.getItems().add(new MenuItem(category.getName()));
-        }
+        setCategoryButtonOnAction(categories , root);
         root.getChildren().add(categories);
     }
 
@@ -270,6 +266,21 @@ public class SceneHandler {
         });
         root.getChildren().add(back);
     }
-
+    private void setCategoryButtonOnAction(Button categoryMenuButton , Pane root){
+        categoryMenuButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Parent parent = null;
+                Popup popupMenu = new Popup();
+                try {
+                    parent = FXMLLoader.load(getClass().getResource("../../fxml/" + "Category" + ".fxml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                popupMenu.getContent().add(parent);
+                popupMenu.show((root.getScene().getWindow()));
+            }
+        });
+    }
 }
 
