@@ -53,6 +53,8 @@ public class SceneHandler {
 
     public void initializeProductsRoot(Stage stage) {
         Pane root = new Pane();
+        root.setStyle("-fx-background-image: url(/bg.jpg); -fx-background-size: stretch;");
+        root.getStylesheets().add("../../fxml/Common.css");
         try {
             setSortMenuButton(root);
             setCategoryMenuButton(root);
@@ -195,7 +197,7 @@ public class SceneHandler {
 
     public Label createLabel(int i, int j, String labelName, String description , boolean color) {
         Label label = new Label(labelName + ": " + description);
-        label.setStyle("-fx-font-weight: bold");
+        label.getStyleClass().add("hint-label");
         label.setLayoutX(i);
         label.setLayoutY(j);
         if (color)
