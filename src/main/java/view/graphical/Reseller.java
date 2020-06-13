@@ -28,12 +28,24 @@ public class Reseller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        businessNameLabel.setText(((BusinessAccount) Session.getOnlineAccount()).getBusinessName());
+        //businessNameLabel.setText(((BusinessAccount) Session.getOnlineAccount()).getBusinessName());
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
     public void onCloseClick(MouseEvent mouseEvent) {
         ((Node) mouseEvent.getSource()).getScene().getWindow().hide();
+    }
+
+    public void onFirstNameClick(MouseEvent mouseEvent) {
+        Parent parent = null;
+        try {
+            parent = FXMLLoader.load(getClass().getResource("../../fxml/CompanyInfo.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        businessNameLabel.setText(((BusinessAccount) Session.getOnlineAccount()).getBusinessName());
+        popupMenu.getContent().add(parent);
+        popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 }
