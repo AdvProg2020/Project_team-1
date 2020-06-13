@@ -27,6 +27,10 @@ public class ProductsMenu extends Menu {
         View.sortingMenu.setPreviousMenu(View.productsMenu);
     }
 
+    public ProductsMenu() {
+        fxmlFileAddress = "";
+    }
+
     public ArrayList<Commodity> getProducts() throws Exception {
             FilteringMenu.updateFilteredCommodities();
             if (SortingMenu.getCurrentSort().equalsIgnoreCase("price")) {
