@@ -22,6 +22,10 @@ public class SellLog extends TransactionLog {
         isCommodityDelivered = false;
     }
 
+    public String getBuyerUsername() {
+        return buyer.getUsername();
+    }
+
     public double getReceivedMoney() {
         return receivedMoney;
     }

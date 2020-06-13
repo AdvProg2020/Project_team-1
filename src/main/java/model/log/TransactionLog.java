@@ -26,7 +26,19 @@ public abstract class TransactionLog {
         return date;
     }
 
+    public String getDateString() {
+        return date.toString();
+    }
+
     public Set<Commodity> getCommodities() {
         return commodities;
+    }
+
+    public String getCommoditiesNamesString() {
+        StringBuilder result = new StringBuilder();
+        for (Commodity commodity : commodities) {
+            result.append(commodity.getName());
+        }
+        return result.toString();
     }
 }
