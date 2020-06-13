@@ -19,11 +19,10 @@ public class FilterByCategorySpecificationOptionalField {
     public TextField optionsTextField;
     public AnchorPane pane;
     private ArrayList<CheckBox> checkBoxes = new ArrayList<CheckBox>();
-    private  String categoryName = categoryNameTextField.getText();
     private Category category;
 
     public void filterByOptionalField(ActionEvent actionEvent) {
-
+        String categoryName = categoryNameTextField.getText();
         ArrayList<String> acceptableOptions = new ArrayList<String>(Arrays.asList(optionsTextField.getText().split(" ")));
         for (int i = 0; i < checkBoxes.size(); i++) {
             if (checkBoxes.get(i).isSelected())
@@ -51,6 +50,7 @@ public class FilterByCategorySpecificationOptionalField {
     }
 
     public void showFields(ActionEvent actionEvent) {
+        String categoryName = categoryNameTextField.getText();
         try {
             category = View.manageCategoryMenu.getCategory(categoryName);
             if (category == null)
