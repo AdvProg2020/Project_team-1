@@ -26,6 +26,10 @@ public abstract class TransactionLog {
         return date;
     }
 
+    public String getDateString() {
+        return date.toString();
+    }
+
     public Set<Commodity> getCommodities() {
         return commodities;
     }
