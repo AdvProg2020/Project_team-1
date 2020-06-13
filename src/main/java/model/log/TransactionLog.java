@@ -33,4 +33,12 @@ public abstract class TransactionLog {
     public Set<Commodity> getCommodities() {
         return commodities;
     }
+
+    public String getCommoditiesNamesString() {
+        StringBuilder result = new StringBuilder();
+        for (Commodity commodity : commodities) {
+            result.append(commodity.getName());
+        }
+        return result.toString();
+    }
 }

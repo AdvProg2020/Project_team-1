@@ -22,7 +22,7 @@
    <center>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
-            <TableView prefHeight="276.0" prefWidth="776.0">
+            <TableView prefHeight="276.0" prefWidth="776.0" fx:id="salesHistoryTableView">
               <columns>
                 <TableColumn prefWidth="116.0" text="Received money">
                     <cellValueFactory>
@@ -62,7 +62,7 @@
 
                   <TableColumn prefWidth="100.0" text="Commodities">
                       <cellValueFactory>
-                          <PropertyValueFactory property="deductedMoneyOnSale"/>
+                          <PropertyValueFactory property="commoditiesNamesString"/>
                       </cellValueFactory>
                   </TableColumn>
 
