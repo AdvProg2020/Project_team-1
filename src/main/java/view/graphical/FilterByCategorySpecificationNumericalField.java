@@ -15,19 +15,19 @@ import java.util.ArrayList;
 public class FilterByCategorySpecificationNumericalField {
     public TextField endRangeTextField;
     public TextField startRangeTextField;
-    public TextField correspondingFieldNumberTextField;
     public TextField categoryNameTextField;
     public AnchorPane pane;
     private ArrayList<CheckBox> checkBoxes = new ArrayList<CheckBox>();
-    private String categoryName = categoryNameTextField.getText();
+    //private String categoryName = categoryNameTextField.getText();
+    Category category = null;
     public void filterByNumericalField(ActionEvent actionEvent) {
         int startRange = 0;
         int endRange = 0;
-        Category category = null;
+        String categoryName = categoryNameTextField.getText();
         try {
             category = View.manageCategoryMenu.getCategory(categoryName);
             if (category == null)
-                throw  new Exception();
+                throw new Exception();
             startRange = Integer.parseInt(startRangeTextField.getText());
             endRange = Integer.parseInt(endRangeTextField.getText());
         } catch (Exception e) {
@@ -38,25 +38,23 @@ public class FilterByCategorySpecificationNumericalField {
             categoryNameTextField.getScene().getWindow().hide();
             return;
         }
-        for (int i = 0 ; i < checkBoxes.size() ; i++) {
+        for (int i = 0; i < checkBoxes.size(); i++) {
             if (checkBoxes.get(i).isSelected())
-                filter(categoryName, i , startRange, endRange, category);
+                filter(categoryName, i, startRange, endRange, category);
         }
         categoryNameTextField.getScene().getWindow().hide();
     }
 
-    private void filter(String categoryName, int correspondingField, int startRange, int endRange ,Category category) {
+    private void filter(String categoryName, int correspondingField, int startRange, int endRange, Category category) {
         String filterName = "Filter by category specification " + categoryName + " " + correspondingField;
 
         try {
-            View.filteringMenu.filter(new model.filter.FilterByCategory("Filter by category " + categoryName, category));
-            View.filteringMenu.filter(new NumericalFilter(filterName, startRange, endRange, correspondingField));
+            View.filteringMenu.filter(new NumericalFilter(filterName, category , startRange, endRange, correspondingField));
         } catch (Exception exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.show();
             try {
                 View.filteringMenu.disableFilter(filterName);
-                View.filteringMenu.disableFilter("Filter by category " + categoryName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -64,7 +62,7 @@ public class FilterByCategorySpecificationNumericalField {
     }
 
     public void showFields(ActionEvent actionEvent) {
-        Category category;
+        String categoryName = categoryNameTextField.getText();
         try {
             category = View.manageCategoryMenu.getCategory(categoryName);
             if (category == null)
@@ -79,10 +77,10 @@ public class FilterByCategorySpecificationNumericalField {
         }
         int counter = 0;
         for (CategorySpecification fieldOption : category.getFieldOptions()) {
-            if (fieldOption.getOptions() ==  null) {
-                CheckBox fieldOptionCheckBox =  new CheckBox(fieldOption.getTitle());
+            if (fieldOption.getOptions() == null) {
+                CheckBox fieldOptionCheckBox = new CheckBox(fieldOption.getTitle());
                 fieldOptionCheckBox.setLayoutX(categoryNameTextField.getLayoutX() + 50 + counter);
-                fieldOptionCheckBox.setLayoutY(categoryNameTextField.getLayoutY()+50);
+                fieldOptionCheckBox.setLayoutY(categoryNameTextField.getLayoutY() + 50);
                 checkBoxes.add(fieldOptionCheckBox);
                 pane.getChildren().add(fieldOptionCheckBox);
                 counter += 150;

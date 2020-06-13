@@ -1961,8 +1961,8 @@ public class View {
             input = scanner.next();
         }
         scanner.nextLine();
-        OptionalFilter optionalFilter = new OptionalFilter("Optional filter " + categoryName + " " + correspondingFieldNumber, options, correspondingFieldNumber);
-        filteringMenu.filter(optionalFilter);
+       // OptionalFilter optionalFilter = new OptionalFilter("Optional filter " + categoryName + " " + correspondingFieldNumber, options, correspondingFieldNumber , category);
+        //filteringMenu.filter(optionalFilter);
         System.out.println("successfully filtered");
     }
 
@@ -1973,8 +1973,8 @@ public class View {
         int finishRange = scanner.nextInt();
         scanner.nextLine();
         Category category = manageCategoryMenu.getCategory(categoryName);
-        NumericalFilter numericalFilter = new NumericalFilter("Numerical filter " + categoryName + " " + correspondingFieldNumber + " " + startRange + " " + finishRange, startRange, finishRange, correspondingFieldNumber);
-        filteringMenu.filter(numericalFilter);
+        //NumericalFilter numericalFilter = new NumericalFilter("Numerical filter " + categoryName + " " + correspondingFieldNumber + " " + startRange + " " + finishRange, startRange, finishRange, correspondingFieldNumber);
+        //.filter(numericalFilter);
         System.out.println("successfully filtered");
     }
 
