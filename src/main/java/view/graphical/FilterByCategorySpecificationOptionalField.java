@@ -35,14 +35,12 @@ public class FilterByCategorySpecificationOptionalField {
         String filterName = "Filter by category specification " + categoryName + " " + correspondingField;
 
         try {
-            View.filteringMenu.filter(new model.filter.FilterByCategory("Filter by category " + categoryName, category));
-            View.filteringMenu.filter(new OptionalFilter(filterName, acceptableOptions, correspondingField));
+            View.filteringMenu.filter(new OptionalFilter(filterName, acceptableOptions, correspondingField , category));
         } catch (Exception exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.show();
             try {
                 View.filteringMenu.disableFilter(filterName);
-                View.filteringMenu.disableFilter("Filter by category " + categoryName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
