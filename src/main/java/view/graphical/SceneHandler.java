@@ -36,7 +36,7 @@ public class SceneHandler {
     public void updateScene(Stage stage) {
         Menu menu = MenuHandler.getInstance().getCurrentMenu();
         //menu.getFxmlFileAddress().equals("../../Products.fxml")
-        if (true)
+        if (!true)
             productsMenuLoad.initializeProductsRoot(stage);
         else {
             Parent root = null;
