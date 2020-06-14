@@ -157,4 +157,12 @@ public abstract class SimpleAccount {
         SimpleAccount account = (SimpleAccount) o;
         return Objects.equals(getUsername(), account.getUsername());
     }
+
+    public void setUserPhoto(Image userPhoto) {
+        this.userPhoto = userPhoto;
+    }
+
+    public Image getUserPhoto() {
+        return userPhoto;
+    }
 }

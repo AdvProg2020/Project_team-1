@@ -48,6 +48,8 @@ public class SceneHandler {
             assert root != null;
             stage.setScene(new Scene(root));
         }
+        stage.setMinWidth(1000);
+        stage.setMinHeight(600);
         stage.setTitle(menu.getStageTitle());
         stage.show();
     }

@@ -39,6 +39,39 @@ public class LoginRegisterMenu extends Menu{
     }
 
     public void registerManagerAccount(String username, String firstName, String lastName, String email,
+                                       String phoneNumber, String password) throws InvalidAccountInfoException{
+        ManagerAccount newAccount = new ManagerAccount(username, firstName, lastName, email, phoneNumber, password);
+        try {
+            YaDataManager.addManager(newAccount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void registerPersonalAccount(String username, String firstName, String lastName, String email,
+                                        String phoneNumber, String password) throws InvalidAccountInfoException {
+        PersonalAccount newAccount = new PersonalAccount(username, firstName, lastName, email, phoneNumber, password);
+        try {
+            YaDataManager.addPerson(newAccount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void registerResellerAccount(String username, String firstName, String lastName, String email,
+                                        String phoneNumber, String password, String businessName) throws InvalidAccountInfoException {
+        BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
+                phoneNumber, password, businessName);
+        Request request;
+        try {
+            request = new Request(newAccount, null);
+            YaDataManager.addRequest(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void registerManagerAccount(String username, String firstName, String lastName, String email,
                                        String phoneNumber, String password, Image image) throws InvalidAccountInfoException{
         ManagerAccount newAccount = new ManagerAccount(username, firstName, lastName, email, phoneNumber, password, image);
         try {
@@ -63,7 +96,7 @@ public class LoginRegisterMenu extends Menu{
                                         throws InvalidAccountInfoException {
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
                 phoneNumber, password, businessName, image);
-        Request request = null;
+        Request request;
         try {
             request = new Request(newAccount, null);
             YaDataManager.addRequest(request);
