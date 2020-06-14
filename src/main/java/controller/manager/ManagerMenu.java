@@ -83,6 +83,10 @@ public class ManagerMenu extends Menu {
         return YaDataManager.getRequests();
     }
 
+    public ManagerMenu() {
+        fxmlFileAddress = "../../fxml/HolyManager/HolyManager.fxml";
+    }
+
     public SimpleAccount getOnlineAccount() {
         return Session.getOnlineAccount();
     }
