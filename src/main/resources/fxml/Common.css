@@ -1,8 +1,14 @@
+@font-face {
+    font-family: "Sriracha";
+    src: url('../fonts/Sriracha-Regular.ttf');
+}
+
 .background {
     -fx-background-image: url("../bg.jpg");
 }
 
 .back-button {
+    -fx-font-family: "Sriracha";
     -fx-background-color: darkorange;
     -fx-text-fill: white;
     -fx-background-radius: 100 0 0 100;
@@ -10,22 +16,49 @@
     -fx-min-width: 200px;
 }
 
+.back-button:hover {
+    -fx-background-color: rgba(255, 140, 0, 0.65);
+}
+
+.back-button:pressed {
+    -fx-background-color: rgb(255, 160, 0);
+}
+
 .logout-button {
-    -fx-background-color: red;
+    -fx-font-family: "Sriracha";
+    -fx-background-color: #c80000;
     -fx-text-fill: white;
     -fx-background-radius: 100 0 0 100;
     -fx-font-size: 22;
     -fx-min-width: 200px;
 }
 
+.logout-button:hover {
+    -fx-background-color: rgba(255, 0, 0, 0.65);
+}
+
+.logout-button:pressed {
+    -fx-background-color: rgb(255, 0, 0);
+}
+
 .normal-button {
+    -fx-font-family: "Sriracha";
     -fx-background-color: cornflowerblue;
     -fx-text-fill: white;
     -fx-background-radius: 100 100 100 100;
     -fx-font-size: 22;
 }
 
+.normal-button:hover {
+    -fx-background-color: rgba(100, 149, 237, 0.65);
+}
+
+.normal-button:pressed {
+    -fx-background-color: rgb(89, 142, 236);
+}
+
 .forward-button {
+    -fx-font-family: "Sriracha";
     -fx-background-color: green;
     -fx-text-fill: white;
     -fx-background-radius: 0 100 100 0;
@@ -33,7 +66,16 @@
     -fx-min-width: 200px;
 }
 
+.forward-button:hover {
+    -fx-background-color: rgba(0, 128, 0, 0.65);
+}
+
+.forward-button:pressed{
+    -fx-background-color: rgb(0, 150, 0);
+}
+
 .scene-title {
+    -fx-font-family: "Sriracha";
     -fx-font-size: 32px;
     -fx-text-fill: cornflowerblue;
     -fx-background-color: white;
@@ -41,6 +83,7 @@
 }
 
 .error-message-label {
+    -fx-font-family: "Sriracha";
     -fx-text-fill: red;
     -fx-font-size: 18px;
     -fx-background-color: white;
@@ -48,18 +91,21 @@
 }
 
 .text-field {
+    -fx-font-family: "Sriracha";
     -fx-background-radius: 15;
     -fx-border-radius: 15;
     -fx-border-color: cornflowerblue;
 }
 
 .hint-label {
+    -fx-font-family: "Sriracha";
     -fx-font-size: 16;
     -fx-background-color: white;
     -fx-background-radius: 15;
 }
 
 .full-tab {
+    -fx-font-family: "Sriracha";
     -fx-font-size: 16;
 }
 
@@ -69,6 +115,7 @@
 }
 
 .close-button {
+    -fx-font-family: "Sriracha";
     -fx-font-size: 22;
     -fx-background-color: red;
     -fx-text-fill: white;

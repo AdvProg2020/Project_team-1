@@ -1,6 +1,7 @@
 package model.account;
 
 import controller.data.YaDataManager;
+import javafx.scene.image.Image;
 import model.commodity.Commodity;
 import model.commodity.DiscountCode;
 import model.exception.InvalidAccountInfoException;
@@ -20,6 +21,15 @@ public class PersonalAccount extends SimpleAccount {
     public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber,
                            String password) throws InvalidAccountInfoException {
         super(username, firstName, lastName, email, phoneNumber, password, "personal");
+        discountCodes = new HashMap<>();
+        buyLogs = new ArrayList<>();
+        cart = new HashMap<>();
+        credit = 0.0;
+    }
+
+    public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber,
+                           String password, Image image) throws InvalidAccountInfoException {
+        super(username, firstName, lastName, email, phoneNumber, password, "personal", image);
         discountCodes = new HashMap<>();
         buyLogs = new ArrayList<>();
         cart = new HashMap<>();

@@ -8,7 +8,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Session;
 import model.account.BusinessAccount;
@@ -17,6 +20,7 @@ import model.exception.InvalidAccountInfoException;
 import model.exception.InvalidLoginInformationException;
 import view.commandline.View;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,6 +45,7 @@ public class LoginRegister implements Initializable {
     public PasswordField registerPassword;
     public Label registerMessageLabel;
     public Button registerButton;
+    public ImageView userPhotoImageView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -84,23 +89,34 @@ public class LoginRegister implements Initializable {
                 case "personal":
                     loginRegisterMenu.registerPersonalAccount(registerUsernameTf.getText(),
                             registerFirstNameTf.getText(), registerLastNameTf.getText(), registerEmailTf.getText(),
-                            registerPhoneNumberTf.getText(), registerPassword.getText());
+                            registerPhoneNumberTf.getText(), registerPassword.getText(), userPhotoImageView.getImage());
                     break;
 
                 case "reseller":
                     loginRegisterMenu.registerResellerAccount(registerUsernameTf.getText(),
                             registerFirstNameTf.getText(), registerLastNameTf.getText(), registerEmailTf.getText(),
-                            registerPhoneNumberTf.getText(), registerPassword.getText(), registerBusinessNameTf.getText());
+                            registerPhoneNumberTf.getText(), registerPassword.getText(), registerBusinessNameTf.getText(),
+                            userPhotoImageView.getImage());
                     break;
 
                 case "manager":
                     loginRegisterMenu.registerManagerAccount(registerUsernameTf.getText(),
                             registerFirstNameTf.getText(), registerLastNameTf.getText(), registerEmailTf.getText(),
-                            registerPhoneNumberTf.getText(), registerPassword.getText());
+                            registerPhoneNumberTf.getText(), registerPassword.getText(), userPhotoImageView.getImage());
             }
             registerMessageLabel.setText("You registered successfully");
         } catch (InvalidLoginInformationException | InvalidAccessException | InvalidAccountInfoException e) {
             registerMessageLabel.setText(e.getMessage());
         }
+    }
+
+    public void onPickAPhotoClick(MouseEvent mouseEvent) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image file", "*.jpg",
+                "*.png", "*.jpeg");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
+        Image image = new Image(file.toURI().toString());
+        userPhotoImageView.setImage(image);
     }
 }

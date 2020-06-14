@@ -24,7 +24,8 @@ public class CustomerMenu extends Menu {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         ArrayList<DiscountCode> discountCodes = new ArrayList<>(account.getDiscountCodes());
         Sort.sortDiscountArrayList(discountCodes, this.discountsSortType);
-        discountCodes.removeIf(discountCode -> !discountCode.isOnTime());
+        discountCodes.removeIf(discountCode -> !discountCode.isOnTime() || discountCode.getMaximumNumberOfUses() ==
+                account.getNumberOfTimesUsed(discountCode));
         return discountCodes;
     }
 

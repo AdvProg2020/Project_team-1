@@ -1,5 +1,6 @@
 package model.account;
 
+import javafx.scene.image.Image;
 import model.exception.InvalidAccountInfoException;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -19,6 +20,7 @@ public abstract class SimpleAccount {
     protected String phoneNumber;
     protected String hashedPassword;
     private String accountType;
+    private Image userPhoto;
 
     public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
                          String password, String accountType) throws InvalidAccountInfoException {
@@ -29,6 +31,18 @@ public abstract class SimpleAccount {
         changePhoneNumber(phoneNumber);
         changePassword(password);
         this.accountType = accountType;
+    }
+
+    public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
+                         String password, String accountType, Image userPhoto) throws InvalidAccountInfoException {
+        changeUsername(username);
+        changeFirstName(firstName);
+        changeLastName(lastName);
+        changeEmail(email);
+        changePhoneNumber(phoneNumber);
+        changePassword(password);
+        this.accountType = accountType;
+        this.userPhoto = userPhoto;
     }
 
     public String getAccountType() {
