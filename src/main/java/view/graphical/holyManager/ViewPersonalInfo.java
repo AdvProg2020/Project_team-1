@@ -151,4 +151,5 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
             }
         });
     }
+
 }

@@ -18,6 +18,10 @@ public class ManageUsersMenu extends Menu {
         YaDataManager.addManager(managerAccount);
     }
 
+    public ManageUsersMenu() {
+        fxmlFileAddress = "../../fxml/HolyManager/ManageUsers.fxml";
+    }
+
     public boolean checkEmail(String email) throws IOException {
         for (ManagerAccount manager : YaDataManager.getManagers()) {
             if (manager.getEmail().equals(email)){

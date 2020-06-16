@@ -20,7 +20,7 @@ public abstract class SimpleAccount {
     protected String phoneNumber;
     protected String hashedPassword;
     private String accountType;
-    private Image userPhoto;
+   // private Image userPhoto;
 
     public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
                          String password, String accountType) throws InvalidAccountInfoException {
@@ -42,7 +42,7 @@ public abstract class SimpleAccount {
         changePhoneNumber(phoneNumber);
         changePassword(password);
         this.accountType = accountType;
-        this.userPhoto = userPhoto;
+       // this.userPhoto = userPhoto;
     }
 
     public String getAccountType() {
@@ -158,11 +158,11 @@ public abstract class SimpleAccount {
         return Objects.equals(getUsername(), account.getUsername());
     }
 
-    public void setUserPhoto(Image userPhoto) {
-        this.userPhoto = userPhoto;
-    }
+   // public void setUserPhoto(Image userPhoto) {
+    //    this.userPhoto = userPhoto;
+   // }
 
-    public Image getUserPhoto() {
-        return userPhoto;
-    }
+   // public Image getUserPhoto() {
+   //     return userPhoto;
+   // }
 }

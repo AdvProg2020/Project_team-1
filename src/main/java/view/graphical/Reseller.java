@@ -46,7 +46,7 @@ public class Reseller {
         lastNameLabel.setText(simpleAccount.getLastName());
         emailLabel.setText(simpleAccount.getEmail());
         phoneNumberLabel.setText(simpleAccount.getPhoneNumber());
-        userPhotoImageView.setImage(simpleAccount.getUserPhoto());
+        //userPhotoImageView.setImage(simpleAccount.getUserPhoto());
         View.managerMenu.viewPersonalInfo();
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
@@ -105,7 +105,7 @@ public class Reseller {
         File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
         Image image = new Image(file.toURI().toString());
         userPhotoImageView.setImage(image);
-        Session.getOnlineAccount().setUserPhoto(image);
+        //Session.getOnlineAccount().setUserPhoto(image);
     }
 
     private void openTextFieldPopup(MouseEvent mouseEvent, String title) {

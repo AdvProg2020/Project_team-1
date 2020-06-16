@@ -20,4 +20,9 @@ public class HolyManager{
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
+    public void manageUsers(ActionEvent actionEvent){
+        MenuHandler.getInstance().setCurrentMenu(View.manageUsersMenu);
+        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
 }
