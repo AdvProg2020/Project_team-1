@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="pane" prefHeight="685.0" prefWidth="1329.0" styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.ViewPersonalInfo">
+    <children>
+        <Button mnemonicParsing="false" onAction="#viewPersonalInfo" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View personal info" />
+        <Button layoutY="61.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage users" onAction="#manageUsers"/>
+        <Button layoutY="123.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage all products" />
+        <Button layoutY="186.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Create discount code">
+            <font>
+                <Font size="36.0" />
+            </font>
+        </Button>
+        <Button layoutX="-2.0" layoutY="250.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View discount codes" />
+        <Button layoutX="-2.0" layoutY="315.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Mange requests" />
+        <Button layoutX="2.0" layoutY="385.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage categories" />
+      <ListView fx:id="userInfo" layoutX="254.0" layoutY="14.0" prefHeight="152.0" prefWidth="561.0" />
+      <Button layoutX="691.0" layoutY="11.0" mnemonicParsing="false" onAction="#editFirstName" prefHeight="25.0" prefWidth="67.0" text="Edit" />
+      <Button layoutX="691.0" layoutY="35.0" mnemonicParsing="false" onAction="#editLastName" prefHeight="25.0" prefWidth="67.0" text="Edit" />
+      <Button layoutX="691.0" layoutY="60.0" mnemonicParsing="false" onAction="#editEmail" prefHeight="25.0" prefWidth="67.0" text="Edit" />
+      <Button layoutX="691.0" layoutY="85.0" mnemonicParsing="false" onAction="#editPhone" prefHeight="25.0" prefWidth="67.0" text="Edit" />
+      <Button layoutX="725.0" layoutY="162.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="170.0" styleClass="normal-button" text="Edit password" onAction="#editPassword"/>
+    </children>
+</AnchorPane>
