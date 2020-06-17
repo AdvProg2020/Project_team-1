@@ -124,3 +124,11 @@
     -fx-max-height:  5px;
     -fx-min-width: 200px;
 }
+.delete-button {
+    -fx-font-family: "Sriracha";
+    -fx-font-size: 22;
+    -fx-background-color: red;
+    -fx-text-fill: white;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
