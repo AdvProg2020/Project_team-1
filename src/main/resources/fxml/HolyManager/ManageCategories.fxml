@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.ManageCategories">
+    <Button mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View personal info" onAction="#viewPersonalInfo"/>
+    <Button layoutY="61.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage users" onAction="#manageUsers" />
+    <Button layoutY="123.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage all products" onAction="#manageAllProducts" />
+    <Button layoutY="186.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Create discount code" onAction="#createDiscountCode">
+        <font>
+            <Font size="36.0" />
+        </font>
+    </Button>
+    <Button layoutX="-2.0" layoutY="250.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View discount codes" onAction="#viewDiscountCode"/>
+    <Button layoutX="-2.0" layoutY="315.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Mange requests" onAction="#manageRequests" />
+    <Button layoutX="2.0" layoutY="385.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage categories" onAction="#manageCategories" /> <ListView fx:id="usersInfo" layoutX="248.0" layoutY="14.0" prefHeight="438.0" prefWidth="591.0" />
+</AnchorPane>

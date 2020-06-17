@@ -89,20 +89,20 @@ public class LoginRegister implements Initializable {
                 case "personal":
                     loginRegisterMenu.registerPersonalAccount(registerUsernameTf.getText(),
                             registerFirstNameTf.getText(), registerLastNameTf.getText(), registerEmailTf.getText(),
-                            registerPhoneNumberTf.getText(), registerPassword.getText(), userPhotoImageView.getImage());
+                            registerPhoneNumberTf.getText(), registerPassword.getText(), userPhotoImageView.getImage().getUrl());
                     break;
 
                 case "reseller":
                     loginRegisterMenu.registerResellerAccount(registerUsernameTf.getText(),
                             registerFirstNameTf.getText(), registerLastNameTf.getText(), registerEmailTf.getText(),
                             registerPhoneNumberTf.getText(), registerPassword.getText(), registerBusinessNameTf.getText(),
-                            userPhotoImageView.getImage());
+                            userPhotoImageView.getImage().getUrl());
                     break;
 
                 case "manager":
                     loginRegisterMenu.registerManagerAccount(registerUsernameTf.getText(),
                             registerFirstNameTf.getText(), registerLastNameTf.getText(), registerEmailTf.getText(),
-                            registerPhoneNumberTf.getText(), registerPassword.getText(), userPhotoImageView.getImage());
+                            registerPhoneNumberTf.getText(), registerPassword.getText(), userPhotoImageView.getImage().getUrl());
             }
             registerMessageLabel.setText("You registered successfully");
         } catch (InvalidLoginInformationException | InvalidAccessException | InvalidAccountInfoException e) {

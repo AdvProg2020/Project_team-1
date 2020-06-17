@@ -132,3 +132,10 @@
     -fx-border-radius: 15;
     -fx-background-radius: 15;
 }
+.normal-button-Green{
+    -fx-font-family: "Sriracha";
+    -fx-background-color: limegreen;
+    -fx-text-fill: white;
+    -fx-background-radius: 100 100 100 100;
+    -fx-font-size: 22;
+}

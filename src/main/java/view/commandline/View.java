@@ -58,6 +58,7 @@ public class View {
     public static final ManageCategoryMenu manageCategoryMenu = new ManageCategoryMenu();
     public static final FilteringMenu filteringMenu = new FilteringMenu();
     public static final SortingMenu sortingMenu = new SortingMenu();
+    public static final CreateDiscountCode createDiscountCode = new CreateDiscountCode();
     public static final ManageAllProducts manageAllProducts = new ManageAllProducts();
     private final Scanner scanner = new Scanner(System.in);
 

@@ -25,4 +25,31 @@ public class HolyManager{
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
+    public void manageCategories(ActionEvent actionEvent){
+        MenuHandler.getInstance().setCurrentMenu(View.manageCategoryMenu);
+        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
+    public void manageRequests(ActionEvent actionEvent){
+        MenuHandler.getInstance().setCurrentMenu(View.manageRequestMenu);
+        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
+    public void manageAllProducts(ActionEvent actionEvent){
+        MenuHandler.getInstance().setCurrentMenu(View.manageAllProducts);
+        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
+    public void viewDiscountCode(ActionEvent actionEvent){
+        MenuHandler.getInstance().setCurrentMenu(View.getDiscountCode);
+        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
+    public void createDiscountCode(ActionEvent actionEvent){
+        MenuHandler.getInstance().setCurrentMenu(View.createDiscountCode);
+        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
+
+
 }

@@ -20,7 +20,7 @@ public abstract class SimpleAccount {
     protected String phoneNumber;
     protected String hashedPassword;
     private String accountType;
-   // private Image userPhoto;
+    private String imagePath;
 
     public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
                          String password, String accountType) throws InvalidAccountInfoException {
@@ -34,7 +34,7 @@ public abstract class SimpleAccount {
     }
 
     public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
-                         String password, String accountType, Image userPhoto) throws InvalidAccountInfoException {
+                         String password, String accountType, String imagePath) throws InvalidAccountInfoException {
         changeUsername(username);
         changeFirstName(firstName);
         changeLastName(lastName);
@@ -42,7 +42,7 @@ public abstract class SimpleAccount {
         changePhoneNumber(phoneNumber);
         changePassword(password);
         this.accountType = accountType;
-       // this.userPhoto = userPhoto;
+        this.imagePath = imagePath;
     }
 
     public String getAccountType() {

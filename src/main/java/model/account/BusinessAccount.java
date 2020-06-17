@@ -32,8 +32,8 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
     }
 
     public BusinessAccount(String username, String firstName, String lastName, String email, String phoneNumber,
-                           String password, String businessName, Image userPhoto) throws InvalidAccountInfoException {
-        super(username, firstName, lastName, email, phoneNumber, password, "reseller", userPhoto);
+                           String password, String businessName, String imagePath) throws InvalidAccountInfoException {
+        super(username, firstName, lastName, email, phoneNumber, password, "reseller", imagePath);
         changeBusinessName(businessName);
         sellLogs = new ArrayList<SellLog>();
         commodities = new ArrayList<Commodity>();

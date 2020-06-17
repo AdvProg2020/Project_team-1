@@ -28,8 +28,8 @@ public class PersonalAccount extends SimpleAccount {
     }
 
     public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber,
-                           String password, Image image) throws InvalidAccountInfoException {
-        super(username, firstName, lastName, email, phoneNumber, password, "personal", image);
+                           String password, String imagePath) throws InvalidAccountInfoException {
+        super(username, firstName, lastName, email, phoneNumber, password, "personal", imagePath);
         discountCodes = new HashMap<>();
         buyLogs = new ArrayList<>();
         cart = new HashMap<>();

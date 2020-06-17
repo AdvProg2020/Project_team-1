@@ -72,8 +72,8 @@ public class LoginRegisterMenu extends Menu{
     }
 
     public void registerManagerAccount(String username, String firstName, String lastName, String email,
-                                       String phoneNumber, String password, Image image) throws InvalidAccountInfoException{
-        ManagerAccount newAccount = new ManagerAccount(username, firstName, lastName, email, phoneNumber, password, image);
+                                       String phoneNumber, String password, String imagePath) throws InvalidAccountInfoException{
+        ManagerAccount newAccount = new ManagerAccount(username, firstName, lastName, email, phoneNumber, password, imagePath);
         try {
             YaDataManager.addManager(newAccount);
         } catch (IOException e) {
@@ -82,8 +82,8 @@ public class LoginRegisterMenu extends Menu{
     }
 
     public void registerPersonalAccount(String username, String firstName, String lastName, String email,
-                                        String phoneNumber, String password, Image image) throws InvalidAccountInfoException {
-        PersonalAccount newAccount = new PersonalAccount(username, firstName, lastName, email, phoneNumber, password, image);
+                                        String phoneNumber, String password, String imagePath) throws InvalidAccountInfoException {
+        PersonalAccount newAccount = new PersonalAccount(username, firstName, lastName, email, phoneNumber, password, imagePath);
         try {
             YaDataManager.addPerson(newAccount);
         } catch (IOException e) {
@@ -92,10 +92,10 @@ public class LoginRegisterMenu extends Menu{
     }
 
     public void registerResellerAccount(String username, String firstName, String lastName, String email,
-                                        String phoneNumber, String password, String businessName, Image image)
+                                        String phoneNumber, String password, String businessName, String imagePath)
                                         throws InvalidAccountInfoException {
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
-                phoneNumber, password, businessName, image);
+                phoneNumber, password, businessName, imagePath);
         Request request;
         try {
             request = new Request(newAccount, null);

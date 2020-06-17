@@ -6,18 +6,17 @@
 
 <AnchorPane prefHeight="565.0" prefWidth="971.0" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.ManagerUsers">
     <children>
-        <Button mnemonicParsing="false" onAction="#viewPersonalInfo" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View personal info" />
-        <Button layoutY="61.0" mnemonicParsing="false" onAction="#manageUsers" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage users" />
-        <Button layoutY="123.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage all products" />
-        <Button layoutY="186.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Create discount code">
+        <Button mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View personal info" onAction="#viewPersonalInfo"/>
+        <Button layoutY="61.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage users" onAction="#manageUsers" />
+        <Button layoutY="123.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage all products" onAction="#manageAllProducts" />
+        <Button layoutY="186.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Create discount code" onAction="#createDiscountCode">
             <font>
                 <Font size="36.0" />
             </font>
         </Button>
-        <Button layoutX="-2.0" layoutY="250.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View discount codes" />
-        <Button layoutX="-2.0" layoutY="315.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Mange requests" />
-        <Button layoutX="2.0" layoutY="385.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage categories" />
-        <ListView fx:id="usersInfo" layoutX="248.0" layoutY="14.0" prefHeight="438.0" prefWidth="591.0" />
+        <Button layoutX="-2.0" layoutY="250.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View discount codes" onAction="#viewDiscountCode"/>
+        <Button layoutX="-2.0" layoutY="315.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Mange requests" onAction="#manageRequests" />
+        <Button layoutX="2.0" layoutY="385.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage categories" onAction="#manageCategories" /> <ListView fx:id="usersInfo" layoutX="248.0" layoutY="14.0" prefHeight="438.0" prefWidth="591.0" />
       <Button fx:id="delete" alignment="CENTER" cancelButton="true" defaultButton="true" ellipsisString="" layoutX="632.0" layoutY="452.0" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#deleteAccount" prefHeight="55.0" prefWidth="210.0" styleClass="delete-button" text="Delete account" textAlignment="JUSTIFY" textFill="WHITE" wrapText="true">
 
       </Button>

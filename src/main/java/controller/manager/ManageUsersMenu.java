@@ -15,6 +15,12 @@ import java.io.IOException;
 public class ManageUsersMenu extends Menu {
 
     public void createNewManager(ManagerAccount managerAccount) throws Exception {
+        if (YaDataManager.isUsernameExist(managerAccount.getUsername())) {
+            throw new Exception("Invalid username");
+        }
+        if (checkEmail(managerAccount.getEmail())) {
+            throw new Exception("This email is unavailable");
+        }
         YaDataManager.addManager(managerAccount);
     }
 

@@ -55,11 +55,14 @@ public class ManagerMenu extends Menu {
 
     public void addDiscountCode(String code, Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
                                 int maximumNumberOfUse, ArrayList<PersonalAccount> accountArrayList) throws Exception {
+
+
         DiscountCode discountCode = new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accountArrayList);
-        YaDataManager.addDiscountCode(discountCode);
-        for (PersonalAccount account : discountCode.getAccounts()) {
+        for (PersonalAccount account : accountArrayList) {
             account.addDiscountCode(discountCode);
         }
+        YaDataManager.addDiscountCode(discountCode);
+
         View.getDiscountCode.updateAccounts(discountCode);
     }
 

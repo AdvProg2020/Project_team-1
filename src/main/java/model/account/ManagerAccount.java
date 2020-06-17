@@ -11,8 +11,8 @@ public class ManagerAccount extends SimpleAccount {
     }
 
     public ManagerAccount(String username, String firstName, String lastName, String email,
-                          String phoneNumber, String password, Image image) throws InvalidAccountInfoException {
-        super(username, firstName, lastName, email, phoneNumber, password, "manager", image);
+                          String phoneNumber, String password, String imagePath) throws InvalidAccountInfoException {
+        super(username, firstName, lastName, email, phoneNumber, password, "manager", imagePath);
     }
 
     @Override
