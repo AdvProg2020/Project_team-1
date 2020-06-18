@@ -1730,7 +1730,7 @@ public class View {
             return;
         }
         String tmp = scanner.nextLine();
-        manageCategoryMenu.addCategory(categoryName, commoditiesId, categorySpecifications);
+        manageCategoryMenu.addCategory(categoryName, null, categorySpecifications);
         System.out.println("category created");
     }
 

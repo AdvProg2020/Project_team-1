@@ -23,7 +23,6 @@ public class ViewDiscountCode extends HolyManager implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         pane.getChildren().add(listView);
         setUpPane();
     }
@@ -33,7 +32,6 @@ public class ViewDiscountCode extends HolyManager implements Initializable {
         try {
             for (DiscountCode discountCode : YaDataManager.getDiscountCodes()) {
                 listView.getItems().add(new CheckBox(discountCode.getInformation()));
-                System.out.println(discountCode.getCode());
             }
         } catch (IOException e) {
             e.printStackTrace();

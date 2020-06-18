@@ -11,12 +11,25 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class ManageCategoryMenu extends Menu {
+    public ManageCategoryMenu() {
+        fxmlFileAddress = "../../fxml/HolyManager/ManageCategories.fxml";
+    }
 
     public boolean isNumeric(String s) {
         try {
             Integer.parseInt(s);
         } catch (Exception e) {
             return false;
+        }
+        return true;
+    }
+
+
+    public boolean checkCategorySpecificationTitle(ArrayList<CategorySpecification> categorySpecifications , String title){
+        for (CategorySpecification categorySpecification : categorySpecifications) {
+            if (categorySpecification.getTitle().equals(title)){
+                return false;
+            }
         }
         return true;
     }
@@ -122,15 +135,9 @@ public class ManageCategoryMenu extends Menu {
     }
 
     public void addCategory(String
-                                    name, ArrayList<Integer> commodityIds, ArrayList<CategorySpecification> categorySpecifications) throws
+                                    name, ArrayList<Commodity> commodities , ArrayList<CategorySpecification> categorySpecifications) throws
             Exception {
-        ArrayList<Commodity> commodities = new ArrayList<Commodity>();
-        for (Commodity commodity : YaDataManager.getCommodities()) {
-            for (Integer commodityId : commodityIds) {
-                if (commodityId == commodity.getCommodityId())
-                    commodities.add(commodity);
-            }
-        }
+
         Category category = new Category(name, commodities, categorySpecifications);
         for (Commodity commodity : commodities) {
             commodity.setCategory(category);
