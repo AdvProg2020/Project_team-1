@@ -66,7 +66,4 @@ public class HolyManager{
         popupMenu.show((((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
-
-
-
 }

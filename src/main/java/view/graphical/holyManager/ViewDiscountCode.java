@@ -3,10 +3,12 @@ package view.graphical.holyManager;
 import controller.data.YaDataManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import model.commodity.DiscountCode;
 import view.commandline.View;
 
@@ -21,6 +23,7 @@ public class ViewDiscountCode extends HolyManager implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         pane.getChildren().add(listView);
         setUpPane();
     }
@@ -41,6 +44,7 @@ public class ViewDiscountCode extends HolyManager implements Initializable {
     }
 
     public void editDiscountCode(ActionEvent actionEvent) {
+        EditDiscountCode.setStage((Stage) ((Node)actionEvent.getSource()).getScene().getWindow());
         errorLabel.setVisible(false);
         if  (checkError()) return;
         setEditDiscountCodeStaticField();

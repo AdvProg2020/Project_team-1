@@ -16,9 +16,9 @@
     <Button layoutX="-2.0" layoutY="250.0" mnemonicParsing="false" onAction="#viewDiscountCode" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View discount codes" />
     <Button layoutX="-2.0" layoutY="315.0" mnemonicParsing="false" onAction="#manageRequests" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Mange requests" />
     <Button layoutX="2.0" layoutY="385.0" mnemonicParsing="false" onAction="#manageCategories" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage categories" />
-   <Button layoutX="499.0" layoutY="437.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" styleClass="normal-button" text="Edit" onAction="#editDiscountCode"/>
-   <Button layoutX="647.0" layoutY="437.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="155.0" styleClass="delete-button" text="Delete" onAction="#deleteDiscountCode" />
-   <Label layoutX="298.0" layoutY="458.0" prefHeight="28.0" prefWidth="165.0" styleClass="hint-label" text="Label" textFill="#fc0202" visible="false" fx:id="errorLabel" />
+   <Button layoutX="406.0" layoutY="438.0" mnemonicParsing="false" onAction="#editDiscountCode" prefHeight="69.0" prefWidth="251.0" styleClass="normal-button" text="Edit discount code" />
+   <Button layoutX="693.0" layoutY="438.0" mnemonicParsing="false" onAction="#deleteDiscountCode" prefHeight="69.0" prefWidth="251.0" styleClass="delete-button" text=" Delete discount code" />
+   <Label fx:id="errorLabel" layoutX="298.0" layoutY="458.0" prefHeight="28.0" prefWidth="165.0" styleClass="hint-label" text="Label" textFill="#fc0202" visible="false" />
 
 
 </AnchorPane>
