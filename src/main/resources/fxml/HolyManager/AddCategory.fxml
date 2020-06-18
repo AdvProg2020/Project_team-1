@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.AddCategory">
+   <children>
+      <Label layoutX="136.0" prefHeight="29.0" prefWidth="225.0" styleClass="hint-label" stylesheets="@../Common.css" text="Enter category name:" />
+      <TextField fx:id="categoryName" layoutX="136.0" layoutY="29.0" prefHeight="33.0" prefWidth="225.0" promptText="CategoryName" />
+      <Button layoutX="136.0" layoutY="77.0" mnemonicParsing="false" onAction="#addCommodity" prefHeight="55.0" prefWidth="225.0" styleClass="normal-button" text="Add commodity" />
+      <Label layoutX="143.0" layoutY="141.0" prefHeight="17.0" prefWidth="225.0" styleClass="hint-label" text="Category specification:" />
+      <TextField fx:id="title" layoutX="136.0" layoutY="170.0" prefHeight="33.0" prefWidth="225.0" promptText="Title" />
+      <CheckBox fx:id="isOptional" layoutX="368.0" layoutY="178.0" mnemonicParsing="false" text="Optional field" />
+      <Button layoutX="14.0" layoutY="262.0" mnemonicParsing="false" onAction="#addCategorySpecification" prefHeight="45.0" prefWidth="148.0" text="Add category specification">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button layoutX="342.0" layoutY="307.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="55.0" prefWidth="225.0" styleClass="normal-button-Green" text="Add category" />
+      <Button fx:id="addOptionId" layoutX="368.0" layoutY="217.0" mnemonicParsing="false" onAction="#addOption" text="Add Option" visible="false" />
+      <TextField fx:id="option" layoutX="136.0" layoutY="213.0" prefHeight="33.0" prefWidth="225.0" promptText="Option" visible="false" />
+      <Label layoutX="182.0" layoutY="270.0" prefHeight="29.0" prefWidth="225.0" styleClass="hint-label" text="Enter category information" fx:id="information" />
+   </children>
+</AnchorPane>
