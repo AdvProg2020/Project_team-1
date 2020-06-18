@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import model.Session;
 import model.account.PersonalAccount;
 import model.account.SimpleAccount;
+import model.commodity.DiscountCode;
 import view.commandline.View;
 
 import java.io.IOException;
@@ -29,6 +30,11 @@ public class AddPersonToDiscountCode implements Initializable {
     private static ArrayList<PersonalAccount> accounts;
     public ListView<CheckBox> listView = new ListView<CheckBox>();
     public AnchorPane pane;
+    private static DiscountCode discountCode;
+
+    public static void setDiscountCode(DiscountCode discountCode) {
+        AddPersonToDiscountCode.discountCode = discountCode;
+    }
 
     public static ArrayList<PersonalAccount> getAccounts() {
         return accounts;
@@ -49,12 +55,30 @@ public class AddPersonToDiscountCode implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             for (PersonalAccount person : YaDataManager.getPersons()) {
-                    listView.getItems().add(new CheckBox(person.getUsername()));
+                CheckBox checkBox = new CheckBox(person.getUsername());
+                if (doesPersonHaveDiscountCode(person.getUsername()))
+                    checkBox.setSelected(true);
+                listView.getItems().add(checkBox);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         pane.getChildren().add(listView);
 
+    }
+
+    private boolean doesPersonHaveDiscountCode(String username){
+        if (discountCode == null){
+            for (PersonalAccount account : accounts) {
+                if (account.getUsername().equals(username))
+                    return true;
+            }
+        }else {
+            for (PersonalAccount account : discountCode.getAccounts()) {
+                if (account.getUsername().equals(username))
+                    return true;
+            }
+        }
+        return false;
     }
 }

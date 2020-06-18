@@ -11,12 +11,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.commodity.Category;
 import model.commodity.DiscountCode;
+import view.commandline.View;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ManageCategories extends HolyManager implements Initializable  {
+public class ManageCategories extends HolyManager implements Initializable {
 
     public Label errorLabel;
     public AnchorPane pane;
@@ -33,11 +34,12 @@ public class ManageCategories extends HolyManager implements Initializable  {
         try {
             for (Category category : YaDataManager.getCategories()) {
                 listView.getItems().add(new CheckBox(category.toString()));
+                listView.getItems().get(listView.getItems().size()-1).setId(category.getName());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        listView.relocate(300,0);
+        listView.relocate(300, 0);
         listView.setPrefHeight(300);
         listView.setPrefWidth(500);
     }
@@ -48,7 +50,7 @@ public class ManageCategories extends HolyManager implements Initializable  {
         for (CheckBox item : listView.getItems()) {
             if (item.isSelected())
                 counter++;
-            if (counter == 2){
+            if (counter == 2) {
                 error();
                 return true;
             }
@@ -60,14 +62,27 @@ public class ManageCategories extends HolyManager implements Initializable  {
         return false;
     }
 
-    public void error(){
+    public void error() {
         errorLabel.setText("Select a category.");
         errorLabel.setVisible(true);
     }
 
     public void addCategory(ActionEvent actionEvent) {
-        AddCategory.setStage((Stage) ((Node)actionEvent.getSource()).getScene().getWindow());
-        newPopup(actionEvent,"../../../fxml/HolyManager/AddCategory.fxml");
+        AddCategory.setStage((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
+        newPopup(actionEvent, "../../../fxml/HolyManager/AddCategory.fxml");
     }
 
+    public void deleteCategory(ActionEvent actionEvent) {
+        for (CheckBox item : listView.getItems()) {
+            if (item.isSelected()) {
+                try {
+                    View.manageCategoryMenu.removeCategory(item.getId());
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
+        setUpPane();
+    }
 }
+

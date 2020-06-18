@@ -43,6 +43,7 @@ public class EditDiscountCode extends ViewDiscountCode implements Initializable 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         AddPersonToDiscountCode.setAccounts(discountCode.getAccounts());
+        AddPersonToDiscountCode.setDiscountCode(discountCode);
         code.setText(discountCode.getCode());
         startDate.setText(discountCode.getStartDate().toString());
         finishDate.setText(discountCode.getFinishDate().toString());
