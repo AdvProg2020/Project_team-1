@@ -75,9 +75,7 @@ public class CreateDiscountCode extends Menu {
             throw new Exception("Invalid entry.");
 
         managerMenu.addDiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, AddPersonToDiscountCode.getAccounts());
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("Discount code successfully created");
-        alert.show();
+
     }
 
 }

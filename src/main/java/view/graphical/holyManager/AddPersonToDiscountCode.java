@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AddPersonToDiscountCode implements Initializable {
-
+    public static void setAccounts(ArrayList<PersonalAccount> accounts) {
+        AddPersonToDiscountCode.accounts = accounts;
+    }
 
     private static ArrayList<PersonalAccount> accounts;
     public ListView<CheckBox> listView = new ListView<CheckBox>();

@@ -65,18 +65,6 @@ public class ManagerUsers extends HolyManager implements Initializable {
 
     }
 
-    private void newPopup(ActionEvent actionEvent, String filePath) {
-        Parent parent = null;
-        Popup popupMenu = new Popup();
-        try {
-            parent = FXMLLoader.load(getClass().getResource(filePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        popupMenu.getContent().add(parent);
-        popupMenu.show((((Node) actionEvent.getSource()).getScene().getWindow()));
-    }
-
 
     public void addManager(ActionEvent actionEvent) {
         newPopup(actionEvent, "../../../fxml/HolyManager/AddManager.fxml");

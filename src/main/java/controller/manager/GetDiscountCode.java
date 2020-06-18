@@ -103,10 +103,10 @@ public class GetDiscountCode extends Menu {
 
     public void deleteDiscountCode(DiscountCode discountCode) throws Exception {
         YaDataManager.removeDiscountCode(discountCode);
-        for (SimpleAccount account : discountCode.getAccounts()) {
-            for (DiscountCode code : ((PersonalAccount) account).getDiscountCodes()) {
+        for (PersonalAccount account : discountCode.getAccounts()) {
+            for (DiscountCode code : account.getDiscountCodes()) {
                 if (code.getCode().equalsIgnoreCase(discountCode.getCode()))
-                    ((PersonalAccount) account).removeDiscountCode(discountCode);
+                    account.removeDiscountCode(discountCode);
             }
             updateAccounts(discountCode);
         }
@@ -114,6 +114,10 @@ public class GetDiscountCode extends Menu {
 
     public SimpleAccount getAccountWithUserNameFromDatabase(String username) throws IOException {
         return YaDataManager.getAccountWithUserName(username);
+    }
+
+    public GetDiscountCode() {
+        fxmlFileAddress = "../../fxml/HolyManager/ViewDiscountCode.fxml";
     }
 
     public void updateAccounts(DiscountCode discountCode) throws IOException {
