@@ -15,43 +15,55 @@
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
     </padding>
     <top>
-        <Label styleClass="scene-title" text="Discount Codes" BorderPane.alignment="CENTER"/>
+        <Label styleClass="scene-title" text="Title" BorderPane.alignment="CENTER"/>
     </top>
     <center>
         <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <content>
-                <TableView prefHeight="276.0" prefWidth="776.0" fx:id="discountCodesTableView">
+                <TableView prefHeight="276.0" prefWidth="776.0" fx:id="ordersHistoryTableView">
                     <columns>
-                        <TableColumn prefWidth="75.0" text="Code">
+                        <TableColumn prefWidth="100.0" text="Payed money">
                             <cellValueFactory>
-                                <PropertyValueFactory property="code"/>
+                                <PropertyValueFactory property="payedMoney"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="125.0" text="Discount Percentage">
+
+                        <TableColumn prefWidth="175.0" text="Deducted money on discounts">
                             <cellValueFactory>
-                                <PropertyValueFactory property="discountPercentage"/>
+                                <PropertyValueFactory property="deductedMoney"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="111.0" text="Maximum Amount">
+
+                        <TableColumn prefWidth="61.0" text="Sellers">
                             <cellValueFactory>
-                                <PropertyValueFactory property="maxAmount"/>
+                                <PropertyValueFactory property="sellersUsername"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Start Date">
+
+                        <TableColumn prefWidth="75.0" text="Delivered">
                             <cellValueFactory>
-                                <PropertyValueFactory property="startDate"/>
+                                <PropertyValueFactory property="isCommodityDelivered"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Finish Date">
+
+                        <TableColumn prefWidth="75.0" text="ID">
                             <cellValueFactory>
-                                <PropertyValueFactory property="finishDate"/>
+                                <PropertyValueFactory property="logId"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="150.0" text="Times Remaining To Use">
+
+                        <TableColumn prefWidth="50.0" text="Date">
                             <cellValueFactory>
-                                <PropertyValueFactory property="timesToUse"/>
+                                <PropertyValueFactory property="dateString"/>
                             </cellValueFactory>
                         </TableColumn>
+
+                        <TableColumn prefWidth="100.0" text="Commodities">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="commoditiesNamesString"/>
+                            </cellValueFactory>
+                        </TableColumn>
+
                     </columns>
                 </TableView>
             </content>
