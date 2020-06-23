@@ -9,6 +9,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -18,6 +20,7 @@ import javafx.stage.Stage;
 import model.Session;
 import model.account.BusinessAccount;
 import model.account.SimpleAccount;
+import model.commodity.Commodity;
 import model.log.SellLog;
 import view.commandline.View;
 
@@ -27,6 +30,7 @@ import java.io.IOException;
 public class Reseller {
 
     public Label textFieldPopupTitle;
+    public TreeView salesHistoryTreeView;
     private ResellerMenu resellerMenu = View.resellerMenu;
     public Label businessNameLabel;
     public Label tableViewPopupTitleLabel;
@@ -74,8 +78,22 @@ public class Reseller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ObservableList<SellLog> data = salesHistoryTableView.getItems();
-        data.addAll(((BusinessAccount) Session.getOnlineAccount()).getSellLogs());
+        TreeItem<String> salesHistoryRootItem = new TreeItem<>("Sales history");
+        for (SellLog sellLog : ((BusinessAccount) Session.getOnlineAccount()).getSellLogs()) {
+            TreeItem<String> sellLogTreeItem = new TreeItem<>(String.valueOf(sellLog.getLogId()));
+            TreeItem<String> commoditiesTreeItem = new TreeItem<>("Commodities");
+            sellLogTreeItem.getChildren().addAll(new TreeItem<>("Received money : " + sellLog.getReceivedMoney()),
+                    new TreeItem<>("Deducted money on sale : " + sellLog.getDeductedMoneyOnSale()),
+                    new TreeItem<>("Buyer : " + sellLog.getBuyer().getUsername()),
+                    new TreeItem<>(sellLog.getCommodityDelivered()? "Delivered": "Not delivered yet"),
+                    new TreeItem<>("Sell date : " + sellLog.getDate().toString()),
+                    commoditiesTreeItem);
+            for (Commodity commodity : sellLog.getCommodities()) {
+                commoditiesTreeItem.getChildren().add(new TreeItem<>(commodity.getName()));
+            }
+            salesHistoryRootItem.getChildren().add(sellLogTreeItem);
+        }
+        salesHistoryTreeView.setRoot(salesHistoryRootItem);
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
