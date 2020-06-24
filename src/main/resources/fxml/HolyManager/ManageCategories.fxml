@@ -20,5 +20,6 @@
    <Button layoutX="649.0" layoutY="421.0" mnemonicParsing="false" onAction="#editCategory" prefHeight="55.0" prefWidth="188.0" styleClass="normal-button" text="Edit category" />
    <Button layoutX="649.0" layoutY="495.0" mnemonicParsing="false" onAction="#deleteCategory" prefHeight="55.0" prefWidth="188.0" styleClass="delete-button" text="Delete category" />
    <Label fx:id="errorLabel" layoutX="312.0" layoutY="495.0" prefHeight="17.0" prefWidth="249.0" styleClass="error-message-label" visible="false" />
-   <Button onAction="#back" layoutX="2.0" layoutY="587.0" mnemonicParsing="false" styleClass="back-button" text="Back" />
+   <Button layoutX="2.0" layoutY="487.0" mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back" />
+   <Button onAction="#logout" layoutX="2.0" layoutY="574.0" mnemonicParsing="false" styleClass="logout-button" text="Logout" />
 </AnchorPane>
