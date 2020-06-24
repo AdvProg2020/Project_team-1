@@ -36,10 +36,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Reseller implements Initializable {
 
@@ -48,7 +45,6 @@ public class Reseller implements Initializable {
     public Label resellerBalanceLabel;
     public TreeView<String> categoriesTreeView;
     public AnchorPane manageProductsAnchorPane;
-    public GridPane productsGridPane;
     public final ResellerMenu resellerMenu = View.resellerMenu;
     public final ManageResellerProductsMenu manageResellerProductsMenu = View.manageResellerProductsMenu;
     public Label businessNameLabel;
@@ -203,14 +199,27 @@ public class Reseller implements Initializable {
                 HBox actions = new HBox();
                 actions.setAlignment(Pos.CENTER);
                 Button show = new Button("Show"), edit = new Button("Edit"), remove = new Button("Remove");
+                int finalI = i;
                 show.setOnMouseClicked(mouseEvent1 -> {
                     // Show
                 });
                 edit.setOnMouseClicked(mouseEvent1 -> {
                     // edit
                 });
-                remove.setOnMouseClicked(mouseEvent1 -> {
-                    // remove
+                remove.setOnMouseClicked(mouseEvent12 -> {
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this product?",
+                            ButtonType.NO, ButtonType.YES);
+                    confirmation.setResizable(false);
+                    confirmation.setHeight(200);
+                    confirmation.setWidth(500);
+                    Optional<ButtonType> result = confirmation.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.YES) {
+                        try {
+                            resellerMenu.removeProduct(commodities.get(finalI).getCommodityId());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 });
                 actions.getChildren().addAll(show, edit, remove);
                 productAnchorPane.getChildren().addAll(productImage, productName, actions);
