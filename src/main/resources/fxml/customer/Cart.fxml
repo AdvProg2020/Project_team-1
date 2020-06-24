@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx" fx:controller="view.graphical.Cart"
+            prefHeight="800.0" prefWidth="1200.0">
+    <Label AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" fx:id="totalPrice" styleClass="scene-title"
+           text="Total price: 8,888,888,888,888 Tomans"/>
+    <HBox AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="10.0" spacing="10.0">
+        <VBox spacing="10.0">
+            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="back-button" text="Back"
+                    textAlignment="CENTER"/>
+            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="logout-button" text="Log Out"
+                    textAlignment="CENTER"/>
+        </VBox>
+        <VBox spacing="10.0">
+            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="forward-button" text="Purchase"
+                    textAlignment="CENTER"/>
+            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="forward-button" text="Products"
+                    textAlignment="CENTER"/>
+        </VBox>
+    </HBox>
+    <stylesheets>
+        <URL value="@../Common.css"/>
+    </stylesheets>
+</AnchorPane>
