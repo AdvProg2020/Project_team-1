@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" minHeight="600.0" minViewportHeight="600.0" minViewportWidth="900.0" minWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.Reseller">
+<ScrollPane fitToHeight="true" fitToWidth="true" minHeight="600.0" minViewportHeight="600.0" minViewportWidth="900.0" minWidth="900.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.Reseller">
    <content>
       <AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background" stylesheets="@Common.css">
          <children>
@@ -38,7 +38,7 @@
                   <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
                      <children>
                         <Button mnemonicParsing="false" onMouseClicked="#onLogoutClick" styleClass="logout-button" text="Logout" />
-                        <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="back-button" text="Back" textAlignment="CENTER" />
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="back-button" text="Back" textAlignment="CENTER" />
                      </children>
                      <opaqueInsets>
                         <Insets top="10.0" />
