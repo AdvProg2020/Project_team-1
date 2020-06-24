@@ -12,10 +12,16 @@ import model.field.Field;
 import model.log.SellLog;
 import model.share.Request;
 import view.commandline.View;
+import view.graphical.ManageResellerProducts;
 
 import java.util.ArrayList;
 
 public class ManageResellerProductsMenu extends Menu {
+
+    public ManageResellerProductsMenu() {
+        fxmlFileAddress = "../../fxml/reseller/ManageProducts.fxml";
+        stageTitle = "Reseller products";
+    }
 
     public ArrayList<Commodity> sort(String field) throws Exception {
         ArrayList<Commodity> commodities = View.resellerMenu.manageCommodities();

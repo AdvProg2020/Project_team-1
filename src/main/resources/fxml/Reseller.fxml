@@ -29,7 +29,6 @@
                         <Button mnemonicParsing="false" onMouseClicked="#onCompanyInfoClick" styleClass="normal-button" text="Company info" />
                         <Button mnemonicParsing="false" onMouseClicked="#onSalesHistoryClick" styleClass="normal-button" text="Sales history" />
                         <Button mnemonicParsing="false" onMouseClicked="#onManageProductsClick" styleClass="normal-button" text="Manage products" />
-                        <Button mnemonicParsing="false" styleClass="normal-button" text="Add product" />
                         <Button mnemonicParsing="false" onMouseClicked="#onCategoriesClick" styleClass="normal-button" text="Categories" />
                         <Button mnemonicParsing="false" styleClass="normal-button" text="Manage offs" />
                      </children>
