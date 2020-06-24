@@ -4,61 +4,82 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane fitToWidth="true" minHeight="600.0" minViewportHeight="600.0" minViewportWidth="900.0" minWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.Reseller">
-   <content>
-      <AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background" stylesheets="@../Common.css">
-         <children>
-            <BorderPane prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <top>
-                  <Label styleClass="scene-title" text="Manage products" BorderPane.alignment="CENTER" />
-               </top>
+<ScrollPane fitToHeight="true" fitToWidth="true" minHeight="600.0" minViewportHeight="600.0" minViewportWidth="900.0" minWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.Reseller">
+   <AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background" stylesheets="@../Common.css">
+      <BorderPane prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <Label styleClass="scene-title" text="Manage products" BorderPane.alignment="CENTER" />
+         </top>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <left>
+            <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
+               <opaqueInsets>
+                  <Insets top="10.0" />
+               </opaqueInsets>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
+               <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="back-button" text="Back" textAlignment="CENTER" />
+            </VBox>
+         </left>
+         <right>
+            <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+               <Button mnemonicParsing="false" styleClass="forward-button" text="Products" />
+            </VBox>
+         </right>
+         <center>
+            <BorderPane BorderPane.alignment="CENTER">
                <center>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </BorderPane.margin>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="419.0" prefWidth="656.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
-                     <Button mnemonicParsing="false" onMouseClicked="#onPersonalInfoClick" styleClass="normal-button" text="Personal info" />
-                     <Button mnemonicParsing="false" onMouseClicked="#onCompanyInfoClick" styleClass="normal-button" text="Company info" />
-                     <Button mnemonicParsing="false" onMouseClicked="#onSalesHistoryClick" styleClass="normal-button" text="Sales history" />
-                     <Button mnemonicParsing="false" styleClass="normal-button" text="Manage products" />
-                     <Button mnemonicParsing="false" styleClass="normal-button" text="Add product" />
-                     <Button mnemonicParsing="false" styleClass="normal-button" text="Categories" />
-                     <Button mnemonicParsing="false" styleClass="normal-button" text="Manage offs" />
-                  </VBox>
+                     <AnchorPane fx:id="manageProductsAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="270.0" prefWidth="636.0">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                     </AnchorPane>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ScrollPane>
                </center>
-               <left>
-                  <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
-                     <opaqueInsets>
-                        <Insets top="10.0" />
-                     </opaqueInsets>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <top>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </BorderPane.margin>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
-                     <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="back-button" text="Back" textAlignment="CENTER" />
-                  </VBox>
-               </left>
-               <right>
-                  <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <BorderPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </BorderPane.margin>
-                     <Button mnemonicParsing="false" styleClass="forward-button" text="Products" />
-                  </VBox>
-               </right>
+                     <Label styleClass="hint-label" text="Sort by : " />
+                     <ChoiceBox fx:id="manageProductsSortField" prefWidth="150.0" styleClass="text-field" />
+                     <ToggleButton fx:id="manageProductsSortOrderToggleButton" mnemonicParsing="false" styleClass="text-field" text="Ascending/Descending" />
+                     <Region HBox.hgrow="ALWAYS" />
+                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onSortButtonClick" styleClass="small-button" text="Sort" />
+                     <Separator orientation="VERTICAL" />
+                     <Button mnemonicParsing="false" onMouseClicked="#onAddProductClick" styleClass="small-button" text="Add product" />
+                  </HBox>
+               </top>
             </BorderPane>
-         </children>
-      </AnchorPane>
-   </content>
+         </center>
+      </BorderPane>
+   </AnchorPane>
 </ScrollPane>

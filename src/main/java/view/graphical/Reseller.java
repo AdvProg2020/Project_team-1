@@ -1,18 +1,24 @@
 package view.graphical;
 
 import controller.data.YaDataManager;
+import controller.reseller.ManageResellerProductsMenu;
 import controller.reseller.ResellerMenu;
-import javafx.beans.Observable;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -23,13 +29,14 @@ import model.commodity.Category;
 import model.commodity.CategorySpecification;
 import model.commodity.Commodity;
 import model.log.SellLog;
-import sun.reflect.generics.tree.Tree;
 import view.commandline.View;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Reseller implements Initializable {
 
@@ -37,7 +44,9 @@ public class Reseller implements Initializable {
     public TreeView<String> salesHistoryTreeView;
     public Label resellerBalanceLabel;
     public TreeView<String> categoriesTreeView;
-    private ResellerMenu resellerMenu = View.resellerMenu;
+    public AnchorPane manageProductsAnchorPane;
+    public final ResellerMenu resellerMenu = View.resellerMenu;
+    public final ManageResellerProductsMenu manageResellerProductsMenu = View.manageResellerProductsMenu;
     public Label businessNameLabel;
     public Label tableViewPopupTitleLabel;
     public Label phoneNumberLabel;
@@ -46,6 +55,8 @@ public class Reseller implements Initializable {
     public Label firstNameLabel;
     public ImageView userPhotoImageView;
     public Label usernameLabel;
+    public ChoiceBox<String> manageProductsSortField;
+    public ToggleButton manageProductsSortOrderToggleButton;
     Popup popupMenu = new Popup();
 
     public void onPersonalInfoClick(MouseEvent mouseEvent) {
@@ -103,23 +114,6 @@ public class Reseller implements Initializable {
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
-    public void onChangePasswordClick(MouseEvent mouseEvent) {
-
-    }
-
-    public void onFirstNameLabelClick(MouseEvent mouseEvent) {
-
-    }
-
-    public void onLastNameClick(MouseEvent mouseEvent) {
-    }
-
-    public void onEmailClick(MouseEvent mouseEvent) {
-    }
-
-    public void onPhoneNumberClick(MouseEvent mouseEvent) {
-    }
-
     public void onChangeUserPhotoClick(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image file", "*.jpg",
@@ -158,5 +152,81 @@ public class Reseller implements Initializable {
         categoriesTreeView.setRoot(rootTreeItem);
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
+    }
+
+    public void onAddProductClick(MouseEvent mouseEvent) {
+    }
+
+    public void onManageProductsClick(MouseEvent mouseEvent) {
+        initializeSortFieldChoiceBox();
+        onSortButtonClick(mouseEvent);
+        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
+    }
+
+    private void initializeSortFieldChoiceBox() {
+        List<String> fieldsList = new ArrayList<>(Arrays.asList("brand", "name", "id", "price", "visits", "number of scores", "average score"));
+        ObservableList<String> observableList = FXCollections.observableList(fieldsList);
+        manageProductsSortField.setItems(observableList);
+    }
+
+    public void onSortButtonClick(MouseEvent mouseEvent) {
+        try {
+            manageProductsAnchorPane.getChildren().clear();
+            ArrayList<Commodity> commodities;
+            if (manageProductsSortField.getValue() == null) {
+                commodities = resellerMenu.manageCommodities();
+            } else {
+                commodities = manageResellerProductsMenu.sort(manageProductsSortField.getValue());
+            }
+            int increment, startPoint, endPoint;
+            if (manageProductsSortOrderToggleButton.isSelected()) {
+                increment = -1;
+                startPoint = commodities.size() - 1;
+                endPoint = 0;
+            } else {
+                increment = 1;
+                startPoint = 0;
+                endPoint = commodities.size() - 1;
+            }
+            for (int i = startPoint; i != endPoint; i += increment) {
+                AnchorPane productAnchorPane = new AnchorPane();
+                productAnchorPane.setMaxHeight(300);
+                productAnchorPane.setMaxWidth(300);
+                ImageView productImage = new ImageView(new Image(new FileInputStream(commodities.get(i).getImagePath())));
+                productImage.maxWidth(250);
+                productImage.maxHeight(250);
+                Label productName = new Label(commodities.get(i).getName());
+                HBox actions = new HBox();
+                actions.setAlignment(Pos.CENTER);
+                Button show = new Button("Show"), edit = new Button("Edit"), remove = new Button("Remove");
+                int finalI = i;
+                show.setOnMouseClicked(mouseEvent1 -> {
+                    // Show
+                });
+                edit.setOnMouseClicked(mouseEvent1 -> {
+                    // edit
+                });
+                remove.setOnMouseClicked(mouseEvent12 -> {
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this product?",
+                            ButtonType.NO, ButtonType.YES);
+                    confirmation.setResizable(false);
+                    confirmation.setHeight(200);
+                    confirmation.setWidth(500);
+                    Optional<ButtonType> result = confirmation.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.YES) {
+                        try {
+                            resellerMenu.removeProduct(commodities.get(finalI).getCommodityId());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                actions.getChildren().addAll(show, edit, remove);
+                productAnchorPane.getChildren().addAll(productImage, productName, actions);
+                manageProductsAnchorPane.getChildren().add(productAnchorPane);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

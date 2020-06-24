@@ -135,4 +135,9 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
     public void addObj() throws Exception {
         YaDataManager.addBusiness(this);
     }
+
+    @Override
+    public Status getStatus() {
+        return status;
+    }
 }

@@ -32,5 +32,6 @@
    <Button layoutX="284.0" layoutY="400.0" mnemonicParsing="false" onAction="#addAccount" prefHeight="55.0" prefWidth="248.0" styleClass="normal-button" text="Add account" />
    <Button layoutX="539.0" layoutY="493.0" mnemonicParsing="false" onAction="#createDiscountCodeNC" prefHeight="75.0" prefWidth="269.0" styleClass="normal-button-Green" text="Create discount code" />
    <Label fx:id="errorLabel" layoutX="295.0" layoutY="485.0" prefHeight="17.0" prefWidth="231.0" styleClass="hint-label" text="Label" textFill="#f50707" visible="false" />
+   <Button onAction="#back" layoutX="14.0" layoutY="503.0" mnemonicParsing="false" styleClass="back-button" text="Back" />
 
 </AnchorPane>

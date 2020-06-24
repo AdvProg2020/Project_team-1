@@ -19,8 +19,8 @@ public abstract class SimpleAccount {
     protected String email;
     protected String phoneNumber;
     protected String hashedPassword;
-    private String accountType;
-    private String imagePath;
+    protected String accountType;
+    protected String imagePath;
 
     public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
                          String password, String accountType) throws InvalidAccountInfoException {
@@ -158,11 +158,11 @@ public abstract class SimpleAccount {
         return Objects.equals(getUsername(), account.getUsername());
     }
 
-   // public void setUserPhoto(Image userPhoto) {
-    //    this.userPhoto = userPhoto;
-   // }
+    public String getImagePath() {
+        return imagePath;
+    }
 
-   // public Image getUserPhoto() {
-   //     return userPhoto;
-   // }
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }

@@ -4,13 +4,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="656.0" prefWidth="1088.0" styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.HolyManager">
+<AnchorPane fx:id="pane" prefHeight="606.0" prefWidth="1433.0" styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.ManageRequests">
    <children>
-      <Label layoutX="326.0" layoutY="83.0" text="Welcome holy manager" textFill="#07e153">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Label>
       <Button mnemonicParsing="false" onAction="#viewPersonalInfo" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View personal info" />
       <Button layoutY="61.0" mnemonicParsing="false" onAction="#manageUsers" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage users" />
       <Button layoutY="123.0" mnemonicParsing="false" onAction="#manageAllProducts" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage all products" />
@@ -22,6 +17,13 @@
       <Button layoutX="-2.0" layoutY="250.0" mnemonicParsing="false" onAction="#viewDiscountCode" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View discount codes" />
       <Button layoutX="-2.0" layoutY="315.0" mnemonicParsing="false" onAction="#manageRequests" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Mange requests" />
       <Button layoutX="2.0" layoutY="385.0" mnemonicParsing="false" onAction="#manageCategories" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage categories" />
-      <Button layoutX="19.0" layoutY="578.0" mnemonicParsing="false" styleClass="back-button" text="back" onAction="#back" />
+
+      <Button layoutX="1175.0" layoutY="474.0" mnemonicParsing="false" onAction="#deleteRequest" styleClass="delete-button" text="Delete" />
+      <Button layoutX="341.0" layoutY="419.0" mnemonicParsing="false" onAction="#acceptRequests" styleClass="normal-button-Green" text="Accept" />
+      <Button layoutX="340.0" layoutY="501.0" mnemonicParsing="false" onAction="#declineRequests" styleClass="delete-button" text="Decline" />
+      <Label layoutX="310.0" layoutY="287.0" styleClass="hint-label" text="Unhandled requests" />
+      <Label layoutX="691.0" layoutY="287.0" styleClass="hint-label" text="Accepted requests" />
+      <Label layoutX="1158.0" layoutY="287.0" styleClass="hint-label" text="Declined requests" />
+      <Button onAction="#back" layoutX="2.0" layoutY="537.0" mnemonicParsing="false" styleClass="back-button" text="Back" />
    </children>
 </AnchorPane>

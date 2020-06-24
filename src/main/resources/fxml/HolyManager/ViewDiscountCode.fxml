@@ -19,6 +19,7 @@
    <Button layoutX="435.0" layoutY="438.0" mnemonicParsing="false" onAction="#editDiscountCode" prefHeight="69.0" prefWidth="251.0" styleClass="normal-button" text="Edit discount code" />
    <Button layoutX="693.0" layoutY="438.0" mnemonicParsing="false" onAction="#deleteDiscountCode" prefHeight="69.0" prefWidth="251.0" styleClass="delete-button" text=" Delete discount code" />
    <Label fx:id="errorLabel" layoutX="163.0" layoutY="447.0" prefHeight="55.0" prefWidth="266.0" styleClass="hint-label" text="Label" textFill="#fc0202" visible="false" />
+   <Button onAction="#back" layoutX="14.0" layoutY="548.0" mnemonicParsing="false" styleClass="back-button" text="Back" />
 
 
 </AnchorPane>
