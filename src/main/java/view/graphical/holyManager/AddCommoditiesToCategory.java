@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 public class AddCommoditiesToCategory implements Initializable {
 
     public AnchorPane pane;
-    ListView<CheckBox> checkBoxListView =  new ListView<>();
+    ListView<CheckBox> checkBoxListView = new ListView<>();
     private static ArrayList<Commodity> commodities = new ArrayList<>();
 
     public static ArrayList<Commodity> getCommodities() {
@@ -34,8 +34,11 @@ public class AddCommoditiesToCategory implements Initializable {
         pane.getChildren().add(checkBoxListView);
         try {
             for (Commodity commodity : YaDataManager.getCommodities()) {
-                checkBoxListView.getItems().add(new CheckBox(commodity.getInformation()));
-                checkBoxListView.getItems().get(checkBoxListView.getItems().size()-1).setId(String.valueOf(commodity.getCommodityId()));
+                CheckBox checkBox = new CheckBox(commodity.getInformation());
+                checkBox.setId(String.valueOf(commodity.getCommodityId()));
+                if (doesCategoryHaveThisCommodity(commodity))
+                    checkBox.setSelected(true);
+                checkBoxListView.getItems().add(checkBox);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,6 +53,14 @@ public class AddCommoditiesToCategory implements Initializable {
                 exception.printStackTrace();
             }
         }
-        ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
+        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+    }
+
+    public boolean doesCategoryHaveThisCommodity(Commodity commodity) {
+        for (Commodity commodity1 : commodities) {
+            if (commodity1.getCommodityId() == commodity.getCommodityId())
+                return true;
+        }
+        return false;
     }
 }

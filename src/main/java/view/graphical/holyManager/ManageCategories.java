@@ -84,5 +84,27 @@ public class ManageCategories extends HolyManager implements Initializable {
         }
         setUpPane();
     }
+
+    public void editCategory(ActionEvent actionEvent) {
+        EditDiscountCode.setStage((Stage) ((Node)actionEvent.getSource()).getScene().getWindow());
+        errorLabel.setVisible(false);
+        if  (checkError()) return;
+        setCategory();
+        EditCategory.setStage((Stage)(((Node) actionEvent.getSource()).getScene().getWindow()));
+        newPopup(actionEvent , "../../../fxml/holyManager/EditCategory.fxml");
+    }
+
+    public void setCategory(){
+        for (CheckBox item : listView.getItems()) {
+            if (item.isSelected()){
+                try {
+                    Category category = View.manageCategoryMenu.getCategory(item.getId());
+                    EditCategory.setCategory(category);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
 
