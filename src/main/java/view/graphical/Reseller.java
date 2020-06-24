@@ -23,7 +23,6 @@ import model.commodity.Category;
 import model.commodity.CategorySpecification;
 import model.commodity.Commodity;
 import model.log.SellLog;
-import sun.reflect.generics.tree.Tree;
 import view.commandline.View;
 
 import java.io.File;

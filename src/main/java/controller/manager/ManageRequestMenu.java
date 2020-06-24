@@ -2,18 +2,50 @@ package controller.manager;
 
 import controller.data.YaDataManager;
 import controller.share.Menu;
+import model.commodity.Comment;
+import model.commodity.Commodity;
+import model.commodity.Off;
 import model.share.Request;
 import model.share.Status;
+
+import java.io.IOException;
 
 public class ManageRequestMenu extends Menu {
     public Request getRequestById(int id) throws Exception {
             return YaDataManager.getRequest(id);
     }
 
+    public ManageRequestMenu() {
+        fxmlFileAddress = "../../fxml/HolyManager/ManageRequests.fxml";
+    }
+
     public void accept(int id) throws Exception {
         Request request = getRequestById(id);
         request.getObj().setStatus(Status.VERIFIED);
         request.getObj().addObj();
+        updateRequests(request);
+        return;
+    }
+
+    public void updateRequests(Request request) throws IOException {
+        YaDataManager.removeRequest(request);
+        YaDataManager.addRequest(request);
+        /*if (request.getObj() instanceof Commodity){
+            YaDataManager.removeCommodity((Commodity)request.getObj());
+            YaDataManager.addCommodity((Commodity)request.getObj());
+        }
+        if (request.getObj() instanceof Comment){
+            YaDataManager.removeCommodity(((Comment)request.getObj()).getCommodity());
+            YaDataManager.addCommodity(((Comment)request.getObj()).getCommodity());
+        }
+        if (request.getObj() instanceof Off){
+            YaDataManager.removeOff((Off) request.getObj());
+            YaDataManager.addOff((Off) request.getObj());
+        }*/
+    }
+
+    public void deleteRequest(int id) throws Exception {
+        Request request = YaDataManager.getRequest(id);
         YaDataManager.removeRequest(request);
     }
 
@@ -36,6 +68,6 @@ public class ManageRequestMenu extends Menu {
 
    public void decline(int id) throws Exception {
         Request request = getRequestById(id);
-       YaDataManager.removeRequest(request);
+        request.getObj().setStatus(Status.DECLINED);
     }
 }

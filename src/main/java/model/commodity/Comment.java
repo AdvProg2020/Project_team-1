@@ -57,6 +57,10 @@ public class Comment implements Requestable {
         return content;
     }
 
+    public Commodity getCommodity() {
+        return commodity;
+    }
+
     public boolean isABuyer() {
         return isABuyer;
     }
