@@ -37,7 +37,7 @@
                <left>
                   <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
                      <children>
-                        <Button mnemonicParsing="false" styleClass="logout-button" text="Logout" />
+                        <Button mnemonicParsing="false" onMouseClicked="#onLogoutClick" styleClass="logout-button" text="Logout" />
                         <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="back-button" text="Back" textAlignment="CENTER" />
                      </children>
                      <opaqueInsets>

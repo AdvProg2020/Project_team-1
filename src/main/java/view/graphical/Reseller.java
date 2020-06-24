@@ -1,12 +1,11 @@
 package view.graphical;
 
-import controller.data.YaDataManager;
 import controller.reseller.ResellerMenu;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -16,8 +15,6 @@ import javafx.stage.Stage;
 import model.Session;
 import model.account.BusinessAccount;
 import model.account.SimpleAccount;
-import model.commodity.Category;
-import model.commodity.CategorySpecification;
 import view.commandline.View;
 
 import java.io.File;
@@ -29,7 +26,6 @@ public class Reseller implements Initializable {
 
     public Label textFieldPopupTitle;
     public Label resellerBalanceLabel;
-    public TreeView<String> categoriesTreeView;
     public final ResellerMenu resellerMenu = View.resellerMenu;
     public Label tableViewPopupTitleLabel;
     public Label phoneNumberLabel;
@@ -93,19 +89,6 @@ public class Reseller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        TreeItem<String> rootTreeItem = new TreeItem<>("All categories");
-        try {
-            for (Category category : YaDataManager.getCategories()) {
-                TreeItem<String> categoryTreeItem = new TreeItem<>(category.getName());
-                for (CategorySpecification fieldOption : category.getFieldOptions()) {
-                    categoryTreeItem.getChildren().add(new TreeItem<>(fieldOption.getTitle()));
-                }
-                rootTreeItem.getChildren().add(categoryTreeItem);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        categoriesTreeView.setRoot(rootTreeItem);
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
@@ -122,5 +105,14 @@ public class Reseller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resellerBalanceLabel.setText("Account balance : " + ((BusinessAccount) Session.getOnlineAccount()).getCredit());
+    }
+
+    public void onLogoutClick(MouseEvent mouseEvent) {
+        try {
+            resellerMenu.logout();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 }

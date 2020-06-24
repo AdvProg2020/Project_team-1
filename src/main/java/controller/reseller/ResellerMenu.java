@@ -28,8 +28,10 @@ public class ResellerMenu extends Menu {
 
     public ArrayList<Commodity> manageCommodities() {
         ArrayList<Commodity> commodityArrayList = getBusinessAccount().getCommodities();
-        View.manageResellerProductsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.manageResellerProductsMenu);
+        if (MenuHandler.getInstance().getCurrentMenu() != View.manageResellerProductsMenu){
+            View.manageResellerProductsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+            MenuHandler.getInstance().setCurrentMenu(View.manageResellerProductsMenu);
+        }
         return commodityArrayList;
     }
 

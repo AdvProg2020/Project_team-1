@@ -51,40 +51,33 @@ public class ManageResellerProducts implements Initializable {
             manageProductsAnchorPane.getChildren().clear();
             ArrayList<Commodity> commodities = null;
             try {
-                commodities = manageResellerProductsMenu.sort(manageProductsSortField.getValue());
+                if (manageProductsSortField.getValue() == null) {
+                    commodities = resellerMenu.manageCommodities();
+                } else {
+                    commodities = manageResellerProductsMenu.sort(manageProductsSortField.getValue());
+                }
             } catch (Exception e) {
                 // Be Tokhmam
             }
-            int increment, startPoint, endPoint;
-            if (manageProductsSortOrderToggleButton.isSelected()) {
-                increment = -1;
-                startPoint = commodities.size() - 1;
-                endPoint = 0;
-            } else {
-                increment = 1;
-                startPoint = 0;
-                assert commodities != null;
-                endPoint = commodities.size() - 1;
-            }
-            for (int i = startPoint; i != endPoint; i += increment) {
+            for (int i = 0; i < commodities.size(); i++) {
+                Commodity commodity = manageProductsSortOrderToggleButton.isSelected() ?
+                        commodities.get(commodities.size() - i) : commodities.get(i);
                 AnchorPane productAnchorPane = new AnchorPane();
                 productAnchorPane.setMaxHeight(300);
                 productAnchorPane.setMaxWidth(300);
-                ImageView productImage = new ImageView(new Image(new FileInputStream(commodities.get(i).getImagePath())));
+                ImageView productImage = new ImageView(new Image(new FileInputStream(commodity.getImagePath())));
                 productImage.maxWidth(250);
                 productImage.maxHeight(250);
-                Label productName = new Label(commodities.get(i).getName());
+                Label productName = new Label(commodity.getName());
                 HBox actions = new HBox();
                 actions.setAlignment(Pos.CENTER);
                 Button show = new Button("Show"), edit = new Button("Edit"), remove = new Button("Remove");
-                int finalI = i;
                 show.setOnMouseClicked(mouseEvent1 -> {
                     // Show
                 });
                 edit.setOnMouseClicked(mouseEvent1 -> {
                     // edit
                 });
-                ArrayList<Commodity> finalCommodities = commodities;
                 remove.setOnMouseClicked(mouseEvent12 -> {
                     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this product?",
                             ButtonType.NO, ButtonType.YES);
@@ -94,9 +87,9 @@ public class ManageResellerProducts implements Initializable {
                     Optional<ButtonType> result = confirmation.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.YES) {
                         try {
-                            resellerMenu.removeProduct(finalCommodities.get(finalI).getCommodityId());
+                            resellerMenu.removeProduct(commodity.getCommodityId());
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            // Be Kiram
                         }
                     }
                 });
