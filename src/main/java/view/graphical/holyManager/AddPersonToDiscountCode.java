@@ -68,17 +68,11 @@ public class AddPersonToDiscountCode implements Initializable {
     }
 
     private boolean doesPersonHaveDiscountCode(String username){
-        if (discountCode == null){
             for (PersonalAccount account : accounts) {
                 if (account.getUsername().equals(username))
                     return true;
             }
-        }else {
-            for (PersonalAccount account : discountCode.getAccounts()) {
-                if (account.getUsername().equals(username))
-                    return true;
-            }
-        }
+
         return false;
     }
 }

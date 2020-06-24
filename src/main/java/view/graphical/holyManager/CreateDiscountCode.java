@@ -32,6 +32,12 @@ public class CreateDiscountCode extends HolyManager implements Initializable {
 
     public void createDiscountCodeNC(ActionEvent actionEvent) {
         createDiscountCode(code, startDate, finishDate, maximumDiscountPercentage, maximumDiscountPrice, maximumNumberOfUses, errorLabel ,"Discount code successfully created");
+        code.setText("");
+        startDate.setText("");
+        finishDate.setText("");
+        maximumDiscountPercentage.setText("");
+        maximumDiscountPrice.setText("");
+        maximumNumberOfUses.setText("");
     }
 
     static boolean createDiscountCode(TextField code, TextField startDate, TextField finishDate, TextField maximumDiscountPercentage, TextField maximumDiscountPrice, TextField maximumNumberOfUses, Label errorLabel , String text) {
