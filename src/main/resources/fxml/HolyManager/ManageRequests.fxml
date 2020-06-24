@@ -24,5 +24,6 @@
       <Label layoutX="310.0" layoutY="287.0" styleClass="hint-label" text="Unhandled requests" />
       <Label layoutX="691.0" layoutY="287.0" styleClass="hint-label" text="Accepted requests" />
       <Label layoutX="1158.0" layoutY="287.0" styleClass="hint-label" text="Declined requests" />
+      <Button onAction="#back" layoutX="2.0" layoutY="537.0" mnemonicParsing="false" styleClass="back-button" text="Back" />
    </children>
 </AnchorPane>

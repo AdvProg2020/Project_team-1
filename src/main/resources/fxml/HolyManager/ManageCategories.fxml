@@ -16,8 +16,9 @@
     <Button layoutX="-2.0" layoutY="250.0" mnemonicParsing="false" onAction="#viewDiscountCode" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View discount codes" />
     <Button layoutX="-2.0" layoutY="315.0" mnemonicParsing="false" onAction="#manageRequests" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Mange requests" />
     <Button layoutX="2.0" layoutY="385.0" mnemonicParsing="false" onAction="#manageCategories" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage categories" />
-    <Button layoutX="649.0" layoutY="343.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="188.0" styleClass="normal-button" text="Add category"  onAction="#addCategory"/>
-   <Button layoutX="649.0" layoutY="421.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="188.0" styleClass="normal-button" text="Edit category" onAction="#editCategory" />
-   <Button layoutX="649.0" layoutY="495.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="188.0" styleClass="delete-button" text="Delete category" onAction="#deleteCategory"/>
+    <Button layoutX="649.0" layoutY="343.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="55.0" prefWidth="188.0" styleClass="normal-button" text="Add category" />
+   <Button layoutX="649.0" layoutY="421.0" mnemonicParsing="false" onAction="#editCategory" prefHeight="55.0" prefWidth="188.0" styleClass="normal-button" text="Edit category" />
+   <Button layoutX="649.0" layoutY="495.0" mnemonicParsing="false" onAction="#deleteCategory" prefHeight="55.0" prefWidth="188.0" styleClass="delete-button" text="Delete category" />
    <Label fx:id="errorLabel" layoutX="312.0" layoutY="495.0" prefHeight="17.0" prefWidth="249.0" styleClass="error-message-label" visible="false" />
+   <Button onAction="#back" layoutX="2.0" layoutY="587.0" mnemonicParsing="false" styleClass="back-button" text="Back" />
 </AnchorPane>

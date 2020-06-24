@@ -21,6 +21,7 @@
 
       </Button>
       <Button layoutX="248.0" layoutY="452.0" mnemonicParsing="false" onAction="#addManager" prefHeight="55.0" prefWidth="227.0" styleClass="normal-button" text="Add manager" />
+      <Button onAction="#back" layoutX="2.0" layoutY="518.0" mnemonicParsing="false" styleClass="back-button" text="Back" />
     </children>
 
 </AnchorPane>
