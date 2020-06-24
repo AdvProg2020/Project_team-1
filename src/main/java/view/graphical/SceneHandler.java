@@ -32,14 +32,9 @@ import java.util.logging.Handler;
 
 public class SceneHandler {
 
-    private ProductsMenuLoad productsMenuLoad = new ProductsMenuLoad();
+    private final ProductsMenuLoad productsMenuLoad = new ProductsMenuLoad();
     static {
-        MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
-        try {
-            Session.setOnlineAccount(YaDataManager.getAccountWithUserName("arian"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
     }
     public void updateScene(Stage stage) {
         Menu menu = MenuHandler.getInstance().getCurrentMenu();
@@ -61,5 +56,6 @@ public class SceneHandler {
         stage.setTitle(menu.getStageTitle());
         stage.show();
     }
+
 }
 
