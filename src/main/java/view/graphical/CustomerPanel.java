@@ -20,7 +20,7 @@ import view.commandline.View;
 
 import java.io.IOException;
 
-public class Customer {
+public class CustomerPanel {
     private final CustomerMenu customerMenu = View.customerMenu;
     public Label resellerBalanceLabel;
     public TreeView ordersHistoryTreeView;
