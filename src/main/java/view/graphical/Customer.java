@@ -2,12 +2,9 @@ package view.graphical;
 
 import controller.customer.CustomerMenu;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
@@ -25,7 +22,7 @@ public class Customer implements Initializable {
     public Label emailLabel;
     public Label phoneLabel;
     public Label balanceLabel;
-    public ScrollPane discountScrollPane;
+    public Label resellerBalanceLabel;
     Popup popupMenu = new Popup();
 
     @Override
@@ -57,11 +54,17 @@ public class Customer implements Initializable {
         ((Node) mouseEvent.getSource()).getScene().getWindow().hide();
     }
 
-    private static class NewLabel extends Label {
-        public NewLabel(String string) {
-            setText(string);
-            getStyleClass().add("hint-label");
-            GridPane.setHalignment(this, HPos.CENTER);
-        }
+    public void onPersonalInfoClick(MouseEvent mouseEvent) {
+    }
+
+    public void onOrdersHistoryClick(MouseEvent mouseEvent) {
+    }
+
+    public void onLogOutClick(MouseEvent mouseEvent) throws Exception {
+        customerMenu.logout();
+
+    }
+
+    public void onProductsClick(MouseEvent mouseEvent) {
     }
 }
