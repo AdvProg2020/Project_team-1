@@ -26,7 +26,7 @@ public class ResellerMenu extends Menu {
         return (BusinessAccount)Session.getOnlineAccount();
     }
 
-    public ArrayList<Commodity> manageCommodities() throws Exception {
+    public ArrayList<Commodity> manageCommodities() {
         ArrayList<Commodity> commodityArrayList = getBusinessAccount().getCommodities();
         View.manageResellerProductsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.manageResellerProductsMenu);

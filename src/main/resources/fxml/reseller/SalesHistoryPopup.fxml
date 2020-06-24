@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane minHeight="400.0" minWidth="400.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.Reseller">
+<BorderPane minHeight="400.0" minWidth="400.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.SalesHistory">
    <bottom>
       <Button alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onCloseClick" styleClass="close-button" text="Close" BorderPane.alignment="CENTER" />
    </bottom>

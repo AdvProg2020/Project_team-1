@@ -141,6 +141,11 @@
     -fx-max-height:  5px;
     -fx-min-width: 200px;
 }
+
+.close-button:hover {
+    -fx-background-color: rgba(255, 0, 0, 0.65);
+}
+
 .delete-button {
     -fx-font-family: "Sriracha";
     -fx-font-size: 22;
