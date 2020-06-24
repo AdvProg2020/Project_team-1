@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane fitToWidth="true" minHeight="600.0" minViewportHeight="600.0" minViewportWidth="900.0" minWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.Reseller">
+<ScrollPane fitToHeight="true" fitToWidth="true" minHeight="600.0" minViewportHeight="600.0" minViewportWidth="900.0" minWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.Reseller">
    <content>
       <AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background" stylesheets="@Common.css">
          <children>
@@ -28,7 +28,7 @@
                         <Button mnemonicParsing="false" onMouseClicked="#onPersonalInfoClick" styleClass="normal-button" text="Personal info" />
                         <Button mnemonicParsing="false" onMouseClicked="#onCompanyInfoClick" styleClass="normal-button" text="Company info" />
                         <Button mnemonicParsing="false" onMouseClicked="#onSalesHistoryClick" styleClass="normal-button" text="Sales history" />
-                        <Button mnemonicParsing="false" styleClass="normal-button" text="Manage products" />
+                        <Button mnemonicParsing="false" onMouseClicked="#onManageProductsClick" styleClass="normal-button" text="Manage products" />
                         <Button mnemonicParsing="false" styleClass="normal-button" text="Add product" />
                         <Button mnemonicParsing="false" onMouseClicked="#onCategoriesClick" styleClass="normal-button" text="Categories" />
                         <Button mnemonicParsing="false" styleClass="normal-button" text="Manage offs" />
