@@ -5,15 +5,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import model.Session;
 import org.w3c.dom.Text;
 import view.commandline.View;
 
+import java.awt.*;
 import java.net.URL;
 import java.rmi.Naming;
 import java.util.ResourceBundle;
@@ -21,20 +23,30 @@ import java.util.ResourceBundle;
 public class ViewPersonalInfo extends HolyManager implements Initializable {
     public ListView userInfo;
     public AnchorPane pane;
+    public Label label;
+    private ListView<String> personalInfo = new ListView<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<String> firstName = FXCollections.<String>observableArrayList("First name: " + Session.getOnlineAccount().getFirstName());
-        ObservableList<String> lastName = FXCollections.<String>observableArrayList("Last name: " + Session.getOnlineAccount().getLastName());
-        ObservableList<String> email = FXCollections.<String>observableArrayList("Email: " + Session.getOnlineAccount().getEmail());
-        ObservableList<String> phone = FXCollections.<String>observableArrayList("Phone: " + Session.getOnlineAccount().getPhoneNumber());
-        ObservableList<String> userName = FXCollections.<String>observableArrayList("User name: " + Session.getOnlineAccount().getUsername());
-        userInfo.getItems().add(firstName);
-        userInfo.getItems().add(lastName);
-        userInfo.getItems().add(email);
-        userInfo.getItems().add(phone);
-        userInfo.getItems().add(userName);
+        personalInfo.getItems().add("First name: " + Session.getOnlineAccount().getFirstName());
+        personalInfo.getItems().add("Last name: " + Session.getOnlineAccount().getLastName());
+        personalInfo.getItems().add("Email: " + Session.getOnlineAccount().getEmail());
+        personalInfo.getItems().add("Phone: " + Session.getOnlineAccount().getPhoneNumber());
+        personalInfo.getItems().add("User name: " + Session.getOnlineAccount().getUsername());
+        userInfo.getItems().add(personalInfo);
     }
+
+    private void updatePane() {
+        userInfo.getItems().remove(personalInfo);
+        personalInfo= new ListView<>();
+        personalInfo.getItems().add("First name: " + Session.getOnlineAccount().getFirstName());
+        personalInfo.getItems().add("Last name: " + Session.getOnlineAccount().getLastName());
+        personalInfo.getItems().add("Email: " + Session.getOnlineAccount().getEmail());
+        personalInfo.getItems().add("Phone: " + Session.getOnlineAccount().getPhoneNumber());
+        personalInfo.getItems().add("User name: " + Session.getOnlineAccount().getUsername());
+        userInfo.getItems().add(personalInfo);
+    }
+
 
     public void editFirstName(ActionEvent actionEvent) {
         pane.getStylesheets().add("fxml/Common.css");
@@ -45,10 +57,12 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    deleteButtonAndTextField(change,textField);
-                    View.viewPersonalInfoMenu.editFirstName(textField.getText() , Session.getOnlineAccount());
+                    deleteButtonAndTextField(change, textField);
+                    View.viewPersonalInfoMenu.editFirstName(textField.getText(), Session.getOnlineAccount());
+                    setLabel(Color.GREEN , "First name successfully changed");
+                    updatePane();
                 } catch (Exception exception) {
-                    exception.printStackTrace();
+                    setLabel(Color.RED , exception.getMessage());
                 }
             }
         });
@@ -81,9 +95,12 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editLastName(textField.getText() , Session.getOnlineAccount());
+                    View.viewPersonalInfoMenu.editLastName(textField.getText(), Session.getOnlineAccount());
+                    setLabel(Color.GREEN , "Last name successfully changed");
+                    updatePane();
                 } catch (Exception exception) {
                     exception.printStackTrace();
+                    setLabel(Color.RED , exception.getMessage());
                 }
             }
         });
@@ -104,9 +121,12 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editEmail(textField.getText() , Session.getOnlineAccount());
+                    View.viewPersonalInfoMenu.editEmail(textField.getText(), Session.getOnlineAccount());
+                    setLabel(Color.GREEN , "Email successfully changed");
+                    updatePane();
                 } catch (Exception exception) {
                     exception.printStackTrace();
+                    setLabel(Color.RED , exception.getMessage());
                 }
             }
         });
@@ -122,9 +142,12 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editPhoneNumber(textField.getText() , Session.getOnlineAccount());
+                    View.viewPersonalInfoMenu.editPhoneNumber(textField.getText(), Session.getOnlineAccount());
+                    setLabel(Color.GREEN , "Phone successfully changed");
+                    updatePane();
                 } catch (Exception exception) {
-                    exception.printStackTrace();
+
+                    setLabel(Color.RED , exception.getMessage());
                 }
             }
         });
@@ -144,12 +167,18 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
                 try {
                     pane.getChildren().remove(change);
                     pane.getChildren().remove(passwordField);
-                    View.viewPersonalInfoMenu.editPassword(passwordField.getText() , Session.getOnlineAccount());
+                    View.viewPersonalInfoMenu.editPassword(passwordField.getText(), Session.getOnlineAccount());
+                    setLabel(Color.GREEN , "Password successfully changed");
                 } catch (Exception exception) {
-                    exception.printStackTrace();
+                    setLabel(Color.RED , exception.getMessage());
                 }
             }
         });
     }
 
+    private void setLabel(Color color, String text){
+        label.setVisible(true);
+        label.setTextFill(color);
+        label.setText(text);
+    }
 }

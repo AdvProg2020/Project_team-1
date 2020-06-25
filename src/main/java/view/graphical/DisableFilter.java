@@ -25,6 +25,9 @@ public class DisableFilter implements Initializable {
             if (checkBox.isSelected()){
                 try {
                     View.filteringMenu.disableFilter(checkBox.getText());
+                    SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+                    SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }

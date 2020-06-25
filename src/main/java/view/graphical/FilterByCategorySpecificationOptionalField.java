@@ -36,6 +36,9 @@ public class FilterByCategorySpecificationOptionalField {
 
         try {
             View.filteringMenu.filter(new OptionalFilter(filterName, acceptableOptions, correspondingField , category));
+            SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+            SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+
         } catch (Exception exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.show();

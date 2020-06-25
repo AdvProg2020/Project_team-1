@@ -32,7 +32,11 @@ import java.util.logging.Handler;
 
 public class SceneHandler {
 
-    private final ProductsMenuLoad productsMenuLoad = new ProductsMenuLoad();
+    public static ProductsMenuLoad getProductsMenuLoad() {
+        return productsMenuLoad;
+    }
+
+    private static final ProductsMenuLoad productsMenuLoad = new ProductsMenuLoad();
     static {
         //MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
     }

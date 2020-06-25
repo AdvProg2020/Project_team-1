@@ -27,5 +27,6 @@
       <Button layoutX="1229.0" layoutY="9.0" mnemonicParsing="false" onAction="#pause" styleClass="normal-button" text="⏸" />
       <Button layoutX="1165.0" layoutY="9.0" mnemonicParsing="false" onAction="#play" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
       <Button layoutX="952.0" layoutY="623.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
+      <Label fx:id="label" layoutX="308.0" layoutY="165.0" prefHeight="29.0" prefWidth="301.0" styleClass="hint-label" visible="false" />
     </children>
 </AnchorPane>
