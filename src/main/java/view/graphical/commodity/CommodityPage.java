@@ -1,4 +1,4 @@
-package view.graphical;
+package view.graphical.commodity;
 
 import controller.commodity.CommentsMenu;
 import controller.commodity.DigestMenu;
@@ -8,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -17,8 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
@@ -46,21 +43,12 @@ public class CommodityPage implements Initializable {
     public ChoiceBox comparableCommodities;
     public Button logOutButton;
     public Button addToCartButton;
-    public ImageView secondCommodityImage;
-    public Label secondCommodityRating;
-    public Label firstCommodityRating;
-    public Label secondCommodityPrice;
-    public Label firstCommodityPrice;
-    public Label secondCommodityBrand;
-    public Label secondCommodityName;
-    public GridPane compareGridPane;
     public Label addToCartLabel;
-    private final String emptyStarAddress = "../../stars/emptyStar.png";
-    private final String fullStarAddress = "../../stars/fullStar.png";
+    private final String emptyStarAddress = "../../../stars/emptyStar.png";
+    private final String fullStarAddress = "../../../stars/fullStar.png";
     public ImageView star5;
     public ImageView star4;
     public ImageView star3;
-    Popup popupMenu = new Popup();
     public ImageView star2;
     public ImageView star1;
 
@@ -156,35 +144,17 @@ public class CommodityPage implements Initializable {
 
     public void onCompareClick(MouseEvent mouseEvent) throws FileNotFoundException {
         if (comparableCommodities.getValue() != null) {
-            Parent parent = null;
-            try {
-                parent = FXMLLoader.load(getClass().getResource("../../fxml/Compare.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Commodity comparingCommodity = null;
             for (Commodity commodity : commodityMenu.getCommodity().getCategory().getCommodities()) {
                 if ((commodity.getName() + ", " + commodity.getBrand()).equals(comparableCommodities.getValue())) {
-                    comparingCommodity = commodity;
+                    commodityMenu.setComparingCommodity(commodity);
                 }
             }
-            firstCommodityPrice.setText(String.valueOf(commodityMenu.getCommodity().getPrice()));
-            firstCommodityRating.setText(String.format("%.1f", commodityMenu.getCommodity().getAverageScore()));
-            assert comparingCommodity != null;
-            secondCommodityBrand.setText(comparingCommodity.getBrand());
-            secondCommodityImage.setImage(new Image(new FileInputStream(comparingCommodity.getImagePath())));
-            secondCommodityName.setText(comparingCommodity.getName());
-            secondCommodityPrice.setText(String.valueOf(comparingCommodity.getPrice()));
-            secondCommodityRating.setText(String.format("%.1f", comparingCommodity.getAverageScore()));
-            for (int i = 0; i < comparingCommodity.getCategorySpecifications().size(); i++) {
-                compareGridPane.getRowConstraints().add(new RowConstraints(30, 30, 60, Priority.SOMETIMES,
-                        VPos.CENTER, true));
-                compareGridPane.add(new ModifiedLabel(comparingCommodity.getCategorySpecifications().get(i).getTitle()),
-                        i + 5, 0);
-                compareGridPane.add(new ModifiedLabel(String.valueOf(comparingCommodity.getCategorySpecifications().get(
-                        i).getValue())), i + 5, 2);
-                compareGridPane.add(new ModifiedLabel(String.valueOf(commodityMenu.getCommodity().
-                        getCategorySpecifications().get(i).getValue())), i + 5, 1);
+            Parent parent = null;
+            Popup popupMenu = new Popup();
+            try {
+                parent = FXMLLoader.load(getClass().getResource("../../../fxml/Compare.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             popupMenu.getContent().add(parent);
             popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
@@ -225,7 +195,7 @@ public class CommodityPage implements Initializable {
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
-    private static class ModifiedLabel extends Label {
+    protected static class ModifiedLabel extends Label {
         public ModifiedLabel(String s) {
             super(s);
             getStyleClass().add("hint-label");
