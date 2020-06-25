@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
 import model.commodity.Commodity;
@@ -91,12 +92,23 @@ public class ManageResellerProducts implements Initializable {
                 Label productName = new Label(commodity.getName());
                 HBox actions = new HBox();
                 actions.setAlignment(Pos.CENTER);
-                Button show = new Button("Show"), edit = new Button("Edit"), remove = new Button("Remove");
-                show.setOnMouseClicked(mouseEvent1 -> {
-                    // Show
-                });
+                Button edit = new Button("Show/Edit"), remove = new Button("Remove");
                 edit.setOnMouseClicked(mouseEvent1 -> {
-                    // edit
+                    Parent parent = null;
+                    FXMLLoader loader = new FXMLLoader(getClass().
+                            getResource("../../fxml/reseller/ShowEditProduct.fxml"));
+                    try {
+                        parent = loader.load();
+                    } catch (IOException e) {
+                        // Khob chi kar konam?
+                    }
+                    ShowEditProduct showEditProduct = loader.getController();
+                    showEditProduct.initScene(commodity);
+                    Scene scene = new Scene(parent);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.setTitle("Show/Edit product");
+                    stage.show();
                 });
                 remove.setOnMouseClicked(mouseEvent12 -> {
                     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,
@@ -112,8 +124,9 @@ public class ManageResellerProducts implements Initializable {
                             // Be Kiram
                         }
                     }
+                    onSortButtonClick();
                 });
-                actions.getChildren().addAll(show, edit, remove);
+                actions.getChildren().addAll(edit, remove);
                 productAnchorPane.getChildren().addAll(productImage, productName, actions);
                 manageProductsAnchorPane.getChildren().add(productAnchorPane);
             }
