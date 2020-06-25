@@ -1,5 +1,7 @@
 package controller.share;
 
+import view.AudioPlayer;
+
 public class MenuHandler {
 
     private static MenuHandler singletonInstance = new MenuHandler();
@@ -17,6 +19,11 @@ public class MenuHandler {
     }
 
     public void setCurrentMenu(Menu currentMenu) {
+        AudioPlayer.audioClip.stop();
+        if (AudioPlayer.count != 8)
+            AudioPlayer.count++;
+        else AudioPlayer.count = 1;
+        AudioPlayer.music();
         this.currentMenu = currentMenu;
     }
 }

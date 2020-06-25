@@ -1,6 +1,7 @@
 package controller.share;
 
 import model.Session;
+import view.AudioPlayer;
 import view.commandline.View;
 
 public class Menu {
@@ -31,6 +32,11 @@ public class Menu {
     }
 
     public void goToPreviousMenu() {
+        AudioPlayer.audioClip.stop();
+        if (AudioPlayer.count != 8)
+            AudioPlayer.count++;
+        else AudioPlayer.count = 1;
+        AudioPlayer.music();
         if (previousMenu != null) {
             MenuHandler.getInstance().setCurrentMenu(previousMenu);
             previousMenu = null;
