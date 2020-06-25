@@ -56,7 +56,8 @@
                            <left>
                               <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
                                  <children>
-                                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onBackButtonClick" styleClass="back-button" text="Back" />
+                                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onExitButtonClick" styleClass="logout-button" text="Exit" />
+                                    <Button alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="611.0" mnemonicParsing="false" onMouseClicked="#onBackButtonClick" styleClass="back-button" text="Back" />
                                  </children>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -151,6 +152,7 @@
                            <left>
                               <VBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
                                  <children>
+                                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onExitButtonClick" styleClass="logout-button" text="Exit" />
                                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onBackButtonClick" styleClass="back-button" text="Back" />
                                  </children>
                                  <padding>

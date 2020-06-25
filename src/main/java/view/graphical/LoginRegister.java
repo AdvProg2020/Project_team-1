@@ -117,4 +117,8 @@ public class LoginRegister implements Initializable {
         Image image = new Image(imagePath);
         userPhotoImageView.setImage(image);
     }
+
+    public void onExitButtonClick() {
+        System.exit(0);
+    }
 }

@@ -17,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
 import model.commodity.Commodity;
@@ -42,7 +41,7 @@ public class ManageResellerProducts implements Initializable {
         onSortButtonClick();
     }
 
-    public void onAddProductClick(MouseEvent mouseEvent) {
+    public void onAddProductClick() {
         Parent parent = null;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/reseller/AddProductPopup.fxml"));
         try {
@@ -79,15 +78,16 @@ public class ManageResellerProducts implements Initializable {
             } catch (Exception e) {
                 // Be Tokhmam
             }
-            for (int i = 0; i < commodities.size(); i++) {
+            for (int i = 0; i < Objects.requireNonNull(commodities).size(); i++) {
                 Commodity commodity = manageProductsSortOrderToggleButton.isSelected() ?
-                        commodities.get(commodities.size() - i) : commodities.get(i);
+                        commodities.get(commodities.size() - 1 - i) : commodities.get(i);
                 AnchorPane productAnchorPane = new AnchorPane();
                 productAnchorPane.setMaxHeight(300);
                 productAnchorPane.setMaxWidth(300);
                 ImageView productImage = new ImageView(new Image(new FileInputStream(commodity.getImagePath())));
-                productImage.maxWidth(250);
-                productImage.maxHeight(250);
+                productImage.setPreserveRatio(true);
+                productImage.setFitHeight(250);
+                productImage.setFitWidth(250);
                 Label productName = new Label(commodity.getName());
                 HBox actions = new HBox();
                 actions.setAlignment(Pos.CENTER);
