@@ -14,7 +14,9 @@ import model.log.SellLog;
 import model.share.Request;
 import view.commandline.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ResellerMenu extends Menu {
     public ResellerMenu() {
@@ -55,6 +57,17 @@ public class ResellerMenu extends Menu {
             }
         }
         throw new Exception("Category not found");
+    }
+
+    public ArrayList<String> getCategoriesName() {
+        ArrayList<String> categoriesName = null;
+        try {
+            categoriesName = YaDataManager.getCategories().stream()
+                    .map(Category::getName).collect(Collectors.toCollection(ArrayList::new));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return categoriesName;
     }
 
     public ArrayList<Category> sortCategories(String field) throws Exception {

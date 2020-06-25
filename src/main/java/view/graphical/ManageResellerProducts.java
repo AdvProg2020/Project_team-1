@@ -5,21 +5,25 @@ import controller.reseller.ResellerMenu;
 import controller.share.MenuHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
 import model.commodity.Commodity;
 import view.commandline.View;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -38,10 +42,20 @@ public class ManageResellerProducts implements Initializable {
     }
 
     public void onAddProductClick(MouseEvent mouseEvent) {
+        Popup addProductPopup = new Popup();
+        Parent parent = null;
+        try {
+            parent = FXMLLoader.load(getClass().getResource("../../fxml/reseller/AddProductPopup.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        addProductPopup.getContent().add(parent);
+        addProductPopup.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
     private void initializeSortFieldChoiceBox() {
-        List<String> fieldsList = new ArrayList<>(Arrays.asList("brand", "name", "id", "price", "visits", "number of scores", "average score"));
+        List<String> fieldsList = new ArrayList<>(Arrays.asList("brand", "name", "id", "price", "visits",
+                "number of scores", "average score"));
         ObservableList<String> observableList = FXCollections.observableList(fieldsList);
         manageProductsSortField.setItems(observableList);
     }
@@ -79,8 +93,8 @@ public class ManageResellerProducts implements Initializable {
                     // edit
                 });
                 remove.setOnMouseClicked(mouseEvent12 -> {
-                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this product?",
-                            ButtonType.NO, ButtonType.YES);
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,
+                            "Are you sure you want to remove this product?", ButtonType.NO, ButtonType.YES);
                     confirmation.setResizable(false);
                     confirmation.setHeight(200);
                     confirmation.setWidth(500);

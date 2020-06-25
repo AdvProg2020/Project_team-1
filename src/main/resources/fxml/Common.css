@@ -114,6 +114,13 @@
     -fx-border-color: cornflowerblue;
 }
 
+.text-area {
+    -fx-font-family: "Sriracha";
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: cornflowerblue;
+}
+
 .hint-label {
     -fx-font-family: "Sriracha";
     -fx-font-size: 16;
