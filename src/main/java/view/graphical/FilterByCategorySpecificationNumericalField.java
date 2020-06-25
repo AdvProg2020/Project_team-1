@@ -50,6 +50,9 @@ public class FilterByCategorySpecificationNumericalField {
 
         try {
             View.filteringMenu.filter(new NumericalFilter(filterName, category , startRange, endRange, correspondingField));
+            SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+            SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+
         } catch (Exception exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.show();

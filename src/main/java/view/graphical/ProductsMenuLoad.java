@@ -26,9 +26,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class ProductsMenuLoad {
+    public Pane getRoot() {
+        return root;
+    }
+
+    private Pane root;
 
     public void initializeProductsRoot(Stage stage) {
-        Pane root = new Pane();
+        root = new Pane();
         root.setStyle("-fx-background-image: url(bg.jpg); -fx-background-size: stretch");
         root.getStylesheets().add("fxml/Common.css");
         try {
@@ -70,8 +75,8 @@ public class ProductsMenuLoad {
             }
         });
 
-        pause.relocate(900,0);
-        play.relocate(800,0);
+        pause.relocate(900, 0);
+        play.relocate(800, 0);
 
     }
 
@@ -111,7 +116,7 @@ public class ProductsMenuLoad {
         });
     }
 
-    private void deleteCommodities(Pane root) {
+    public void deleteCommodities(Pane root) {
         for (int i = 0; i < root.getChildren().size(); i++) {
             if (root.getChildren().get(i).getLayoutY() > 40) {
                 root.getChildren().remove(root.getChildren().get(i));
@@ -129,7 +134,7 @@ public class ProductsMenuLoad {
         root.getChildren().add(categories);
     }
 
-    private void setCommodities(Pane root) throws Exception {
+    public void setCommodities(Pane root) throws Exception {
         int i = 0;
         int j = 100;
         for (Commodity commodity : View.productsMenu.getProducts()) {
@@ -168,18 +173,21 @@ public class ProductsMenuLoad {
     }
 
     private void setUpdateButton(Pane root, int j) {
-        Button update = new Button("Update");
-        update.getStyleClass().add("normal-button");
+        Button update = new Button("Logout");
+        update.getStyleClass().add("logout-button");
         update.setLayoutX(800);
         update.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 250);
-        update.setMinWidth(100);
-        update.setMinHeight(100);
         update.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    deleteCommodities(root);
-                    setCommodities(root);
+                    try {
+                        MenuHandler.getInstance().getCurrentMenu().logout();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }

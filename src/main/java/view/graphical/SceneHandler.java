@@ -32,7 +32,11 @@ import java.util.logging.Handler;
 
 public class SceneHandler {
 
-    private final ProductsMenuLoad productsMenuLoad = new ProductsMenuLoad();
+    public static ProductsMenuLoad getProductsMenuLoad() {
+        return productsMenuLoad;
+    }
+
+    private static final ProductsMenuLoad productsMenuLoad = new ProductsMenuLoad();
     static {
         //MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
     }
@@ -51,7 +55,7 @@ public class SceneHandler {
             assert root != null;
             stage.setScene(new Scene(root));
         }
-        stage.setResizable(false);
+
         stage.setMinWidth(1200);
         stage.setMinHeight(800);
         stage.setTitle(menu.getStageTitle());

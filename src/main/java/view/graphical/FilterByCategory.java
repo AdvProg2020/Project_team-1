@@ -14,6 +14,9 @@ public class FilterByCategory {
         String categoryName = categoryNameTextField.getText();
         try {
             View.filteringMenu.filter(new model.filter.FilterByCategory("Filter by category "+categoryName , View.manageCategoryMenu.getCategory(categoryName)));
+            SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+            SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+
         } catch (Exception exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid category name");

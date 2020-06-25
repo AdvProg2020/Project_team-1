@@ -69,5 +69,6 @@ public class ManageRequestMenu extends Menu {
    public void decline(int id) throws Exception {
         Request request = getRequestById(id);
         request.getObj().setStatus(Status.DECLINED);
+        updateRequests(request);
     }
 }
