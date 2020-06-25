@@ -1,6 +1,5 @@
 package view;
 
-import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -20,7 +19,6 @@ public class AudioPlayer {
     public static void music(){
         System.out.println(count);
         Media media =  new Media(AudioPlayer.class.getResource(paths[count]).toExternalForm());
-
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(0.025);
         mediaPlayer.play();

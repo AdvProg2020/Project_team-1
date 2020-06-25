@@ -10,13 +10,13 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
 import model.commodity.Commodity;
@@ -41,16 +41,21 @@ public class ManageResellerProducts implements Initializable {
         onSortButtonClick();
     }
 
-    public void onAddProductClick(MouseEvent mouseEvent) {
-        Popup addProductPopup = new Popup();
+    public void onAddProductClick() {
         Parent parent = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/reseller/AddProductPopup.fxml"));
         try {
-            parent = FXMLLoader.load(getClass().getResource("../../fxml/reseller/AddProductPopup.fxml"));
+            parent = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        addProductPopup.getContent().add(parent);
-        addProductPopup.show(((Node) mouseEvent.getSource()).getScene().getWindow());
+        assert parent != null;
+        Scene scene = new Scene(parent);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        AddProduct addProduct = loader.getController();
+        addProduct.setStage(stage);
+        stage.show();
     }
 
     private void initializeSortFieldChoiceBox() {
@@ -73,15 +78,16 @@ public class ManageResellerProducts implements Initializable {
             } catch (Exception e) {
                 // Be Tokhmam
             }
-            for (int i = 0; i < commodities.size(); i++) {
+            for (int i = 0; i < Objects.requireNonNull(commodities).size(); i++) {
                 Commodity commodity = manageProductsSortOrderToggleButton.isSelected() ?
-                        commodities.get(commodities.size() - i) : commodities.get(i);
+                        commodities.get(commodities.size() - 1 - i) : commodities.get(i);
                 AnchorPane productAnchorPane = new AnchorPane();
                 productAnchorPane.setMaxHeight(300);
                 productAnchorPane.setMaxWidth(300);
                 ImageView productImage = new ImageView(new Image(new FileInputStream(commodity.getImagePath())));
-                productImage.maxWidth(250);
-                productImage.maxHeight(250);
+                productImage.setPreserveRatio(true);
+                productImage.setFitHeight(250);
+                productImage.setFitWidth(250);
                 Label productName = new Label(commodity.getName());
                 HBox actions = new HBox();
                 actions.setAlignment(Pos.CENTER);

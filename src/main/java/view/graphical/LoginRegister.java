@@ -113,8 +113,12 @@ public class LoginRegister implements Initializable {
                 "*.png", "*.jpeg");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
-        imagePath = file.toURI().toString();
+        imagePath = file.getAbsolutePath();
         Image image = new Image(imagePath);
         userPhotoImageView.setImage(image);
+    }
+
+    public void onExitButtonClick() {
+        System.exit(0);
     }
 }

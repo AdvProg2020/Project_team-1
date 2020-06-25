@@ -4,7 +4,7 @@ import view.AudioPlayer;
 
 public class MenuHandler {
 
-    private static MenuHandler singletonInstance = new MenuHandler();
+    private static final MenuHandler singletonInstance = new MenuHandler();
 
     private Menu currentMenu;
 
