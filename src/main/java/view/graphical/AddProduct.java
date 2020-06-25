@@ -85,7 +85,7 @@ public class AddProduct implements Initializable {
 
     public void onAddClick(MouseEvent mouseEvent) {
         try {
-            if (photosPath.getChildren().size() > 0) {
+            if (photosPath.getChildren().size() == 0) {
                 throw new Exception("Choose a photo");
             }
             String imagePath = photosPath.getChildren().get(0).getValue();
