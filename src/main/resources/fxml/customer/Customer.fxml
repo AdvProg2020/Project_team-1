@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1200.0" styleClass="background"
+            stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            fx:controller="view.graphical.customer.CustomerPanel">
+    <children>
+        <Label styleClass="scene-title" text="Customer Panel" AnchorPane.leftAnchor="489.0" AnchorPane.topAnchor="20.0">
+            <font>
+                <Font size="36.0"/>
+            </font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#viewPersonalInfo" prefHeight="48.0" prefWidth="242.0"
+                styleClass="normal-button" text="View Personal Info" AnchorPane.leftAnchor="20.0"
+                AnchorPane.topAnchor="20.0"/>
+        <Button onAction="#viewDiscounts" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button"
+                text="View Discount Codes" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="80.0"/>
+        <Button onAction="#viewOrders" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button"
+                text="View Orders History" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="140.0"/>
+        <Button mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back"
+                AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="20.0"/>
+        <Button mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="Logout"
+                AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0"/>
+        <Button mnemonicParsing="false" onAction="#play" prefHeight="48.0" prefWidth="52.0" text="&#x25B6;"
+                AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="20.0" styleClass="normal-button-Green"/>
+        <Button mnemonicParsing="false" onAction="#pause" prefHeight="48.0" prefWidth="52.0" text="&#x23F8;"
+                AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" styleClass="normal-button"/>
+        <Button mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Products Menu"
+                AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="20.0"/>
+        <Button mnemonicParsing="false" onAction="#gotoCartMenu" styleClass="forward-button" text="Cart"
+                AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0"/>
+    </children>
+</AnchorPane>

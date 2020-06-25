@@ -17,7 +17,7 @@ public class CustomerMenu extends Menu {
     private String discountsSortType = "code";
 
     public CustomerMenu() {
-        fxmlFileAddress = "../../fxml/Customer.fxml";
+        fxmlFileAddress = "../../fxml/customer/Customer.fxml";
     }
 
     public double getBalance() {
