@@ -130,7 +130,6 @@ public class Commodity implements Requestable {
     public void addObj() throws Exception {
         YaDataManager.removeCommodity(this);
         YaDataManager.addCommodity(this);
-        YaDataManager.addCommodity(this);
         YaDataManager.removeBusiness(seller);
         seller.addCommodity(this);
         YaDataManager.addBusiness(seller);
