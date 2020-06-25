@@ -12,7 +12,7 @@ import view.commandline.View;
 
 public class MainMenu {
     public void products(ActionEvent actionEvent) {
-        View..setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        View.productsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
 
@@ -43,8 +43,8 @@ public class MainMenu {
     }
 
     public void offs(ActionEvent actionEvent) {
-        View.productsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
+        View.offMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.offMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 }

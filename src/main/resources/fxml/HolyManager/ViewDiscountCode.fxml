@@ -16,7 +16,7 @@
     <Button layoutX="-2.0" layoutY="250.0" mnemonicParsing="false" onAction="#viewDiscountCode" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View discount codes" />
     <Button layoutX="-2.0" layoutY="315.0" mnemonicParsing="false" onAction="#manageRequests" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Mange requests" />
     <Button layoutX="2.0" layoutY="385.0" mnemonicParsing="false" onAction="#manageCategories" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage categories" />
-   <Button layoutX="435.0" layoutY="438.0" mnemonicParsing="false" onAction="#editDiscountCode" prefHeight="69.0" prefWidth="251.0" styleClass="normal-button" text="Edit discount code" />
+   <Button layoutX="429.0" layoutY="438.0" mnemonicParsing="false" onAction="#editDiscountCode" prefHeight="69.0" prefWidth="251.0" styleClass="normal-button" text="Edit discount code" />
    <Button layoutX="693.0" layoutY="438.0" mnemonicParsing="false" onAction="#deleteDiscountCode" prefHeight="69.0" prefWidth="251.0" styleClass="delete-button" text=" Delete discount code" />
    <Label fx:id="errorLabel" layoutX="163.0" layoutY="447.0" prefHeight="55.0" prefWidth="266.0" styleClass="hint-label" text="Label" textFill="#fc0202" visible="false" />
    <Button layoutX="2.0" layoutY="480.0" mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back" />
@@ -24,6 +24,7 @@
    <Button layoutX="1022.0" layoutY="2.0" mnemonicParsing="false" onAction="#pause" styleClass="normal-button" text="⏸" />
    <Button layoutX="966.0" layoutY="2.0" mnemonicParsing="false" onAction="#play" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
    <Button layoutX="946.0" layoutY="548.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
+   <Button onAction="#goToMainMenu" layoutX="948.0" layoutY="473.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="Main menu" />
 
 
 </AnchorPane>

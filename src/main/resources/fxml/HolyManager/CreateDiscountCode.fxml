@@ -30,12 +30,13 @@
    <Label layoutX="284.0" layoutY="335.0" prefHeight="29.0" prefWidth="255.0" styleClass="hint-label" text="Maximum number of uses:" />
    <TextField fx:id="maximumNumberOfUses" layoutX="284.0" layoutY="364.0" prefHeight="33.0" prefWidth="255.0" promptText="Maximum number of uses" />
    <Button layoutX="284.0" layoutY="400.0" mnemonicParsing="false" onAction="#addAccount" prefHeight="55.0" prefWidth="248.0" styleClass="normal-button" text="Add account" />
-   <Button layoutX="539.0" layoutY="493.0" mnemonicParsing="false" onAction="#createDiscountCodeNC" prefHeight="75.0" prefWidth="269.0" styleClass="normal-button-Green" text="Create discount code" />
+   <Button layoutX="500.0" layoutY="477.0" mnemonicParsing="false" onAction="#createDiscountCodeNC" prefHeight="75.0" prefWidth="269.0" styleClass="normal-button-Green" text="Create discount code" />
    <Label fx:id="errorLabel" layoutX="295.0" layoutY="485.0" prefHeight="17.0" prefWidth="231.0" styleClass="hint-label" text="Label" textFill="#f50707" visible="false" />
    <Button layoutX="14.0" layoutY="530.0" mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back" />
    <Button layoutX="14.0" layoutY="604.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="Logout" />
    <Button layoutX="842.0" layoutY="5.0" mnemonicParsing="false" onAction="#play" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
    <Button layoutX="902.0" layoutY="5.0" mnemonicParsing="false" onAction="#pause" styleClass="normal-button" text="⏸" />
-   <Button layoutX="566.0" layoutY="604.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
+   <Button layoutX="727.0" layoutY="632.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
+   <Button onAction="#goToMainMenu" layoutX="727.0" layoutY="558.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="Main menu" />
 
 </AnchorPane>

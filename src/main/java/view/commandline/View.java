@@ -37,7 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class View {
-
+    public static final MainMenu mainMenu = new MainMenu();
     public static final GetDiscountCode getDiscountCode = new GetDiscountCode();
     public static final ManagerMenu managerMenu = new ManagerMenu();
     public static final ViewPersonalInfoMenu viewPersonalInfoMenu = new ViewPersonalInfoMenu();
@@ -254,7 +254,7 @@ public class View {
         }
         try {
             getDiscountCode.changeStartDate(startDate, discountCode);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return true;
         }
@@ -272,7 +272,7 @@ public class View {
         }
         try {
             getDiscountCode.changeFinishDate(finishDate, discountCode);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return true;
         }
@@ -331,7 +331,7 @@ public class View {
                     DiscountCode discountCode;
                     try {
                         discountCode = getDiscountCode.getDiscountCode(matcher.group("code"));
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                         return;
                     }
@@ -400,7 +400,7 @@ public class View {
                 if (command.matches("^create discount code$")) {
                     try {
                         createDiscountCode(managerMenu);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                     return;
@@ -435,7 +435,7 @@ public class View {
                 DiscountCode tmp = YaDataManager.getDiscountCodeWithCode(matcher.group("newfield"));
                 System.out.println("invalid new code");
                 return;
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
             getDiscountCode.changeCode(matcher.group("newfield"), discountCode);
@@ -857,12 +857,12 @@ public class View {
                 return;
             }
             if (matcher.group("field").equals("last name")) {
-                viewPersonalInfoMenu.editLastName(matcher.group("newfield"),Session.getOnlineAccount());
+                viewPersonalInfoMenu.editLastName(matcher.group("newfield"), Session.getOnlineAccount());
                 viewPersonalInfoMenu.updateFile();
                 return;
             }
             if (matcher.group("field").equals("email")) {
-                viewPersonalInfoMenu.editEmail(matcher.group("newfield"),  Session.getOnlineAccount());
+                viewPersonalInfoMenu.editEmail(matcher.group("newfield"), Session.getOnlineAccount());
                 viewPersonalInfoMenu.updateFile();
                 return;
             }
@@ -916,12 +916,12 @@ public class View {
             DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(code);
             System.out.println("invalid code");
             return;
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         System.out.println("Enter start date in dd-mm-yyyy format");
         String stringStart = scanner.nextLine();
-        if (!stringStart.matches("\\d\\d-\\d\\d-\\d\\d\\d\\d")){
+        if (!stringStart.matches("\\d\\d-\\d\\d-\\d\\d\\d\\d")) {
             throw new Exception("invalid date format");
         }
         SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
@@ -934,7 +934,7 @@ public class View {
         }
         System.out.println("Enter finish date in dd-mm-yyyy format");
         String stringFinish = scanner.nextLine();
-        if (!stringFinish.matches("\\d\\d-\\d\\d-\\d\\d\\d\\d")){
+        if (!stringFinish.matches("\\d\\d-\\d\\d-\\d\\d\\d\\d")) {
             throw new Exception("invalid date format");
         }
         Date finish = null;
@@ -1172,7 +1172,7 @@ public class View {
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
         for (int i = 0; i < category.getFieldOptions().size(); ++i) {
             CategorySpecification categorySpecification = category.getFieldOptions().get(i);
-            System.out.println("Enter product " + categorySpecification.getTitle() + ":" );
+            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
             if (categorySpecification.getOptions() == null) {
                 productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), scanner.nextInt()));
                 scanner.nextLine();
@@ -1193,7 +1193,7 @@ public class View {
         scanner.nextLine();
         System.out.println("enter image path;");
         String path = scanner.nextLine();
-        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount , path);
+        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount, path);
         System.out.println("product request had been sent to managers");
     }
 
@@ -1962,7 +1962,7 @@ public class View {
             input = scanner.next();
         }
         scanner.nextLine();
-       // OptionalFilter optionalFilter = new OptionalFilter("Optional filter " + categoryName + " " + correspondingFieldNumber, options, correspondingFieldNumber , category);
+        // OptionalFilter optionalFilter = new OptionalFilter("Optional filter " + categoryName + " " + correspondingFieldNumber, options, correspondingFieldNumber , category);
         //filteringMenu.filter(optionalFilter);
         System.out.println("successfully filtered");
     }

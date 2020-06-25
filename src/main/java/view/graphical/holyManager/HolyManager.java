@@ -100,4 +100,11 @@ public class HolyManager {
         MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
+
+    public void goToMainMenu(ActionEvent actionEvent){
+        View.mainMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.mainMenu);
+        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+
+    }
 }
