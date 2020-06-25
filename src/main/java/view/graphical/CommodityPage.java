@@ -3,6 +3,7 @@ package view.graphical;
 import controller.commodity.CommentsMenu;
 import controller.commodity.DigestMenu;
 import controller.share.CommodityMenu;
+import controller.share.MenuHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -55,7 +55,14 @@ public class CommodityPage implements Initializable {
     public Label secondCommodityName;
     public GridPane compareGridPane;
     public Label addToCartLabel;
+    private final String emptyStarAddress = "../../stars/emptyStar.png";
+    private final String fullStarAddress = "../../stars/fullStar.png";
+    public ImageView star5;
+    public ImageView star4;
+    public ImageView star3;
     Popup popupMenu = new Popup();
+    public ImageView star2;
+    public ImageView star1;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -66,7 +73,58 @@ public class CommodityPage implements Initializable {
                 commodity.getAverageScore()));
         commodityBrand.setText(commodity.getBrand());
         try {
-            commodityImage.setImage(new Image(new FileInputStream(commodity.getImagePath())));
+            if (commodity.getAverageScore() < 4.5) {
+                star5.setImage(new Image(new FileInputStream(emptyStarAddress)));
+                if (commodity.getAverageScore() < 3.5) {
+                    star4.setImage(new Image(new FileInputStream(emptyStarAddress)));
+                    if (commodity.getAverageScore() < 2.5) {
+                        star3.setImage(new Image(new FileInputStream(emptyStarAddress)));
+                        if (commodity.getAverageScore() < 1.5) {
+                            star2.setImage(new Image(new FileInputStream(emptyStarAddress)));
+                            if (commodity.getAverageScore() < 0.5) {
+                                star1.setImage(new Image(new FileInputStream(emptyStarAddress)));
+                            } else {
+                                star1.setImage(new Image(new FileInputStream(fullStarAddress)));
+                            }
+                        } else {
+                            star2.setImage(new Image(new FileInputStream(fullStarAddress)));
+                        }
+                    } else {
+                        star3.setImage(new Image(new FileInputStream(fullStarAddress)));
+                    }
+                } else {
+                    star4.setImage(new Image(new FileInputStream(fullStarAddress)));
+                }
+            } else {
+                star5.setImage(new Image(new FileInputStream(fullStarAddress)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            Image image = new Image(new FileInputStream(commodity.getImagePath()));
+            if (commodity.getInventory() > 0) {
+                commodityImage.setImage(image);
+            } else {
+                int width = (int) image.getWidth();
+                int height = (int) image.getHeight();
+                PixelReader pixelReader = image.getPixelReader();
+                WritableImage grayImage = new WritableImage(width, height);
+                PixelWriter pixelWriter = grayImage.getPixelWriter();
+                for (int x = 0; x < width; x++) {
+                    for (int y = 0; y < height; y++) {
+                        int pixel = pixelReader.getArgb(x, y);
+                        int red = ((pixel >> 16) & 0xff);
+                        int green = ((pixel >> 8) & 0xff);
+                        int blue = (pixel & 0xff);
+                        int grayLevel = (int) ((double) red + (double) green + (double) blue) / 3;
+                        grayLevel = 255 - grayLevel;
+                        int gray = (grayLevel << 16) + (grayLevel << 8) + grayLevel;
+                        pixelWriter.setArgb(x, y, -gray);
+                    }
+                }
+                commodityImage.setImage(grayImage);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -149,9 +207,13 @@ public class CommodityPage implements Initializable {
     }
 
     public void onProductsClick(MouseEvent mouseEvent) {
+        View.productsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
+        Session.getSceneHandler().updateScene((Stage) (((Node) mouseEvent.getSource()).getScene().getWindow()));
     }
 
     public void onUserPanelClick(MouseEvent mouseEvent) {
+
     }
 
     public void onLogOutClick(MouseEvent mouseEvent) {
