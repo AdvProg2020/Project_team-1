@@ -30,10 +30,14 @@
                         <bottom>
                             <HBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
                                 <ChoiceBox fx:id="comparableCommodities" prefWidth="250.0" styleClass="text-field"/>
-                                <Button mnemonicParsing="false" styleClass="normal-button" text="Compare"
-                                        onMouseClicked="#onCompareClick"/>
-                                <Button mnemonicParsing="false" styleClass="normal-button-Green" text="Add to cart"
-                                        onMouseClicked="#onAddClick"/>
+                                <Button mnemonicParsing="false" onMouseClicked="#onCompareClick"
+                                        styleClass="normal-button" text="Compare"/>
+                                <VBox alignment="CENTER" prefWidth="150" spacing="5.0">
+                                    <Label fx:id="addToCartLabel" styleClass="error-message-label"
+                                           textAlignment="CENTER" wrapText="true"/>
+                                    <Button fx:id="addToCartButton" mnemonicParsing="false" onMouseClicked="#onAddClick"
+                                            styleClass="normal-button-Green" text="Add to cart"/>
+                                </VBox>
                             </HBox>
                         </bottom>
                         <BorderPane.margin>
@@ -52,14 +56,17 @@
                        preserveRatio="true" translateX="75.0" translateY="100.0">
                 <Image url="@../default-user-image.png"/>
             </ImageView>
-            <GridPane fx:id="buttonsGridPane" alignment="BOTTOM_CENTER" hgap="10.0" vgap="10.0"
-                      AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="95.0" BorderPane.alignment="BOTTOM_CENTER">
-                <Button onMouseClicked="#onBackClick" alignment="BOTTOM_CENTER" mnemonicParsing="false"
+            <GridPane alignment="BOTTOM_CENTER" hgap="10.0" vgap="10.0" AnchorPane.bottomAnchor="20.0"
+                      AnchorPane.leftAnchor="95.0" BorderPane.alignment="BOTTOM_CENTER">
+                <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onBackClick"
                         styleClass="back-button" text="Back" textAlignment="CENTER" GridPane.rowIndex="1"/>
-                <Button onMouseClicked="#onProductsClick" mnemonicParsing="false" styleClass="forward-button"
+                <Button mnemonicParsing="false" onMouseClicked="#onProductsClick" styleClass="forward-button"
                         text="Products" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <Button onMouseClicked="#onUserPanelClick" mnemonicParsing="false" styleClass="forward-button"
+                <Button mnemonicParsing="false" onMouseClicked="#onUserPanelClick" styleClass="forward-button"
                         text="User Panel" GridPane.columnIndex="1"/>
+                <Button fx:id="logOutButton" alignment="BOTTOM_CENTER" mnemonicParsing="false"
+                        onMouseClicked="#onLogOutClick" styleClass="logout-button" text="Log Out"
+                        textAlignment="CENTER"/>
                 <columnConstraints>
                     <ColumnConstraints/>
                     <ColumnConstraints/>

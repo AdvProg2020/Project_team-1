@@ -59,7 +59,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
                     <children>
-                        <Label fx:id="resellerBalanceLabel" styleClass="hint-label" text="Your balance"/>
+                        <Label fx:id="balanceLabel" styleClass="hint-label" text="Your balance"/>
                         <Button mnemonicParsing="false" styleClass="normal-button" onMouseClicked="#onPersonalInfoClick"
                                 text="Personal info"/>
                         <Button mnemonicParsing="false" styleClass="normal-button"

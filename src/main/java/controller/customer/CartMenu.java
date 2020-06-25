@@ -21,6 +21,11 @@ import static view.commandline.View.commodityMenu;
 
 public class CartMenu extends Menu {
     private String productSortType = "visits";
+
+    public CartMenu() {
+        fxmlFileAddress = "../../fxml/customer/Cart.fxml";
+    }
+
     public int calculateTotalPrice() {
         int price = 0;
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();

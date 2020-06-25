@@ -1,7 +1,6 @@
 package model.account;
 
 import controller.data.YaDataManager;
-import javafx.scene.image.Image;
 import model.commodity.Commodity;
 import model.commodity.DiscountCode;
 import model.exception.InvalidAccountInfoException;
@@ -100,12 +99,12 @@ public class PersonalAccount extends SimpleAccount {
             if (commodity.getInventory() > 0)
                 cart.put(commodity, 1);
             else
-                throw new Exception("we don't enough number of this commodity, excuse us");
+                throw new Exception("We don't enough number of this commodity, excuse us");
         } else {
             if (cart.get(commodity) < commodity.getInventory())
                 cart.put(commodity, cart.get(commodity) + 1);
             else
-                throw new Exception("we don't enough number of this commodity, excuse us");
+                throw new Exception("We don't enough number of this commodity, excuse us");
         }
     }
 

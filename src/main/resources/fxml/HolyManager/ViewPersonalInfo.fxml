@@ -23,6 +23,9 @@
       <Button layoutX="691.0" layoutY="85.0" mnemonicParsing="false" onAction="#editPhone" prefHeight="25.0" prefWidth="67.0" text="Edit" />
       <Button layoutX="725.0" layoutY="162.0" mnemonicParsing="false" onAction="#editPassword" prefHeight="48.0" prefWidth="170.0" styleClass="normal-button" text="Edit password" />
       <Button layoutX="2.0" layoutY="509.0" mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back" />
-      <Button onAction="#logout" layoutX="2.0" layoutY="595.0" mnemonicParsing="false" styleClass="logout-button" text="Logout" />
+      <Button layoutX="2.0" layoutY="595.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="Logout" />
+      <Button layoutX="1235.0" layoutY="2.0" mnemonicParsing="false" onAction="#pause" text="pause" />
+      <Button layoutX="1177.0" layoutY="2.0" mnemonicParsing="false" onAction="#play" prefHeight="25.0" prefWidth="48.0" text="play" />
+      <Button onAction="#goToProductsMenu" layoutX="952.0" layoutY="623.0" mnemonicParsing="false" styleClass="forward-button" text="Go to products menu" />
     </children>
 </AnchorPane>

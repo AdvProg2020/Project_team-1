@@ -2,7 +2,7 @@ package controller.share;
 
 import controller.comparator.Sort;
 import controller.data.YaDataManager;
-import model.*;
+import model.Session;
 import model.commodity.Comment;
 import model.commodity.Commodity;
 import model.share.Status;
@@ -15,6 +15,10 @@ import static view.commandline.View.digestMenu;
 public class CommodityMenu extends Menu {
     private Commodity commodity;
     private String CommentsSortType = "title";
+
+    public CommodityMenu() {
+        fxmlFileAddress = "../../fxml/Commodity.fxml";
+    }
 
     public void setCommodity(Commodity commodity) {
         this.commodity = commodity;

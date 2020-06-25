@@ -2,6 +2,7 @@ package view.graphical;
 
 import controller.customer.CustomerMenu;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -19,12 +20,14 @@ import model.log.BuyLog;
 import view.commandline.View;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class CustomerPanel {
+public class CustomerPanel implements Initializable {
     private final CustomerMenu customerMenu = View.customerMenu;
-    public Label resellerBalanceLabel;
     public TreeView ordersHistoryTreeView;
     public TreeView discountCodesTreeView;
+    public Label balanceLabel;
     Popup popupMenu = new Popup();
 
     public void onBackButtonClick(MouseEvent mouseEvent) {
@@ -103,11 +106,20 @@ public class CustomerPanel {
     }
 
     public void onLogOutClick(MouseEvent mouseEvent) throws Exception {
-        customerMenu.logout();
-        //go to main page
+        try {
+            customerMenu.logout();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
     public void onProductsClick(MouseEvent mouseEvent) {
         //go to products page
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        balanceLabel.setText("Your balance is " + ((PersonalAccount) Session.getOnlineAccount()).getCredit() + " Rials");
     }
 }
