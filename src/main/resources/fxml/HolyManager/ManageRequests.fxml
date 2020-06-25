@@ -26,8 +26,8 @@
       <Label layoutX="1158.0" layoutY="287.0" styleClass="hint-label" text="Declined requests" />
       <Button layoutX="2.0" layoutY="474.0" mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back" />
       <Button layoutX="2.0" layoutY="556.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="Logout" />
-      <Button layoutX="1299.0" layoutY="15.0" mnemonicParsing="false" onAction="#play" prefHeight="25.0" prefWidth="48.0" text="play" />
-      <Button layoutX="1361.0" layoutY="15.0" mnemonicParsing="false" onAction="#pause" text="pause" />
-      <Button onAction="#goToProductsMenu" layoutX="1184.0" layoutY="542.0" mnemonicParsing="false" styleClass="forward-button" text="Go to products menu" />
+      <Button layoutX="1299.0" layoutY="15.0" mnemonicParsing="false" onAction="#play" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
+      <Button layoutX="1361.0" layoutY="15.0" mnemonicParsing="false" onAction="#pause" styleClass="normal-button" text="⏸" />
+      <Button layoutX="1184.0" layoutY="542.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
    </children>
 </AnchorPane>
