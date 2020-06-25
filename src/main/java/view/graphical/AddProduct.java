@@ -85,10 +85,10 @@ public class AddProduct implements Initializable {
 
     public void onAddClick(MouseEvent mouseEvent) {
         try {
-            String imagePath = photosPath.getChildren().get(0).getValue();
-            if (imagePath == null) {
+            if (photosPath.getChildren().size() > 0) {
                 throw new Exception("Choose a photo");
             }
+            String imagePath = photosPath.getChildren().get(0).getValue();
             resellerMenu.addProduct(brandTf.getText(), nameTf.getText(), Integer.parseInt(priceTf.getText()),
                     resellerMenu.getCategoryByName(categoryCb.getValue()),
                     productCategorySpecification, descriptionTextArea.getText(),
