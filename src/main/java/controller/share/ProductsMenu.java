@@ -16,7 +16,6 @@ public class ProductsMenu extends Menu {
         return YaDataManager.getCategories();
     }
 
-
     public void filtering(){
         MenuHandler.getInstance().setCurrentMenu(View.filteringMenu);
         View.filteringMenu.setPreviousMenu(View.productsMenu);

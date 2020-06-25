@@ -32,6 +32,7 @@ public class ProductsMenuLoad {
         root.setStyle("-fx-background-image: url(bg.jpg); -fx-background-size: stretch");
         root.getStylesheets().add("fxml/Common.css");
         try {
+            setPlayPauseButton(root);
             setSortMenuButton(root);
             setCategoryMenuButton(root);
             setFilterMenuButton(root);
@@ -48,8 +49,13 @@ public class ProductsMenuLoad {
     }
 
     private void setPlayPauseButton(Pane pane) {
-        Button pause = new Button("pause");
-        Button play = new Button("play");
+
+        Button pause = new Button("\u23F8");
+        Button play = new Button("\u25B6");
+        pane.getChildren().add(pause);
+        pane.getChildren().add(play);
+        pause.getStyleClass().add("normal-button");
+        play.getStyleClass().add("normal-button-Green");
         pause.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -64,10 +70,9 @@ public class ProductsMenuLoad {
             }
         });
 
-        pause.relocate(500,0);
-        play.relocate(400,0);
-        pane.getChildren().add(pause);
-        pane.getChildren().add(play);
+        pause.relocate(900,0);
+        play.relocate(800,0);
+
     }
 
     private void setSortMenuButton(Pane root) {
@@ -264,7 +269,7 @@ public class ProductsMenuLoad {
                 Parent parent = null;
                 Popup popupMenu = new Popup();
                 try {
-                    parent = FXMLLoader.load(getClass().getResource("../../fxml/" + "Category" + ".fxml"));
+                    parent = FXMLLoader.load(getClass().getResource("../../fxml/" + "CategoriesPopup" + ".fxml"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
