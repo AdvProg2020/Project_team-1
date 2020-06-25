@@ -15,6 +15,11 @@ import static view.commandline.View.*;
 public class CustomerMenu extends Menu {
     private String orderSortType = "payed";
     private String discountsSortType = "code";
+
+    public CustomerMenu() {
+        fxmlFileAddress = "../../fxml/Customer.fxml";
+    }
+
     public double getBalance() {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         return account.getCredit();
