@@ -19,11 +19,11 @@ public class MenuHandler {
     }
 
     public void setCurrentMenu(Menu currentMenu) {
-//        AudioPlayer.audioClip.stop();
-//        if (AudioPlayer.count != 8)
-//            AudioPlayer.count++;
-//        else AudioPlayer.count = 1;
-//        AudioPlayer.music();
+        AudioPlayer.mediaPlayer.stop();
+        if (AudioPlayer.count != 8)
+            AudioPlayer.count++;
+        else AudioPlayer.count = 1;
+        AudioPlayer.music();
         this.currentMenu = currentMenu;
     }
 }
