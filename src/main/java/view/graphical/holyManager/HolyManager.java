@@ -1,14 +1,10 @@
 package view.graphical.holyManager;
 
-import controller.share.Menu;
 import controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.ListView;
-import javafx.scene.media.AudioClip;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
@@ -16,8 +12,6 @@ import view.AudioPlayer;
 import view.commandline.View;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class HolyManager {
 
@@ -91,5 +85,20 @@ public class HolyManager {
             e.printStackTrace();
         }
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
+    public void pause(ActionEvent actionEvent){
+            AudioPlayer.mediaPlayer.pause();
+    }
+
+    public void play(ActionEvent actionEvent){
+        AudioPlayer.mediaPlayer.play();
+    }
+
+    public void goToProductsMenu(ActionEvent actionEvent){
+        View.productsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
+        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+
     }
 }

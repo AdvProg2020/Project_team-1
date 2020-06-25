@@ -32,7 +32,7 @@ public class Menu {
     }
 
     public void goToPreviousMenu() {
-        AudioPlayer.audioClip.stop();
+        AudioPlayer.mediaPlayer.stop();
         if (AudioPlayer.count != 8)
             AudioPlayer.count++;
         else AudioPlayer.count = 1;

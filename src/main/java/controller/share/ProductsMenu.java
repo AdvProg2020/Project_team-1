@@ -28,7 +28,7 @@ public class ProductsMenu extends Menu {
     }
 
     public ProductsMenu() {
-        fxmlFileAddress = "";
+        fxmlFileAddress = "../../Products.fxml";
     }
 
     public ArrayList<Commodity> getProducts() throws Exception {

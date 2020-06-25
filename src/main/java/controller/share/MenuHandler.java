@@ -19,7 +19,7 @@ public class MenuHandler {
     }
 
     public void setCurrentMenu(Menu currentMenu) {
-        AudioPlayer.audioClip.stop();
+        AudioPlayer.mediaPlayer.stop();
         if (AudioPlayer.count != 8)
             AudioPlayer.count++;
         else AudioPlayer.count = 1;
