@@ -3,18 +3,31 @@ package view.graphical;
 import controller.reseller.ResellerMenu;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import model.commodity.Category;
+import model.field.Field;
 import view.commandline.View;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AddProduct implements Initializable {
+    private Stage stage;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     private final ResellerMenu resellerMenu = View.resellerMenu;
     public TextField brandTf;
     public TextField nameTf;
@@ -26,18 +39,25 @@ public class AddProduct implements Initializable {
     public Label errorMessageLabel;
     private final TreeItem<String> photosPath = new TreeItem<>("Photos");
     private final TreeItem<String> videosPath = new TreeItem<>("Videos");
+    private ArrayList<Field> productCategorySpecification = new ArrayList<>();
+
+    public void setProductCategorySpecification(ArrayList<Field> productCategorySpecification) {
+        this.productCategorySpecification = productCategorySpecification;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<String> observableList = FXCollections.observableList(resellerMenu.getCategoriesName());
         categoryCb.setItems(observableList);
-        TreeItem<String> root = new TreeItem<String>("Media");
+        categoryCb.valueProperty().addListener(
+                (observableValue, s, t1) -> getCategorySpecification(t1));
+        TreeItem<String> root = new TreeItem<>("Media");
         root.getChildren().addAll(photosPath, videosPath);
         selectedMediaTv.setRoot(root);
     }
 
     public void onCancelClick(MouseEvent mouseEvent) {
-        ((Node) mouseEvent.getSource()).getScene().getWindow().hide();
+        ((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow()).close();
     }
 
     public void onChooseProductImageClick(MouseEvent mouseEvent) {
@@ -46,8 +66,10 @@ public class AddProduct implements Initializable {
                 "*.png", "*.jpeg");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
-        String imagePath = file.toURI().toString();
-        photosPath.getChildren().add(new TreeItem<>(imagePath));
+        if (file != null) {
+            String imagePath = file.toURI().toString();
+            photosPath.getChildren().add(new TreeItem<>(imagePath));
+        }
     }
 
     public void onChooseProductVideoClick(MouseEvent mouseEvent) {
@@ -55,11 +77,44 @@ public class AddProduct implements Initializable {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("mp4 file", "*.mp4");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
-        String videoPath = file.toURI().toString();
-        videosPath.getChildren().add(new TreeItem<>(videoPath));
+        if (file != null) {
+            String videoPath = file.toURI().toString();
+            videosPath.getChildren().add(new TreeItem<>(videoPath));
+        }
     }
 
     public void onAddClick(MouseEvent mouseEvent) {
+        try {
+            String imagePath = photosPath.getChildren().get(0).getValue();
+            if (imagePath == null) {
+                throw new Exception("Choose a photo");
+            }
+            resellerMenu.addProduct(brandTf.getText(), nameTf.getText(), Integer.parseInt(priceTf.getText()),
+                    resellerMenu.getCategoryByName(categoryCb.getValue()),
+                    productCategorySpecification, descriptionTextArea.getText(),
+                    Integer.parseInt(amountTf.getText()), imagePath);
+            onCancelClick(mouseEvent);
+        } catch (Exception e) {
+            errorMessageLabel.setText(e.getMessage());
+        }
+    }
 
+    private void getCategorySpecification(String categoryName) {
+        Popup popupMenu = new Popup();
+        Parent parent = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/reseller/GetCategorySpecification.fxml"));
+        Category category = null;
+        try {
+            category = resellerMenu.getCategoryByName(categoryName);
+            parent = loader.load();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assert parent != null;
+        GetCategorySpecs getCategorySpecs = loader.getController();
+        getCategorySpecs.populateVBox(category);
+        getCategorySpecs.setAddProduct(this);
+        popupMenu.getContent().add(parent);
+        popupMenu.show(stage);
     }
 }

@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,15 +43,20 @@ public class ManageResellerProducts implements Initializable {
     }
 
     public void onAddProductClick(MouseEvent mouseEvent) {
-        Popup addProductPopup = new Popup();
         Parent parent = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/reseller/AddProductPopup.fxml"));
         try {
-            parent = FXMLLoader.load(getClass().getResource("../../fxml/reseller/AddProductPopup.fxml"));
+            parent = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        addProductPopup.getContent().add(parent);
-        addProductPopup.show(((Node) mouseEvent.getSource()).getScene().getWindow());
+        assert parent != null;
+        Scene scene = new Scene(parent);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        AddProduct addProduct = loader.getController();
+        addProduct.setStage(stage);
+        stage.show();
     }
 
     private void initializeSortFieldChoiceBox() {
