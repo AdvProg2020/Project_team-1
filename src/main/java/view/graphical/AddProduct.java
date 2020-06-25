@@ -67,7 +67,7 @@ public class AddProduct implements Initializable {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
         if (file != null) {
-            String imagePath = file.toURI().toString();
+            String imagePath = file.toURI().toString().substring(5);
             photosPath.getChildren().add(new TreeItem<>(imagePath));
         }
     }
@@ -78,7 +78,7 @@ public class AddProduct implements Initializable {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
         if (file != null) {
-            String videoPath = file.toURI().toString();
+            String videoPath = file.toURI().toString().substring(5);
             videosPath.getChildren().add(new TreeItem<>(videoPath));
         }
     }
