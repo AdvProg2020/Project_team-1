@@ -24,19 +24,19 @@ public class MainMenu {
 
     public static void goToUserPanel(ActionEvent actionEvent) {
         if (Session.getOnlineAccount() == null) {
-            View.loginRegisterMenu.setPreviousMenu(View.productsMenu);
+            View.loginRegisterMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.loginRegisterMenu);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         } else if (Session.getOnlineAccount() instanceof ManagerAccount) {
-            View.managerMenu.setPreviousMenu(View.productsMenu);
+            View.managerMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         } else if (Session.getOnlineAccount() instanceof PersonalAccount) {
-            View.customerMenu.setPreviousMenu(View.productsMenu);
+            View.customerMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.customerMenu);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         } else if (Session.getOnlineAccount() instanceof BusinessAccount) {
-            View.resellerMenu.setPreviousMenu(View.productsMenu);
+            View.resellerMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.resellerMenu);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         }

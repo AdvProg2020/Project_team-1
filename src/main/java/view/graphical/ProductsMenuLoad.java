@@ -141,13 +141,17 @@ public class ProductsMenuLoad {
         int i = 0;
         int j = 100;
         for (Commodity commodity : View.productsMenu.getProducts()) {
+            System.out.println(commodity.getImagePath());
             FileInputStream inputStream = new FileInputStream(commodity.getImagePath());
             Image image = new Image(inputStream);
             ImageView imageView = new ImageView(image);
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
+                    View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+                    View.commodityMenu.setCommodity(commodity);
                     changeMenuToProductMenu(mouseEvent, commodity);
+
                 }
             });
             imageView.setFitWidth(250);

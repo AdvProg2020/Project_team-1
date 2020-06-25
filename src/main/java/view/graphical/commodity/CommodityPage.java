@@ -44,8 +44,8 @@ public class CommodityPage implements Initializable {
     public Button logOutButton;
     public Button addToCartButton;
     public Label addToCartLabel;
-    private final String emptyStarAddress = "../../../stars/emptyStar.png";
-    private final String fullStarAddress = "../../../stars/fullStar.png";
+    private final String emptyStarAddress = "stars/emptyStar.png";
+    private final String fullStarAddress = "stars/fullStar.png";
     public ImageView star5;
     public ImageView star4;
     public ImageView star3;
@@ -55,6 +55,8 @@ public class CommodityPage implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Commodity commodity = commodityMenu.getCommodity();
+        System.out.println(commodity);
+        System.out.println(commodityName);
         commodityName.setText(commodity.getName());
         commodityDescription.setText(commodity.getDescription());
         commodityPriceAndRating.setText("Price: " + commodity.getPrice() + "Rials,\t\tRating: " + String.format("%.1f",
@@ -62,29 +64,29 @@ public class CommodityPage implements Initializable {
         commodityBrand.setText(commodity.getBrand());
         try {
             if (commodity.getAverageScore() < 4.5) {
-                star5.setImage(new Image(new FileInputStream(emptyStarAddress)));
+                star5.setImage(new Image(emptyStarAddress));
                 if (commodity.getAverageScore() < 3.5) {
-                    star4.setImage(new Image(new FileInputStream(emptyStarAddress)));
+                    star4.setImage(new Image(emptyStarAddress));
                     if (commodity.getAverageScore() < 2.5) {
-                        star3.setImage(new Image(new FileInputStream(emptyStarAddress)));
+                        star3.setImage(new Image(emptyStarAddress));
                         if (commodity.getAverageScore() < 1.5) {
-                            star2.setImage(new Image(new FileInputStream(emptyStarAddress)));
+                            star2.setImage(new Image(emptyStarAddress));
                             if (commodity.getAverageScore() < 0.5) {
-                                star1.setImage(new Image(new FileInputStream(emptyStarAddress)));
+                                star1.setImage(new Image(emptyStarAddress));
                             } else {
-                                star1.setImage(new Image(new FileInputStream(fullStarAddress)));
+                                star1.setImage(new Image(fullStarAddress));
                             }
                         } else {
-                            star2.setImage(new Image(new FileInputStream(fullStarAddress)));
+                            star2.setImage(new Image(fullStarAddress));
                         }
                     } else {
-                        star3.setImage(new Image(new FileInputStream(fullStarAddress)));
+                        star3.setImage(new Image(fullStarAddress));
                     }
                 } else {
-                    star4.setImage(new Image(new FileInputStream(fullStarAddress)));
+                    star4.setImage(new Image(fullStarAddress));
                 }
             } else {
-                star5.setImage(new Image(new FileInputStream(fullStarAddress)));
+                star5.setImage(new Image(fullStarAddress));
             }
         } catch (Exception e) {
             e.printStackTrace();
