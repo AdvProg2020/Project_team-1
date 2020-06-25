@@ -7,7 +7,7 @@
 ## Environment setup
 - Add `PATH_TO_JAVAFX_ON_YOUR_SYSTEM/lib` folder to Libraries in Intellij project structure
 - Add VM options bellow to Intellij run configuration
-    - `module-path PATH_TO_JAVAFX_ON_YOUR_SYSTEM/lib --add-modules=javafx.controls,javafx.fxml,javafx.media`
+    - `--module-path PATH_TO_JAVAFX_ON_YOUR_SYSTEM/lib --add-modules=javafx.controls,javafx.fxml`
 
 ## Credits
 | Name | Student number | Email |

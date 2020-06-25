@@ -19,7 +19,7 @@
          <Button alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onCancelClick" styleClass="close-button"
                  text="Cancel"/>
          <Region HBox.hgrow="ALWAYS"/>
-         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="add-button" text="Add"/>
+         <Button alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#onAddClick" mnemonicParsing="false" styleClass="add-button" text="Add"/>
       </HBox>
    </bottom>
    <padding>
