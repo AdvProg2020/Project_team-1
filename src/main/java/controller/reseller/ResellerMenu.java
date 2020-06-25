@@ -87,7 +87,10 @@ public class ResellerMenu extends Menu {
 
     public void removeProduct(int productId) throws Exception {
         Commodity commodity = YaDataManager.getCommodityById(productId);
-        getBusinessAccount().removeCommodity(commodity);
+        BusinessAccount businessAccount = getBusinessAccount();
+        YaDataManager.removeBusiness(businessAccount);
+        businessAccount.removeCommodity(commodity);
+        YaDataManager.addBusiness(businessAccount);
         YaDataManager.removeCommodity(commodity);
     }
 }
