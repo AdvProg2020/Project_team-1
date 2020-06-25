@@ -128,6 +128,22 @@
     -fx-background-radius: 15;
 }
 
+.changeable-label {
+    -fx-font-family: "Sriracha";
+    -fx-font-size: 16;
+    -fx-text-fill: rgba(43, 142, 0, 0.96);
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+}
+
+.changeable-label:hover {
+    -fx-font-family: "Sriracha";
+    -fx-font-size: 16;
+    -fx-text-fill: cornflowerblue;
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+}
+
 .full-tab {
     -fx-font-family: "Sriracha";
     -fx-font-size: 16;
