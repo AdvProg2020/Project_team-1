@@ -40,21 +40,6 @@
          </right>
          <center>
             <BorderPane BorderPane.alignment="CENTER">
-               <center>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="419.0" prefWidth="656.0">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <TilePane fx:id="manageOffsTilePane" minHeight="0.0" minWidth="0.0" prefHeight="270.0" prefWidth="636.0">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                     </TilePane>
-                     <BorderPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </BorderPane.margin>
-                  </ScrollPane>
-               </center>
                <BorderPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </BorderPane.margin>
@@ -78,6 +63,15 @@
                      <Button mnemonicParsing="false" onMouseClicked="#onAddOffClick" styleClass="small-button" text="Add off" />
                   </HBox>
                </top>
+               <center>
+                  <ListView fx:id="offsListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding></ListView>
+               </center>
             </BorderPane>
          </center>
       </BorderPane>

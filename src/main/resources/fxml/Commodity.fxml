@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-
+<?import java.net.URL?>
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.commodity.CommodityPage">
     <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Tab closable="false" styleClass="full-tab" text="Information">
@@ -23,12 +22,13 @@
                             <ImageView fx:id="star5" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                         </HBox>
                         <HBox>
-                            <Label fx:id="commodityDescription" styleClass="hint-label" text="Rate it: " wrapText="true" />
-                            <Button fx:id="starButton1" onAction="#rateOne" prefHeight="32.0" prefWidth="32.0" styleClass="star-button" />
-                            <Button fx:id="starButton2" onAction="#rateTwo" prefHeight="32.0" prefWidth="32.0" styleClass="star-button" />
-                            <Button fx:id="starButton3" onAction="#rateThree" prefHeight="32.0" prefWidth="32.0" styleClass="star-button" />
-                            <Button fx:id="starButton4" onAction="#rateFour" prefHeight="32.0" prefWidth="32.0" styleClass="star-button" />
-                            <Button fx:id="starButton5" onAction="#rateFive" prefHeight="32.0" prefWidth="32.0" styleClass="star-button" />
+                            <Label fx:id="commodityDescription" styleClass="hint-label" text="Rate it: "
+                                   wrapText="true"/>
+                            <Button fx:id="starButton1" onAction="#rateOne" prefHeight="32.0" prefWidth="32.0"/>
+                            <Button fx:id="starButton2" onAction="#rateTwo" prefHeight="32.0" prefWidth="32.0"/>
+                            <Button fx:id="starButton3" onAction="#rateThree" prefHeight="32.0" prefWidth="32.0"/>
+                            <Button fx:id="starButton4" onAction="#rateFour" prefHeight="32.0" prefWidth="32.0"/>
+                            <Button fx:id="starButton5" onAction="#rateFive" prefHeight="32.0" prefWidth="32.0"/>
                         </HBox>
                         <GridPane fx:id="fieldsGridPane" hgap="10.0" vgap="5.0" VBox.vgrow="SOMETIMES">
                             <Label styleClass="hint-label" text="Category specifications" GridPane.columnSpan="2" />
@@ -95,7 +95,8 @@
     <GridPane alignment="BOTTOM_CENTER" hgap="10.0" vgap="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="95.0" BorderPane.alignment="BOTTOM_CENTER">
         <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onBackClick" styleClass="back-button" text="Back" textAlignment="CENTER" GridPane.rowIndex="1" />
         <Button mnemonicParsing="false" onMouseClicked="#onProductsClick" styleClass="forward-button" text="Products" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Button mnemonicParsing="false" onMouseClicked="#onUserPanelClick" styleClass="forward-button" text="User Panel" GridPane.columnIndex="1" />
+        <Button mnemonicParsing="false" onAction="#onUserPanelClick" styleClass="forward-button" text="User Panel"
+                GridPane.columnIndex="1"/>
         <Button fx:id="logOutButton" alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onLogOutClick" styleClass="logout-button" text="Log Out" textAlignment="CENTER" />
         <columnConstraints>
             <ColumnConstraints />

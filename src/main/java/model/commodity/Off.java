@@ -81,6 +81,9 @@ public class Off implements Requestable {
 
     @Override
     public void addObj() throws Exception {
+        YaDataManager.removeBusiness(owner);
+        owner.addSale(this);
+        YaDataManager.addBusiness(owner);
         YaDataManager.addOff(this);
     }
 
