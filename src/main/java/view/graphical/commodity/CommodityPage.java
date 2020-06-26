@@ -15,13 +15,17 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
+import model.commodity.Comment;
 import model.commodity.Commodity;
+import view.AudioPlayer;
 import view.commandline.View;
 
 import java.io.FileInputStream;
@@ -37,6 +41,8 @@ public class CommodityPage implements Initializable {
     private final DigestMenu digestMenu = View.digestMenu;
     private final CommentsMenu commentsMenu = View.commentsMenu;
     private final OrderMenu orderMenu = View.orderMenu;
+    private final String emptyStarAddress = "stars/emptyStar.png";
+    private final String fullStarAddress = "stars/fullStar.png";
     public Label commodityName;
     public Label commodityPriceAndRating;
     public Label commodityDescription;
@@ -47,8 +53,6 @@ public class CommodityPage implements Initializable {
     public Button logOutButton;
     public Button addToCartButton;
     public Label addToCartLabel;
-    private final String emptyStarAddress = "stars/emptyStar.png";
-    private final String fullStarAddress = "stars/fullStar.png";
     public ImageView star5;
     public ImageView star4;
     public ImageView star3;
@@ -59,6 +63,10 @@ public class CommodityPage implements Initializable {
     public Button starButton3;
     public Button starButton2;
     public Button starButton1;
+    public VBox commentsVBox;
+    public TextField titleBox;
+    public TextField commentBox;
+    public Label error;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -154,6 +162,13 @@ public class CommodityPage implements Initializable {
             starButton3.setDisable(true);
             starButton4.setDisable(true);
             starButton5.setDisable(true);
+        }
+        for (Comment comment : commodity.getAllComments()) {
+            VBox commentVBox = new VBox();
+            commentVBox.getChildren().addAll(new ModifiedLabel("Username: " + comment.getAccount().getUsername() +
+                            (commentsMenu.hasBoughtThisCommodity() ? ", is a buyer" : "isn't a buyer")),
+                    new ModifiedLabel("Title: " + comment.getTitle()), new ModifiedLabel(comment.getContent()));
+            commentsVBox.getChildren().add(commentVBox);
         }
     }
 
@@ -252,6 +267,27 @@ public class CommodityPage implements Initializable {
         starButton3.setStyle("-fx-background-image: url('stars/fullStar.png')");
         starButton4.setStyle("-fx-background-image: url('stars/fullStar.png')");
         starButton5.setStyle("-fx-background-image: url('stars/fullStar.png')");
+    }
+
+    public void addComment(ActionEvent actionEvent) {
+        if (commentBox.getText().equals("") && titleBox.getText().equals("")) {
+            error.setText("You can't submit an empty comment");
+            return;
+        }
+        try {
+            commentsMenu.addComment(titleBox.getText(), commentBox.getText());
+            error.setText("Your comment will be reviewed and after approving by manager will be published");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void pause(ActionEvent actionEvent) {
+        AudioPlayer.mediaPlayer.pause();
+    }
+
+    public void play(ActionEvent actionEvent) {
+        AudioPlayer.mediaPlayer.play();
     }
 
     protected static class ModifiedLabel extends Label {
