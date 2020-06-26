@@ -7,6 +7,7 @@ import model.account.PersonalAccount;
 import model.commodity.Comment;
 import model.commodity.Commodity;
 import model.log.BuyLog;
+import model.share.Request;
 
 import java.io.IOException;
 
@@ -17,7 +18,7 @@ public class CommentsMenu extends Menu {
         this.commodity = commodity;
     }
 
-    private boolean hasBoughtThisCommodity() {
+    public boolean hasBoughtThisCommodity() {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         for (BuyLog log : account.getBuyLogs()) {
             for (Commodity logCommodity : log.getCommodities()) {
@@ -30,9 +31,10 @@ public class CommentsMenu extends Menu {
     }
 
     public void addComment(String title, String content) throws IOException {
-        YaDataManager.removeCommodity(this.commodity);
-        this.commodity.getAllComments().add(new Comment(Session.getOnlineAccount(), this.commodity, title, content,
-                hasBoughtThisCommodity()));
-        YaDataManager.addCommodity(this.commodity);
+        Comment comment = new Comment(Session.getOnlineAccount(), this.commodity, title, content,
+                hasBoughtThisCommodity());
+        this.commodity.getAllComments().add(comment);
+        Request request = new Request(comment, Session.getOnlineAccount());
+        YaDataManager.addRequest(request);
     }
 }
