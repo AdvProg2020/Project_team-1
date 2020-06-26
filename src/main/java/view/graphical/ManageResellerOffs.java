@@ -77,7 +77,7 @@ public class ManageResellerOffs implements Initializable {
                 if (manageOffsSortField.getValue() == null) {
                     commodities = resellerMenu.manageCommodities();
                 } else {
-                    commodities = manageResellerOffsMenu.sort(manageOffsSortField.getValue());
+                    //commodities = manageResellerOffsMenu.sort(manageOffsSortField.getValue());
                 }
             } catch (Exception e) {
                 // Be Tokhmam
