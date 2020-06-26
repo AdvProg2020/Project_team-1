@@ -6,7 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1200.0"
-            xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="view.graphical.commodity.CommodityPage">
+            xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="view.graphical.commodity.CommodityPage"
+            styleClass="background">
     <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="600.0"
              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Tab closable="false" styleClass="full-tab" text="Information">
@@ -81,7 +82,7 @@
             <ScrollPane>
                 <VBox spacing="10.0">
                     <VBox fx:id="commentsVBox" prefWidth="500.0"/>
-                    <GridPane alignment="CENTER" hgap="5.0" vgap="5.0" prefWidth="500.0">
+                    <GridPane alignment="CENTER" hgap="5.0" prefWidth="500.0" vgap="5.0">
                         <Label styleClass="hint-label" text="Title"/>
                         <Label styleClass="hint-label" text="Comment" GridPane.rowIndex="1"/>
                         <TextField fx:id="titleBox" alignment="CENTER" prefWidth="300.0" promptText="Title"
@@ -107,6 +108,10 @@
             </ScrollPane>
         </Tab>
     </TabPane>
+    <Button mnemonicParsing="false" onAction="#play" prefHeight="48.0" prefWidth="52.0" styleClass="normal-button-Green"
+            text="▶" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
+    <Button mnemonicParsing="false" onAction="#pause" prefHeight="48.0" prefWidth="52.0" styleClass="normal-button"
+            text="⏸" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="20.0"/>
     <ImageView fx:id="commodityImage" fitHeight="600.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true"
                translateX="75.0" translateY="100.0">
         <Image url="@../default-user-image.png"/>

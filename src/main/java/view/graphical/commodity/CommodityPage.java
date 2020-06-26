@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import model.Session;
 import model.commodity.Comment;
 import model.commodity.Commodity;
+import view.AudioPlayer;
 import view.commandline.View;
 
 import java.io.FileInputStream;
@@ -40,6 +41,8 @@ public class CommodityPage implements Initializable {
     private final DigestMenu digestMenu = View.digestMenu;
     private final CommentsMenu commentsMenu = View.commentsMenu;
     private final OrderMenu orderMenu = View.orderMenu;
+    private final String emptyStarAddress = "stars/emptyStar.png";
+    private final String fullStarAddress = "stars/fullStar.png";
     public Label commodityName;
     public Label commodityPriceAndRating;
     public Label commodityDescription;
@@ -50,8 +53,6 @@ public class CommodityPage implements Initializable {
     public Button logOutButton;
     public Button addToCartButton;
     public Label addToCartLabel;
-    private final String emptyStarAddress = "stars/emptyStar.png";
-    private final String fullStarAddress = "stars/fullStar.png";
     public ImageView star5;
     public ImageView star4;
     public ImageView star3;
@@ -279,6 +280,14 @@ public class CommodityPage implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void pause(ActionEvent actionEvent) {
+        AudioPlayer.mediaPlayer.pause();
+    }
+
+    public void play(ActionEvent actionEvent) {
+        AudioPlayer.mediaPlayer.play();
     }
 
     protected static class ModifiedLabel extends Label {
