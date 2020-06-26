@@ -109,7 +109,6 @@ public class ManageResellerOffs implements Initializable {
                 });
                 offHBox.getChildren().addAll(offIdLabel, edit);
                 hBoxes.add(offHBox);
-                System.out.println(off.toString());
             }
             ObservableList<HBox> hBoxObservableList = FXCollections.observableList(hBoxes);
             offsListView.setItems(hBoxObservableList);
