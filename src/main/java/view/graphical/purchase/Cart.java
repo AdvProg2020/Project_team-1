@@ -44,6 +44,7 @@ public class Cart implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (scrollPane.getContent() == null) {
+            cartGridPane.getChildren().clear();
             scrollPane.setContent(cartGridPane);
         }
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
