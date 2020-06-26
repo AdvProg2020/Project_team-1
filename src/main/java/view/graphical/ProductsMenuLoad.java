@@ -18,6 +18,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
+import model.account.BusinessAccount;
+import model.account.ManagerAccount;
+import model.account.PersonalAccount;
 import model.commodity.Commodity;
 import view.AudioPlayer;
 import view.commandline.View;
@@ -138,13 +141,17 @@ public class ProductsMenuLoad {
         int i = 0;
         int j = 100;
         for (Commodity commodity : View.productsMenu.getProducts()) {
+            System.out.println(commodity.getImagePath());
             FileInputStream inputStream = new FileInputStream(commodity.getImagePath());
             Image image = new Image(inputStream);
             ImageView imageView = new ImageView(image);
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
+                    View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+                    View.commodityMenu.setCommodity(commodity);
                     changeMenuToProductMenu(mouseEvent, commodity);
+
                 }
             });
             imageView.setFitWidth(250);
@@ -168,11 +175,27 @@ public class ProductsMenuLoad {
             }
             i += 500;
         }
-        setUpdateButton(root, j);
+        setLogoutButton(root);
         setBackButton(root);
+        setUserPanelButton();
     }
 
-    private void setUpdateButton(Pane root, int j) {
+    private void setUserPanelButton() {
+        Button userPanel = new Button("User panel");
+        userPanel.getStyleClass().add("normal-button");
+        userPanel.setLayoutX(800);
+        userPanel.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 250);
+        userPanel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                MainMenu.goToUserPanel(actionEvent);
+            }
+        });
+        root.getChildren().add(userPanel);
+    }
+
+    private void setLogoutButton(Pane root) {
         Button update = new Button("Logout");
         update.getStyleClass().add("logout-button");
         update.setLayoutX(800);

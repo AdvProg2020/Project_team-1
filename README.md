@@ -8,6 +8,7 @@
 - Add `PATH_TO_JAVAFX_ON_YOUR_SYSTEM/lib` folder to Libraries in Intellij project structure
 - Add VM options bellow to Intellij run configuration
     - `--module-path PATH_TO_JAVAFX_ON_YOUR_SYSTEM/lib --add-modules=javafx.controls,javafx.fxml`
+- Javafx media works fine on Widows machines but in Gnu/Linux it needs one of the versions 54, 56, 57 of libavformat and libavcodec packages that you can download form [pkgs.org](https://pkgs.org).
 
 ## Credits
 | Name | Student number | Email |

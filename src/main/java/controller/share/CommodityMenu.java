@@ -14,10 +14,19 @@ import static view.commandline.View.digestMenu;
 
 public class CommodityMenu extends Menu {
     private Commodity commodity;
+    private Commodity comparingCommodity;
     private String CommentsSortType = "title";
 
     public CommodityMenu() {
         fxmlFileAddress = "../../fxml/Commodity.fxml";
+    }
+
+    public Commodity getComparingCommodity() {
+        return comparingCommodity;
+    }
+
+    public void setComparingCommodity(Commodity comparingCommodity) {
+        this.comparingCommodity = comparingCommodity;
     }
 
     public void setCommodity(Commodity commodity) {

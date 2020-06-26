@@ -2,12 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <ScrollPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1200.0"
-            xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="view.graphical.CommodityPage">
+            xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="view.graphical.commodity.CommodityPage">
     <content>
         <AnchorPane prefHeight="800.0" prefWidth="1200.0">
             <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="600.0"
@@ -15,16 +14,50 @@
                 <Tab closable="false" styleClass="full-tab" text="Information">
                     <BorderPane>
                         <left>
-                            <VBox prefHeight="600.0" prefWidth="380.0">
+                            <VBox prefHeight="600.0" prefWidth="550.0">
                                 <Label fx:id="commodityName" styleClass="scene-title" text="Commodity Name"
                                        wrapText="true"/>
                                 <Label fx:id="commodityBrand" styleClass="hint-label" text="Brand" wrapText="true"/>
-                                <Label fx:id="commodityPriceAndRating" styleClass="hint-label"
-                                       text="8,888,888,888,888 Rials,       Rating: "/>
-                                <!--                                put 5 stars here-->
-                                <Label fx:id="commodityDescription" styleClass="hint-label" wrapText="true"/>
-                                <GridPane fx:id="fieldsGridPane" alignment="CENTER" hgap="10.0" vgap="5.0"
-                                          VBox.vgrow="SOMETIMES"/>
+                                <HBox>
+                                    <Label fx:id="commodityPriceAndRating" styleClass="hint-label"
+                                           text="8,888,888,888,888 Rials,       Rating: "/>
+                                    <ImageView fx:id="star1" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                               preserveRatio="true"/>
+                                    <ImageView fx:id="star2" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                               preserveRatio="true"/>
+                                    <ImageView fx:id="star3" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                               preserveRatio="true"/>
+                                    <ImageView fx:id="star4" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                               preserveRatio="true"/>
+                                    <ImageView fx:id="star5" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                               preserveRatio="true"/>
+                                </HBox>
+                                <HBox>
+                                    <Label fx:id="commodityDescription" styleClass="hint-label" text="Rate it: "
+                                           wrapText="true"/>
+                                    <Button fx:id="starButton1" prefHeight="32.0" prefWidth="32.0"
+                                            styleClass="star-button" onAction="#rateOne"/>
+                                    <Button fx:id="starButton2" prefHeight="32.0" prefWidth="32.0"
+                                            styleClass="star-button" onAction="#rateTwo"/>
+                                    <Button fx:id="starButton3" prefHeight="32.0" prefWidth="32.0"
+                                            styleClass="star-button" onAction="#rateThree"/>
+                                    <Button fx:id="starButton4" prefHeight="32.0" prefWidth="32.0"
+                                            styleClass="star-button" onAction="#rateFour"/>
+                                    <Button fx:id="starButton5" prefHeight="32.0" prefWidth="32.0"
+                                            styleClass="star-button" onAction="#rateFive"/>
+                                </HBox>
+                                <GridPane fx:id="fieldsGridPane" hgap="10.0" vgap="5.0" VBox.vgrow="SOMETIMES">
+                                    <Label styleClass="hint-label" text="Category specifications"
+                                           GridPane.columnSpan="2"/>
+                                    <columnConstraints>
+                                        <ColumnConstraints/>
+                                        <ColumnConstraints halignment="CENTER"/>
+                                        <ColumnConstraints halignment="CENTER"/>
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints/>
+                                    </rowConstraints>
+                                </GridPane>
                             </VBox>
                         </left>
                         <bottom>

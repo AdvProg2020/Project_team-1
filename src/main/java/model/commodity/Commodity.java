@@ -1,8 +1,6 @@
 package model.commodity;
 
-import com.gilecode.yagson.YaGson;
 import controller.data.YaDataManager;
-import javafx.scene.image.Image;
 import model.Statistics;
 import model.account.BusinessAccount;
 import model.account.SimpleAccount;
@@ -33,6 +31,7 @@ public class Commodity implements Requestable {
     private int numberOfScores;
     private int numberOfVisits;
     private String imagePath;
+    private ArrayList<Score> scores;
 
     public String getImagePath() {
         return imagePath;
@@ -58,6 +57,7 @@ public class Commodity implements Requestable {
         this.numberOfScores = 0;
         this.totalScores = 0;
         this.imagePath = imagePath;
+        this.scores = new ArrayList<>();
     }
 
     public Commodity(Commodity commodity) {
@@ -87,11 +87,15 @@ public class Commodity implements Requestable {
         return commodityId;
     }
 
-    public void updateAverageScore(double score) {
+    public void updateAverageScore(Score score) {
         this.numberOfScores++;
-        this.totalScores += score;
+        this.totalScores += score.getScore();
         this.averageScore = totalScores / numberOfScores;
+        this.scores.add(score);
+    }
 
+    public ArrayList<Score> getScores() {
+        return scores;
     }
 
     public void setTotalScores(int totalScores) {

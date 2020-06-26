@@ -87,7 +87,7 @@
     -fx-background-color: rgba(0, 128, 0, 0.65);
 }
 
-.forward-button:pressed{
+.forward-button:pressed {
     -fx-background-color: rgb(0, 150, 0);
 }
 
@@ -161,7 +161,7 @@
     -fx-text-fill: white;
     -fx-border-radius: 15;
     -fx-background-radius: 15;
-    -fx-max-height:  5px;
+    -fx-max-height: 5px;
     -fx-min-width: 200px;
 }
 
@@ -176,7 +176,7 @@
     -fx-text-fill: white;
     -fx-border-radius: 15;
     -fx-background-radius: 15;
-    -fx-max-height:  5px;
+    -fx-max-height: 5px;
     -fx-min-width: 200px;
 }
 
@@ -192,13 +192,15 @@
     -fx-border-radius: 15;
     -fx-background-radius: 15;
 }
-.normal-button-Green{
+
+.normal-button-Green {
     -fx-font-family: "Sriracha";
     -fx-background-color: limegreen;
     -fx-text-fill: white;
     -fx-background-radius: 100 100 100 100;
     -fx-font-size: 22;
 }
+
 .delete-button:hover {
     -fx-background-color: rgba(255, 0, 0, 0.65);
 }
@@ -210,6 +212,21 @@
 .normal-button-Green:hover {
     -fx-background-color: greenyellow;
 }
+
 .normal-button-Green:pressed {
     -fx-background-color: limegreen;
+}
+
+.star-button {
+    -fx-background-image: url('../stars/emptyStar.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.star-button:hover {
+    -fx-background-image: url('../stars/fullStar.png');
+}
+
+.star-button:pressed {
+    -fx-background-image: url('../stars/fullStar.png');
 }
