@@ -2,10 +2,12 @@ package view.graphical.commodity;
 
 import controller.commodity.CommentsMenu;
 import controller.commodity.DigestMenu;
+import controller.customer.OrderMenu;
 import controller.share.CommodityMenu;
 import controller.share.MenuHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -34,6 +36,7 @@ public class CommodityPage implements Initializable {
     private final CommodityMenu commodityMenu = View.commodityMenu;
     private final DigestMenu digestMenu = View.digestMenu;
     private final CommentsMenu commentsMenu = View.commentsMenu;
+    private final OrderMenu orderMenu = View.orderMenu;
     public Label commodityName;
     public Label commodityPriceAndRating;
     public Label commodityDescription;
@@ -51,17 +54,19 @@ public class CommodityPage implements Initializable {
     public ImageView star3;
     public ImageView star2;
     public ImageView star1;
+    public Button starButton5;
+    public Button starButton4;
+    public Button starButton3;
+    public Button starButton2;
+    public Button starButton1;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Commodity commodity = commodityMenu.getCommodity();
-        System.out.println(commodity);
-        System.out.println(commodityName);
-        commodityName.setText(commodity.getName());
-        commodityDescription.setText(commodity.getDescription());
-        commodityPriceAndRating.setText("Price: " + commodity.getPrice() + "Rials,\t\tRating: " + String.format("%.1f",
-                commodity.getAverageScore()));
-        commodityBrand.setText(commodity.getBrand());
+        commodityName.setText("Name: " + commodity.getName());
+        commodityDescription.setText("Description: " + commodity.getDescription());
+        commodityPriceAndRating.setText("Price: " + commodity.getPrice() + "Rials,\t\tRating: ");
+        commodityBrand.setText("Brand" + commodity.getBrand());
         try {
             if (commodity.getAverageScore() < 4.5) {
                 star5.setImage(new Image(emptyStarAddress));
@@ -120,9 +125,10 @@ public class CommodityPage implements Initializable {
         }
         commodityImage.setPreserveRatio(true);
         for (int i = 0; i < commodity.getCategorySpecifications().size(); i++) {
-            fieldsGridPane.add(new ModifiedLabel(commodity.getCategorySpecifications().get(i).getTitle()), 0, i);
-            fieldsGridPane.add(new ModifiedLabel(String.valueOf(commodity.getCategorySpecifications().get(i).getValue())
-            ), 1, i);
+            fieldsGridPane.add(new ModifiedLabel(commodity.getCategorySpecifications().get(i).getTitle()),
+                    0, i + 1);
+            fieldsGridPane.add(new ModifiedLabel
+                    (String.valueOf(commodity.getCategorySpecifications().get(i).getValue())), 1, i + 1);
         }
         if (Session.getOnlineAccount() != null) {
             logOutButton.setDisable(true);
@@ -142,9 +148,16 @@ public class CommodityPage implements Initializable {
         }
         ObservableList<String> observableList = FXCollections.observableList(commoditiesList);
         comparableCommodities.setItems(observableList);
+        if (!orderMenu.canRateProduct(commodity.getCommodityId())) {
+            starButton1.setDisable(true);
+            starButton2.setDisable(true);
+            starButton3.setDisable(true);
+            starButton4.setDisable(true);
+            starButton5.setDisable(true);
+        }
     }
 
-    public void onCompareClick(MouseEvent mouseEvent) throws FileNotFoundException {
+    public void onCompareClick(MouseEvent mouseEvent) {
         if (comparableCommodities.getValue() != null) {
             for (Commodity commodity : commodityMenu.getCommodity().getCategory().getCommodities()) {
                 if ((commodity.getName() + ", " + commodity.getBrand()).equals(comparableCommodities.getValue())) {
@@ -195,6 +208,50 @@ public class CommodityPage implements Initializable {
             e.printStackTrace();
         }
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
+    }
+
+    private void rate(int rate) {
+        starButton1.setDisable(true);
+        starButton2.setDisable(true);
+        starButton3.setDisable(true);
+        starButton4.setDisable(true);
+        starButton5.setDisable(true);
+        starButton1.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        try {
+            orderMenu.rateProduct(commodityMenu.getCommodity().getCommodityId(), rate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void rateOne(ActionEvent actionEvent) {
+        rate(1);
+    }
+
+    public void rateTwo(ActionEvent actionEvent) {
+        rate(2);
+        starButton2.setStyle("-fx-background-image: url('stars/fullStar.png')");
+    }
+
+    public void rateThree(ActionEvent actionEvent) {
+        rate(3);
+        starButton2.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        starButton3.setStyle("-fx-background-image: url('stars/fullStar.png')");
+    }
+
+    public void rateFour(ActionEvent actionEvent) {
+        rate(4);
+        starButton2.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        starButton3.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        starButton4.setStyle("-fx-background-image: url('stars/fullStar.png')");
+    }
+
+    public void rateFive(ActionEvent actionEvent) {
+        rate(5);
+        starButton2.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        starButton3.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        starButton4.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        starButton5.setStyle("-fx-background-image: url('stars/fullStar.png')");
     }
 
     protected static class ModifiedLabel extends Label {

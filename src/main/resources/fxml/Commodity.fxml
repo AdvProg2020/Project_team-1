@@ -14,7 +14,7 @@
                 <Tab closable="false" styleClass="full-tab" text="Information">
                     <BorderPane>
                         <left>
-                            <VBox prefHeight="600.0" prefWidth="380.0">
+                            <VBox prefHeight="600.0" prefWidth="550.0">
                                 <Label fx:id="commodityName" styleClass="scene-title" text="Commodity Name"
                                        wrapText="true"/>
                                 <Label fx:id="commodityBrand" styleClass="hint-label" text="Brand" wrapText="true"/>
@@ -32,9 +32,32 @@
                                     <ImageView fx:id="star5" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
                                                preserveRatio="true"/>
                                 </HBox>
-                                <Label fx:id="commodityDescription" styleClass="hint-label" wrapText="true"/>
-                                <GridPane fx:id="fieldsGridPane" alignment="CENTER" hgap="10.0" vgap="5.0"
-                                          VBox.vgrow="SOMETIMES"/>
+                                <HBox>
+                                    <Label fx:id="commodityDescription" styleClass="hint-label" text="Rate it: "
+                                           wrapText="true"/>
+                                    <Button fx:id="starButton1" prefHeight="32.0" prefWidth="32.0"
+                                            styleClass="star-button" onAction="#rateOne"/>
+                                    <Button fx:id="starButton2" prefHeight="32.0" prefWidth="32.0"
+                                            styleClass="star-button" onAction="#rateTwo"/>
+                                    <Button fx:id="starButton3" prefHeight="32.0" prefWidth="32.0"
+                                            styleClass="star-button" onAction="#rateThree"/>
+                                    <Button fx:id="starButton4" prefHeight="32.0" prefWidth="32.0"
+                                            styleClass="star-button" onAction="#rateFour"/>
+                                    <Button fx:id="starButton5" prefHeight="32.0" prefWidth="32.0"
+                                            styleClass="star-button" onAction="#rateFive"/>
+                                </HBox>
+                                <GridPane fx:id="fieldsGridPane" hgap="10.0" vgap="5.0" VBox.vgrow="SOMETIMES">
+                                    <Label styleClass="hint-label" text="Category specifications"
+                                           GridPane.columnSpan="2"/>
+                                    <columnConstraints>
+                                        <ColumnConstraints/>
+                                        <ColumnConstraints halignment="CENTER"/>
+                                        <ColumnConstraints halignment="CENTER"/>
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints/>
+                                    </rowConstraints>
+                                </GridPane>
                             </VBox>
                         </left>
                         <bottom>

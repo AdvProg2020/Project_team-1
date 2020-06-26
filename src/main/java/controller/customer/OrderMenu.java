@@ -26,12 +26,29 @@ public class OrderMenu extends Menu {
                 if (commodity.getCommodityId() == id) {
                     new Score(account, rate, commodity);
                     YaDataManager.removeCommodity(commodity);
-                    commodity.updateAverageScore(rate);
+                    commodity.updateAverageScore(new Score(account, rate, commodity));
                     YaDataManager.addCommodity(commodity);
                     return;
                 }
             }
         }
         throw new Exception("you didn't buy this product, so you can't rate it");
+    }
+
+    public boolean canRateProduct(int id) {
+        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+        for (BuyLog log : account.getBuyLogs()) {
+            for (Commodity commodity : log.getCommodities()) {
+                if (commodity.getCommodityId() == id) {
+                    for (Score score : commodity.getScores()) {
+                        if (score.getAccount().getUsername().equals(account.getUsername())) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
