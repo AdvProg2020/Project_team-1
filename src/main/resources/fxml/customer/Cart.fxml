@@ -3,24 +3,35 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx" fx:controller="view.graphical.Cart"
-            prefHeight="800.0" prefWidth="1200.0">
-    <Label AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" fx:id="totalPrice" styleClass="scene-title"
-           text="Total price: 8,888,888,888,888 Tomans"/>
-    <HBox AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="10.0" spacing="10.0">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1200.0"
+            styleClass="background" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            fx:controller="view.graphical.purchase.Cart">
+    <Button mnemonicParsing="false" onAction="#play" prefHeight="48.0" prefWidth="52.0" styleClass="normal-button-Green"
+            text="▶" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>
+    <Button mnemonicParsing="false" onAction="#pause" prefHeight="48.0" prefWidth="52.0" styleClass="normal-button"
+            text="⏸" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="10.0"/>
+    <Label fx:id="totalPrice" styleClass="scene-title" text="Total price: 8,888,888,888,888 Tomans"
+           AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="80.0"/>
+    <HBox spacing="10.0" AnchorPane.leftAnchor="780.0" AnchorPane.topAnchor="10.0">
         <VBox spacing="10.0">
-            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="back-button" text="Back"
-                    textAlignment="CENTER"/>
-            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="logout-button" text="Log Out"
-                    textAlignment="CENTER"/>
+            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#back" styleClass="back-button"
+                    text="Back" textAlignment="CENTER"/>
+            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#logout" styleClass="logout-button"
+                    text="Log Out" textAlignment="CENTER"/>
         </VBox>
         <VBox spacing="10.0">
-            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="forward-button" text="Purchase"
-                    textAlignment="CENTER"/>
-            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" styleClass="forward-button" text="Products"
-                    textAlignment="CENTER"/>
+            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#goToGetInfoPage"
+                    styleClass="forward-button" text="Purchase" textAlignment="CENTER"/>
+            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#goToProductsMenu"
+                    styleClass="forward-button" text="Products" textAlignment="CENTER"/>
         </VBox>
     </HBox>
+    <Label fx:id="error" alignment="CENTER" styleClass="error-message-label" textAlignment="CENTER" wrapText="true"
+           AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="130.0"/>
+    <ScrollPane prefWidth="1180.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+                AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="160.0">
+        <GridPane fx:id="cartGridPane" hgap="20.0" translateX="10.0" translateY="60.0" vgap="20.0"/>
+    </ScrollPane>
     <stylesheets>
         <URL value="@../Common.css"/>
     </stylesheets>

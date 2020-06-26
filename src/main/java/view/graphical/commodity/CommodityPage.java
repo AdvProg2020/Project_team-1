@@ -67,6 +67,7 @@ public class CommodityPage implements Initializable {
     public TextField titleBox;
     public TextField commentBox;
     public Label error;
+    private Popup popupMenu = new Popup();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -180,7 +181,6 @@ public class CommodityPage implements Initializable {
                 }
             }
             Parent parent = null;
-            Popup popupMenu = new Popup();
             try {
                 parent = FXMLLoader.load(getClass().getResource("../../../fxml/Compare.fxml"));
             } catch (IOException e) {

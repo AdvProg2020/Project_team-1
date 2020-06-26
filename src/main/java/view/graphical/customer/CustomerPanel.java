@@ -1,6 +1,5 @@
 package view.graphical.customer;
 
-import controller.customer.CustomerMenu;
 import controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -15,11 +14,10 @@ import view.commandline.View;
 import java.io.IOException;
 
 public class CustomerPanel {
-    private final CustomerMenu customerMenu = View.customerMenu;
+    Popup popupMenu = new Popup();
 
     public void viewPersonalInfo(ActionEvent actionEvent) {
         Parent parent = null;
-        Popup popupMenu = new Popup();
         try {
             parent = FXMLLoader.load(getClass().getResource("../../../fxml/customer/ViewInfo.fxml"));
         } catch (IOException e) {
@@ -65,7 +63,6 @@ public class CustomerPanel {
 
     public void viewOrders(ActionEvent actionEvent) {
         Parent parent = null;
-        Popup popupMenu = new Popup();
         try {
             parent = FXMLLoader.load(getClass().getResource("../../../fxml/customer/OrdersHistory.fxml"));
         } catch (IOException e) {
@@ -77,7 +74,6 @@ public class CustomerPanel {
 
     public void viewDiscounts(ActionEvent actionEvent) {
         Parent parent = null;
-        Popup popupMenu = new Popup();
         try {
             parent = FXMLLoader.load(getClass().getResource("../../../fxml/customer/DiscountCodes.fxml"));
         } catch (IOException e) {

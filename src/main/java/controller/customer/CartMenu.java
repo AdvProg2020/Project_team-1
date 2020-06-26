@@ -68,14 +68,16 @@ public class CartMenu extends Menu {
         YaDataManager.removePerson(personalAccount);
         if (personalAccount.hasThisInCart(commodity)) {
             int amount = personalAccount.getAmount(commodity);
+            if (amount >= commodity.getInventory()) {
+                throw new Exception("Not enough amount of this product");
+            }
             personalAccount.removeFromCart(commodity);
             cart.put(commodity, amount + 1);
             YaDataManager.addPerson(personalAccount);
-            throw new Exception("successfully increased");
         }
-        cart.put(commodity, 1);
-        YaDataManager.addPerson(personalAccount);
-        throw new Exception("successfully added");
+        if (commodity.getInventory() == 0) {
+            throw new Exception("Not enough amount of this product");
+        }
     }
 
     public DiscountCode getDiscountCodeWithCode(String code) throws Exception {
