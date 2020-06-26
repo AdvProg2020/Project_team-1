@@ -1450,10 +1450,10 @@ public class View {
 
     public void addOff() throws Exception {
         System.out.println("enter off start time:");
-        System.out.println("(enter date in format : 'MMM d HH:mm:ss yyyy' ex. Jun 18 10:30:00 2020)");
+        System.out.println("(enter date in format : 'MMM d yyyy' ex. Jun 18 10:30:00 2020)");
         String startTime = scanner.nextLine();
         System.out.println("enter off end time:");
-        System.out.println("(enter date in format : 'MMM d HH:mm:ss yyyy' ex. Jun 18 10:30:00 2020)");
+        System.out.println("(enter date in format : 'MMM d yyyy' ex. Jun 18 10:30:00 2020)");
         String endTime = scanner.nextLine();
         System.out.println("enter off percent:");
         int offPercent = Integer.parseInt(scanner.nextLine());

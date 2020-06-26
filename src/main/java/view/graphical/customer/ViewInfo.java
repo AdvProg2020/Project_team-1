@@ -55,6 +55,7 @@ public class ViewInfo implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ObservableList<String> balance = null;
         ObservableList<String> firstName = FXCollections.observableArrayList("First name: " +
                 Session.getOnlineAccount().getFirstName());
         ObservableList<String> lastName = FXCollections.observableArrayList("Last name: " +
@@ -65,8 +66,10 @@ public class ViewInfo implements Initializable {
                 Session.getOnlineAccount().getPhoneNumber());
         ObservableList<String> userName = FXCollections.observableArrayList("User name: " +
                 Session.getOnlineAccount().getUsername());
-        ObservableList<String> balance = FXCollections.observableArrayList("Balance: " +
-                ((PersonalAccount) Session.getOnlineAccount()).getCredit());
+        if (Session.getOnlineAccount() instanceof PersonalAccount) {
+            balance = FXCollections.observableArrayList("Balance: " +
+                    ((PersonalAccount) Session.getOnlineAccount()).getCredit());
+        }
         userInfo.getItems().addAll(userName, firstName, lastName, email, phone, balance);
     }
 
