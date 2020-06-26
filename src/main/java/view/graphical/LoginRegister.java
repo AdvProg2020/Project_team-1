@@ -18,6 +18,8 @@ import model.exception.InvalidLoginInformationException;
 import view.commandline.View;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -114,7 +116,12 @@ public class LoginRegister implements Initializable {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
         imagePath = file.getAbsolutePath();
-        Image image = new Image(imagePath);
+        Image image = null;
+        try {
+            image = new Image(new FileInputStream(imagePath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         userPhotoImageView.setImage(image);
     }
 

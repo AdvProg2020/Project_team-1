@@ -3,6 +3,7 @@ package view.graphical.commodity;
 import controller.commodity.CommentsMenu;
 import controller.commodity.DigestMenu;
 import controller.customer.OrderMenu;
+import controller.data.YaDataManager;
 import controller.share.CommodityMenu;
 import controller.share.MenuHandler;
 import javafx.collections.FXCollections;
@@ -140,21 +141,26 @@ public class CommodityPage implements Initializable {
                     (String.valueOf(commodity.getCategorySpecifications().get(i).getValue())), 1, i + 1);
         }
         if (Session.getOnlineAccount() != null) {
-            logOutButton.setDisable(true);
+            logOutButton.setDisable(false);
             if (Session.getOnlineAccount().getAccountType().equals("personal")) {
-                addToCartButton.setDisable(true);
-            } else {
                 addToCartButton.setDisable(false);
+            } else {
+                addToCartButton.setDisable(true);
             }
         } else {
-            logOutButton.setDisable(false);
+            logOutButton.setDisable(true);
         }
         List<String> commoditiesList = new ArrayList<>();
-        for (Commodity commodity1 : commodity.getCategory().getCommodities()) {
-            if (!commodity.equals(commodity1)) {
-                commoditiesList.add(commodity1.getName() + ", " + commodity1.getBrand());
+        try {
+            for (Commodity commodity1 : YaDataManager.getCommodities()) {
+                if (commodity1.getCategory().getName().equals(commodity.getCategory().getName()) &&
+                        commodity1.getCommodityId() != commodity.getCommodityId())
+                    commoditiesList.add("Name: " + commodity1.getName() + ", Brand: " + commodity1.getBrand());
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         ObservableList<String> observableList = FXCollections.observableList(commoditiesList);
         comparableCommodities.setItems(observableList);
         if (!orderMenu.canRateProduct(commodity.getCommodityId())) {
@@ -175,10 +181,15 @@ public class CommodityPage implements Initializable {
 
     public void onCompareClick(MouseEvent mouseEvent) {
         if (comparableCommodities.getValue() != null) {
-            for (Commodity commodity : commodityMenu.getCommodity().getCategory().getCommodities()) {
-                if (("Name: " + commodity.getName() + ", Brand: " + commodity.getBrand()).equals(comparableCommodities.getValue())) {
-                    commodityMenu.setComparingCommodity(commodity);
+            try {
+                for (Commodity commodity : YaDataManager.getCommodities()) {
+                    if (("Name: " + commodity.getName() + ", Brand: " + commodity.getBrand()).equals(comparableCommodities.getValue()) &&
+                            commodity.getCategory().getName().equals(commodityMenu.getCommodity().getCategory().getName())) {
+                        commodityMenu.setComparingCommodity(commodity);
+                    }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             Parent parent = null;
             try {

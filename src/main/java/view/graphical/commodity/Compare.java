@@ -56,11 +56,11 @@ public class Compare implements Initializable {
             compareGridPane.getRowConstraints().add(new RowConstraints(30, 30, 60, Priority.SOMETIMES,
                     VPos.CENTER, true));
             compareGridPane.add(new CommodityPage.ModifiedLabel(comparingCommodity.getCategorySpecifications().get(i).getTitle()),
-                    i + 5, 0);
+                    0, i+6);
             compareGridPane.add(new CommodityPage.ModifiedLabel(String.valueOf(comparingCommodity.getCategorySpecifications().get(
-                    i).getValue())), i + 5, 2);
+                    i).getValue())), 2, i+6);
             compareGridPane.add(new CommodityPage.ModifiedLabel(String.valueOf(commodityMenu.getCommodity().
-                    getCategorySpecifications().get(i).getValue())), i + 5, 1);
+                    getCategorySpecifications().get(i).getValue())), 1, i+6);
         }
     }
 

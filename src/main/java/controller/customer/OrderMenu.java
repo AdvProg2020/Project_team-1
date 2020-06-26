@@ -36,7 +36,7 @@ public class OrderMenu extends Menu {
     }
 
     public boolean canRateProduct(int id) {
-        if (!Session.getOnlineAccount().getAccountType().equalsIgnoreCase("personal")) {
+        if (Session.getOnlineAccount() == null || !Session.getOnlineAccount().getAccountType().equalsIgnoreCase("personal")) {
             return false;
         }
         try {
