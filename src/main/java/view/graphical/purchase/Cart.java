@@ -7,12 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
 import model.account.PersonalAccount;
@@ -21,6 +21,7 @@ import view.AudioPlayer;
 import view.commandline.View;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -115,17 +116,15 @@ public class Cart implements Initializable {
     }
 
     public void goToGetInfoPage(ActionEvent actionEvent) {
-        Parent parent;
+        Parent parent = null;
+        Popup popupMenu = new Popup();
         try {
-            cartMenu.checkIsCommoditiesAvailable();
             parent = FXMLLoader.load(getClass().getResource("../../../fxml/customer/purchase/Information.fxml"));
-            Scene scene = new Scene(parent);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            Session.getSceneHandler().updateScene(stage);
-        } catch (Exception e) {
-            error.setText(e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        popupMenu.getContent().add(parent);
+        popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());
     }
 
     private static class ModifiedLabel extends Label {

@@ -1,11 +1,14 @@
 package view.graphical.purchase;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import model.Session;
+import javafx.stage.Popup;
+
+import java.io.IOException;
 
 public class GetInfo {
     public Label error;
@@ -14,7 +17,7 @@ public class GetInfo {
     public TextField postalCode;
 
     public void back(ActionEvent actionEvent) {
-        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+        ((Node) actionEvent.getSource()).getScene().getWindow().hide();
     }
 
     public void next(ActionEvent actionEvent) {
@@ -29,6 +32,14 @@ public class GetInfo {
             error.setText("please enter a valid postal code");
             return;
         }
-        //go to discount page
+        Parent parent = null;
+        Popup popupMenu = new Popup();
+        try {
+            parent = FXMLLoader.load(getClass().getResource("../../../fxml/customer/purchase/Discount.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        popupMenu.getContent().add(parent);
+        popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());
     }
 }

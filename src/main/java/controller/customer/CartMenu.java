@@ -21,6 +21,11 @@ import static view.commandline.View.commodityMenu;
 
 public class CartMenu extends Menu {
     private String productSortType = "visits";
+    private BuyLog buyLog;
+
+    public BuyLog getBuyLog() {
+        return buyLog;
+    }
 
     public CartMenu() {
         fxmlFileAddress = "../../fxml/customer/Cart.fxml";
@@ -113,7 +118,7 @@ public class CartMenu extends Menu {
     public void purchase(DiscountCode discountCode) throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         int price = calculateTotalPrice();
-        if (discountCode != null)
+        if (discountCode != null && !discountCode.equals(""))
             price = cartMenu.useDiscountCode(price, discountCode);
         if (price > account.getCredit()) {
             account.dontUseDiscountCode(discountCode);
@@ -128,6 +133,7 @@ public class CartMenu extends Menu {
         account.clearCart();
         YaDataManager.addPerson(account);
         makeSellLogs(buyLog.getSellers(), account);
+        this.buyLog = buyLog;
     }
 
     private void reduceCommodityAmount(HashMap<Commodity, Integer> cart) throws IOException {
