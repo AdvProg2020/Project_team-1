@@ -24,7 +24,6 @@ import java.util.ResourceBundle;
 
 public class Reseller implements Initializable {
 
-    public Label textFieldPopupTitle;
     public Label resellerBalanceLabel;
     public final ResellerMenu resellerMenu = View.resellerMenu;
     public Label tableViewPopupTitleLabel;
@@ -110,6 +109,15 @@ public class Reseller implements Initializable {
     public void onLogoutClick(MouseEvent mouseEvent) {
         try {
             resellerMenu.logout();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
+    }
+
+    public void onManageOffsClick(MouseEvent mouseEvent) {
+        try {
+            resellerMenu.manageOffs();
         } catch (Exception e) {
             e.printStackTrace();
         }

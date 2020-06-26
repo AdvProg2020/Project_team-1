@@ -16,6 +16,11 @@ public class ManageResellerOffsMenu extends Menu {
 
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d HH:mm:ss yyyy");
 
+    public ManageResellerOffsMenu() {
+        fxmlFileAddress = "../../fxml/reseller/ManageOffs.fxml";
+        stageTitle = "Reseller offs";
+    }
+
     public ArrayList<Off> sort(String field) throws Exception {
         ArrayList<Off> offs = View.resellerMenu.manageOffs();
         Sort.sortOffArrayList(offs, field);
