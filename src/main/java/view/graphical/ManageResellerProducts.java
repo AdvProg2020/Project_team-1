@@ -106,6 +106,7 @@ public class ManageResellerProducts implements Initializable {
                     showEditProduct.initScene(commodity);
                     Scene scene = new Scene(parent);
                     Stage stage = new Stage();
+                    showEditProduct.setStage(stage);
                     stage.setScene(scene);
                     stage.setTitle("Show/Edit product");
                     stage.show();

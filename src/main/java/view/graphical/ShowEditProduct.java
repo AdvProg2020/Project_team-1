@@ -1,37 +1,48 @@
 package view.graphical;
 
+import controller.reseller.ManageResellerProductsMenu;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.commodity.Commodity;
+import model.field.Field;
+import view.commandline.View;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class ShowEditProduct {
 
+    public ToggleButton productAvailability;
+    private ManageResellerProductsMenu manageResellerProductsMenu = View.manageResellerProductsMenu;
     private Commodity commodity;
+    private Stage stage;
     public Label brandLabel;
     public Label nameLabel;
     public Label priceLabel;
     public Label descriptionLabel;
     public Label amountLabel;
-    public TreeView<String> selectedMediaTv;
     public Label errorMessageLabel;
-    private final TreeItem<String> photosPath = new TreeItem<>("Photos");
-    private final TreeItem<String> videosPath = new TreeItem<>("Videos");
+    private Label changeLabel;
+    private ArrayList<Field> categorySpecification;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     public void initScene(Commodity commodity) {
+        categorySpecification = commodity.getCategorySpecifications();
         this.commodity = commodity;
         brandLabel.setText(commodity.getBrand());
         nameLabel.setText(commodity.getName());
         priceLabel.setText(String.valueOf(commodity.getPrice()));
         descriptionLabel.setText(commodity.getDescription());
         amountLabel.setText(String.valueOf(commodity.getInventory()));
-        TreeItem<String> root = new TreeItem<>("Media");
-        photosPath.getChildren().add(new TreeItem<>(commodity.getImagePath()));
-        root.getChildren().addAll(photosPath, videosPath);
-        selectedMediaTv.setRoot(root);
     }
 
     public void onCancelClick(MouseEvent mouseEvent) {
@@ -39,31 +50,77 @@ public class ShowEditProduct {
     }
 
     public void onSaveClick(MouseEvent mouseEvent) {
-        // Save change
+        try {
+            manageResellerProductsMenu.editProduct(commodity, brandLabel.getText(), nameLabel.getText(),
+                Integer.parseInt(priceLabel.getText()), productAvailability.isSelected(), commodity.getCategory(),
+                categorySpecification, descriptionLabel.getText(), Integer.parseInt(amountLabel.getText()));
+        } catch (Exception e) {
+            errorMessageLabel.setText(e.getMessage());
+        }
         onCancelClick(mouseEvent);
     }
 
-    public void onBrandLabelClick(MouseEvent mouseEvent) {
+    public void onBrandLabelClick() {
+        changeLabel = brandLabel;
+        openTextFieldPopup();
     }
 
-    public void onNameLabelClick(MouseEvent mouseEvent) {
+    public void onNameLabelClick() {
+        changeLabel = nameLabel;
+        openTextFieldPopup();
     }
 
-    public void onPriceLabelClick(MouseEvent mouseEvent) {
+    public void onPriceLabelClick() {
+        changeLabel = priceLabel;
+        openTextFieldPopup();
     }
 
-    public void onDescriptionLabelClick(MouseEvent mouseEvent) {
+    public void onDescriptionLabelClick() {
+        changeLabel = descriptionLabel;
+        openTextFieldPopup();
     }
 
-    public void onAmountLabelClick(MouseEvent mouseEvent) {
+    public void onAmountLabelClick() {
+        changeLabel = amountLabel;
+        openTextFieldPopup();
     }
 
-    public void onChooseProductVideoClick(MouseEvent mouseEvent) {
+    private void openTextFieldPopup() {
+        Popup popup = new Popup();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/TextFieldPopup.fxml"));
+        Parent parent = null;
+        try {
+            parent = loader.load();
+        } catch (IOException e) {
+            // What should I do? If I suddenly feel ...
+        }
+        TextFieldPopup textFieldPopup = loader.getController();
+        textFieldPopup.setShowEditProduct(this);
+        popup.getContent().add(parent);
+        popup.show(stage);
     }
 
-    public void onChooseProductImageClick(MouseEvent mouseEvent) {
+    public void setNewValue(String value) {
+        changeLabel.setText(value);
     }
 
-    public void onEditCategorySpecsClick(MouseEvent mouseEvent) {
+    public void onEditCategorySpecificationClick(MouseEvent mouseEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/reseller/EditCategorySpecs.fxml"));
+        Parent parent = null;
+        Popup popup = new Popup();
+        try {
+            parent = loader.load();
+        } catch (IOException e) {
+            // Sorry. I can not do anything :(
+        }
+        EditCategorySpecs editCategorySpecs = loader.getController();
+        editCategorySpecs.setShowEditProduct(this);
+        editCategorySpecs.initVBox(commodity.getCategorySpecifications(), commodity.getCategory().getFieldOptions());
+        popup.getContent().add(parent);
+        popup.show(((Node) mouseEvent.getSource()).getScene().getWindow());
+    }
+
+    public void setCategorySpecification(ArrayList<Field> categorySpecification) {
+        this.categorySpecification = categorySpecification;
     }
 }
