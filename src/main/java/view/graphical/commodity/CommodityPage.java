@@ -60,15 +60,16 @@ public class CommodityPage implements Initializable {
     public ImageView star3;
     public ImageView star2;
     public ImageView star1;
-    public Button starButton5;
-    public Button starButton4;
-    public Button starButton3;
-    public Button starButton2;
-    public Button starButton1;
+    public ImageView starButton5;
+    public ImageView starButton4;
+    public ImageView starButton3;
+    public ImageView starButton2;
+    public ImageView starButton1;
     public VBox commentsVBox;
     public TextField titleBox;
     public TextField commentBox;
     public Label error;
+    public Label rateIt;
     private Popup popupMenu = new Popup();
 
     @Override
@@ -169,28 +170,18 @@ public class CommodityPage implements Initializable {
 
         ObservableList<String> observableList = FXCollections.observableList(commoditiesList);
         comparableCommodities.setItems(observableList);
-        for (int i = 0; i < 5; i++) {
-            ImageView emptyStar = new ImageView(new Image(emptyStarAddress));
-            emptyStar.setFitWidth(32);
-            emptyStar.setFitHeight(32);
-            if (i == 0) {
-                starButton1.setGraphic(emptyStar);
-            } else if (i == 1) {
-                starButton2.setGraphic(emptyStar);
-            } else if (i == 2) {
-                starButton3.setGraphic(emptyStar);
-            } else if (i == 3) {
-                starButton4.setGraphic(emptyStar);
-            } else {
-                starButton5.setGraphic(emptyStar);
-            }
-        }
+        starButton5.setImage(new Image(emptyStarAddress));
+        starButton1.setImage(new Image(emptyStarAddress));
+        starButton4.setImage(new Image(emptyStarAddress));
+        starButton3.setImage(new Image(emptyStarAddress));
+        starButton2.setImage(new Image(emptyStarAddress));
         if (!orderMenu.canRateProduct(commodity.getCommodityId())) {
             starButton1.setDisable(true);
             starButton2.setDisable(true);
             starButton3.setDisable(true);
             starButton4.setDisable(true);
             starButton5.setDisable(true);
+            rateIt.setDisable(true);
         }
         for (Comment comment : commodity.getAllComments()) {
             VBox commentVBox = new VBox();
@@ -270,7 +261,7 @@ public class CommodityPage implements Initializable {
         ImageView fullStar = new ImageView(new Image(fullStarAddress));
         fullStar.setFitWidth(32);
         fullStar.setFitHeight(32);
-        starButton1.setGraphic(fullStar);
+        starButton1 = fullStar;
         try {
             orderMenu.rateProduct(commodityMenu.getCommodity().getCommodityId(), rate);
         } catch (Exception e) {
@@ -278,62 +269,62 @@ public class CommodityPage implements Initializable {
         }
     }
 
-    public void rateOne(ActionEvent actionEvent) {
+    public void rateOne(MouseEvent actionEvent) {
         rate(1);
     }
 
-    public void rateTwo(ActionEvent actionEvent) {
+    public void rateTwo(MouseEvent actionEvent) {
         rate(2);
         ImageView fullStar = new ImageView(new Image(fullStarAddress));
         fullStar.setFitWidth(32);
         fullStar.setFitHeight(32);
-        starButton2.setGraphic(fullStar);
+        starButton2 = fullStar;
     }
 
-    public void rateThree(ActionEvent actionEvent) {
+    public void rateThree(MouseEvent actionEvent) {
         rate(3);
         for (int i = 0; i < 2; i++) {
             ImageView fullStar = new ImageView(new Image(fullStarAddress));
             fullStar.setFitWidth(32);
             fullStar.setFitHeight(32);
             if (i == 0) {
-                starButton2.setGraphic(fullStar);
+                starButton2 = fullStar;
             } else {
-                starButton3.setGraphic(fullStar);
+                starButton3 = fullStar;
             }
         }
     }
 
-    public void rateFour(ActionEvent actionEvent) {
+    public void rateFour(MouseEvent actionEvent) {
         rate(4);
         for (int i = 0; i < 3; i++) {
             ImageView fullStar = new ImageView(new Image(fullStarAddress));
             fullStar.setFitWidth(32);
             fullStar.setFitHeight(32);
             if (i == 0) {
-                starButton2.setGraphic(fullStar);
+                starButton2 = fullStar;
             } else if (i == 1) {
-                starButton3.setGraphic(fullStar);
+                starButton3 = fullStar;
             } else {
-                starButton4.setGraphic(fullStar);
+                starButton4 = fullStar;
             }
         }
     }
 
-    public void rateFive(ActionEvent actionEvent) {
+    public void rateFive(MouseEvent actionEvent) {
         rate(5);
         for (int i = 0; i < 4; i++) {
             ImageView fullStar = new ImageView(new Image(fullStarAddress));
             fullStar.setFitWidth(32);
             fullStar.setFitHeight(32);
             if (i == 0) {
-                starButton2.setGraphic(fullStar);
+                starButton2 = fullStar;
             } else if (i == 1) {
-                starButton3.setGraphic(fullStar);
+                starButton3 = fullStar;
             } else if (i == 2) {
-                starButton4.setGraphic(fullStar);
+                starButton4 = fullStar;
             } else {
-                starButton5.setGraphic(fullStar);
+                starButton5 = fullStar;
             }
         }
     }

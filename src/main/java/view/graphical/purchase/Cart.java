@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -62,9 +61,10 @@ public class Cart implements Initializable {
                 commodityGridPane.add(new ModifiedLabel("Name: " + commodity.getName()), 1, 0, 2, 1);
                 commodityGridPane.add(new ModifiedLabel("Number: " + account.getAmount(commodity) + ", Price: " + commodity.getPrice() + " Rials"), 1, 1, 2, 1);
                 commodityGridPane.add(new ModifiedLabel("Total price: " + account.getAmount(commodity) * commodity.getPrice()), 1, 2, 2, 1);
-                Button plusButton = new Button();
-                plusButton.getStyleClass().add("plus-button");
-                plusButton.setOnAction(actionEvent -> {
+                ImageView plusButton = new ImageView("icons/plus.png");
+                plusButton.setFitWidth(32);
+                plusButton.setFitHeight(32);
+                plusButton.setOnMouseClicked(actionEvent -> {
                     try {
                         cartMenu.increase(commodity.getCommodityId());
                         initialize(url, resourceBundle);
@@ -74,9 +74,10 @@ public class Cart implements Initializable {
                     }
                 });
                 commodityGridPane.add(plusButton, 1, 3);
-                Button minusButton = new Button();
-                minusButton.getStyleClass().add("minus-button");
-                minusButton.setOnAction(actionEvent -> {
+                ImageView minusButton = new ImageView("icons/minus.png");
+                minusButton.setFitHeight(32);
+                minusButton.setFitWidth(32);
+                minusButton.setOnMouseClicked(actionEvent -> {
                     try {
                         cartMenu.decrease(commodity.getCommodityId());
                         initialize(url, resourceBundle);

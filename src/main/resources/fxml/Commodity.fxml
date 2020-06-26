@@ -10,7 +10,7 @@
         <Tab closable="false" styleClass="full-tab" text="Information">
             <BorderPane>
                 <left>
-                    <VBox prefHeight="600.0" prefWidth="550.0" spacing="20.0">
+                    <VBox prefHeight="600.0" prefWidth="550.0" spacing="10.0">
                         <Label fx:id="commodityName" styleClass="scene-title" text="Commodity Name" wrapText="true"/>
                         <Label fx:id="commodityBrand" styleClass="hint-label" text="Brand" wrapText="true"/>
                         <HBox>
@@ -28,16 +28,16 @@
                                        preserveRatio="true"/>
                         </HBox>
                         <HBox>
-                            <Label fx:id="commodityDescription" styleClass="hint-label" text="Rate it: "
-                                   wrapText="true"/>
-                            <Button fx:id="starButton1" onAction="#rateOne" prefHeight="32.0" prefWidth="32.0"/>
-                            <Button fx:id="starButton2" onAction="#rateTwo" prefHeight="32.0" prefWidth="32.0"/>
-                            <Button fx:id="starButton3" onAction="#rateThree" prefHeight="32.0" prefWidth="32.0"/>
-                            <Button fx:id="starButton4" onAction="#rateFour" prefHeight="32.0" prefWidth="32.0"/>
-                            <Button fx:id="starButton5" onAction="#rateFive" prefHeight="32.0" prefWidth="32.0"/>
+                            <Label fx:id="rateIt" styleClass="hint-label" text="Rate it: " wrapText="true"/>
+                            <ImageView fx:id="starButton1" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#rateOne"/>
+                            <ImageView fx:id="starButton2" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#rateTwo"/>
+                            <ImageView fx:id="starButton3" fitHeight="32.0" fitWidth="32.0"
+                                       onMouseClicked="#rateThree"/>
+                            <ImageView fx:id="starButton4" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#rateFour"/>
+                            <ImageView fx:id="starButton5" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#rateFive"/>
                         </HBox>
-                        <GridPane fx:id="fieldsGridPane" hgap="10.0" translateY="30.0" vgap="5.0"
-                                  VBox.vgrow="SOMETIMES">
+                        <Label fx:id="commodityDescription" styleClass="hint-label" text="Rate it: " wrapText="true"/>
+                        <GridPane fx:id="fieldsGridPane" hgap="10.0" vgap="5.0" VBox.vgrow="SOMETIMES">
                             <Label styleClass="hint-label" text="Category specifications" GridPane.columnSpan="2"/>
                             <columnConstraints>
                                 <ColumnConstraints/>
@@ -84,14 +84,14 @@
                         <Label fx:id="error" styleClass="error-message-label" textAlignment="CENTER" wrapText="true"
                                GridPane.columnSpan="2" GridPane.rowIndex="3"/>
                         <columnConstraints>
-                            <ColumnConstraints halignment="CENTER" />
-                            <ColumnConstraints />
+                            <ColumnConstraints halignment="CENTER"/>
+                            <ColumnConstraints/>
                         </columnConstraints>
                         <rowConstraints>
-                            <RowConstraints />
-                            <RowConstraints />
-                            <RowConstraints />
-                            <RowConstraints />
+                            <RowConstraints/>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                            <RowConstraints/>
                         </rowConstraints>
                     </GridPane>
                 </VBox>
