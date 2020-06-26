@@ -3,20 +3,16 @@ package view.graphical;
 import controller.reseller.ManageResellerOffsMenu;
 import controller.reseller.ResellerMenu;
 import controller.share.MenuHandler;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import model.Session;
 import model.commodity.Off;
@@ -40,7 +36,7 @@ public class ManageResellerOffs implements Initializable {
     }
 
     private void initializeSortFieldChoiceBox() {
-        List<String> fieldsList = new ArrayList<>(Arrays.asList("discount percent", "start time", "id", "end time"));
+        List<String> fieldsList = new ArrayList<>(Arrays.asList("discount percent", "start time", "end time"));
         ObservableList<String> observableList = FXCollections.observableList(fieldsList);
         manageOffsSortField.setItems(observableList);
     }
