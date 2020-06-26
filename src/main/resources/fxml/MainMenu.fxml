@@ -11,10 +11,7 @@
       <Button layoutX="17.0" layoutY="185.0" mnemonicParsing="false" onAction="#offs" prefHeight="55.0" prefWidth="168.0" styleClass="normal-button" text="Offs" />
       <Button layoutX="728.0" layoutY="9.0" mnemonicParsing="false" onAction="#pause" styleClass="normal-button" text="⏸" />
       <Button layoutX="637.0" layoutY="9.0" mnemonicParsing="false" onAction="#play" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
-      <ImageView fx:id="imageView" fitHeight="222.0" fitWidth="333.0" layoutX="272.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../bg_.jpg" />
-         </image></ImageView>
+      <ImageView fx:id="imageView" fitHeight="222.0" fitWidth="322.0" layoutX="272.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="nextImage" layoutX="605.0" layoutY="149.0" mnemonicParsing="false" onAction="#next" text="&gt;" />
       <Button fx:id="backImage" layoutX="247.0" layoutY="149.0" mnemonicParsing="false" onAction="#previousImage" text="&lt;" />
       <Label fx:id="label" layoutX="320.0" layoutY="297.0" prefHeight="29.0" prefWidth="240.0" styleClass="hint-label" text="There is no commodity to show" visible="false" />

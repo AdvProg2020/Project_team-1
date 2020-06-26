@@ -118,4 +118,8 @@ public class ManageResellerOffs implements Initializable {
         }
     }
 
+    public void onProductsClick(MouseEvent mouseEvent) {
+        View.manageResellerOffMenu.products();
+        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
+    }
 }

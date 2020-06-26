@@ -48,7 +48,6 @@ public class ManageRequests extends HolyManager implements Initializable {
         acceptedRequests.getItems().removeAll(acceptedRequests.getItems());
         declinedRequests.getItems().removeAll(declinedRequests.getItems());
         for (Request request : YaDataManager.getRequests()) {
-            System.out.println(request.getObj().getStatus());
             if (request.getObj().getStatus().equals(Status.VERIFIED)) {
                 acceptedRequests.getItems().add(getCheckBox(request));
             } else if (request.getObj().getStatus().equals(Status.DECLINED)) {
