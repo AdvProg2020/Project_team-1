@@ -2,31 +2,16 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" prefHeight="600.0" prefWidth="600.0"
-            styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal"
-            fx:controller="view.graphical.customer.ViewInfo">
+
+<AnchorPane fx:id="pane" prefHeight="600.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.customer.ViewInfo">
     <children>
-        <ListView fx:id="userInfo" layoutX="254.0" layoutY="14.0" prefHeight="152.0" prefWidth="400.0"
-                  AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>
-        <Button mnemonicParsing="false" onAction="#editFirstName" prefHeight="48.0" prefWidth="250.0"
-                styleClass="normal-button" text="Edit first name" AnchorPane.rightAnchor="10.0"
-                AnchorPane.topAnchor="10.0"/>
-        <Button mnemonicParsing="false" onAction="#editLastName" prefHeight="48.0" prefWidth="250.0"
-                styleClass="normal-button" text="Edit last name" AnchorPane.rightAnchor="10.0"
-                AnchorPane.topAnchor="70.0"/>
-        <Button mnemonicParsing="false" onAction="#editEmail" prefHeight="48.0" prefWidth="250.0"
-                styleClass="normal-button" text="Edit email" AnchorPane.rightAnchor="10.0"
-                AnchorPane.topAnchor="130.0"/>
-        <Button mnemonicParsing="false" onAction="#editPhone" prefHeight="48.0" prefWidth="250.0"
-                styleClass="normal-button" text="Edit phone number" AnchorPane.rightAnchor="10.0"
-                AnchorPane.topAnchor="190.0"/>
-        <Button mnemonicParsing="false" onAction="#editPassword" prefHeight="48.0" prefWidth="250.0"
-                styleClass="normal-button" text="Edit password" AnchorPane.rightAnchor="10.0"
-                AnchorPane.topAnchor="250.0"/>
-        <Button mnemonicParsing="false" onAction="#editBalance" prefHeight="48.0" prefWidth="250.0"
-                styleClass="normal-button" text="Edit balance" AnchorPane.rightAnchor="10.0"
-                AnchorPane.topAnchor="310.0"/>
-        <Button mnemonicParsing="false" onAction="#back" styleClass="close-button" text="Close"
-                AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0"/>
+        <ListView fx:id="userInfo" layoutX="12.0" layoutY="12.0" prefHeight="168.0" prefWidth="400.0" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="11.0" />
+        <Button mnemonicParsing="false" onAction="#editFirstName" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit first name" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+        <Button mnemonicParsing="false" onAction="#editLastName" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit last name" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="70.0" />
+        <Button mnemonicParsing="false" onAction="#editEmail" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit email" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="130.0" />
+        <Button mnemonicParsing="false" onAction="#editPhone" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit phone number" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="190.0" />
+        <Button mnemonicParsing="false" onAction="#editPassword" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit password" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="250.0" />
+        <Button mnemonicParsing="false" onAction="#editBalance" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit balance" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="310.0" />
+        <Button mnemonicParsing="false" onAction="#back" onMouseClicked="#onCloseClick" styleClass="close-button" text="Close" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" />
     </children>
 </AnchorPane>

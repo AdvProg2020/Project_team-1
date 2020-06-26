@@ -42,6 +42,7 @@ public class Reseller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        popupMenu.getContent().clear();
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
@@ -53,6 +54,7 @@ public class Reseller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        popupMenu.getContent().clear();
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
@@ -64,6 +66,7 @@ public class Reseller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        popupMenu.getContent().clear();
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
@@ -75,6 +78,7 @@ public class Reseller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        popupMenu.getContent().clear();
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
