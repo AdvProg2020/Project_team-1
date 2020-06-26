@@ -1,8 +1,10 @@
 package view.graphical.commodity;
 
 import controller.share.CommodityMenu;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -60,5 +62,9 @@ public class Compare implements Initializable {
             compareGridPane.add(new CommodityPage.ModifiedLabel(String.valueOf(commodityMenu.getCommodity().
                     getCategorySpecifications().get(i).getValue())), i + 5, 1);
         }
+    }
+
+    public void back(ActionEvent actionEvent) {
+        ((Node) actionEvent.getSource()).getScene().getWindow().hide();
     }
 }

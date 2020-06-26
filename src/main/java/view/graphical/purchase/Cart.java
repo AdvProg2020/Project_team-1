@@ -3,8 +3,11 @@ package view.graphical.purchase;
 import controller.customer.CartMenu;
 import controller.share.MenuHandler;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -112,7 +115,17 @@ public class Cart implements Initializable {
     }
 
     public void goToGetInfoPage(ActionEvent actionEvent) {
-        //check if all of them are available nad go to get info page
+        Parent parent = null;
+        try {
+            cartMenu.checkIsCommoditiesAvailable();
+            parent = FXMLLoader.load(getClass().getResource("../../../fxml/customer/purchase/Information.fxml"));
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            Session.getSceneHandler().updateScene(stage);
+        } catch (Exception e) {
+            error.setText(e.getMessage());
+        }
     }
 
     private static class ModifiedLabel extends Label {
