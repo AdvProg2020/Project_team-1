@@ -17,7 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Popup;
+import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import model.Session;
 import model.commodity.Commodity;
@@ -32,7 +32,7 @@ public class ManageResellerProducts implements Initializable {
 
     private final ManageResellerProductsMenu manageResellerProductsMenu = View.manageResellerProductsMenu;
     private final ResellerMenu resellerMenu = View.resellerMenu;
-    public AnchorPane manageProductsAnchorPane;
+    public TilePane manageProductsTilePane;
     public ChoiceBox<String> manageProductsSortField;
     public ToggleButton manageProductsSortOrderToggleButton;
 
@@ -68,7 +68,7 @@ public class ManageResellerProducts implements Initializable {
 
     public void onSortButtonClick() {
         try {
-            manageProductsAnchorPane.getChildren().clear();
+            manageProductsTilePane.getChildren().clear();
             ArrayList<Commodity> commodities = null;
             try {
                 if (manageProductsSortField.getValue() == null) {
@@ -83,16 +83,19 @@ public class ManageResellerProducts implements Initializable {
                 Commodity commodity = manageProductsSortOrderToggleButton.isSelected() ?
                         commodities.get(commodities.size() - 1 - i) : commodities.get(i);
                 AnchorPane productAnchorPane = new AnchorPane();
-                productAnchorPane.setMaxHeight(300);
-                productAnchorPane.setMaxWidth(300);
+                productAnchorPane.setMaxHeight(318);
+                productAnchorPane.setMaxWidth(318);
                 ImageView productImage = new ImageView(new Image(new FileInputStream(commodity.getImagePath())));
                 productImage.setPreserveRatio(true);
                 productImage.setFitHeight(250);
                 productImage.setFitWidth(250);
                 Label productName = new Label(commodity.getName());
+                productName.getStyleClass().add("hint-label");
                 HBox actions = new HBox();
                 actions.setAlignment(Pos.CENTER);
                 Button edit = new Button("Show/Edit"), remove = new Button("Remove");
+                edit.getStyleClass().add("small-button");
+                remove.getStyleClass().add("small-button");
                 edit.setOnMouseClicked(mouseEvent1 -> {
                     Parent parent = null;
                     FXMLLoader loader = new FXMLLoader(getClass().
@@ -104,6 +107,7 @@ public class ManageResellerProducts implements Initializable {
                     }
                     ShowEditProduct showEditProduct = loader.getController();
                     showEditProduct.initScene(commodity);
+                    assert parent != null;
                     Scene scene = new Scene(parent);
                     Stage stage = new Stage();
                     showEditProduct.setStage(stage);
@@ -127,9 +131,9 @@ public class ManageResellerProducts implements Initializable {
                     }
                     onSortButtonClick();
                 });
-                actions.getChildren().addAll(edit, remove);
-                productAnchorPane.getChildren().addAll(productImage, productName, actions);
-                manageProductsAnchorPane.getChildren().add(productAnchorPane);
+                actions.getChildren().addAll(productName, edit, remove);
+                productAnchorPane.getChildren().addAll(productImage, actions);
+                manageProductsTilePane.getChildren().add(productAnchorPane);
             }
         } catch (Exception e) {
             e.printStackTrace();
