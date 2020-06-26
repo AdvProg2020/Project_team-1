@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class ManageResellerOffsMenu extends Menu {
 
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d HH:mm:ss yyyy");
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d yyyy");
 
     public ManageResellerOffsMenu() {
         fxmlFileAddress = "../../fxml/reseller/ManageOffs.fxml";

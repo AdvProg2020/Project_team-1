@@ -36,17 +36,15 @@ public class Reseller implements Initializable {
     Popup popupMenu = new Popup();
 
     public void onPersonalInfoClick(MouseEvent mouseEvent) {
-        SimpleAccount simpleAccount = Session.getOnlineAccount();
-        usernameLabel.setText(simpleAccount.getUsername());
-        firstNameLabel.setText(simpleAccount.getFirstName());
-        lastNameLabel.setText(simpleAccount.getLastName());
-        emailLabel.setText(simpleAccount.getEmail());
-        phoneNumberLabel.setText(simpleAccount.getPhoneNumber());
-        //userPhotoImageView.setImage(simpleAccount.getUserPhoto());
-        View.managerMenu.viewPersonalInfo();
-        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
+        Parent parent = null;
+        try {
+            parent = FXMLLoader.load(getClass().getResource("../../fxml/customer/ViewInfo.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        popupMenu.getContent().add(parent);
+        popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
-
 
     public void onCompanyInfoClick(MouseEvent mouseEvent) {
         Parent parent = null;
@@ -68,17 +66,6 @@ public class Reseller implements Initializable {
         }
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) mouseEvent.getSource()).getScene().getWindow());
-    }
-
-    public void onChangeUserPhotoClick(MouseEvent mouseEvent) {
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image file", "*.jpg",
-                "*.png", "*.jpeg");
-        fileChooser.getExtensionFilters().add(extFilter);
-        File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
-        Image image = new Image(file.toURI().toString());
-        userPhotoImageView.setImage(image);
-        //Session.getOnlineAccount().setUserPhoto(image);
     }
 
     public void onCategoriesClick(MouseEvent mouseEvent) {
@@ -125,8 +112,12 @@ public class Reseller implements Initializable {
     }
 
     public void onMainMenuClick(MouseEvent mouseEvent) {
+        resellerMenu.goToMainMenu(null);
+        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
     public void onProductsClick(MouseEvent mouseEvent) {
+        View.manageResellerOffMenu.products();
+        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 }

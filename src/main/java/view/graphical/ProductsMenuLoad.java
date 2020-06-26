@@ -1,5 +1,6 @@
 package view.graphical;
 
+import controller.share.FilteringMenu;
 import controller.share.Menu;
 import controller.share.MenuHandler;
 import javafx.event.ActionEvent;
@@ -27,12 +28,15 @@ import view.commandline.View;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ProductsMenuLoad {
     public Pane getRoot() {
         return root;
     }
     private Pane root;
+    private int count = 0;
+    private int blockIncrement = 2;
 
     public void initializeProductsRoot(Stage stage) {
         root = new Pane();
@@ -139,17 +143,24 @@ public class ProductsMenuLoad {
     public void setCommodities(Pane root) throws Exception {
         int i = 0;
         int j = 100;
-        for (Commodity commodity : View.productsMenu.getProducts()) {
-            System.out.println(commodity.getImagePath());
-            FileInputStream inputStream = new FileInputStream(commodity.getImagePath());
+        ArrayList<Commodity> commodities = View.productsMenu.getProducts();
+        int end;
+        if (count + blockIncrement>= commodities.size())
+            end = commodities.size();
+        else end = count + blockIncrement;
+        for (int p = count ; p < end; p++ ) {
+            System.out.println(commodities.get(p).getImagePath());
+            FileInputStream inputStream = new FileInputStream(commodities.get(p).getImagePath());
             Image image = new Image(inputStream);
             ImageView imageView = new ImageView(image);
+            int finalP = p;
+            Commodity tmp = commodities.get(finalP);
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-                    View.commodityMenu.setCommodity(commodity);
-                    changeMenuToProductMenu(mouseEvent, commodity);
+                    View.commodityMenu.setCommodity(tmp);
+                    changeMenuToProductMenu(mouseEvent, tmp);
 
                 }
             });
@@ -158,10 +169,10 @@ public class ProductsMenuLoad {
             imageView.setLayoutX(i);
             imageView.setLayoutY(j);
             root.getChildren().add(imageView);
-            Label name = createLabel(i + 300, j, "Name", commodity.getName(), false);
-            Label price = createLabel(i + 300, j + 50, "Price", String.valueOf(commodity.getPrice()), false);
-            Label score = createLabel(i + 300, j + 100, "Score", String.valueOf(commodity.getAverageScore()), false);
-            if (commodity.getInventory() == 0) {
+            Label name = createLabel(i + 300, j, "Name", commodities.get(p).getName(), false);
+            Label price = createLabel(i + 300, j + 50, "Price", String.valueOf(commodities.get(p).getPrice()), false);
+            Label score = createLabel(i + 300, j + 100, "Score", String.valueOf(commodities.get(p).getAverageScore()), false);
+            if (commodities.get(p).getInventory() == 0) {
                 Label inventory = createLabel(i + 300, j + 150, "Inventory", "0", true);
                 root.getChildren().add(inventory);
             }
@@ -177,6 +188,8 @@ public class ProductsMenuLoad {
         setLogoutButton(root);
         setBackButton(root);
         setUserPanelButton();
+        setNextButton();
+        setBackButton();
     }
 
     private void setUserPanelButton() {
@@ -306,6 +319,48 @@ public class ProductsMenuLoad {
                 }
                 popupMenu.getContent().add(parent);
                 popupMenu.show((root.getScene().getWindow()));
+            }
+        });
+    }
+
+    private void setNextButton(){
+        Button next = new Button("Next page");
+        next.getStyleClass().add("normal-button");
+        next.relocate(450 ,  root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 100);
+        root.getChildren().add(next);
+        if (count + blockIncrement >= FilteringMenu.getFilteredCommodities().size())
+            next.setDisable(true);
+        next.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent){
+                count += blockIncrement;
+                try {
+                    deleteCommodities(root);
+                    setCommodities(root);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void setBackButton(){
+        Button back = new Button("Back");
+        back.getStyleClass().add("normal-button");
+        back.relocate(350 ,  root.getChildren().get(root.getChildren().size() - 2).getLayoutY() + 100);
+        root.getChildren().add(back);
+        if (count - blockIncrement < 0 )
+            back.setDisable(true);
+        back.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent){
+                count -= blockIncrement;
+                try {
+                    deleteCommodities(root);
+                    setCommodities(root);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
