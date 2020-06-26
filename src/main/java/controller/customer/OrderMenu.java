@@ -36,6 +36,9 @@ public class OrderMenu extends Menu {
     }
 
     public boolean canRateProduct(int id) {
+        if (!Session.getOnlineAccount().getAccountType().equalsIgnoreCase("personal")) {
+            return false;
+        }
         try {
             PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
             for (BuyLog log : account.getBuyLogs()) {

@@ -75,7 +75,7 @@ public class CommodityPage implements Initializable {
         commodityName.setText("Name: " + commodity.getName());
         commodityDescription.setText("Description: " + commodity.getDescription());
         commodityPriceAndRating.setText("Price: " + commodity.getPrice() + "Rials,\t\tRating: ");
-        commodityBrand.setText("Brand" + commodity.getBrand());
+        commodityBrand.setText("Brand: " + commodity.getBrand());
         try {
             if (commodity.getAverageScore() < 4.5) {
                 star5.setImage(new Image(emptyStarAddress));
@@ -176,7 +176,7 @@ public class CommodityPage implements Initializable {
     public void onCompareClick(MouseEvent mouseEvent) {
         if (comparableCommodities.getValue() != null) {
             for (Commodity commodity : commodityMenu.getCommodity().getCategory().getCommodities()) {
-                if ((commodity.getName() + ", " + commodity.getBrand()).equals(comparableCommodities.getValue())) {
+                if (("Name: " + commodity.getName() + ", Brand: " + commodity.getBrand()).equals(comparableCommodities.getValue())) {
                     commodityMenu.setComparingCommodity(commodity);
                 }
             }

@@ -115,7 +115,7 @@ public class Cart implements Initializable {
     }
 
     public void goToGetInfoPage(ActionEvent actionEvent) {
-        Parent parent = null;
+        Parent parent;
         try {
             cartMenu.checkIsCommoditiesAvailable();
             parent = FXMLLoader.load(getClass().getResource("../../../fxml/customer/purchase/Information.fxml"));
