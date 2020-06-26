@@ -43,6 +43,9 @@ public class Cart implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (scrollPane.getContent() == null) {
+            scrollPane.setContent(cartGridPane);
+        }
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         totalPrice.setText("Total price: " + cartMenu.calculateTotalPrice() + " Rials");
         int counter = 0;
