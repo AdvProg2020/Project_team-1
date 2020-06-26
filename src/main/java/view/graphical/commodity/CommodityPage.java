@@ -28,6 +28,7 @@ import model.commodity.Comment;
 import model.commodity.Commodity;
 import view.AudioPlayer;
 import view.commandline.View;
+import view.graphical.MainMenu;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -44,6 +45,8 @@ public class CommodityPage implements Initializable {
     private final OrderMenu orderMenu = View.orderMenu;
     private final String emptyStarAddress = "stars/emptyStar.png";
     private final String fullStarAddress = "stars/fullStar.png";
+    private ImageView emptyStar = new ImageView(new Image(emptyStarAddress));
+    private ImageView fullStar = new ImageView(new Image(fullStarAddress));
     public Label commodityName;
     public Label commodityPriceAndRating;
     public Label commodityDescription;
@@ -163,6 +166,13 @@ public class CommodityPage implements Initializable {
 
         ObservableList<String> observableList = FXCollections.observableList(commoditiesList);
         comparableCommodities.setItems(observableList);
+        emptyStar.setFitWidth(32);
+        emptyStar.setFitHeight(32);
+        starButton1.setGraphic(emptyStar);
+        starButton2.setGraphic(emptyStar);
+        starButton3.setGraphic(emptyStar);
+        starButton4.setGraphic(emptyStar);
+        starButton5.setGraphic(emptyStar);
         if (!orderMenu.canRateProduct(commodity.getCommodityId())) {
             starButton1.setDisable(true);
             starButton2.setDisable(true);
@@ -226,8 +236,8 @@ public class CommodityPage implements Initializable {
         Session.getSceneHandler().updateScene((Stage) (((Node) mouseEvent.getSource()).getScene().getWindow()));
     }
 
-    public void onUserPanelClick(MouseEvent mouseEvent) {
-
+    public void onUserPanelClick(ActionEvent actionEvent) {
+        MainMenu.goToUserPanel(actionEvent);
     }
 
     public void onLogOutClick(MouseEvent mouseEvent) {
@@ -245,7 +255,9 @@ public class CommodityPage implements Initializable {
         starButton3.setDisable(true);
         starButton4.setDisable(true);
         starButton5.setDisable(true);
-        starButton1.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        fullStar.setFitWidth(32);
+        fullStar.setFitHeight(32);
+        starButton1.setGraphic(fullStar);
         try {
             orderMenu.rateProduct(commodityMenu.getCommodity().getCommodityId(), rate);
         } catch (Exception e) {
@@ -259,28 +271,36 @@ public class CommodityPage implements Initializable {
 
     public void rateTwo(ActionEvent actionEvent) {
         rate(2);
-        starButton2.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        fullStar.setFitWidth(32);
+        fullStar.setFitHeight(32);
+        starButton2.setGraphic(fullStar);
     }
 
     public void rateThree(ActionEvent actionEvent) {
         rate(3);
-        starButton2.setStyle("-fx-background-image: url('stars/fullStar.png')");
-        starButton3.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        fullStar.setFitWidth(32);
+        fullStar.setFitHeight(32);
+        starButton2.setGraphic(fullStar);
+        starButton3.setGraphic(fullStar);
     }
 
     public void rateFour(ActionEvent actionEvent) {
         rate(4);
-        starButton2.setStyle("-fx-background-image: url('stars/fullStar.png')");
-        starButton3.setStyle("-fx-background-image: url('stars/fullStar.png')");
-        starButton4.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        fullStar.setFitWidth(32);
+        fullStar.setFitHeight(32);
+        starButton2.setGraphic(fullStar);
+        starButton3.setGraphic(fullStar);
+        starButton4.setGraphic(fullStar);
     }
 
     public void rateFive(ActionEvent actionEvent) {
         rate(5);
-        starButton2.setStyle("-fx-background-image: url('stars/fullStar.png')");
-        starButton3.setStyle("-fx-background-image: url('stars/fullStar.png')");
-        starButton4.setStyle("-fx-background-image: url('stars/fullStar.png')");
-        starButton5.setStyle("-fx-background-image: url('stars/fullStar.png')");
+        fullStar.setFitWidth(32);
+        fullStar.setFitHeight(32);
+        starButton2.setGraphic(fullStar);
+        starButton3.setGraphic(fullStar);
+        starButton4.setGraphic(fullStar);
+        starButton5.setGraphic(fullStar);
     }
 
     public void addComment(ActionEvent actionEvent) {
