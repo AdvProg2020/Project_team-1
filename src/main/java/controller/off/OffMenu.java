@@ -13,4 +13,8 @@ public class OffMenu extends Menu {
         Sort.sortOffArrayList(offs, field);
         return offs;
     }
+
+    public OffMenu() {
+        fxmlFileAddress = "../../fxml/OffMenu.fxml";
+    }
 }
