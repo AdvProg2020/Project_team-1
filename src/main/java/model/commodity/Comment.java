@@ -1,8 +1,11 @@
 package model.commodity;
 
+import controller.data.YaDataManager;
+import model.account.SimpleAccount;
 import model.share.Requestable;
 import model.share.Status;
-import model.account.SimpleAccount;
+
+import java.io.IOException;
 
 public class Comment implements Requestable {
     private SimpleAccount account;
@@ -74,7 +77,9 @@ public class Comment implements Requestable {
     }
 
     @Override
-    public void addObj() {
-        commodity.getAllComments().add(this);
+    public void addObj() throws IOException {
+        YaDataManager.removeCommodity(this.commodity);
+        this.commodity.getAllComments().add(this);
+        YaDataManager.addCommodity(this.commodity);
     }
 }

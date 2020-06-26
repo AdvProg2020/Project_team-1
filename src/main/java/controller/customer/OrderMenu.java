@@ -36,18 +36,21 @@ public class OrderMenu extends Menu {
     }
 
     public boolean canRateProduct(int id) {
-        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        for (BuyLog log : account.getBuyLogs()) {
-            for (Commodity commodity : log.getCommodities()) {
-                if (commodity.getCommodityId() == id) {
-                    for (Score score : commodity.getScores()) {
-                        if (score.getAccount().getUsername().equals(account.getUsername())) {
-                            return false;
+        try {
+            PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+            for (BuyLog log : account.getBuyLogs()) {
+                for (Commodity commodity : log.getCommodities()) {
+                    if (commodity.getCommodityId() == id) {
+                        for (Score score : commodity.getScores()) {
+                            if (score.getAccount().getUsername().equals(account.getUsername())) {
+                                return false;
+                            }
                         }
+                        return true;
                     }
-                    return true;
                 }
             }
+        } catch (NullPointerException ignored) {
         }
         return false;
     }
