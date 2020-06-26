@@ -3,6 +3,7 @@ package view.graphical;
 import controller.reseller.ManageResellerOffsMenu;
 import controller.reseller.ResellerMenu;
 import controller.share.MenuHandler;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -31,9 +29,9 @@ import java.util.*;
 public class ManageResellerOffs implements Initializable {
     private final ManageResellerOffsMenu manageResellerOffsMenu = View.manageResellerOffMenu;
     private final ResellerMenu resellerMenu = View.resellerMenu;
-    public TilePane manageOffsTilePane;
     public ChoiceBox<String> manageOffsSortField;
     public ToggleButton manageOffsSortOrderToggleButton;
+    public ListView<HBox> offsListView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -70,7 +68,7 @@ public class ManageResellerOffs implements Initializable {
 
     public void onSortButtonClick() {
         try {
-            manageOffsTilePane.getChildren().clear();
+            offsListView.getItems().clear();
             ArrayList<Off> offs = null;
             try {
                 if (manageOffsSortField.getValue() == null) {
@@ -81,16 +79,14 @@ public class ManageResellerOffs implements Initializable {
             } catch (Exception e) {
                 // Be Tokhmam
             }
+            List<HBox> hBoxes = new ArrayList<>();
             for (int i = 0; i < Objects.requireNonNull(offs).size(); i++) {
                 Off off = manageOffsSortOrderToggleButton.isSelected() ?
                         offs.get(offs.size() - 1 - i) : offs.get(i);
-                AnchorPane productAnchorPane = new AnchorPane();
-                productAnchorPane.setMaxHeight(318);
-                productAnchorPane.setMaxWidth(318);
-                Label offIdLabel = new Label(String.valueOf(off.getOffID()));
+                HBox offHBox = new HBox();
+                Label offIdLabel = new Label(off.getOffID() + " " + off.getStartTime().toString() + " " +
+                        off.getStartTime().toString());
                 offIdLabel.getStyleClass().add("hint-label");
-                HBox actions = new HBox();
-                actions.setAlignment(Pos.CENTER);
                 Button edit = new Button("Show/Edit");
                 edit.getStyleClass().add("small-button");
                 edit.setOnMouseClicked(mouseEvent1 -> {
@@ -111,10 +107,12 @@ public class ManageResellerOffs implements Initializable {
                     stage.setTitle("Show/Edit off");
                     stage.show();
                 });
-                actions.getChildren().addAll(offIdLabel, edit);
-                productAnchorPane.getChildren().addAll(actions);
-                manageOffsTilePane.getChildren().add(productAnchorPane);
+                offHBox.getChildren().addAll(offIdLabel, edit);
+                hBoxes.add(offHBox);
+                System.out.println(off.toString());
             }
+            ObservableList<HBox> hBoxObservableList = FXCollections.observableList(hBoxes);
+            offsListView.setItems(hBoxObservableList);
         } catch (Exception e) {
             e.printStackTrace();
         }

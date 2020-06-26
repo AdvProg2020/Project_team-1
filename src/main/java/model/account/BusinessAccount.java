@@ -121,6 +121,10 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
                 '}';
     }
 
+    public void addOff(Off off) {
+        offs.add(off);
+    }
+
     @Override
     public String getInformation() {
         return super.getInformation() + "\ncompany name: " + this.businessName;
