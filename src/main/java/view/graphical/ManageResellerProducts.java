@@ -146,4 +146,9 @@ public class ManageResellerProducts implements Initializable {
         MenuHandler.getInstance().getCurrentMenu().goToPreviousMenu();
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
+
+    public void onProductsClick(MouseEvent mouseEvent) {
+        View.manageResellerOffMenu.products();
+        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
+    }
 }
