@@ -11,20 +11,19 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import model.Session;
-import model.commodity.Commodity;
 import model.commodity.Off;
 import view.commandline.View;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -64,6 +63,7 @@ public class ManageResellerOffs implements Initializable {
         assert parent != null;
         Scene scene = new Scene(parent);
         Stage stage = new Stage();
+        stage.setTitle("Add off");
         stage.setScene(scene);
         stage.show();
     }
@@ -108,7 +108,7 @@ public class ManageResellerOffs implements Initializable {
                     Scene scene = new Scene(parent);
                     Stage stage = new Stage();
                     stage.setScene(scene);
-                    stage.setTitle("Show/Edit product");
+                    stage.setTitle("Show/Edit off");
                     stage.show();
                 });
                 actions.getChildren().addAll(offIdLabel, edit);

@@ -53,6 +53,7 @@ public class ManageResellerProducts implements Initializable {
         assert parent != null;
         Scene scene = new Scene(parent);
         Stage stage = new Stage();
+        stage.setTitle("Add product");
         stage.setScene(scene);
         AddProduct addProduct = loader.getController();
         addProduct.setStage(stage);
