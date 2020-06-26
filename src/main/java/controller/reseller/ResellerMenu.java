@@ -43,9 +43,9 @@ public class ResellerMenu extends Menu {
         return sellLogs;
     }
 
-    public ArrayList<Off> manageOffs() throws Exception {
+    public ArrayList<Off> manageOffs() {
         ArrayList<Off> offArrayList = getBusinessAccount().getOffs();
-        if (!(MenuHandler.getInstance().getCurrentMenu() instanceof ManageResellerOffsMenu)) {
+        if (MenuHandler.getInstance().getCurrentMenu() != View.manageResellerOffMenu) {
             View.manageResellerOffMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.manageResellerOffMenu);
         }
