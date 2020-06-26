@@ -1,5 +1,8 @@
 package controller.share;
 
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.stage.Stage;
 import model.Session;
 import view.AudioPlayer;
 import view.commandline.View;
@@ -59,4 +62,9 @@ public class Menu {
     public void commandProcess(String command) throws Exception {
         commandProcess.commandProcessor(command);
     }
+
+    public void goToMainMenu(ActionEvent actionEvent){
+        View.mainMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.mainMenu);
+      }
 }

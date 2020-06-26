@@ -1,5 +1,6 @@
 package controller.share;
 
+import javafx.scene.media.MediaPlayer;
 import view.AudioPlayer;
 
 public class MenuHandler {
@@ -19,11 +20,13 @@ public class MenuHandler {
     }
 
     public void setCurrentMenu(Menu currentMenu) {
-        AudioPlayer.mediaPlayer.stop();
-        if (AudioPlayer.count != 8)
-            AudioPlayer.count++;
-        else AudioPlayer.count = 1;
-        AudioPlayer.music();
+      if (!AudioPlayer.mediaPlayer.getStatus().equals(MediaPlayer.Status.PAUSED)) {
+          AudioPlayer.mediaPlayer.stop();
+          if (AudioPlayer.count != 8)
+              AudioPlayer.count++;
+          else AudioPlayer.count = 1;
+          AudioPlayer.music();
+      }
         this.currentMenu = currentMenu;
     }
 }
