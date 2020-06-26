@@ -1,7 +1,6 @@
 package model.account;
 
 import controller.data.YaDataManager;
-import javafx.scene.image.Image;
 import model.commodity.Commodity;
 import model.commodity.Off;
 import model.exception.InvalidAccountInfoException;
@@ -27,7 +26,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         sellLogs = new ArrayList<SellLog>();
         commodities = new ArrayList<Commodity>();
         offs = new ArrayList<Off>();
-        credit = 0;
+        credit = 1000;
         status = Status.UNDER_CHECKING_FOR_CREATE;
     }
 
