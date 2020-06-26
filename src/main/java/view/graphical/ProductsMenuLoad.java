@@ -32,7 +32,6 @@ public class ProductsMenuLoad {
     public Pane getRoot() {
         return root;
     }
-
     private Pane root;
 
     public void initializeProductsRoot(Stage stage) {
@@ -182,9 +181,8 @@ public class ProductsMenuLoad {
 
     private void setUserPanelButton() {
         Button userPanel = new Button("User panel");
-        userPanel.getStyleClass().add("normal-button");
-        userPanel.setLayoutX(800);
-        userPanel.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 250);
+        userPanel.getStyleClass().add("forward-button");
+        userPanel.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 100);
         userPanel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -196,11 +194,13 @@ public class ProductsMenuLoad {
     }
 
     private void setLogoutButton(Pane root) {
-        Button update = new Button("Logout");
-        update.getStyleClass().add("logout-button");
-        update.setLayoutX(800);
-        update.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 250);
-        update.setOnAction(new EventHandler<ActionEvent>() {
+        Button logout = new Button("Logout");
+        logout.getStyleClass().add("logout-button");
+        logout.setLayoutX(800);
+        logout.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 250);
+        if (Session.getOnlineAccount() == null)
+            logout.setDisable(true);
+        logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
@@ -216,7 +216,7 @@ public class ProductsMenuLoad {
                 }
             }
         });
-        root.getChildren().add(update);
+        root.getChildren().add(logout);
     }
 
     private void changeMenuToProductMenu(MouseEvent mouseEvent, Commodity commodity) {

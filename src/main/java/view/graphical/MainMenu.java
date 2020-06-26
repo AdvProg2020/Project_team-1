@@ -8,6 +8,7 @@ import model.Session;
 import model.account.BusinessAccount;
 import model.account.ManagerAccount;
 import model.account.PersonalAccount;
+import view.AudioPlayer;
 import view.commandline.View;
 
 public class MainMenu {
@@ -47,4 +48,13 @@ public class MainMenu {
         MenuHandler.getInstance().setCurrentMenu(View.offMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
+
+    public void pause(ActionEvent actionEvent){
+        AudioPlayer.mediaPlayer.pause();
+    }
+
+    public void play(ActionEvent actionEvent){
+        AudioPlayer.mediaPlayer.play();
+    }
+
 }

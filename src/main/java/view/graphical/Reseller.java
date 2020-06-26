@@ -123,4 +123,10 @@ public class Reseller implements Initializable {
         }
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
+
+    public void onMainMenuClick(MouseEvent mouseEvent) {
+    }
+
+    public void onProductsClick(MouseEvent mouseEvent) {
+    }
 }
