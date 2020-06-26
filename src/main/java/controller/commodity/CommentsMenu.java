@@ -33,7 +33,6 @@ public class CommentsMenu extends Menu {
     public void addComment(String title, String content) throws IOException {
         Comment comment = new Comment(Session.getOnlineAccount(), this.commodity, title, content,
                 hasBoughtThisCommodity());
-        this.commodity.getAllComments().add(comment);
         Request request = new Request(comment, Session.getOnlineAccount());
         YaDataManager.addRequest(request);
     }

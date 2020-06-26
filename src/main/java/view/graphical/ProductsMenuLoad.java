@@ -1,7 +1,6 @@
 package view.graphical;
 
 import controller.share.FilteringMenu;
-import controller.share.Menu;
 import controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,14 +13,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
-import model.account.BusinessAccount;
-import model.account.ManagerAccount;
-import model.account.PersonalAccount;
 import model.commodity.Commodity;
 import view.AudioPlayer;
 import view.commandline.View;
@@ -161,8 +156,8 @@ public class ProductsMenuLoad {
                     View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
                     View.commodityMenu.setCommodity(tmp);
                     View.digestMenu.setCommodity(tmp);
+                    View.commentsMenu.setCommodity(tmp);
                     changeMenuToProductMenu(mouseEvent, tmp);
-
                 }
             });
             imageView.setFitWidth(250);

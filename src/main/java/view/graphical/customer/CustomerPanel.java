@@ -23,6 +23,7 @@ public class CustomerPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        popupMenu.getContent().clear();
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());
     }
@@ -68,6 +69,7 @@ public class CustomerPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        popupMenu.getContent().clear();
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());
     }
@@ -79,6 +81,7 @@ public class CustomerPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        popupMenu.getContent().clear();
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());
     }

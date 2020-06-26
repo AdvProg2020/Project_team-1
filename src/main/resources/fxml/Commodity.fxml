@@ -10,35 +10,42 @@
         <Tab closable="false" styleClass="full-tab" text="Information">
             <BorderPane>
                 <left>
-                    <VBox prefHeight="600.0" prefWidth="550.0">
-                        <Label fx:id="commodityName" styleClass="scene-title" text="Commodity Name" wrapText="true" />
-                        <Label fx:id="commodityBrand" styleClass="hint-label" text="Brand" wrapText="true" />
+                    <VBox prefHeight="600.0" prefWidth="550.0" spacing="10.0">
+                        <Label fx:id="commodityName" styleClass="scene-title" text="Commodity Name" wrapText="true"/>
+                        <Label fx:id="commodityBrand" styleClass="hint-label" text="Brand" wrapText="true"/>
                         <HBox>
-                            <Label fx:id="commodityPriceAndRating" styleClass="hint-label" text="8,888,888,888,888 Rials,       Rating: " />
-                            <ImageView fx:id="star1" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                            <ImageView fx:id="star2" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                            <ImageView fx:id="star3" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                            <ImageView fx:id="star4" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                            <ImageView fx:id="star5" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                            <Label fx:id="commodityPriceAndRating" styleClass="hint-label"
+                                   text="8,888,888,888,888 Rials,       Rating: "/>
+                            <ImageView fx:id="star1" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                       preserveRatio="true"/>
+                            <ImageView fx:id="star2" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                       preserveRatio="true"/>
+                            <ImageView fx:id="star3" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                       preserveRatio="true"/>
+                            <ImageView fx:id="star4" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                       preserveRatio="true"/>
+                            <ImageView fx:id="star5" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                       preserveRatio="true"/>
                         </HBox>
                         <HBox>
-                            <Label fx:id="commodityDescription" styleClass="hint-label" text="Rate it: "
-                                   wrapText="true"/>
-                            <Button fx:id="starButton1" onAction="#rateOne" prefHeight="32.0" prefWidth="32.0"/>
-                            <Button fx:id="starButton2" onAction="#rateTwo" prefHeight="32.0" prefWidth="32.0"/>
-                            <Button fx:id="starButton3" onAction="#rateThree" prefHeight="32.0" prefWidth="32.0"/>
-                            <Button fx:id="starButton4" onAction="#rateFour" prefHeight="32.0" prefWidth="32.0"/>
-                            <Button fx:id="starButton5" onAction="#rateFive" prefHeight="32.0" prefWidth="32.0"/>
+                            <Label fx:id="rateIt" styleClass="hint-label" text="Rate it: " wrapText="true"/>
+                            <ImageView fx:id="starButton1" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#rateOne"/>
+                            <ImageView fx:id="starButton2" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#rateTwo"/>
+                            <ImageView fx:id="starButton3" fitHeight="32.0" fitWidth="32.0"
+                                       onMouseClicked="#rateThree"/>
+                            <ImageView fx:id="starButton4" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#rateFour"/>
+                            <ImageView fx:id="starButton5" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#rateFive"/>
                         </HBox>
+                        <Label fx:id="commodityDescription" styleClass="hint-label" text="Rate it: " wrapText="true"/>
                         <GridPane fx:id="fieldsGridPane" hgap="10.0" vgap="5.0" VBox.vgrow="SOMETIMES">
-                            <Label styleClass="hint-label" text="Category specifications" GridPane.columnSpan="2" />
+                            <Label styleClass="hint-label" text="Category specifications" GridPane.columnSpan="2"/>
                             <columnConstraints>
-                                <ColumnConstraints />
-                                <ColumnConstraints halignment="CENTER" />
-                                <ColumnConstraints halignment="CENTER" />
+                                <ColumnConstraints/>
+                                <ColumnConstraints halignment="CENTER"/>
+                                <ColumnConstraints halignment="CENTER"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints />
+                                <RowConstraints/>
                             </rowConstraints>
                         </GridPane>
                     </VBox>
@@ -62,25 +69,29 @@
             </BorderPane>
         </Tab>
         <Tab closable="false" styleClass="full-tab" text="Comments">
-            <ScrollPane>
+            <ScrollPane style="-fx-background-color: lightyellow">
                 <VBox spacing="10.0">
-                    <VBox fx:id="commentsVBox" prefWidth="500.0" />
+                    <VBox fx:id="commentsVBox" prefWidth="500.0"/>
                     <GridPane alignment="CENTER" hgap="5.0" prefWidth="500.0" vgap="5.0">
-                        <Label styleClass="hint-label" text="Title" />
-                        <Label styleClass="hint-label" text="Comment" GridPane.rowIndex="1" />
-                        <TextField fx:id="titleBox" alignment="CENTER" prefWidth="300.0" promptText="Title" styleClass="hint-label" GridPane.columnIndex="1" />
-                        <TextField fx:id="commentBox" alignment="CENTER" prefWidth="300.0" promptText="Comment" styleClass="hint-label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Button onAction="#addComment" styleClass="normal-button-Green" text="Submit comment" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                        <Label fx:id="error" styleClass="error-message-label" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                        <Label styleClass="hint-label" text="Title"/>
+                        <Label styleClass="hint-label" text="Comment" GridPane.rowIndex="1"/>
+                        <TextField fx:id="titleBox" alignment="CENTER" prefWidth="300.0" promptText="Title"
+                                   styleClass="hint-label" GridPane.columnIndex="1"/>
+                        <TextField fx:id="commentBox" alignment="CENTER" prefWidth="300.0" promptText="Comment"
+                                   styleClass="hint-label" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Button onAction="#addComment" styleClass="normal-button-Green" text="Submit comment"
+                                GridPane.columnSpan="2" GridPane.rowIndex="2"/>
+                        <Label fx:id="error" styleClass="error-message-label" textAlignment="CENTER" wrapText="true"
+                               GridPane.columnSpan="2" GridPane.rowIndex="3"/>
                         <columnConstraints>
-                            <ColumnConstraints halignment="CENTER" />
-                            <ColumnConstraints />
+                            <ColumnConstraints halignment="CENTER"/>
+                            <ColumnConstraints/>
                         </columnConstraints>
                         <rowConstraints>
-                            <RowConstraints />
-                            <RowConstraints />
-                            <RowConstraints />
-                            <RowConstraints />
+                            <RowConstraints/>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                            <RowConstraints/>
                         </rowConstraints>
                     </GridPane>
                 </VBox>

@@ -50,14 +50,14 @@ public class CartMenu extends Menu {
                 personalAccount.removeFromCart(commodity);
                 YaDataManager.removePerson(personalAccount);
                 YaDataManager.addPerson(personalAccount);
-                throw new Exception("successfully removed");
+                return;
             }
             int amount = personalAccount.getAmount(commodity) - 1;
             personalAccount.removeFromCart(commodity);
-            YaDataManager.removePerson(personalAccount);
             cart.put(commodity, amount);
+            YaDataManager.removePerson(personalAccount);
             YaDataManager.addPerson(personalAccount);
-            throw new Exception("successfully decreased");
+            return;
         }
         throw new Exception("this product isn't in your cart");
     }
@@ -70,7 +70,6 @@ public class CartMenu extends Menu {
         Commodity commodity = YaDataManager.getCommodityById(id);
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         HashMap<Commodity, Integer> cart = personalAccount.getCart();
-        YaDataManager.removePerson(personalAccount);
         if (personalAccount.hasThisInCart(commodity)) {
             int amount = personalAccount.getAmount(commodity);
             if (amount >= commodity.getInventory()) {
@@ -78,6 +77,7 @@ public class CartMenu extends Menu {
             }
             personalAccount.removeFromCart(commodity);
             cart.put(commodity, amount + 1);
+            YaDataManager.removePerson(personalAccount);
             YaDataManager.addPerson(personalAccount);
         }
         if (commodity.getInventory() == 0) {
