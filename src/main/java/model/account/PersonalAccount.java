@@ -105,8 +105,7 @@ public class PersonalAccount extends SimpleAccount {
             else
                 throw new Exception("We don't enough number of this commodity, excuse us");
         } else {
-            System.out.println(cart);
-            System.out.println(commodity);
+
             if (cart.get(commodity) < commodity.getInventory())
                 cart.put(commodity, cart.get(commodity) + 1);
             else

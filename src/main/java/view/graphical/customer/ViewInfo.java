@@ -1,16 +1,17 @@
 package view.graphical.customer;
 
+import controller.share.MenuHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import model.Session;
 import model.account.PersonalAccount;
 import view.commandline.View;
@@ -21,6 +22,13 @@ import java.util.ResourceBundle;
 public class ViewInfo implements Initializable {
     public AnchorPane pane;
     public ListView userInfo;
+    public Label label;
+
+    ObservableList<String> firstName;
+    ObservableList<String> lastName;
+    ObservableList<String> email;
+    ObservableList<String> phone;
+    ObservableList<String> userName;
 
     public void editFirstName(ActionEvent actionEvent) {
         TextField textField = getTextField("new first name");
@@ -32,7 +40,8 @@ public class ViewInfo implements Initializable {
                 try {
                     deleteButtonAndTextField(change, textField);
                     View.viewPersonalInfoMenu.editFirstName(textField.getText(), Session.getOnlineAccount());
-
+                    removeItems();
+                    addItems();
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }
@@ -41,38 +50,128 @@ public class ViewInfo implements Initializable {
     }
 
     public void editLastName(ActionEvent actionEvent) {
+        pane.getStylesheets().add("fxml/Common.css");
+        TextField textField = getTextField("new last name");
+        Button change = getButton();
+        pane.getChildren().add(change);
+        change.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    deleteButtonAndTextField(change, textField);
+                    View.viewPersonalInfoMenu.editLastName(textField.getText(), Session.getOnlineAccount());
+                    setLabel(Color.GREEN, "Last name successfully changed");
+                    updatePane();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                    setLabel(Color.RED, exception.getMessage());
+                }
+            }
+        });
     }
 
     public void editEmail(ActionEvent actionEvent) {
+        pane.getStylesheets().add("fxml/Common.css");
+        TextField textField = getTextField("new email");
+        Button change = getButton();
+        pane.getChildren().add(change);
+        change.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    deleteButtonAndTextField(change, textField);
+                    View.viewPersonalInfoMenu.editEmail(textField.getText(), Session.getOnlineAccount());
+                    setLabel(Color.GREEN, "Email successfully changed");
+                    updatePane();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                    setLabel(Color.RED, exception.getMessage());
+                }
+            }
+        });
     }
 
+
     public void editPhone(ActionEvent actionEvent) {
+        pane.getStylesheets().add("fxml/Common.css");
+        TextField textField = getTextField("new phone");
+        Button change = getButton();
+        pane.getChildren().add(change);
+        change.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    deleteButtonAndTextField(change, textField);
+                    View.viewPersonalInfoMenu.editPhoneNumber(textField.getText(), Session.getOnlineAccount());
+                    setLabel(Color.GREEN, "Phone successfully changed");
+                    updatePane();
+                } catch (Exception exception) {
+
+                    setLabel(Color.RED, exception.getMessage());
+                }
+            }
+        });
+    }
+
+    private void updatePane() {
+        removeItems();
+        addItems();
     }
 
     public void editPassword(ActionEvent actionEvent) {
+        pane.getStylesheets().add("fxml/Common.css");
+        PasswordField passwordField = new PasswordField();
+        passwordField.setLayoutX(400);
+        passwordField.setLayoutY(200);
+        pane.getChildren().add(passwordField);
+        Button change = getButton();
+        pane.getChildren().add(change);
+        change.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    pane.getChildren().remove(change);
+                    pane.getChildren().remove(passwordField);
+                    View.viewPersonalInfoMenu.editPassword(passwordField.getText(), Session.getOnlineAccount());
+                    setLabel(Color.GREEN, "Password successfully changed");
+                } catch (Exception exception) {
+                    setLabel(Color.RED, exception.getMessage());
+                }
+            }
+        });
+    }
+
+    private void setLabel(Color color, String text) {
+        label.setVisible(true);
+        label.setTextFill(color);
+        label.setText(text);
     }
 
     public void back(ActionEvent actionEvent) {
+        ((Node)actionEvent.getSource()).getScene().getWindow().hide();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<String> balance = null;
-        ObservableList<String> firstName = FXCollections.observableArrayList("First name: " +
+        addItems();
+    }
+
+    private void addItems() {
+        firstName = FXCollections.observableArrayList("First name: " +
                 Session.getOnlineAccount().getFirstName());
-        ObservableList<String> lastName = FXCollections.observableArrayList("Last name: " +
+        lastName = FXCollections.observableArrayList("Last name: " +
                 Session.getOnlineAccount().getLastName());
-        ObservableList<String> email = FXCollections.observableArrayList("Email: " +
+        email = FXCollections.observableArrayList("Email: " +
                 Session.getOnlineAccount().getEmail());
-        ObservableList<String> phone = FXCollections.observableArrayList("Phone: " +
+        phone = FXCollections.observableArrayList("Phone: " +
                 Session.getOnlineAccount().getPhoneNumber());
-        ObservableList<String> userName = FXCollections.observableArrayList("User name: " +
+        userName = FXCollections.observableArrayList("User name: " +
                 Session.getOnlineAccount().getUsername());
-        if (Session.getOnlineAccount() instanceof PersonalAccount) {
-            balance = FXCollections.observableArrayList("Balance: " +
-                    ((PersonalAccount) Session.getOnlineAccount()).getCredit());
-        }
-        userInfo.getItems().addAll(userName, firstName, lastName, email, phone, balance);
+        userInfo.getItems().addAll(userName, firstName, lastName, email, phone);
+    }
+
+    private void removeItems() {
+        userInfo.getItems().removeAll(userName, firstName, lastName, email, phone);
     }
 
     private TextField getTextField(String name) {
@@ -97,8 +196,6 @@ public class ViewInfo implements Initializable {
         pane.getChildren().remove(textField);
     }
 
-    public void editBalance(ActionEvent actionEvent) {
-    }
 
     public void onCloseClick(MouseEvent mouseEvent) {
         ((Node) mouseEvent.getSource()).getScene().getWindow().hide();
