@@ -43,6 +43,7 @@ public class ShowEditProduct {
         priceLabel.setText(String.valueOf(commodity.getPrice()));
         descriptionLabel.setText(commodity.getDescription());
         amountLabel.setText(String.valueOf(commodity.getInventory()));
+        productAvailability.setSelected(commodity.getCommodityAvailable());
     }
 
     public void onCancelClick(MouseEvent mouseEvent) {
@@ -105,7 +106,8 @@ public class ShowEditProduct {
     }
 
     public void onEditCategorySpecificationClick(MouseEvent mouseEvent) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/reseller/EditCategorySpecs.fxml"));
+        FXMLLoader loader =
+                new FXMLLoader(getClass().getResource("../../fxml/reseller/EditCategorySpecification.fxml"));
         Parent parent = null;
         Popup popup = new Popup();
         try {
