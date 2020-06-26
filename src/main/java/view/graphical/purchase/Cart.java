@@ -59,9 +59,9 @@ public class Cart implements Initializable {
                 imageView.setFitWidth(250);
                 imageView.setFitHeight(250);
                 commodityGridPane.add(imageView, 0, 0, 1, 4);
-                commodityGridPane.add(new ModifiedLabel("Name: " + commodity.getName()), 0, 1, 2, 1);
+                commodityGridPane.add(new ModifiedLabel("Name: " + commodity.getName()), 1, 0, 2, 1);
                 commodityGridPane.add(new ModifiedLabel("Number: " + account.getAmount(commodity) + ", Price: " + commodity.getPrice() + " Rials"), 1, 1, 2, 1);
-                commodityGridPane.add(new ModifiedLabel("Total price: " + account.getAmount(commodity) * commodity.getPrice()), 2, 1, 2, 1);
+                commodityGridPane.add(new ModifiedLabel("Total price: " + account.getAmount(commodity) * commodity.getPrice()), 1, 2, 2, 1);
                 Button plusButton = new Button();
                 plusButton.getStyleClass().add("plus-button");
                 plusButton.setOnAction(actionEvent -> {
@@ -73,7 +73,7 @@ public class Cart implements Initializable {
                         error.setText(e.getMessage());
                     }
                 });
-                commodityGridPane.add(plusButton, 3, 1);
+                commodityGridPane.add(plusButton, 1, 3);
                 Button minusButton = new Button();
                 minusButton.getStyleClass().add("minus-button");
                 minusButton.setOnAction(actionEvent -> {
@@ -85,8 +85,8 @@ public class Cart implements Initializable {
                         e.printStackTrace();
                     }
                 });
-                commodityGridPane.add(minusButton, 3, 2);
-                cartGridPane.add(commodityGridPane, counter / 2, counter % 2);
+                commodityGridPane.add(minusButton, 2, 3);
+                cartGridPane.add(commodityGridPane, counter % 2, counter / 2);
                 counter++;
             } catch (Exception e) {
                 e.printStackTrace();
