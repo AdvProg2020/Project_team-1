@@ -60,6 +60,6 @@ public class ManageResellerOffsMenu extends Menu {
                 (discountPercent == -1)?(oldOff.getDiscountPercent()):(discountPercent));
         Request request = new Request(newOff, businessAccount);
         YaDataManager.addRequest(request);
-        // Todo remove old off????????????
+        YaDataManager.removeOff(oldOff);
     }
 }
