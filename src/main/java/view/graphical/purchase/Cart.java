@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -29,6 +30,7 @@ public class Cart implements Initializable {
     public Label totalPrice;
     public GridPane cartGridPane;
     public Label error;
+    public ScrollPane scrollPane;
 
 
     public void pause(ActionEvent actionEvent) {
@@ -41,6 +43,9 @@ public class Cart implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (scrollPane.getContent() == null) {
+            scrollPane.setContent(cartGridPane);
+        }
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         totalPrice.setText("Total price: " + cartMenu.calculateTotalPrice() + " Rials");
         int counter = 0;
@@ -80,6 +85,9 @@ public class Cart implements Initializable {
                 minusButton.setOnMouseClicked(actionEvent -> {
                     try {
                         cartMenu.decrease(commodity.getCommodityId());
+                        if (account.getAmount(commodity) == 0) {
+                            scrollPane.setContent(null);
+                        }
                         initialize(url, resourceBundle);
                         error.setText("Decreased successfully");
                     } catch (Exception e) {

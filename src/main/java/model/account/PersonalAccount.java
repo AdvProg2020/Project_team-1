@@ -54,7 +54,7 @@ public class PersonalAccount extends SimpleAccount {
                 return cart.get(commodity1);
             }
         }
-        throw new Exception("this product is not in your cart");
+        return 0;
     }
 
     public HashMap<DiscountCode, Integer> discountCodeIntegerHashMap() {
