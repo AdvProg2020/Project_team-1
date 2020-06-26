@@ -54,7 +54,7 @@ public class ManageResellerOffs implements Initializable {
 
     public void onAddOffClick() {
         Parent parent = null;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/reseller/AddProductPopup.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/reseller/AddOffPopup.fxml"));
         try {
             parent = loader.load();
         } catch (IOException e) {
@@ -64,8 +64,6 @@ public class ManageResellerOffs implements Initializable {
         Scene scene = new Scene(parent);
         Stage stage = new Stage();
         stage.setScene(scene);
-        AddProduct addProduct = loader.getController();
-        addProduct.setStage(stage);
         stage.show();
     }
 
