@@ -19,6 +19,9 @@ public class CommentsMenu extends Menu {
     }
 
     public boolean hasBoughtThisCommodity() {
+        if (Session.getOnlineAccount() == null || !Session.getOnlineAccount().getAccountType().equals("personal")) {
+            return false;
+        }
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         for (BuyLog log : account.getBuyLogs()) {
             for (Commodity logCommodity : log.getCommodities()) {

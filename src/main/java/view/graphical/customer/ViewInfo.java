@@ -37,7 +37,7 @@ public class ViewInfo implements Initializable {
                 try {
                     deleteButtonAndTextField(change, textField);
                     View.viewPersonalInfoMenu.editFirstName(textField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN, "Last name successfully changed");
+                    setLabel(Color.GREEN, "First name successfully changed");
                     removeItems();
                     addItems();
                 } catch (Exception exception) {

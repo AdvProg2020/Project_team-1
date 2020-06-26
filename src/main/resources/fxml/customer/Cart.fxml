@@ -29,7 +29,7 @@
     <Label fx:id="error" alignment="CENTER" styleClass="error-message-label" textAlignment="CENTER" wrapText="true"
            AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="130.0"/>
     <ScrollPane prefWidth="1180.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
-                AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="160.0">
+                AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="160.0" fx:id="scrollPane">
         <GridPane fx:id="cartGridPane" hgap="20.0" translateX="10.0" translateY="60.0" vgap="20.0"/>
     </ScrollPane>
     <stylesheets>

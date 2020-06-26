@@ -186,7 +186,7 @@ public class CommodityPage implements Initializable {
         for (Comment comment : commodity.getAllComments()) {
             VBox commentVBox = new VBox();
             commentVBox.getChildren().addAll(new ModifiedLabel("Username: " + comment.getAccount().getUsername() +
-                            (commentsMenu.hasBoughtThisCommodity() ? ", is a buyer" : "isn't a buyer")),
+                            (commentsMenu.hasBoughtThisCommodity() ? ", is a buyer" : ", isn't a buyer")),
                     new ModifiedLabel("Title: " + comment.getTitle()), new ModifiedLabel(comment.getContent()));
             commentsVBox.getChildren().add(commentVBox);
         }
