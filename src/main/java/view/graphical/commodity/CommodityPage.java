@@ -206,7 +206,10 @@ public class CommodityPage implements Initializable {
         try {
             digestMenu.addToCart();
             addToCartLabel.setText("Added to cart successfully");
+            System.out.println("slaam");
         } catch (Exception e) {
+            System.out.println("slaam12 +" + e.getMessage());
+            e.printStackTrace();
             addToCartLabel.setText(e.getMessage());
         }
 

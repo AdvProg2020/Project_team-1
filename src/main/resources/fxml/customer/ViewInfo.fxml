@@ -11,7 +11,7 @@
         <Button mnemonicParsing="false" onAction="#editEmail" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit email" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="130.0" />
         <Button mnemonicParsing="false" onAction="#editPhone" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit phone number" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="190.0" />
         <Button mnemonicParsing="false" onAction="#editPassword" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit password" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="250.0" />
-        <Button mnemonicParsing="false" onAction="#editBalance" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit balance" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="310.0" />
         <Button mnemonicParsing="false" onAction="#back" onMouseClicked="#onCloseClick" styleClass="close-button" text="Close" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" />
+      <Label fx:id="label" layoutX="25.0" layoutY="375.0" prefHeight="39.0" prefWidth="289.0" styleClass="hint-label" text="Label" visible="false" />
     </children>
 </AnchorPane>

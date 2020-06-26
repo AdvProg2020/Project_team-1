@@ -22,8 +22,8 @@ public class DigestMenu extends Menu {
             throw new Exception("you have to login or register first");
         }
         PersonalAccount personalAccount = ((PersonalAccount) Session.getOnlineAccount());
-        YaDataManager.removePerson(personalAccount);
         personalAccount.addToCart(commodity);
+        YaDataManager.removePerson(personalAccount);
         YaDataManager.addPerson(personalAccount);
     }
 }

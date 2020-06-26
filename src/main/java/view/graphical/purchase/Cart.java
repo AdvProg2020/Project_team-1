@@ -7,12 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Session;
 import model.account.PersonalAccount;
@@ -21,6 +21,7 @@ import view.AudioPlayer;
 import view.commandline.View;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -58,9 +59,9 @@ public class Cart implements Initializable {
                 imageView.setFitWidth(250);
                 imageView.setFitHeight(250);
                 commodityGridPane.add(imageView, 0, 0, 1, 4);
-                commodityGridPane.add(new ModifiedLabel("Name: " + commodity.getName()), 0, 1, 2, 1);
+                commodityGridPane.add(new ModifiedLabel("Name: " + commodity.getName()), 1, 0, 2, 1);
                 commodityGridPane.add(new ModifiedLabel("Number: " + account.getAmount(commodity) + ", Price: " + commodity.getPrice() + " Rials"), 1, 1, 2, 1);
-                commodityGridPane.add(new ModifiedLabel("Total price: " + account.getAmount(commodity) * commodity.getPrice()), 2, 1, 2, 1);
+                commodityGridPane.add(new ModifiedLabel("Total price: " + account.getAmount(commodity) * commodity.getPrice()), 1, 2, 2, 1);
                 Button plusButton = new Button();
                 plusButton.getStyleClass().add("plus-button");
                 plusButton.setOnAction(actionEvent -> {
@@ -72,7 +73,7 @@ public class Cart implements Initializable {
                         error.setText(e.getMessage());
                     }
                 });
-                commodityGridPane.add(plusButton, 3, 1);
+                commodityGridPane.add(plusButton, 1, 3);
                 Button minusButton = new Button();
                 minusButton.getStyleClass().add("minus-button");
                 minusButton.setOnAction(actionEvent -> {
@@ -84,8 +85,8 @@ public class Cart implements Initializable {
                         e.printStackTrace();
                     }
                 });
-                commodityGridPane.add(minusButton, 3, 2);
-                cartGridPane.add(commodityGridPane, counter / 2, counter % 2);
+                commodityGridPane.add(minusButton, 2, 3);
+                cartGridPane.add(commodityGridPane, counter % 2, counter / 2);
                 counter++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -115,17 +116,15 @@ public class Cart implements Initializable {
     }
 
     public void goToGetInfoPage(ActionEvent actionEvent) {
-        Parent parent;
+        Parent parent = null;
+        Popup popupMenu = new Popup();
         try {
-            cartMenu.checkIsCommoditiesAvailable();
             parent = FXMLLoader.load(getClass().getResource("../../../fxml/customer/purchase/Information.fxml"));
-            Scene scene = new Scene(parent);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            Session.getSceneHandler().updateScene(stage);
-        } catch (Exception e) {
-            error.setText(e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        popupMenu.getContent().add(parent);
+        popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());
     }
 
     private static class ModifiedLabel extends Label {

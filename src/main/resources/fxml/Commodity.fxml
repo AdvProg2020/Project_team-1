@@ -1,141 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import java.net.URL?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1200.0"
-            xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="view.graphical.commodity.CommodityPage"
-            styleClass="background">
-    <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="600.0"
-             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.commodity.CommodityPage">
+    <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Tab closable="false" styleClass="full-tab" text="Information">
             <BorderPane>
                 <left>
                     <VBox prefHeight="600.0" prefWidth="550.0">
-                        <Label fx:id="commodityName" styleClass="scene-title" text="Commodity Name" wrapText="true"/>
-                        <Label fx:id="commodityBrand" styleClass="hint-label" text="Brand" wrapText="true"/>
+                        <Label fx:id="commodityName" styleClass="scene-title" text="Commodity Name" wrapText="true" />
+                        <Label fx:id="commodityBrand" styleClass="hint-label" text="Brand" wrapText="true" />
                         <HBox>
-                            <Label fx:id="commodityPriceAndRating" styleClass="hint-label"
-                                   text="8,888,888,888,888 Rials,       Rating: "/>
-                            <ImageView fx:id="star1" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                                       preserveRatio="true"/>
-                            <ImageView fx:id="star2" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                                       preserveRatio="true"/>
-                            <ImageView fx:id="star3" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                                       preserveRatio="true"/>
-                            <ImageView fx:id="star4" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                                       preserveRatio="true"/>
-                            <ImageView fx:id="star5" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                                       preserveRatio="true"/>
+                            <Label fx:id="commodityPriceAndRating" styleClass="hint-label" text="8,888,888,888,888 Rials,       Rating: " />
+                            <ImageView fx:id="star1" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                            <ImageView fx:id="star2" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                            <ImageView fx:id="star3" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                            <ImageView fx:id="star4" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                            <ImageView fx:id="star5" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                         </HBox>
                         <HBox>
-                            <Label fx:id="commodityDescription" styleClass="hint-label" text="Rate it: "
-                                   wrapText="true"/>
-                            <Button fx:id="starButton1" onAction="#rateOne" prefHeight="32.0" prefWidth="32.0"
-                                    styleClass="star-button"/>
-                            <Button fx:id="starButton2" onAction="#rateTwo" prefHeight="32.0" prefWidth="32.0"
-                                    styleClass="star-button"/>
-                            <Button fx:id="starButton3" onAction="#rateThree" prefHeight="32.0" prefWidth="32.0"
-                                    styleClass="star-button"/>
-                            <Button fx:id="starButton4" onAction="#rateFour" prefHeight="32.0" prefWidth="32.0"
-                                    styleClass="star-button"/>
-                            <Button fx:id="starButton5" onAction="#rateFive" prefHeight="32.0" prefWidth="32.0"
-                                    styleClass="star-button"/>
+                            <Label fx:id="commodityDescription" styleClass="hint-label" text="Rate it: " wrapText="true" />
+                            <Button fx:id="starButton1" onAction="#rateOne" prefHeight="32.0" prefWidth="32.0" styleClass="star-button" />
+                            <Button fx:id="starButton2" onAction="#rateTwo" prefHeight="32.0" prefWidth="32.0" styleClass="star-button" />
+                            <Button fx:id="starButton3" onAction="#rateThree" prefHeight="32.0" prefWidth="32.0" styleClass="star-button" />
+                            <Button fx:id="starButton4" onAction="#rateFour" prefHeight="32.0" prefWidth="32.0" styleClass="star-button" />
+                            <Button fx:id="starButton5" onAction="#rateFive" prefHeight="32.0" prefWidth="32.0" styleClass="star-button" />
                         </HBox>
                         <GridPane fx:id="fieldsGridPane" hgap="10.0" vgap="5.0" VBox.vgrow="SOMETIMES">
-                            <Label styleClass="hint-label" text="Category specifications" GridPane.columnSpan="2"/>
+                            <Label styleClass="hint-label" text="Category specifications" GridPane.columnSpan="2" />
                             <columnConstraints>
-                                <ColumnConstraints/>
-                                <ColumnConstraints halignment="CENTER"/>
-                                <ColumnConstraints halignment="CENTER"/>
+                                <ColumnConstraints />
+                                <ColumnConstraints halignment="CENTER" />
+                                <ColumnConstraints halignment="CENTER" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints/>
+                                <RowConstraints />
                             </rowConstraints>
                         </GridPane>
                     </VBox>
                 </left>
                 <bottom>
                     <HBox alignment="BOTTOM_CENTER" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
-                        <ChoiceBox fx:id="comparableCommodities" prefWidth="250.0" styleClass="text-field"/>
-                        <Button mnemonicParsing="false" onMouseClicked="#onCompareClick" styleClass="normal-button"
-                                text="Compare"/>
+                        <ChoiceBox fx:id="comparableCommodities" prefWidth="250.0" styleClass="text-field" />
+                        <Button mnemonicParsing="false" onMouseClicked="#onCompareClick" styleClass="normal-button" text="Compare" />
                         <VBox alignment="CENTER" prefWidth="150" spacing="5.0">
-                            <Label fx:id="addToCartLabel" styleClass="error-message-label" textAlignment="CENTER"
-                                   wrapText="true"/>
-                            <Button fx:id="addToCartButton" mnemonicParsing="false" onMouseClicked="#onAddClick"
-                                    styleClass="normal-button-Green" text="Add to cart"/>
+                            <Label fx:id="addToCartLabel" styleClass="error-message-label" textAlignment="CENTER" wrapText="true" />
+                            <Button fx:id="addToCartButton" mnemonicParsing="false" onMouseClicked="#onAddClick" styleClass="normal-button-Green" text="Add to cart" />
                         </VBox>
                     </HBox>
                 </bottom>
                 <BorderPane.margin>
-                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                 </BorderPane.margin>
                 <padding>
-                    <Insets bottom="20.0" left="10.0" right="15.0" top="10.0"/>
+                    <Insets bottom="20.0" left="10.0" right="15.0" top="10.0" />
                 </padding>
             </BorderPane>
         </Tab>
         <Tab closable="false" styleClass="full-tab" text="Comments">
             <ScrollPane>
                 <VBox spacing="10.0">
-                    <VBox fx:id="commentsVBox" prefWidth="500.0"/>
+                    <VBox fx:id="commentsVBox" prefWidth="500.0" />
                     <GridPane alignment="CENTER" hgap="5.0" prefWidth="500.0" vgap="5.0">
-                        <Label styleClass="hint-label" text="Title"/>
-                        <Label styleClass="hint-label" text="Comment" GridPane.rowIndex="1"/>
-                        <TextField fx:id="titleBox" alignment="CENTER" prefWidth="300.0" promptText="Title"
-                                   styleClass="hint-label" GridPane.columnIndex="1"/>
-                        <TextField fx:id="commentBox" alignment="CENTER" prefWidth="300.0" promptText="Comment"
-                                   styleClass="hint-label" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                        <Button onAction="#addComment" styleClass="normal-button-Green" text="Submit comment"
-                                GridPane.columnSpan="2" GridPane.rowIndex="2"/>
-                        <Label fx:id="error" styleClass="error-message-label" textAlignment="CENTER" wrapText="true"
-                               GridPane.columnSpan="2" GridPane.rowIndex="3"/>
+                        <Label styleClass="hint-label" text="Title" />
+                        <Label styleClass="hint-label" text="Comment" GridPane.rowIndex="1" />
+                        <TextField fx:id="titleBox" alignment="CENTER" prefWidth="300.0" promptText="Title" styleClass="hint-label" GridPane.columnIndex="1" />
+                        <TextField fx:id="commentBox" alignment="CENTER" prefWidth="300.0" promptText="Comment" styleClass="hint-label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button onAction="#addComment" styleClass="normal-button-Green" text="Submit comment" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                        <Label fx:id="error" styleClass="error-message-label" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                         <columnConstraints>
-                            <ColumnConstraints halignment="CENTER"/>
-                            <ColumnConstraints/>
+                            <ColumnConstraints halignment="CENTER" />
+                            <ColumnConstraints />
                         </columnConstraints>
                         <rowConstraints>
-                            <RowConstraints/>
-                            <RowConstraints/>
-                            <RowConstraints/>
-                            <RowConstraints/>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
                         </rowConstraints>
                     </GridPane>
                 </VBox>
             </ScrollPane>
         </Tab>
     </TabPane>
-    <Button mnemonicParsing="false" onAction="#play" prefHeight="48.0" prefWidth="52.0" styleClass="normal-button-Green"
-            text="▶" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
-    <Button mnemonicParsing="false" onAction="#pause" prefHeight="48.0" prefWidth="52.0" styleClass="normal-button"
-            text="⏸" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="20.0"/>
-    <ImageView fx:id="commodityImage" fitHeight="600.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true"
-               translateX="75.0" translateY="100.0">
-        <Image url="@../default-user-image.png"/>
+    <Button mnemonicParsing="false" onAction="#play" prefHeight="48.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+    <Button mnemonicParsing="false" onAction="#pause" prefHeight="48.0" prefWidth="52.0" styleClass="normal-button" text="⏸" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="20.0" />
+    <ImageView fx:id="commodityImage" fitHeight="600.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" translateX="75.0" translateY="100.0">
+        <Image url="@../default-user-image.png" />
     </ImageView>
-    <GridPane alignment="BOTTOM_CENTER" hgap="10.0" vgap="10.0" AnchorPane.bottomAnchor="20.0"
-              AnchorPane.leftAnchor="95.0" BorderPane.alignment="BOTTOM_CENTER">
-        <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onBackClick" styleClass="back-button"
-                text="Back" textAlignment="CENTER" GridPane.rowIndex="1"/>
-        <Button mnemonicParsing="false" onMouseClicked="#onProductsClick" styleClass="forward-button" text="Products"
-                GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <Button mnemonicParsing="false" onMouseClicked="#onUserPanelClick" styleClass="forward-button" text="User Panel"
-                GridPane.columnIndex="1"/>
-        <Button fx:id="logOutButton" alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onLogOutClick"
-                styleClass="logout-button" text="Log Out" textAlignment="CENTER"/>
+    <GridPane alignment="BOTTOM_CENTER" hgap="10.0" vgap="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="95.0" BorderPane.alignment="BOTTOM_CENTER">
+        <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onBackClick" styleClass="back-button" text="Back" textAlignment="CENTER" GridPane.rowIndex="1" />
+        <Button mnemonicParsing="false" onMouseClicked="#onProductsClick" styleClass="forward-button" text="Products" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Button mnemonicParsing="false" onMouseClicked="#onUserPanelClick" styleClass="forward-button" text="User Panel" GridPane.columnIndex="1" />
+        <Button fx:id="logOutButton" alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onLogOutClick" styleClass="logout-button" text="Log Out" textAlignment="CENTER" />
         <columnConstraints>
-            <ColumnConstraints/>
-            <ColumnConstraints/>
+            <ColumnConstraints />
+            <ColumnConstraints />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints/>
-            <RowConstraints/>
+            <RowConstraints />
+            <RowConstraints />
         </rowConstraints>
     </GridPane>
     <stylesheets>
-        <URL value="@Common.css"/>
+        <URL value="@Common.css" />
     </stylesheets>
 </AnchorPane>

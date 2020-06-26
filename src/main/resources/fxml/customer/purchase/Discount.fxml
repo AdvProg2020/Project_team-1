@@ -13,7 +13,7 @@
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
     </padding>
     <children>
-        <GridPane alignment="CENTER" hgap="10.0" layoutX="370.0" layoutY="364.0" vgap="10.0" prefWidth="500.0">
+        <GridPane alignment="CENTER" hgap="10.0" layoutX="370.0" layoutY="364.0" prefWidth="500.0" vgap="10.0">
             <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="150.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0"/>
@@ -24,16 +24,17 @@
             </rowConstraints>
             <children>
                 <Label alignment="CENTER" contentDisplay="CENTER" styleClass="hint-label" text="Discount code:"/>
-                <TextField alignment="CENTER" promptText="Discount Code" GridPane.columnIndex="1"
-                           fx:id="discountField"/>
-                <Label styleClass="error-message-label" fx:id="error" wrapText="true" textAlignment="CENTER"
+                <TextField fx:id="discountField" alignment="CENTER" promptText="Discount Code"
+                           GridPane.columnIndex="1"/>
+                <Label fx:id="error" styleClass="error-message-label"
                        text="If you don't want to use a discount code, just leave the text box empty"
-                       GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"/>
+                       textAlignment="CENTER" wrapText="true" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS"
+                       GridPane.rowIndex="1"/>
             </children>
         </GridPane>
-        <Button layoutX="32.0" layoutY="749.0" mnemonicParsing="false" styleClass="back-button" text="Back"
-                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" onAction="#back"/>
-        <Button layoutX="1106.0" layoutY="754.0" mnemonicParsing="false" styleClass="forward-button" text="Purchase"
-                AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" onAction="#purchase"/>
+        <Button layoutX="32.0" layoutY="749.0" mnemonicParsing="false" onAction="#back" styleClass="logout-button"
+                text="Close" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"/>
+        <Button layoutX="1106.0" layoutY="754.0" mnemonicParsing="false" onAction="#purchase"
+                styleClass="forward-button" text="Purchase" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
     </children>
 </AnchorPane>

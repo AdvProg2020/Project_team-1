@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="view.graphical.purchase.FinishPurchase">
+    <children>
+        <Label layoutX="188.0" layoutY="97.0" style="-fx-text-fill: limegreen;" styleClass="error-message-label"
+               text="You Purchased Successfully"/>
+        <Label layoutX="164.0" layoutY="144.0" styleClass="hint-label" text="Buyer:"/>
+        <Label layoutX="138.0" layoutY="185.0" styleClass="hint-label" text="Payed Money:"/>
+        <Label layoutX="87.0" layoutY="230.0" styleClass="hint-label" text="Reduced money on discount:"/>
+        <Label layoutX="139.0" layoutY="273.0" styleClass="hint-label" text="Dicount code:"/>
+        <VBox alignment="CENTER" layoutX="314.0" layoutY="137.0" prefHeight="168.0" prefWidth="190.0" spacing="15.0"
+              AnchorPane.leftAnchor="314.0" AnchorPane.topAnchor="137.0">
+            <children>
+                <Label fx:id="username" styleClass="hint-label" text="LLLLLLLLL"/>
+                <Label fx:id="payedMoney" styleClass="hint-label" text="8,888,888,888,888 Rials"/>
+                <Label fx:id="discountMoney" styleClass="hint-label" text="8,888,888,888,888 Rials"/>
+                <Label fx:id="discount" styleClass="hint-label" text="NOTHING"/>
+            </children>
+        </VBox>
+        <Button layoutX="187.0" layoutY="330.0" mnemonicParsing="false" styleClass="close-button" text="Close"
+                AnchorPane.bottomAnchor="10.0" onAction="#close"/>
+    </children>
+    <stylesheets>
+        <URL value="@../../Common.css"/>
+    </stylesheets>
+</AnchorPane>

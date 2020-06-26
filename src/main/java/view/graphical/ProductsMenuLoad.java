@@ -160,6 +160,7 @@ public class ProductsMenuLoad {
                 public void handle(MouseEvent mouseEvent) {
                     View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
                     View.commodityMenu.setCommodity(tmp);
+                    View.digestMenu.setCommodity(tmp);
                     changeMenuToProductMenu(mouseEvent, tmp);
 
                 }
