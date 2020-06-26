@@ -82,7 +82,7 @@ public class Cart implements Initializable {
                         initialize(url, resourceBundle);
                         error.setText("Decreased successfully");
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        error.setText(e.getMessage());
                     }
                 });
                 commodityGridPane.add(minusButton, 2, 3);

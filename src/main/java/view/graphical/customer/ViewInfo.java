@@ -1,6 +1,5 @@
 package view.graphical.customer;
 
-import controller.share.MenuHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,9 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import model.Session;
-import model.account.PersonalAccount;
 import view.commandline.View;
 
 import java.net.URL;
@@ -40,6 +37,7 @@ public class ViewInfo implements Initializable {
                 try {
                     deleteButtonAndTextField(change, textField);
                     View.viewPersonalInfoMenu.editFirstName(textField.getText(), Session.getOnlineAccount());
+                    setLabel(Color.GREEN, "Last name successfully changed");
                     removeItems();
                     addItems();
                 } catch (Exception exception) {

@@ -26,6 +26,7 @@ public class Comment implements Requestable {
 
     @Override
     public String toString() {
+        System.out.println(commodity);
         return "Comment{" +
                 "account=" + account.getUsername() +
                 ", commodity=" + commodity.getName() +

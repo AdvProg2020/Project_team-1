@@ -50,14 +50,12 @@ public class CartMenu extends Menu {
                 personalAccount.removeFromCart(commodity);
                 YaDataManager.removePerson(personalAccount);
                 YaDataManager.addPerson(personalAccount);
-                throw new Exception("successfully removed");
             }
             int amount = personalAccount.getAmount(commodity) - 1;
             personalAccount.removeFromCart(commodity);
             YaDataManager.removePerson(personalAccount);
             cart.put(commodity, amount);
             YaDataManager.addPerson(personalAccount);
-            throw new Exception("successfully decreased");
         }
         throw new Exception("this product isn't in your cart");
     }
