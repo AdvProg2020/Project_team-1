@@ -36,7 +36,12 @@ public class SceneHandler {
         return productsMenuLoad;
     }
 
+    public static OffMenu getOffMenu(){
+        return offMenu;
+    }
+
     private static final ProductsMenuLoad productsMenuLoad = new ProductsMenuLoad();
+    private static final OffMenu offMenu = new OffMenu();
     static {
         //MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
     }
@@ -45,6 +50,8 @@ public class SceneHandler {
 
         if (menu.getFxmlFileAddress().equals("../../Products.fxml"))
             productsMenuLoad.initializeProductsRoot(stage);
+        else if (menu.getFxmlFileAddress().equals("../../fxml/OffMenu.fxml"))
+            offMenu.initialize(stage);
         else {
             Parent root = null;
             try {

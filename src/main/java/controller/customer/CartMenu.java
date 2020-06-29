@@ -126,7 +126,7 @@ public class CartMenu extends Menu {
         }
         YaDataManager.removePerson(account);
         account.addToCredit(-price);
-        BuyLog buyLog = new BuyLog(new Date(), account.getCart().keySet(), price, calculateTotalPrice() -
+        BuyLog buyLog = new BuyLog(new Date(), new HashSet<>(account.getCart().keySet()), price, calculateTotalPrice() -
                 price, discountCode);
         account.addBuyLog(buyLog);
         reduceCommodityAmount(account.getCart());

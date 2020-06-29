@@ -68,6 +68,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
 
     public void addCommodity(Commodity commodity) {
         commodities.add(commodity);
+        System.out.println("mikhad mano add kone");
     }
 
     public ArrayList<Off> getOffs() {

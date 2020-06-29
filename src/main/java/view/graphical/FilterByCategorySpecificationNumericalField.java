@@ -1,5 +1,6 @@
 package view.graphical;
 
+import controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
@@ -50,9 +51,14 @@ public class FilterByCategorySpecificationNumericalField {
 
         try {
             View.filteringMenu.filter(new NumericalFilter(filterName, category , startRange, endRange, correspondingField));
-            SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
-            SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());
-
+            if (MenuHandler.getInstance().getCurrentMenu().getFxmlFileAddress().equals("../../Products.fxml")) {
+                SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+                SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+            }
+            if (MenuHandler.getInstance().getCurrentMenu().getFxmlFileAddress().equals("../../fxml/OffMenu.fxml")) {
+                SceneHandler.getOffMenu().deleteCommodities(SceneHandler.getOffMenu().getRoot());
+                SceneHandler.getOffMenu().setCommodities(SceneHandler.getOffMenu().getRoot());
+            }
         } catch (Exception exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.show();

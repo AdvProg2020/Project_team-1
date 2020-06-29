@@ -2,8 +2,10 @@ package controller.manager;
 
 import controller.data.YaDataManager;
 import controller.share.Menu;
+import model.account.PersonalAccount;
 import model.commodity.Comment;
 import model.commodity.Commodity;
+import model.commodity.DiscountCode;
 import model.commodity.Off;
 import model.share.Request;
 import model.share.Status;

@@ -32,7 +32,7 @@ public class PersonalAccount extends SimpleAccount {
         discountCodes = new HashMap<>();
         buyLogs = new ArrayList<>();
         cart = new HashMap<>();
-        credit = 0.0;
+        credit = 1000.0;
     }
 
     public void clearCart() {
@@ -71,9 +71,8 @@ public class PersonalAccount extends SimpleAccount {
 
     public void removeDiscountCode(DiscountCode discountCode) {
         for (DiscountCode code : discountCodes.keySet()) {
-            if (code.equals(discountCode)) {
+            if (code.getCode().equals(discountCode.getCode())) {
                 discountCodes.remove(code);
-                return;
             }
         }
     }

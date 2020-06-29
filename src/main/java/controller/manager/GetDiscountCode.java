@@ -107,7 +107,6 @@ public class GetDiscountCode extends Menu {
             for (DiscountCode code : account.getDiscountCodes()) {
                 if (code.getCode().equalsIgnoreCase(discountCode.getCode())) {
                     account.removeDiscountCode(discountCode);
-                    return;
                 }
             }
             updateAccounts(discountCode);

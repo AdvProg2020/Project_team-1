@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -15,7 +16,9 @@ import view.commandline.View;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import static view.graphical.holyManager.CreateDiscountCode.informationAlert;
@@ -50,6 +53,7 @@ public class EditDiscountCode extends ViewDiscountCode implements Initializable 
         maximumDiscountPercentage.setText(String.valueOf(discountCode.getDiscountPercentage()));
         maximumDiscountPrice.setText(String.valueOf(discountCode.getMaximumDiscountPrice()));
         maximumNumberOfUses.setText(String.valueOf(discountCode.getMaximumNumberOfUses()));
+
         try {
             View.getDiscountCode.deleteDiscountCode(discountCode);
         } catch (Exception exception) {
@@ -65,6 +69,22 @@ public class EditDiscountCode extends ViewDiscountCode implements Initializable 
         if (CreateDiscountCode.createDiscountCode(code, startDate, finishDate, maximumDiscountPercentage, maximumDiscountPrice, maximumNumberOfUses, errorLabel, "Discount code successfully edited.")) {
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
             Session.getSceneHandler().updateScene(stage);
+        }
+        try {
+            View.getDiscountCode.changeCode(code.getText(),discountCode);
+            View.getDiscountCode.changeDiscountPercentage(Integer.parseInt(maximumDiscountPercentage.getText()), discountCode);
+            View.getDiscountCode.changeMaximumNumberOfUses(Integer.parseInt(maximumNumberOfUses.getText()),discountCode);
+            View.getDiscountCode.changeDiscountPercentage(Integer.parseInt(maximumDiscountPercentage.getText()),discountCode);
+            View.getDiscountCode.changeDiscountPercentage(Integer.parseInt(maximumDiscountPercentage.getText()),discountCode);
+            SimpleDateFormat format= new SimpleDateFormat("dd-MM-yyyy");
+            Date startDateAsli =  format.parse(startDate.getText());
+            Date finishDateASli = format.parse(finishDate.getText());
+            View.getDiscountCode.changeFinishDate(finishDateASli , discountCode);
+            View.getDiscountCode.changeStartDate(startDateAsli , discountCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

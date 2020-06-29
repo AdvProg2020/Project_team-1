@@ -1,6 +1,7 @@
 package view.graphical;
 
 import controller.data.YaDataManager;
+import controller.share.FilteringMenu;
 import controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -8,10 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -24,6 +23,7 @@ import model.Session;
 import model.commodity.Commodity;
 import model.commodity.Off;
 import view.commandline.View;
+import view.graphical.holyManager.HolyManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,26 +31,48 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class OffMenu implements Initializable {
+public class OffMenu extends HolyManager {
 
-    public AnchorPane root;
-    private int count = 0;
-    private int blockIncrement = 2;
+    private Pane root;
 
-    public void mainMenu(ActionEvent actionEvent) {
-        View.mainMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.mainMenu);
-        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+
+    private void setMainMenuButton(Pane root) {
+        Button mainMenu = new Button("Main menu");
+        mainMenu.getStyleClass().add("normal-button");
+        mainMenu.setMinWidth(100);
+        mainMenu.setMinHeight(30);
+        mainMenu.setLayoutX(270);
+        mainMenu.setLayoutY(0);
+        root.getChildren().add(mainMenu);
+        mainMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                View.mainMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+                MenuHandler.getInstance().setCurrentMenu(View.mainMenu);
+                Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+            }
+        });
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        setFilterMenuButton(root);
+
+    public void initialize(Stage stage) {
+        root = new Pane();
+        root.setStyle("-fx-background-image: url(bg.jpg); -fx-background-size: stretch");
+        root.getStylesheets().add("fxml/Common.css");
         try {
+            setFilterMenuButton(root);
+            setMainMenuButton(root);
             setCommodities(root);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(root);
+        scrollPane.setFitToWidth(true);
+        stage.setScene(new Scene(scrollPane));
+
     }
 
     private void setFilterMenuButton(Pane root) {
@@ -92,58 +114,103 @@ public class OffMenu implements Initializable {
         });
     }
 
+    public Pane getRoot() {
+        return root;
+    }
+
+    public void deleteCommodities(Pane root) {
+        for (int i = 0; i < root.getChildren().size(); i++) {
+            if (root.getChildren().get(i).getLayoutY() > 40) {
+                root.getChildren().remove(root.getChildren().get(i));
+                i--;
+            }
+        }
+    }
+
+    public boolean checkCommodity(Commodity commodityMain) {
+        try {
+            ArrayList<Off> offs = YaDataManager.getOffs();
+            for (Off off : offs) {
+                for (Commodity commodity : off.getCommodities()) {
+                    if (commodity.getCommodityId() == commodityMain.getCommodityId() && off.isActive())
+                        return true;
+                }
+            }
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Off getOffWithCommodity(Commodity commodityMain){
+        try {
+            ArrayList<Off> offs = YaDataManager.getOffs();
+            for (Off off : offs) {
+                for (Commodity commodity : off.getCommodities()) {
+                    if (commodity.getCommodityId() == commodityMain.getCommodityId() && off.isActive())
+                        return off;
+                }
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void setCommodities(Pane root) throws Exception {
         int i = 0;
         int j = 100;
-        ArrayList<Off> offs = YaDataManager.getOffs();
-        for (Off off : offs) {
-            ArrayList<Commodity> commodities = off.getCommodities();
-            if (off.isActive()) {
-                for (int p = 0; p < commodities.size(); p++) {
-                    System.out.println(commodities.get(p).getImagePath());
-                    FileInputStream inputStream = new FileInputStream(commodities.get(p).getImagePath());
-                    Image image = new Image(inputStream);
-                    ImageView imageView = new ImageView(image);
-                    int finalP = p;
-                    Commodity tmp = commodities.get(finalP);
-                    imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent mouseEvent) {
-                            View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-                            View.commodityMenu.setCommodity(tmp);
-                            View.digestMenu.setCommodity(tmp);
-                            changeMenuToProductMenu(mouseEvent, tmp);
-                        }
-                    });
-                    imageView.setFitWidth(250);
-                    imageView.setFitHeight(250);
-                    imageView.setLayoutX(i);
-                    imageView.setLayoutY(j);
-                    root.getChildren().add(imageView);
-                    Label name = createLabel(i + 300, j, "Name", commodities.get(p).getName(), false);
-                    Label price = createLabel(i + 300, j + 50, "Price", String.valueOf(commodities.get(p).getPrice()), false);
-                    Label score = createLabel(i + 300, j + 100, "Score", String.valueOf(commodities.get(p).getAverageScore()), false);
-                    Label start_date = createLabel(i + 300, j + 150 , "Start date" , off.getStartTime().toString(),false );
-                    Label finish_date = createLabel(i + 300, j + 200 , "Finish date" , off.getEndTime().toString(),false );
-                    Label remainingTime = createLabel(i + 300 , j + 250 , "Remaining time" , String.valueOf(off.getEndTime().getTime() - off.getStartTime().getTime()),false );
-                    Label discount = createLabel(i+300 , j + 300 , "Discount" , String.valueOf(off.getDiscountPercent()) , false);
-                    if (commodities.get(p).getInventory() == 0) {
-                        Label inventory = createLabel(i + 300, j + 150, "Inventory", "0", true);
-                        root.getChildren().add(inventory);
+        ArrayList<Commodity> commodities = View.productsMenu.getProducts();
+        for (int p = 0; p < commodities.size(); p++) {
+            if (checkCommodity(commodities.get(p))) {
+                Off off = getOffWithCommodity(commodities.get(p));
+                System.out.println(commodities.get(p).getImagePath());
+                FileInputStream inputStream = new FileInputStream(commodities.get(p).getImagePath());
+                Image image = new Image(inputStream);
+                ImageView imageView = new ImageView(image);
+                int finalP = p;
+                Commodity tmp = commodities.get(finalP);
+                imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+                        View.commodityMenu.setCommodity(tmp);
+                        View.digestMenu.setCommodity(tmp);
+                        changeMenuToProductMenu(mouseEvent, tmp);
                     }
-                    root.getChildren().add(score);
-                    root.getChildren().add(name);
-                    root.getChildren().add(price);
-                    root.getChildren().add(start_date);
-                    root.getChildren().add(finish_date);
-                    root.getChildren().add(remainingTime);
-                    root.getChildren().add(discount);
-                    if (i >= 500) {
-                        i = -500;
-                        j += 500;
-                    }
-                    i += 500;
+                });
+                imageView.setFitWidth(250);
+                imageView.setFitHeight(250);
+                imageView.setLayoutX(i);
+                imageView.setLayoutY(j);
+                root.getChildren().add(imageView);
+                Label name = createLabel(i + 300, j, "Name", commodities.get(p).getName(), false);
+                Label price = createLabel(i + 300, j + 50, "Price", String.valueOf(commodities.get(p).getPrice()), false);
+                Label score = createLabel(i + 300, j + 100, "Score", String.valueOf(commodities.get(p).getAverageScore()), false);
+                Label start_date = createLabel(i + 300, j + 150, "Start date", off.getStartTime().toString(), false);
+                Label finish_date = createLabel(i + 300, j + 200, "Finish date", off.getEndTime().toString(), false);
+                Label remainingDay = createLabel(i + 300, j + 250, "Remaining day", String.valueOf((off.getEndTime().getTime() - off.getStartTime().getTime()) / (24 * 60 * 60 * 1000)), false);
+                Label remainingHours = createLabel(i + 300, j + 300, "Remaining hours", String.valueOf((off.getEndTime().getTime() - off.getStartTime().getTime()) / (60 * 60 * 1000)), false);
+                Label discount = createLabel(i + 300, j + 350, "Discount", String.valueOf(off.getDiscountPercent()), false);
+                if (commodities.get(p).getInventory() == 0) {
+                    Label inventory = createLabel(i + 300, j + 150, "Inventory", "0", true);
+                    root.getChildren().add(inventory);
                 }
+                root.getChildren().add(score);
+                root.getChildren().add(name);
+                root.getChildren().add(price);
+                root.getChildren().add(start_date);
+                root.getChildren().add(finish_date);
+                root.getChildren().add(remainingDay);
+                root.getChildren().add(discount);
+                root.getChildren().add(remainingHours);
+                if (i >= 700) {
+                    i = -700;
+                    j += 600;
+                }
+                i += 700;
             }
         }
         setLogoutButton(root);

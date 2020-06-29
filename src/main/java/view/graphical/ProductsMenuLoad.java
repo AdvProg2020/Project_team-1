@@ -1,5 +1,6 @@
 package view.graphical;
 
+import controller.data.YaDataManager;
 import controller.share.FilteringMenu;
 import controller.share.MenuHandler;
 import javafx.event.ActionEvent;

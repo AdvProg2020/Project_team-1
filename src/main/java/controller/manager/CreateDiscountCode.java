@@ -40,7 +40,7 @@ public class CreateDiscountCode extends Menu {
     public void createDiscountCodeNC(String code , String stringStart , String stringFinish ,
                                      String discountPercentageString , String maximumDiscountPriceString , String maximumNumberOfUseString) throws Exception {
         checkCode(code);
-        SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         Date start = null;
         try {
             start = format.parse(stringStart);

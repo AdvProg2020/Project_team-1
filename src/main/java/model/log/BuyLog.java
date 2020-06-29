@@ -7,6 +7,7 @@ import model.commodity.DiscountCode;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 public class BuyLog extends TransactionLog {
@@ -22,7 +23,7 @@ public class BuyLog extends TransactionLog {
         this.payedMoney = payedMoney;
         this.deductedMoney = deductedMoney;
         this.discountByCode = discountByCode;
-        this.sellers = null;
+        this.sellers = new HashSet<>();
         for (Commodity commodity : commodities) {
             sellers.add((BusinessAccount) commodity.getSeller());
         }

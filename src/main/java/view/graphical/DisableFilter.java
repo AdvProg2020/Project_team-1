@@ -1,6 +1,7 @@
 package view.graphical;
 
 import controller.share.FilteringMenu;
+import controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -25,9 +26,14 @@ public class DisableFilter implements Initializable {
             if (checkBox.isSelected()){
                 try {
                     View.filteringMenu.disableFilter(checkBox.getText());
-                    SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
-                    SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());
-
+                    if (MenuHandler.getInstance().getCurrentMenu().getFxmlFileAddress().equals("../../Products.fxml")) {
+                        SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+                        SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+                    }
+                    if (MenuHandler.getInstance().getCurrentMenu().getFxmlFileAddress().equals("../../fxml/OffMenu.fxml")) {
+                        SceneHandler.getOffMenu().deleteCommodities(SceneHandler.getOffMenu().getRoot());
+                        SceneHandler.getOffMenu().setCommodities(SceneHandler.getOffMenu().getRoot());
+                    }
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }

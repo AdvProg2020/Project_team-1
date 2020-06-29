@@ -24,6 +24,10 @@ public class FilteringMenu extends Menu {
 
     private static ArrayList<Commodity> filteredCommodities;
 
+    public static void setFilteredCommodities(ArrayList<Commodity> filteredCommodities) {
+        FilteringMenu.filteredCommodities = filteredCommodities;
+    }
+
     static {
         try {
             filteredCommodities = new ArrayList<Commodity>(YaDataManager.getCommodities());

@@ -1,5 +1,6 @@
 package view.graphical;
 
+import controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -12,8 +13,14 @@ public class FilterByName {
         String nameString = name.getText();
         try {
             View.filteringMenu.filter(new model.filter.FilterByName("Filter by name " + nameString, nameString));
-            SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
-            SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+            if (MenuHandler.getInstance().getCurrentMenu().getFxmlFileAddress().equals("../../Products.fxml")) {
+                SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+                SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());
+            }
+            if (MenuHandler.getInstance().getCurrentMenu().getFxmlFileAddress().equals("../../fxml/OffMenu.fxml")) {
+                SceneHandler.getOffMenu().deleteCommodities(SceneHandler.getOffMenu().getRoot());
+                SceneHandler.getOffMenu().setCommodities(SceneHandler.getOffMenu().getRoot());
+            }
             name.getScene().getWindow().hide();
         } catch (Exception exception) {
             exception.printStackTrace();
