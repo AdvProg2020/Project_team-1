@@ -37,7 +37,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         sellLogs = new ArrayList<SellLog>();
         commodities = new ArrayList<Commodity>();
         offs = new ArrayList<Off>();
-        credit = 0;
+        credit = 1000;
         status = Status.UNDER_CHECKING_FOR_CREATE;
     }
 

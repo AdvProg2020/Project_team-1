@@ -1,7 +1,6 @@
 package model.log;
 
 import model.account.BusinessAccount;
-import model.account.SimpleAccount;
 import model.commodity.Commodity;
 import model.commodity.DiscountCode;
 

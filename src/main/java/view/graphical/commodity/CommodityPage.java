@@ -82,28 +82,28 @@ public class CommodityPage implements Initializable {
         try {
             if (commodity.getAverageScore() < 4.5) {
                 star5.setImage(new Image(emptyStarAddress));
-                if (commodity.getAverageScore() < 3.5) {
-                    star4.setImage(new Image(emptyStarAddress));
-                    if (commodity.getAverageScore() < 2.5) {
-                        star3.setImage(new Image(emptyStarAddress));
-                        if (commodity.getAverageScore() < 1.5) {
-                            star2.setImage(new Image(emptyStarAddress));
-                            if (commodity.getAverageScore() < 0.5) {
-                                star1.setImage(new Image(emptyStarAddress));
-                            } else {
-                                star1.setImage(new Image(fullStarAddress));
-                            }
-                        } else {
-                            star2.setImage(new Image(fullStarAddress));
-                        }
-                    } else {
-                        star3.setImage(new Image(fullStarAddress));
-                    }
-                } else {
-                    star4.setImage(new Image(fullStarAddress));
-                }
             } else {
                 star5.setImage(new Image(fullStarAddress));
+            }
+            if (commodity.getAverageScore() < 3.5) {
+                star4.setImage(new Image(emptyStarAddress));
+            } else {
+                star4.setImage(new Image(fullStarAddress));
+            }
+            if (commodity.getAverageScore() < 2.5) {
+                star3.setImage(new Image(emptyStarAddress));
+            } else {
+                star3.setImage(new Image(fullStarAddress));
+            }
+            if (commodity.getAverageScore() < 1.5) {
+                star2.setImage(new Image(emptyStarAddress));
+            } else {
+                star2.setImage(new Image(fullStarAddress));
+            }
+            if (commodity.getAverageScore() < 0.5) {
+                star1.setImage(new Image(emptyStarAddress));
+            } else {
+                star1.setImage(new Image(fullStarAddress));
             }
         } catch (Exception e) {
             e.printStackTrace();
