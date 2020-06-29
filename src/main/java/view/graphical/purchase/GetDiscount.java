@@ -29,7 +29,7 @@ public class GetDiscount {
             Parent parent = null;
             Popup popupMenu = new Popup();
             try {
-                parent = FXMLLoader.load(getClass().getResource("../../../fxml/customer/purchase/Discount.fxml"));
+                parent = FXMLLoader.load(getClass().getResource("../../../fxml/customer/purchase/FinishPurchase.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

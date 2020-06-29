@@ -32,7 +32,7 @@ public class PersonalAccount extends SimpleAccount {
         discountCodes = new HashMap<>();
         buyLogs = new ArrayList<>();
         cart = new HashMap<>();
-        credit = 0.0;
+        credit = 1000.0;
     }
 
     public void clearCart() {
