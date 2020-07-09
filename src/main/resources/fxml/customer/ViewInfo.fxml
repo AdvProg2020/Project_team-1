@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="pane" prefHeight="600.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.customer.ViewInfo">
+<AnchorPane fx:id="pane" prefHeight="600.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.customer.ViewInfo">
     <children>
         <ListView fx:id="userInfo" layoutX="12.0" layoutY="12.0" prefHeight="168.0" prefWidth="400.0" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="11.0" />
         <Button mnemonicParsing="false" onAction="#editFirstName" prefHeight="48.0" prefWidth="250.0" styleClass="normal-button" text="Edit first name" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />

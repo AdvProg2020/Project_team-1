@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" minHeight="400.0" minWidth="400.0" styleClass="popup-pane"
             stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="view.graphical.customer.OrdersHistory">
+            fx:controller="client.view.graphical.customer.OrdersHistory">
     <bottom>
         <Button alignment="CENTER" mnemonicParsing="false" onAction="#onCloseClick" styleClass="close-button"
                 text="Close" BorderPane.alignment="CENTER"/>

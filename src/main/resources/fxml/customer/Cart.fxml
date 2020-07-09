@@ -5,7 +5,7 @@
 <?import java.net.URL?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1200.0"
             styleClass="background" xmlns="http://javafx.com/javafx/10.0.2-internal"
-            fx:controller="view.graphical.purchase.Cart">
+            fx:controller="client.view.graphical.purchase.Cart">
     <Button mnemonicParsing="false" onAction="#play" prefHeight="48.0" prefWidth="52.0" styleClass="normal-button-Green"
             text="▶" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>
     <Button mnemonicParsing="false" onAction="#pause" prefHeight="48.0" prefWidth="52.0" styleClass="normal-button"

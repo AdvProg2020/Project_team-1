@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="pane" prefHeight="606.0" prefWidth="1433.0" styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.ManageRequests">
+<AnchorPane fx:id="pane" prefHeight="606.0" prefWidth="1433.0" styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.holyManager.ManageRequests">
    <children>
       <Button mnemonicParsing="false" onAction="#viewPersonalInfo" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View personal info" />
       <Button layoutY="61.0" mnemonicParsing="false" onAction="#manageUsers" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage users" />
@@ -29,6 +29,6 @@
       <Button layoutX="1196.0" layoutY="15.0" mnemonicParsing="false" onAction="#play" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
       <Button layoutX="1258.0" layoutY="15.0" mnemonicParsing="false" onAction="#pause" styleClass="normal-button" text="⏸" />
       <Button layoutX="1184.0" layoutY="542.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
-      <Button onAction="#goToMainMenu" layoutX="1184.0" layoutY="474.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="Main menu" />
+      <Button onAction="#goToMainMenu" layoutX="1184.0" layoutY="474.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="client.Main menu" />
    </children>
 </AnchorPane>

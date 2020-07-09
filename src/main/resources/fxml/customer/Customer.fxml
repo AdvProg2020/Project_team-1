@@ -5,7 +5,7 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1200.0" styleClass="background"
             stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal"
-            fx:controller="view.graphical.customer.CustomerPanel">
+            fx:controller="client.view.graphical.customer.CustomerPanel">
     <children>
         <Label styleClass="scene-title" text="Customer Panel" AnchorPane.leftAnchor="489.0" AnchorPane.topAnchor="20.0">
             <font>

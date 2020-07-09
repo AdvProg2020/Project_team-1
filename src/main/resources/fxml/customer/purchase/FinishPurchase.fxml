@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane"
-            xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="view.graphical.purchase.FinishPurchase">
+            xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="client.view.graphical.purchase.FinishPurchase">
     <children>
         <Label layoutX="188.0" layoutY="97.0" style="-fx-text-fill: limegreen;" styleClass="error-message-label"
                text="You Purchased Successfully"/>
