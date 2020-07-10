@@ -1,13 +1,10 @@
 package server.controller.manager;
 
+import common.model.account.*;
 import server.controller.share.Menu;
 import server.controller.share.MenuHandler;
 import client.Session;
 import server.data.YaDataManager;
-import common.model.account.BusinessAccount;
-import common.model.account.ManagerAccount;
-import common.model.account.PersonalAccount;
-import common.model.account.SimpleAccount;
 import client.view.commandline.View;
 
 import java.io.IOException;
@@ -22,6 +19,16 @@ public class ManageUsersMenu extends Menu {
             throw new Exception("This email is unavailable");
         }
         YaDataManager.addManager(managerAccount);
+    }
+
+    public void createNewSupport(SupportAccount supportAccount) throws Exception {
+        if (YaDataManager.isUsernameExist(supportAccount.getUsername())) {
+            throw new Exception("Invalid username");
+        }
+        if (checkEmail(supportAccount.getEmail())) {
+            throw new Exception("This email is unavailable");
+        }
+        YaDataManager.addSupport(supportAccount);
     }
 
     public ManageUsersMenu() {
@@ -43,6 +50,12 @@ public class ManageUsersMenu extends Menu {
                 return true;
             }
         }
+
+        for (SupportAccount support : YaDataManager.getSupports()) {
+            if (support.getEmail().equalsIgnoreCase(email))
+                return true;
+        }
+
         return false;
     }
 

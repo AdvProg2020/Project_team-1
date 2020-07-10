@@ -1,5 +1,6 @@
 package client.view.commandline;
 
+import server.controller.SupportMenu;
 import server.controller.commodity.CommentsMenu;
 import server.controller.commodity.DigestMenu;
 import server.controller.customer.CartMenu;
@@ -60,6 +61,7 @@ public class View {
     public static final SortingMenu sortingMenu = new SortingMenu();
     public static final CreateDiscountCode createDiscountCode = new CreateDiscountCode();
     public static final ManageAllProducts manageAllProducts = new ManageAllProducts();
+    public static final SupportMenu supportMenu = new SupportMenu();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {

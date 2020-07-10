@@ -1,5 +1,6 @@
 package client.view.graphical.holyManager;
 
+import common.model.account.SupportAccount;
 import server.data.YaDataManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,6 +35,9 @@ public class ManagerUsers extends HolyManager implements Initializable {
             for (PersonalAccount person : YaDataManager.getPersons()) {
                 item.add(person.getInformation());
             }
+            for (SupportAccount support : YaDataManager.getSupports()) {
+                item.add(support.getInformation());
+            }
             usersInfo.setItems(item);
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,5 +54,9 @@ public class ManagerUsers extends HolyManager implements Initializable {
 
     public void addManager(ActionEvent actionEvent) {
         newPopup(actionEvent, "../../../../fxml/HolyManager/AddManager.fxml");
+    }
+
+    public void addSupportAccount(ActionEvent actionEvent) {
+        newPopup(actionEvent , "../../../../fxml/HolyManager/AddSupportAccount.fxml");
     }
 }
