@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class MoHoBank {
     private static Scanner scanner = new Scanner(System.in);
@@ -25,12 +26,12 @@ public class MoHoBank {
         System.out.printf("\t%s (In local network)\n", InetAddress.getLocalHost().getHostAddress());
         System.out.println("Use Ctrl+C to stop bank server");
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        while (debug) {
+        while (true) {
             try {
                 new HandleBankClient(bankServerSocket.accept(), debug).start();
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Error: Unable to create data stream from socket");
+                System.err.println("Error: Unable to create data stream from socket");
             }
         }
     }
@@ -66,31 +67,64 @@ public class MoHoBank {
                     request = inputStream.readUTF();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    System.out.println("Error: Unable to get request from client");
+                    System.err.println("Error: Unable to get request from client. Closing socket ...");
+                    break;
                 }
                 try {
                     if (request.startsWith("create_account")) {
                         createAccount(request.split(" "));
                     } else if (request.startsWith("get_token")) {
-
+                        getToken(request.split(" "));
                     } else if (request.startsWith("create_receipt")) {
-
+                        createReceipt(request.split(" "));
                     } else if (request.startsWith("get_transactions")) {
-
+                        getTransactions(request.split(" "));
                     } else if (request.startsWith("pay")) {
-
+                        pay(request.split(" "));
                     } else if (request.startsWith("get_balance")) {
-
+                        getBalance(request.split(" "));
                     } else if (request.equals("exit")) {
                         run = false;
                     } else {
                         sendInvalidInput();
                     }
                 } catch (SQLException e) {
+                    e.printStackTrace();
                     sendDatabaseError();
                 }
             }
             closeConnectionToClient();
+        }
+
+        private void getBalance(String[] separatedInput) {
+
+        }
+
+        private void pay(String[] separatedInput) {
+
+        }
+
+        private void getTransactions(String[] separatedInput) {
+
+        }
+
+        private void createReceipt(String[] separatedInput) {
+            //AuthenticationToken authToken = bankDataBase.get
+        }
+
+        private void getToken(String[] separatedInput) throws SQLException {
+            BankAccount bankAccount = bankDataBase.getAccount(separatedInput[1]);
+            if (bankAccount == null || !bankAccount.getPassword().equals(separatedInput[2])) {
+                sendResponse("invalid username or password");
+                return;
+            }
+            sendResponse(generateNewToken(bankAccount.getId()));
+        }
+
+        private String generateNewToken(int accountId) throws SQLException {
+            AuthenticationToken authToken = new AuthenticationToken(accountId);
+            bankDataBase.addAuthenticationToken(authToken);
+            return authToken.getUuid();
         }
 
         private void closeConnectionToClient() {
@@ -100,7 +134,7 @@ public class MoHoBank {
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Error: Unable to close client socket");
+                System.err.println("Error: Unable to close client socket");
             }
         }
 
@@ -131,7 +165,8 @@ public class MoHoBank {
                 outputStream.writeUTF(response);
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Error: Unable to send response to client");
+                System.err.println("Error: Unable to send response to client. Closing socket ...");
+                closeConnectionToClient();
             }
         }
     }
