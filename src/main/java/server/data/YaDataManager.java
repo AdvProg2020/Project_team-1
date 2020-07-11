@@ -3,11 +3,8 @@ package server.data;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
+import common.model.account.*;
 import server.controller.Statistics;
-import common.model.account.BusinessAccount;
-import common.model.account.ManagerAccount;
-import common.model.account.PersonalAccount;
-import common.model.account.SimpleAccount;
 import common.model.commodity.Category;
 import common.model.commodity.Commodity;
 import common.model.commodity.DiscountCode;
@@ -25,6 +22,8 @@ public class YaDataManager {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
 
     private static final File statisticsJson;
+
+    private static final File supportJson;
 
     private static final File managersJson;
 
@@ -53,6 +52,7 @@ public class YaDataManager {
         commoditiesJson = new File("data/commodities.json");
         offsJson = new File("data/offs.json");
         categoriesJson = new File("data/categories.json");
+        supportJson = new File("data/accounts/supportAccounts.json");
         initializeDataFiles();
     }
 
@@ -77,6 +77,11 @@ public class YaDataManager {
                 FileWriter allManagersFileWriter = new FileWriter(managersJson);
                 yaGson.toJson(new ArrayList<ManagerAccount>(), allManagersFileWriter);
                 allManagersFileWriter.close();
+            }
+            if (!supportJson.exists()) {
+                FileWriter allSupportsFileWriter = new FileWriter(supportJson);
+                yaGson.toJson(new ArrayList<SupportAccount>(), allSupportsFileWriter);
+                allSupportsFileWriter.close();
             }
             if (!businessesJson.exists()) {
                 FileWriter allResellerFileWriter = new FileWriter(businessesJson);
@@ -132,6 +137,40 @@ public class YaDataManager {
         ArrayList<ManagerAccount> managerAccounts = getManagers();
         managerAccounts.add(managerAccount);
         updateManagers(managerAccounts);
+    }
+
+    public static void addSupport(SupportAccount supportAccount) throws IOException {
+        ArrayList<SupportAccount> supportAccounts = getSupports();
+        supportAccounts.add(supportAccount);
+        updateSupports(supportAccounts);
+    }
+
+    public static ArrayList<SupportAccount> getSupports() throws IOException {
+        FileReader fileReader = new FileReader(supportJson);
+        Type type = new TypeToken<ArrayList<SupportAccount>>() {
+        }.getType();
+        ArrayList<SupportAccount> supportAccounts = yaGson.fromJson(fileReader, type);
+        fileReader.close();
+        return supportAccounts;
+    }
+
+    private static void updateSupports(ArrayList<SupportAccount> supportAccounts) throws IOException {
+        FileWriter fileWriter = new FileWriter(supportJson);
+        Type type = new TypeToken<ArrayList<SupportAccount>>() {
+        }.getType();
+        yaGson.toJson(supportAccounts, type, fileWriter);
+        fileWriter.close();
+    }
+
+    public static void removeSupport(SupportAccount supportAccount) throws IOException {
+        ArrayList<SupportAccount> supportAccounts = getSupports();
+        for (SupportAccount account : supportAccounts) {
+            if (account.getUsername().equals(supportAccount.getUsername())) {
+                supportAccounts.remove(account);
+                break;
+            }
+        }
+        updateSupports(supportAccounts);
     }
 
     public static void removeManager(ManagerAccount managerAccount) throws IOException {
@@ -430,6 +469,11 @@ public class YaDataManager {
             if (reseller.getUsername().equals(username))
                 return reseller;
         }
+
+        for (SupportAccount support : getSupports()) {
+            if (support.getUsername().equals(username))
+                return support;
+        }
         return null;
     }
 
@@ -447,6 +491,16 @@ public class YaDataManager {
         for (ManagerAccount manager : getManagers()) {
             if (manager.getUsername().equals(username)) {
                 removeManager(manager);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean deleteSupportAccount(String username) throws IOException {
+        for (SupportAccount support : getSupports()) {
+            if (support.getUsername().equals(username)) {
+                removeSupport(support);
                 return true;
             }
         }
@@ -471,6 +525,9 @@ public class YaDataManager {
             return;
         }
         if (deleteManagerAccount(username)) {
+            return;
+        }
+        if (deleteSupportAccount(username)){
             return;
         }
         throw new Exception();
@@ -508,6 +565,11 @@ public class YaDataManager {
             if (personalAccount.getUsername().equalsIgnoreCase(username)) {
                 return true;
             }
+        }
+
+        for (SupportAccount support : getSupports()) {
+            if (support.getUsername().equalsIgnoreCase(username))
+                return true;
         }
         return false;
     }

@@ -12,7 +12,6 @@ public class DeleteAccount {
 
     public void delete(ActionEvent actionEvent) {
         try {
-            System.out.println(username.getText());
             manageUsersMenu.deleteUser(username.getText());
             ((((Node) actionEvent.getSource()).getScene().getWindow())).hide();
         } catch (Exception e) {

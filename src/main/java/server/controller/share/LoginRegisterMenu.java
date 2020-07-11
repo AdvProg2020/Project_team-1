@@ -1,11 +1,8 @@
 package server.controller.share;
 
 import client.Session;
+import common.model.account.*;
 import server.data.YaDataManager;
-import common.model.account.BusinessAccount;
-import common.model.account.ManagerAccount;
-import common.model.account.PersonalAccount;
-import common.model.account.SimpleAccount;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
@@ -128,6 +125,8 @@ public class LoginRegisterMenu extends Menu{
             MenuHandler.getInstance().setCurrentMenu(View.resellerMenu);
         }else if (simpleAccount instanceof  PersonalAccount){
             MenuHandler.getInstance().setCurrentMenu(View.customerMenu);
+        }else if (simpleAccount instanceof SupportAccount){
+            MenuHandler.getInstance().setCurrentMenu(View.supportMenu);
         }
     }
 }

@@ -1,0 +1,9 @@
+{
+  "@type": "server.controller.Statistics",
+  "@val": {
+    "lastCommodityId": 0,
+    "lastOffId": 0,
+    "lastRequestId": 0,
+    "lastTransactionLogId": 0
+  }
+}
