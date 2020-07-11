@@ -85,4 +85,17 @@ public class CustomerPanel {
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());
     }
+
+    public void onlineAccounts(ActionEvent actionEvent) {
+        Parent parent = null;
+        try {
+            parent = FXMLLoader.load(getClass().getResource("../../../../fxml/customer/OnlineSupportAccounts.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        popupMenu.getContent().clear();
+        popupMenu.getContent().add(parent);
+        popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());
+        OnlineSupportAccounts.setStage((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
+    }
 }

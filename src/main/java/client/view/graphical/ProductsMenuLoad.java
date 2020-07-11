@@ -195,7 +195,6 @@ public class ProductsMenuLoad {
         userPanel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
                 MainMenu.goToUserPanel(actionEvent);
             }
         });

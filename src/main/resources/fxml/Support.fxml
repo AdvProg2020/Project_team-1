@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="506.0" prefWidth="736.0" styleClass="background" stylesheets="@Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.SupportAccount">
+   <children>
+      <Button onAction="#send" layoutX="603.0" layoutY="369.0" mnemonicParsing="false" styleClass="normal-button" text="Send" />
+      <Button onAction="#refresh" layoutX="14.0" layoutY="447.0" mnemonicParsing="false" styleClass="normal-button-Green" text="Refresh" />
+      <ListView fx:id="chat" layoutX="268.0" layoutY="14.0" prefHeight="277.0" prefWidth="427.0" />
+      <TextArea fx:id="textArea" layoutX="268.0" layoutY="302.0" prefHeight="129.0" prefWidth="323.0" />
+      <ListView fx:id="accounts" layoutX="14.0" layoutY="14.0" prefHeight="400.0" prefWidth="200.0" />
+   </children>
 </AnchorPane>
