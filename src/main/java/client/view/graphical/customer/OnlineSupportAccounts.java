@@ -87,6 +87,7 @@ public class OnlineSupportAccounts implements Initializable {
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         dataOutputStream.writeUTF("Chat between: " + Session.getOnlineAccount().getUsername() + " " + username );
         dataOutputStream.flush();
+        Chat.setUserSupportAccount(username);
         MenuHandler.getInstance().setCurrentMenu(View.chat);
         Session.getSceneHandler().updateScene(stage);
         ((Node) actionEvent.getSource()).getScene().getWindow().hide();
