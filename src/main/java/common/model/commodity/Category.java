@@ -1,8 +1,9 @@
 package common.model.commodity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Category {
+public class Category implements Serializable {
     private String name;
     private ArrayList<Commodity> commodities;
     private ArrayList<CategorySpecification> fieldOptions;

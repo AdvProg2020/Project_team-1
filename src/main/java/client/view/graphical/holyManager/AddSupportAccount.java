@@ -12,8 +12,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import static client.Main.socket;
 
-import java.io.File;
+import java.io.*;
+import java.net.Socket;
 
 public class AddSupportAccount {
     public TextField registerUsernameTf;
@@ -29,8 +31,18 @@ public class AddSupportAccount {
         try {
             SupportAccount supportAccount = new SupportAccount(registerUsernameTf.getText(), registerFirstNameTf.getText(), registerLastNameTf.getText(), registerEmailTf.getText()
                     , registerPhoneNumberTf.getText(), registerPassword.getText(), userPhotoImageView.getImage().getUrl());
-            View.manageUsersMenu.createNewSupport(supportAccount);
-            ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+            DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dataOutputStream.writeUTF("new support account");
+            dataOutputStream.flush();
+            DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            dataInputStream.readUTF();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream((socket.getOutputStream()));
+            objectOutputStream.writeObject(supportAccount);
+            objectOutputStream.flush();
+            String respond = dataInputStream.readUTF();
+            if (respond.equalsIgnoreCase("Support account successfully added"))
+                ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+            else registerMessageLabel.setText(respond);
         } catch (Exception e) {
             registerMessageLabel.setText(e.getMessage());
         }

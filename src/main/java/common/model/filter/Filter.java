@@ -2,7 +2,9 @@ package common.model.filter;
 
 import common.model.commodity.Commodity;
 
-public abstract class Filter {
+import java.io.Serializable;
+
+public abstract class Filter implements Serializable {
     private String filterName;
 
     @Override

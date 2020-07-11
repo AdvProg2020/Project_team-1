@@ -6,8 +6,9 @@ import common.model.share.Requestable;
 import common.model.share.Status;
 
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Comment implements Requestable {
+public class Comment implements Requestable , Serializable {
     private SimpleAccount account;
     private Commodity commodity;
     private String title;
