@@ -21,7 +21,7 @@ public class BankDataBase {
         }
     }
 
-    private void createTables() throws SQLException {
+    private synchronized void createTables() throws SQLException {
         createConnectionAndStatement();
         String accountsTableSql = "CREATE TABLE accounts (\n" +
                 "    id INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
@@ -57,30 +57,23 @@ public class BankDataBase {
         closeStatementAndConnection();
     }
 
-    private void createConnectionAndStatement() throws SQLException {
+    private synchronized void createConnectionAndStatement() throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:database.db");
         statement = connection.createStatement();
     }
 
-    private void closeStatementAndConnection() throws SQLException {
+    private synchronized void closeStatementAndConnection() throws SQLException {
         statement.close();
         connection.close();
     }
 
-    private void executeUpdate(String command) throws SQLException {
+    private synchronized void executeUpdate(String command) throws SQLException {
         createConnectionAndStatement();
         statement.executeUpdate(command);
         closeStatementAndConnection();
     }
 
-    private ResultSet executeQuery(String command) throws SQLException {
-        createConnectionAndStatement();
-        ResultSet resultSet = statement.executeQuery(command);
-        closeStatementAndConnection();
-        return resultSet;
-    }
-
-    public void getAccounts() throws SQLException {
+    public synchronized void getAccounts() throws SQLException {
         createConnectionAndStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM accounts");
         while (resultSet.next()) {
@@ -91,7 +84,7 @@ public class BankDataBase {
         closeStatementAndConnection();
     }
 
-    public int addAccount(BankAccount bankAccount) throws SQLException {
+    public synchronized int addAccount(BankAccount bankAccount) throws SQLException {
         String createAccountSql = "INSERT INTO accounts (username, password, firstName, lastName)\n" +
                 "VALUES ('" + bankAccount.getUsername() + "', '" + bankAccount.getPassword() + "', '" +
                 bankAccount.getFirstName() + "', '" +  bankAccount.getLastName() + "')";
@@ -99,7 +92,7 @@ public class BankDataBase {
         return getAccount(bankAccount.getUsername()).getId();
     }
 
-    public BankAccount getAccount(String username) throws SQLException{
+    public synchronized BankAccount getAccount(String username) throws SQLException{
         createConnectionAndStatement();
         String selectByUsernameSql = "SELECT * FROM accounts WHERE username='" + username + "'";
         ResultSet resultSet = statement.executeQuery(selectByUsernameSql);
@@ -112,5 +105,34 @@ public class BankDataBase {
         }
         closeStatementAndConnection();
         return bankAccount;
+    }
+
+    public synchronized void addAuthenticationToken(AuthenticationToken authToken) throws SQLException {
+        createConnectionAndStatement();
+        String addAuthTokenSql = "INSERT INTO authenticationTokens (uuid, accountId, create_time)" +
+                "VALUES ('" + authToken.getUuid() + "', " + authToken.getAccountId() + ", "
+                + authToken.getCreateTime() + ")";
+        executeUpdate(addAuthTokenSql);
+        closeStatementAndConnection();
+    }
+
+    public synchronized int addReceipt(Receipt receipt) throws SQLException {
+        createConnectionAndStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT Max(id) FROM receipts");
+        int id = resultSet.getInt(1);
+        closeStatementAndConnection();
+        return id;
+    }
+
+    public synchronized AuthenticationToken getAuthTokenByUuid(String uuid) throws SQLException {
+        createConnectionAndStatement();
+        String selectByUuidSql = "SELECT * FROM";
+        ResultSet resultSet = statement.executeQuery(selectByUuidSql);
+        AuthenticationToken authenticationToken = null;
+        if (resultSet.next()) {
+            //authenticationToken = new AuthenticationToken()
+        }
+        closeStatementAndConnection();
+        return authenticationToken;
     }
 }
