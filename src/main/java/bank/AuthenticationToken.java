@@ -10,6 +10,14 @@ public class AuthenticationToken {
     private int expired;
     private long createTime;
 
+    public AuthenticationToken(int id, String uuid, int accountId, int expired, long createTime) {
+        this.id = id;
+        this.uuid = uuid;
+        this.accountId = accountId;
+        this.expired = expired;
+        this.createTime = createTime;
+    }
+
     public AuthenticationToken(int accountId) {
         id = 0;
         uuid = UUID.randomUUID().toString();

@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class BankDirectConnection {
     public static void main(String[] args) throws IOException {
+        System.out.println(Integer.parseInt("2.34"));
         int port = 12346;
         Scanner scanner = new Scanner(System.in);
         Socket socket = new Socket("127.0.0.1", port);

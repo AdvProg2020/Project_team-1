@@ -4,10 +4,8 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class MoHoBank {
     private static Scanner scanner = new Scanner(System.in);
@@ -96,8 +94,33 @@ public class MoHoBank {
             closeConnectionToClient();
         }
 
-        private void getBalance(String[] separatedInput) {
+        private void getBalance(String[] separatedInput) throws SQLException {
+            AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
+            if (authToken == null) {
+                sendTokenIsInvalid();
+                return;
+            }
+            if (authToken.getExpired() != 0 || isTokenExpired(authToken)) {
+                sendTokenExpired();
+                return;
+            }
+            sendResponse(Integer.toString(bankDataBase.getAccountById(authToken.getAccountId()).getBalance()));
+        }
 
+        private void sendTokenExpired() {
+            sendResponse("token expired");
+        }
+
+        private boolean isTokenExpired(AuthenticationToken authToken) throws SQLException {
+            if (System.currentTimeMillis() - authToken.getCreateTime() < 3.6e6) {
+                return false;
+            }
+            bankDataBase.setAuthTokenExpire(authToken.getUuid());
+            return true;
+        }
+
+        private void sendTokenIsInvalid() {
+            sendResponse("token is invalid");
         }
 
         private void pay(String[] separatedInput) {
@@ -108,8 +131,33 @@ public class MoHoBank {
 
         }
 
-        private void createReceipt(String[] separatedInput) {
-            //AuthenticationToken authToken = bankDataBase.get
+        private void createReceipt(String[] separatedInput) throws SQLException {
+            if (!separatedInput[2].equals("deposit") && !separatedInput[2].equals("withdraw")
+                    && !separatedInput[2].equals("move")) {
+                sendResponse("invalid receipt type");
+                return;
+            }
+            int money = -1;
+            try {
+                money = Integer.parseInt(separatedInput[3]);
+            } catch (ArithmeticException e) {
+                sendInvalidMoney();
+                return;
+            }
+            if (money <= 0) {
+                sendInvalidMoney();
+                return;
+            }
+
+            //if ()
+//            AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
+//            if (authToken == null || authToken.getExpired() == 1) {
+//
+//            }
+        }
+
+        private void sendInvalidMoney() {
+            sendResponse("invalid money");
         }
 
         private void getToken(String[] separatedInput) throws SQLException {

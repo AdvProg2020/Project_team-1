@@ -130,9 +130,34 @@ public class BankDataBase {
         ResultSet resultSet = statement.executeQuery(selectByUuidSql);
         AuthenticationToken authenticationToken = null;
         if (resultSet.next()) {
-            //authenticationToken = new AuthenticationToken()
+            authenticationToken = new AuthenticationToken(resultSet.getInt("id"),
+                    resultSet.getString("uuid"), resultSet.getInt("accountId"),
+                    resultSet.getInt("expired"), resultSet.getLong("create_time"));
         }
         closeStatementAndConnection();
         return authenticationToken;
+    }
+
+    public void setAuthTokenExpire(String uuid) throws SQLException {
+        createConnectionAndStatement();
+        String expireAuthTokenSql = "UPDATE authenticationTokens SET expired = 1 " +
+                "WHERE uuid = '" + uuid + "'";
+        executeUpdate(expireAuthTokenSql);
+        closeStatementAndConnection();
+    }
+
+    public BankAccount getAccountById(int accountId) throws SQLException {
+        createConnectionAndStatement();
+        String selectByUsernameSql = "SELECT * FROM accounts WHERE id=" + accountId;
+        ResultSet resultSet = statement.executeQuery(selectByUsernameSql);
+        BankAccount bankAccount = null;
+        if (resultSet.next()) {
+            bankAccount = new BankAccount(
+                    resultSet.getInt("id"), resultSet.getString("username"),
+                    resultSet.getString("password"), resultSet.getString("firstname"),
+                    resultSet.getString("lastname"), resultSet.getInt("balance"));
+        }
+        closeStatementAndConnection();
+        return bankAccount;
     }
 }
