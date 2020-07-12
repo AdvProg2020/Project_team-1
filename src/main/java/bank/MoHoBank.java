@@ -49,10 +49,10 @@ public class MoHoBank {
             outputStream = new DataOutputStream(socket.getOutputStream());
             this.debug = debug;
             clientId = lastClientId++;
-            if (debug) {
-                System.out.printf("hello %d\n", clientId);
-            }
             ++onlineClientsNumber;
+            if (debug) {
+                System.out.printf("hello %d. now there are %d clients online\n", clientId, onlineClientsNumber);
+            }
         }
 
         @Override
@@ -66,8 +66,8 @@ public class MoHoBank {
                         System.out.println("request from " + clientId + " : " + request);
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    System.err.println("Error: Unable to get request from client. Closing socket ...");
+                    //e.printStackTrace();
+                    System.err.println("Error: Unable to get request from client " + clientId + ". Closing socket ...");
                     break;
                 }
                 try {
@@ -89,7 +89,7 @@ public class MoHoBank {
                         sendInvalidInput();
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                     sendDatabaseError();
                 }
             }
@@ -306,7 +306,7 @@ public class MoHoBank {
                 outputStream.close();
                 socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 System.err.println("Error: Unable to close client socket");
             }
         }
@@ -340,7 +340,7 @@ public class MoHoBank {
                     System.out.println("response to " + clientId + " : " + response);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 System.err.println("Error: Unable to send response to client. Closing socket ...");
                 closeConnectionToClient();
             }
