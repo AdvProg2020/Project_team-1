@@ -1,7 +1,10 @@
 package client.view.graphical;
 
-import server.data.YaDataManager;
-import server.controller.share.MenuHandler;
+import client.Session;
+import client.view.commandline.View;
+import client.view.graphical.holyManager.HolyManager;
+import common.model.commodity.Commodity;
+import common.model.commodity.Off;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -16,11 +19,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.commodity.Commodity;
-import common.model.commodity.Off;
-import client.view.commandline.View;
-import client.view.graphical.holyManager.HolyManager;
+import server.controller.share.MenuHandler;
+import server.data.YaDataManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -126,8 +126,8 @@ public class OffMenu extends HolyManager {
         try {
             ArrayList<Off> offs = YaDataManager.getOffs();
             for (Off off : offs) {
-                for (Commodity commodity : off.getCommodities()) {
-                    if (commodity.getCommodityId() == commodityMain.getCommodityId() && off.isActive())
+                for (int commodityId : off.getCommoditiesId()) {
+                    if (commodityId == commodityMain.getCommodityId() && off.isActive())
                         return true;
                 }
             }
@@ -142,8 +142,8 @@ public class OffMenu extends HolyManager {
         try {
             ArrayList<Off> offs = YaDataManager.getOffs();
             for (Off off : offs) {
-                for (Commodity commodity : off.getCommodities()) {
-                    if (commodity.getCommodityId() == commodityMain.getCommodityId() && off.isActive())
+                for (int commodityId : off.getCommoditiesId()) {
+                    if (commodityId == commodityMain.getCommodityId() && off.isActive())
                         return off;
                 }
             }

@@ -1,5 +1,8 @@
 package client.view.graphical;
 
+import client.view.commandline.View;
+import common.model.commodity.Commodity;
+import common.model.commodity.Off;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -13,9 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import common.model.commodity.Commodity;
-import common.model.commodity.Off;
-import client.view.commandline.View;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,14 +34,15 @@ public class ShowEditOff {
     removedProducts = new ArrayList<>();
     private Off off;
 
-    public void initScene(Off off) {
+    public void initScene(Off off) throws Exception {
         this.off = off;
         startTime.setText(off.getStartTime().toString());
         endTime.setText(off.getEndTime().toString());
         discountPercent.setText(String.valueOf(off.getDiscountPercent()));
         List<HBox> hBoxes = new ArrayList<>();
-        for (Commodity commodity : off.getCommodities()) {
+        for (int commodityId : off.getCommoditiesId()) {
             HBox productHBox = new HBox();
+            Commodity commodity = YaDataManager.getCommodityById(commodityId);
             Label productLabel = new Label(commodity.getName() + " #" + commodity.getCommodityId());
             productLabel.getStyleClass().add("hint-label");
             Button remove = new Button("Remove");
@@ -110,7 +112,7 @@ public class ShowEditOff {
         PercentPickerPopup percentPickerPopup = loader.getController();
         percentPickerPopup.setShowEditOff(this);
         popup.getContent().add(parent);
-        popup.show((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
+        popup.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
     public void onAddProductToOffClick(MouseEvent mouseEvent) {

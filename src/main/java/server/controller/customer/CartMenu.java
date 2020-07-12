@@ -71,8 +71,8 @@ public class CartMenu extends Menu {
     public int getDiscountPercentage(Commodity commodity) throws IOException {
         for (Off off : YaDataManager.getOffs()) {
             if (off.isActive()) {
-                for (Commodity offCommodity : off.getCommodities()) {
-                    if (offCommodity.getCommodityId() == commodity.getCommodityId()) {
+                for (int offCommodityId : off.getCommoditiesId()) {
+                    if (offCommodityId == commodity.getCommodityId()) {
                         return off.getDiscountPercent();
                     }
                 }

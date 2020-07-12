@@ -1,39 +1,39 @@
 package common.model.commodity;
 
-import server.controller.Statistics;
+import common.model.account.BusinessAccount;
 import common.model.share.Requestable;
 import common.model.share.Status;
+import server.controller.Statistics;
 import server.data.YaDataManager;
-import common.model.account.BusinessAccount;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Off implements Requestable , Serializable {
+public class Off implements Requestable, Serializable {
 
     private int offID;
-    private BusinessAccount owner;
-    private ArrayList<Commodity> commodities;
+    private String ownerUsername;
+    private ArrayList<Integer> commoditiesId;
     private Status status;
     private Date startTime;
     private Date endTime;
     private int discountPercent;
 
-    public Off(BusinessAccount owner, ArrayList<Commodity> commodities, Date startTime, Date endTime, int discountPercent) throws Exception {
-        this.owner = owner;
+    public Off(String ownerUsername, ArrayList<Integer> commoditiesId, Date startTime, Date endTime, int discountPercent) throws Exception {
+        this.ownerUsername = ownerUsername;
         this.startTime = startTime;
         this.endTime = endTime;
         setDiscountPercent(discountPercent);
         status = Status.UNDER_CHECKING_FOR_CREATE;
-        this.commodities = commodities;
+        this.commoditiesId = commoditiesId;
         offID = Statistics.updatedStats.offId();
     }
 
     public Off(Off off) {
         offID = off.offID;
-        owner = off.owner;
-        commodities = new ArrayList<>(off.commodities);
+        ownerUsername = off.ownerUsername;
+        commoditiesId = new ArrayList<>(off.commoditiesId);
         status = off.status;
         startTime = new Date(off.startTime.getTime());
         endTime = new Date(off.endTime.getTime());
@@ -44,8 +44,8 @@ public class Off implements Requestable , Serializable {
         return offID;
     }
 
-    public void setCommodities(ArrayList<Commodity> commodities) {
-        this.commodities = commodities;
+    public ArrayList<Integer> getCommoditiesId() {
+        return commoditiesId;
     }
 
     public void setStartTime(Date startTime) {
@@ -56,7 +56,7 @@ public class Off implements Requestable , Serializable {
         this.endTime = endTime;
     }
 
-    public void setDiscountPercent(int discountPercent) throws Exception{
+    public void setDiscountPercent(int discountPercent) throws Exception {
         if (0 < discountPercent && discountPercent < 100) {
             this.discountPercent = discountPercent;
         } else {
@@ -64,12 +64,12 @@ public class Off implements Requestable , Serializable {
         }
     }
 
-    public ArrayList<Commodity> getCommodities() {
-        return commodities;
+    public void setCommoditiesId(ArrayList<Integer> commoditiesId) {
+        this.commoditiesId = commoditiesId;
     }
 
     public void addToCommodities(Commodity commodity) {
-        commodities.add(commodity);
+        commoditiesId.add(commodity.getCommodityId());
     }
 
     public Status getStatus() {
@@ -82,8 +82,9 @@ public class Off implements Requestable , Serializable {
 
     @Override
     public void addObj() throws Exception {
-        YaDataManager.removeBusiness(owner);
+        BusinessAccount owner = YaDataManager.getSellerWithUserName(ownerUsername);
         owner.addSale(this);
+        YaDataManager.removeBusiness(owner);
         YaDataManager.addBusiness(owner);
         YaDataManager.addOff(this);
     }
@@ -108,13 +109,13 @@ public class Off implements Requestable , Serializable {
     @Override
     public String toString() {
         StringBuilder commoditiesNames = new StringBuilder();
-        for (Commodity commodity : commodities) {
-            commoditiesNames.append(commodity.getName());
+        for (int commodityId : commoditiesId) {
+            commoditiesNames.append(commodityId);
             commoditiesNames.append("-");
         }
         return "Off{" +
                 "offID='" + offID + '\'' +
-                ", owner=" + owner.getUsername() +
+                ", owner=" + ownerUsername +
                 ", commodities=" + commoditiesNames.toString() +
                 ", status=" + status +
                 ", startTime=" + startTime.toString() +

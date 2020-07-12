@@ -1,8 +1,8 @@
 package client.view.graphical;
 
-import server.controller.reseller.ManageResellerOffsMenu;
-import server.controller.reseller.ResellerMenu;
-import server.controller.share.MenuHandler;
+import client.Session;
+import client.view.commandline.View;
+import common.model.commodity.Off;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +14,9 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.commodity.Off;
-import client.view.commandline.View;
+import server.controller.reseller.ManageResellerOffsMenu;
+import server.controller.reseller.ResellerMenu;
+import server.controller.share.MenuHandler;
 
 import java.io.IOException;
 import java.net.URL;
@@ -95,7 +95,11 @@ public class ManageResellerOffs implements Initializable {
                         // Khob chi kar konam?
                     }
                     ShowEditOff showEditOff = loader.getController();
-                    showEditOff.initScene(off);
+                    try {
+                        showEditOff.initScene(off);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     assert parent != null;
                     Scene scene = new Scene(parent);
                     Stage stage = new Stage();

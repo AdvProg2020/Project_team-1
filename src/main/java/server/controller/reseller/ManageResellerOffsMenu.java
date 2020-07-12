@@ -38,7 +38,11 @@ public class ManageResellerOffsMenu extends Menu {
     public void addOff(ArrayList<Commodity> commodities, String startTime,
                        String endTime, int discountPercent) throws Exception {
         BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
-        Off newOff = new Off(businessAccount, commodities, simpleDateFormat.parse(startTime),
+        ArrayList<Integer> commoditiesId = new ArrayList<>();
+        for (Commodity commodity : commodities) {
+            commoditiesId.add(commodity.getCommodityId());
+        }
+        Off newOff = new Off(businessAccount.getUsername(), commoditiesId, simpleDateFormat.parse(startTime),
                 simpleDateFormat.parse(endTime), discountPercent);
         Request request = new Request(newOff, businessAccount.getUsername());
         YaDataManager.addRequest(request);
@@ -46,15 +50,17 @@ public class ManageResellerOffsMenu extends Menu {
 
     public void editOff(Off oldOff, ArrayList<Commodity> removedProduct, ArrayList<Commodity> addedProduct, String startTime,
                         String endTime, int discountPercent) throws Exception {
-        ArrayList<Commodity> commoditiesInOff = new ArrayList<>(addedProduct);
-
-        for (Commodity commodity : oldOff.getCommodities()) {
-            if (!removedProduct.contains(commodity)) {
-                commoditiesInOff.add(commodity);
+        ArrayList<Integer> commoditiesIdInOff = new ArrayList<>();
+        for (Commodity commodity : addedProduct) {
+            commoditiesIdInOff.add(commodity.getCommodityId());
+        }
+        for (int commodityId : oldOff.getCommoditiesId()) {
+            if (!removedProduct.contains(YaDataManager.getCommodityById(commodityId))) {
+                commoditiesIdInOff.add(commodityId);
             }
         }
         BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
-        Off newOff = new Off(businessAccount, commoditiesInOff,
+        Off newOff = new Off(businessAccount.getUsername(), commoditiesIdInOff,
                 (startTime.equals("-")) ? (oldOff.getStartTime()) : (simpleDateFormat.parse(startTime)),
                 (endTime.equals("-")) ? (oldOff.getEndTime()) : (simpleDateFormat.parse(endTime)),
                 (discountPercent == -1) ? (oldOff.getDiscountPercent()) : (discountPercent));
