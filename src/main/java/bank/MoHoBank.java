@@ -126,8 +126,24 @@ public class MoHoBank {
             sendResponse("token is invalid");
         }
 
-        private void pay(String[] separatedInput) {
-
+        private void pay(String[] separatedInput) throws SQLException {
+            int receiptId;
+            try {
+                receiptId = Integer.parseInt(separatedInput[1]);
+            } catch (NumberFormatException e) {
+                sendResponse("invalid receipt id");
+                return;
+            }
+            Receipt receipt = bankDataBase.getReceiptById(receiptId);
+            if (receipt == null) {
+                sendResponse("invalid receipt id");
+                return;
+            }
+            if (receipt.getPaid() != 0) {
+                sendResponse("receipt is paid before");
+                return;
+            }
+            //BankAccount bankAccount = bankDataBase.getAccountById()
         }
 
         private void getTransactions(String[] separatedInput) throws SQLException {
@@ -175,34 +191,23 @@ public class MoHoBank {
         }
 
         private void createReceipt(String[] separatedInput) throws SQLException {
-            if (separatedInput.length != 5 && separatedInput.length != 6) {
-                sendResponse("invalid parameters passed");
+            String receiptType = separatedInput[2];
+            if (!receiptType.equals("deposit") && !receiptType.equals("withdraw")
+                    && !receiptType.equals("move")) {
+                sendResponse("invalid receipt type");
+                return;
+            }
+            if (separatedInput.length != 6 && separatedInput.length != 7) {
+                sendInvalidParametersPassed();
                 return;
             }
             if (separatedInput[4].equals(separatedInput[5])) {
                 sendResponse("equal source and dest account");
                 return;
             }
-            AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
-            if (authToken == null) {
-                // bardash too
-                sendTokenIsInvalid();
-                return;
-            }
-            if (authToken.getExpired() != 0 || isTokenExpired(authToken)) {
-                sendTokenExpired();
-                return;
-            }
-
-
-            //if (separatedInput.)
-
-
-
-
-            if (!separatedInput[2].equals("deposit") && !separatedInput[2].equals("withdraw")
-                    && !separatedInput[2].equals("move")) {
-                sendResponse("invalid receipt type");
+            String description = separatedInput.length == 7? separatedInput[6]: "";
+            if (!description.matches("^[A-Za-z1-9 ]$")) {
+                sendResponse("your input contains invalid characters");
                 return;
             }
             int money = -1;
@@ -216,12 +221,44 @@ public class MoHoBank {
                 sendInvalidMoney();
                 return;
             }
+            int sourceAccountId, destAccountId;
+            try {
+                sourceAccountId = Integer.parseInt(separatedInput[4]);
+                destAccountId = Integer.parseInt(separatedInput[5]);
+            } catch (NumberFormatException e) {
+                sendInvalidParametersPassed();
+                return;
+            }
+            if ((!receiptType.equals("deposit") && sourceAccountId == -1)
+                    || (!receiptType.equals("withdraw") && destAccountId == -1)) {
+                sendResponse("invalid account id");
+                return;
+            }
+            BankAccount sourceAccount = bankDataBase.getAccountById(sourceAccountId);
+            BankAccount destAccount = bankDataBase.getAccountById(destAccountId);
+            if (sourceAccount == null && !receiptType.equals("deposit")) {
+                sendResponse("source account id is invalid");
+                return;
+            }
+            if (destAccount == null && !receiptType.equals("withdraw")) {
+                sendResponse("dest account id is invalid");
+                return;
+            }
+            AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
+            if (authToken == null
+                    || (!receiptType.equals("deposit") && sourceAccount.getId() != authToken.getAccountId())) {
+                sendTokenIsInvalid();
+                return;
+            }
+            if (authToken.getExpired() != 0 || isTokenExpired(authToken)) {
+                sendTokenExpired();
+                return;
+            }
+            bankDataBase.addReceipt(new Receipt(receiptType, money, sourceAccountId, destAccountId, description));
+        }
 
-            //if ()
-//            AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
-//            if (authToken == null || authToken.getExpired() == 1) {
-//
-//            }
+        private void sendInvalidParametersPassed() {
+            sendResponse("invalid parameters passed");
         }
 
         private void sendInvalidMoney() {
