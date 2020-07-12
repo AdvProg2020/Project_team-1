@@ -120,11 +120,12 @@ public class CartMenu extends Menu {
         int price = calculateTotalPrice();
         if (discountCode != null && !discountCode.equals(""))
             price = cartMenu.useDiscountCode(price, discountCode);
-        if (price > account.getCredit()) {
-            account.dontUseDiscountCode(discountCode);
+        if ((double) price > account.getCredit()) {
+            if (discountCode != null && !discountCode.equals("")) {
+                account.dontUseDiscountCode(discountCode);
+            }
             throw new Exception("you don't have enough money to pay");
         }
-        YaDataManager.removePerson(account);
         account.addToCredit(-price);
         HashSet<Commodity> commodities = new HashSet<>(account.getCart().keySet());
         BuyLog buyLog = new BuyLog(new Date(), commodities, price, calculateTotalPrice() -
@@ -132,6 +133,7 @@ public class CartMenu extends Menu {
         account.addBuyLog(buyLog);
         reduceCommodityAmount(account.getCart());
         account.clearCart();
+        YaDataManager.removePerson(account);
         YaDataManager.addPerson(account);
         makeSellLogs(buyLog.getSellers(), account);
         this.buyLog = buyLog;
