@@ -150,7 +150,7 @@ public class MoHoBank {
                 sendResponse("invalid account id");
                 return;
             }
-            if (bankAccount.getBalance() < receipt.getMoney()) {
+            if (sourceAccountId != -1 && bankAccount.getBalance() < receipt.getMoney()) {
                 sendResponse("source account does not have enough money");
                 return;
             }
@@ -225,7 +225,7 @@ public class MoHoBank {
                 return;
             }
             String description = separatedInput.length == 7? separatedInput[6]: "";
-            if (!description.matches("^[A-Za-z1-9 ]$")) {
+            if (!description.matches("^[A-Za-z1-9 ]+$")) {
                 sendResponse("your input contains invalid characters");
                 return;
             }
