@@ -1,6 +1,8 @@
 package client.view.graphical;
 
-import server.controller.reseller.ManageResellerProductsMenu;
+import client.view.commandline.View;
+import common.model.commodity.Commodity;
+import common.model.field.Field;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -9,12 +11,12 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import common.model.commodity.Commodity;
-import common.model.field.Field;
-import client.view.commandline.View;
+import server.controller.reseller.ManageResellerProductsMenu;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ShowEditProduct {
 
@@ -53,8 +55,9 @@ public class ShowEditProduct {
     public void onSaveClick(MouseEvent mouseEvent) {
         try {
             manageResellerProductsMenu.editProduct(commodity, brandLabel.getText(), nameLabel.getText(),
-                Integer.parseInt(priceLabel.getText()), productAvailability.isSelected(), commodity.getCategory(),
-                categorySpecification, descriptionLabel.getText(), Integer.parseInt(amountLabel.getText()));
+                    Integer.parseInt(priceLabel.getText()), productAvailability.isSelected(),
+                    Objects.requireNonNull(YaDataManager.getCategoryWithName(commodity.getCategoryName())),
+                    categorySpecification, descriptionLabel.getText(), Integer.parseInt(amountLabel.getText()));
         } catch (Exception e) {
             errorMessageLabel.setText(e.getMessage());
         }
@@ -105,7 +108,7 @@ public class ShowEditProduct {
         changeLabel.setText(value);
     }
 
-    public void onEditCategorySpecificationClick(MouseEvent mouseEvent) {
+    public void onEditCategorySpecificationClick(MouseEvent mouseEvent) throws IOException {
         FXMLLoader loader =
                 new FXMLLoader(getClass().getResource("../../../fxml/reseller/EditCategorySpecification.fxml"));
         Parent parent = null;
@@ -117,7 +120,8 @@ public class ShowEditProduct {
         }
         EditCategorySpecs editCategorySpecs = loader.getController();
         editCategorySpecs.setShowEditProduct(this);
-        editCategorySpecs.initVBox(commodity.getCategorySpecifications(), commodity.getCategory().getFieldOptions());
+        editCategorySpecs.initVBox(commodity.getCategorySpecifications(),
+                Objects.requireNonNull(YaDataManager.getCategoryWithName(commodity.getCategoryName())).getFieldOptions());
         popup.getContent().add(parent);
         popup.show(((Node) mouseEvent.getSource()).getScene().getWindow());
     }

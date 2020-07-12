@@ -22,7 +22,7 @@ public class Commodity implements Requestable , Serializable {
     private int inventory;
     private String sellerUsername;
     private Boolean isCommodityAvailable;
-    private Category category;
+    private String categoryName;
     private ArrayList<Field> categorySpecifications;
     private String description;
     private ArrayList<Comment> allComments;
@@ -38,7 +38,7 @@ public class Commodity implements Requestable , Serializable {
     }
 
     public Commodity(String brand, String name, int price,
-                     String sellerUsername, Boolean isCommodityAvailable, Category category,
+                     String sellerUsername, Boolean isCommodityAvailable, String categoryName,
                      ArrayList<Field> categorySpecifications, String description, int amount, String imagePath) throws IOException {
         this.commodityId = Statistics.updatedStats.commodityId();
         status = Status.UNDER_CHECKING_FOR_CREATE;
@@ -47,7 +47,7 @@ public class Commodity implements Requestable , Serializable {
         this.price = price;
         this.sellerUsername = sellerUsername;
         this.isCommodityAvailable = isCommodityAvailable;
-        this.category = category;
+        this.categoryName = categoryName;
         this.categorySpecifications = categorySpecifications;
         this.description = description;
         this.allComments = new ArrayList<>();
@@ -69,7 +69,7 @@ public class Commodity implements Requestable , Serializable {
         inventory = commodity.inventory;
         sellerUsername = commodity.sellerUsername;
         isCommodityAvailable = commodity.isCommodityAvailable;
-        category = commodity.category;
+        categoryName = commodity.categoryName;
         categorySpecifications = new ArrayList<>(commodity.categorySpecifications);
         description = commodity.description;
         allComments = new ArrayList<>(commodity.allComments);
@@ -172,8 +172,8 @@ public class Commodity implements Requestable , Serializable {
         isCommodityAvailable = commodityAvailable;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
     public ArrayList<Field> getCategorySpecifications() {
@@ -212,6 +212,10 @@ public class Commodity implements Requestable , Serializable {
         this.brand = brand;
     }
 
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     @Override
     public String toString() {
         return "Commodity{" +
@@ -223,17 +227,13 @@ public class Commodity implements Requestable , Serializable {
                 ", inventory=" + inventory +
                 ", seller=" + sellerUsername +
                 ", isCommodityAvailable=" + isCommodityAvailable +
-                ", category=" + category.getName() +
+                ", category=" + categoryName +
                 ", description='" + description + '\'' +
                 ", allComments=" + allComments.size() +
                 ", averageScore=" + averageScore +
                 ", numberOfScores=" + numberOfScores +
                 ", numberOfVisits=" + numberOfVisits +
                 '}';
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     public void setAllComments(ArrayList<Comment> allComments) {

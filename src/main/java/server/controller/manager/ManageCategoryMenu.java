@@ -73,7 +73,7 @@ public class ManageCategoryMenu extends Menu {
             if (commodity.getCommodityId() == commodityId) {
                 category.getCommoditiesId().add(commodityId);
                 YaDataManager.removeCommodity(commodity);
-                commodity.setCategory(category);
+                commodity.setCategoryName(category.getName());
                 updateFile(category);
                 YaDataManager.addCommodity(commodity);
                 return;
@@ -89,7 +89,7 @@ public class ManageCategoryMenu extends Menu {
                     if (categoryCommodityId == commodityId) {
                         YaDataManager.removeCommodity(commodity);
                         category.getCommoditiesId().remove(categoryCommodityId);
-                        commodity.setCategory(null);
+                        commodity.setCategoryName("");
                         updateCommodities(category);
                         YaDataManager.addCommodity(commodity);
                         return;
@@ -117,9 +117,9 @@ public class ManageCategoryMenu extends Menu {
         Category category = getCategory(categoryName);
         YaDataManager.removeCategory(category);
         for (Commodity commodity : YaDataManager.getCommodities()) {
-            if (commodity.getCategory() != null)
-                if (commodity.getCategory().getName().equalsIgnoreCase(categoryName)) {
-                    commodity.setCategory(null);
+            if (!commodity.getCategoryName().equals(""))
+                if (commodity.getCategoryName().equalsIgnoreCase(categoryName)) {
+                    commodity.setCategoryName("");
                     YaDataManager.removeCommodity(commodity);
                     YaDataManager.addCommodity(commodity);
                 }
@@ -143,7 +143,7 @@ public class ManageCategoryMenu extends Menu {
         }
         Category category = new Category(name, commoditiesId, categorySpecifications);
         for (Commodity commodity : commodities) {
-            commodity.setCategory(category);
+            commodity.setCategoryName(category.getName());
             YaDataManager.removeCommodity(commodity);
             YaDataManager.addCommodity(commodity);
         }
@@ -163,7 +163,7 @@ public class ManageCategoryMenu extends Menu {
         YaDataManager.addCategory(category);
         for (int commodityId : category.getCommoditiesId()) {
             Commodity commodity = YaDataManager.getCommodityById(commodityId);
-            commodity.setCategory(category);
+            commodity.setCategoryName(category.getName());
             YaDataManager.removeCommodity(commodity);
             YaDataManager.addCommodity(commodity);
         }

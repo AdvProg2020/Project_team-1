@@ -33,6 +33,6 @@ public class OptionalFilter extends Filter {
     @Override
     public boolean isCommodityMatches(Commodity commodity) {
         OptionalField optionalField = (OptionalField) commodity.getCategorySpecifications().get(correspondingFieldNumber);
-        return acceptableOptions.contains(optionalField.getValue()) && category.getName().equals(commodity.getCategory().getName());
+        return acceptableOptions.contains(optionalField.getValue()) && category.getName().equals(commodity.getCategoryName());
     }
 }

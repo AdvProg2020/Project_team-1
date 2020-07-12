@@ -527,7 +527,7 @@ public class YaDataManager {
         if (deleteManagerAccount(username)) {
             return;
         }
-        if (deleteSupportAccount(username)){
+        if (deleteSupportAccount(username)) {
             return;
         }
         throw new Exception();
@@ -549,7 +549,7 @@ public class YaDataManager {
         }
         throw new Exception("there is no product with this ID");
     }
-    
+
     public static boolean isUsernameExist(String username) throws IOException {
         for (ManagerAccount manager : getManagers()) {
             if (manager.getUsername().equalsIgnoreCase(username)) {
@@ -592,6 +592,15 @@ public class YaDataManager {
         for (BusinessAccount businessAccount : getBusinesses()) {
             if (businessAccount.getUsername().equals(username))
                 return businessAccount;
+        }
+        return null;
+    }
+
+    public static Category getCategoryWithName(String name) throws IOException {
+        for (Category category : getCategories()) {
+            if (category.getName().equals(name)) {
+                return category;
+            }
         }
         return null;
     }

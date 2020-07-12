@@ -1321,7 +1321,7 @@ public class View {
         String categoryString = scanner.nextLine();
         Category category;
         if (categoryString.equals("-")) {
-            category = oldCommodity.getCategory();
+            category = YaDataManager.getCategoryWithName(oldCommodity.getCategoryName());
         } else {
             category = resellerMenu.getCategoryByName(categoryString);
         }
@@ -1764,7 +1764,7 @@ public class View {
         }
     }
 
-    private void editCategory(String categoryName) throws IOException {
+    private void editCategory(String categoryName) throws Exception {
         if (!manageCategoryMenu.checkCategoryName(categoryName)) {
             System.out.println("invalid category name");
             return;
@@ -1832,7 +1832,7 @@ public class View {
 
     }
 
-    private void addCategorySpecification(Category category) throws IOException {
+    private void addCategorySpecification(Category category) throws Exception {
         System.out.println("Enter title");
         String title = scanner.nextLine();
         HashSet<String> options = null;

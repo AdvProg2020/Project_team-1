@@ -56,7 +56,7 @@ public class ManageResellerProductsMenu extends Menu {
                 (price == -1) ? (oldProduct.getPrice()) : (price),
                 businessAccount.getUsername(),
                 availability,
-                category,
+                category.getName(),
                 categorySpecifications,
                 (description.equals("-")) ? (oldProduct.getDescription()) : (description),
                 (amount == -1) ? (oldProduct.getInventory()) : (amount), oldProduct.getImagePath());

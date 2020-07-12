@@ -81,8 +81,8 @@ public class ResellerMenu extends Menu {
     public void addProduct(String brand, String name, int price, Category category,
                            ArrayList<Field> categorySpecifications, String description, int amount , String path) throws Exception {
         BusinessAccount businessAccount = getBusinessAccount();
-        Commodity newCommodity = new Commodity(brand, name, price, businessAccount, true,
-                category, categorySpecifications, description, amount, path);
+        Commodity newCommodity = new Commodity(brand, name, price, businessAccount.getUsername(), true,
+                category.getName(), categorySpecifications, description, amount, path);
         Request request = new Request(newCommodity, businessAccount.getUsername());
         YaDataManager.addRequest(request);
     }

@@ -160,7 +160,7 @@ public class CommodityPage implements Initializable {
         List<String> commoditiesList = new ArrayList<>();
         try {
             for (Commodity commodity1 : YaDataManager.getCommodities()) {
-                if (commodity1.getCategory().getName().equals(commodity.getCategory().getName()) &&
+                if (commodity1.getCategoryName().equals(commodity.getCategoryName()) &&
                         commodity1.getCommodityId() != commodity.getCommodityId())
                     commoditiesList.add("Name: " + commodity1.getName() + ", Brand: " + commodity1.getBrand());
             }
@@ -201,7 +201,7 @@ public class CommodityPage implements Initializable {
             try {
                 for (Commodity commodity : YaDataManager.getCommodities()) {
                     if (("Name: " + commodity.getName() + ", Brand: " + commodity.getBrand()).equals(comparableCommodities.getValue()) &&
-                            commodity.getCategory().getName().equals(commodityMenu.getCommodity().getCategory().getName())) {
+                            commodity.getCategoryName().equals(commodityMenu.getCommodity().getCategoryName())) {
                         commodityMenu.setComparingCommodity(commodity);
                     }
                 }

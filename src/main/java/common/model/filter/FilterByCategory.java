@@ -17,6 +17,6 @@ public class FilterByCategory extends Filter {
 
     @Override
     public boolean isCommodityMatches(Commodity commodity) {
-        return commodity.getCategory().getName().equals(category.getName());
+        return commodity.getCategoryName().equals(category.getName());
     }
 }
