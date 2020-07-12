@@ -63,6 +63,9 @@ public class MoHoBank {
                 String request = "";
                 try {
                     request = inputStream.readUTF();
+                    if (debug) {
+                        System.out.println("request from " + clientId + " : " + request);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.err.println("Error: Unable to get request from client. Closing socket ...");
@@ -127,11 +130,76 @@ public class MoHoBank {
 
         }
 
-        private void getTransactions(String[] separatedInput) {
-
+        private void getTransactions(String[] separatedInput) throws SQLException {
+            AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
+            if (authToken == null) {
+                sendTokenIsInvalid();
+                return;
+            }
+            if (authToken.getExpired() != 0 || isTokenExpired(authToken)) {
+                sendTokenExpired();
+                return;
+            }
+            StringBuilder result = new StringBuilder("");
+            boolean secondParameterIsId = false;
+            switch (separatedInput[2]) {
+                case "+":
+                    result = bankDataBase.getTransactionsToIdJson(authToken.getAccountId());
+                    break;
+                case "-":
+                    result = bankDataBase.getTransactionsFromIdJson(authToken.getAccountId());
+                    break;
+                case "*":
+                    result = bankDataBase.getIdAllTransactionsJson(authToken.getAccountId());
+                    break;
+                default:
+                    secondParameterIsId = true;
+            }
+            if (secondParameterIsId) {
+                int id;
+                try {
+                    id = Integer.parseInt(separatedInput[2]);
+                } catch (NumberFormatException e) {
+                    sendResponse("invalid receipt id");
+                    return;
+                }
+                Receipt receipt = bankDataBase.getReceiptById(id);
+                if (receipt == null || (receipt.getSourceAccountID() != authToken.getAccountId()
+                        && receipt.getDestAccountID() != authToken.getAccountId())) {
+                    sendResponse("invalid receipt id");
+                    return;
+                }
+                result.append(receipt.getJson());
+            }
+            sendResponse(result.toString());
         }
 
         private void createReceipt(String[] separatedInput) throws SQLException {
+            if (separatedInput.length != 5 && separatedInput.length != 6) {
+                sendResponse("invalid parameters passed");
+                return;
+            }
+            if (separatedInput[4].equals(separatedInput[5])) {
+                sendResponse("equal source and dest account");
+                return;
+            }
+            AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
+            if (authToken == null) {
+                // bardash too
+                sendTokenIsInvalid();
+                return;
+            }
+            if (authToken.getExpired() != 0 || isTokenExpired(authToken)) {
+                sendTokenExpired();
+                return;
+            }
+
+
+            //if (separatedInput.)
+
+
+
+
             if (!separatedInput[2].equals("deposit") && !separatedInput[2].equals("withdraw")
                     && !separatedInput[2].equals("move")) {
                 sendResponse("invalid receipt type");
@@ -211,6 +279,9 @@ public class MoHoBank {
         private void sendResponse(String response) {
             try {
                 outputStream.writeUTF(response);
+                if (debug) {
+                    System.out.println("response to " + clientId + " : " + response);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 System.err.println("Error: Unable to send response to client. Closing socket ...");

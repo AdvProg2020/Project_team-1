@@ -1,5 +1,7 @@
 package bank;
 
+import com.gilecode.yagson.YaGson;
+
 import java.io.File;
 import java.sql.*;
 
@@ -73,17 +75,6 @@ public class BankDataBase {
         closeStatementAndConnection();
     }
 
-    public synchronized void getAccounts() throws SQLException {
-        createConnectionAndStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM accounts");
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String firstName = resultSet.getString("firstname");
-            System.out.println(id + "    " + firstName);
-        }
-        closeStatementAndConnection();
-    }
-
     public synchronized int addAccount(BankAccount bankAccount) throws SQLException {
         String createAccountSql = "INSERT INTO accounts (username, password, firstName, lastName)\n" +
                 "VALUES ('" + bankAccount.getUsername() + "', '" + bankAccount.getPassword() + "', '" +
@@ -118,6 +109,13 @@ public class BankDataBase {
 
     public synchronized int addReceipt(Receipt receipt) throws SQLException {
         createConnectionAndStatement();
+        YaGson mapper = new YaGson();
+        String addReceiptSql = "INSERT INTO " +
+                "receipts (json, receiptType, description, money, sourceAccountID, destAccountID) " +
+                "VALUES ('" + mapper.toJson(receipt) + "', '" + receipt.getReceiptType() + "', '" +
+                receipt.getDescription() + "', " + receipt.getMoney() + ", " + receipt.getSourceAccountID() +
+                ", " + receipt.getDestAccountID() + ")";
+        executeUpdate(addReceiptSql);
         ResultSet resultSet = statement.executeQuery("SELECT Max(id) FROM receipts");
         int id = resultSet.getInt(1);
         closeStatementAndConnection();
@@ -126,7 +124,7 @@ public class BankDataBase {
 
     public synchronized AuthenticationToken getAuthTokenByUuid(String uuid) throws SQLException {
         createConnectionAndStatement();
-        String selectByUuidSql = "SELECT * FROM";
+        String selectByUuidSql = "SELECT * FROM authenticationTokens WHERE uuid = '" + uuid + "'";
         ResultSet resultSet = statement.executeQuery(selectByUuidSql);
         AuthenticationToken authenticationToken = null;
         if (resultSet.next()) {
@@ -138,7 +136,7 @@ public class BankDataBase {
         return authenticationToken;
     }
 
-    public void setAuthTokenExpire(String uuid) throws SQLException {
+    public synchronized void setAuthTokenExpire(String uuid) throws SQLException {
         createConnectionAndStatement();
         String expireAuthTokenSql = "UPDATE authenticationTokens SET expired = 1 " +
                 "WHERE uuid = '" + uuid + "'";
@@ -146,7 +144,7 @@ public class BankDataBase {
         closeStatementAndConnection();
     }
 
-    public BankAccount getAccountById(int accountId) throws SQLException {
+    public synchronized BankAccount getAccountById(int accountId) throws SQLException {
         createConnectionAndStatement();
         String selectByUsernameSql = "SELECT * FROM accounts WHERE id=" + accountId;
         ResultSet resultSet = statement.executeQuery(selectByUsernameSql);
@@ -159,5 +157,47 @@ public class BankDataBase {
         }
         closeStatementAndConnection();
         return bankAccount;
+    }
+
+    public synchronized Receipt getReceiptById(int id) throws SQLException {
+        createConnectionAndStatement();
+        String selectByIdSql = "SELECT * FROM receipts WHERE id = " + id;
+        ResultSet resultSet = statement.executeQuery(selectByIdSql);
+        Receipt receipt = null;
+        if (resultSet.next()) {
+            receipt = new Receipt(resultSet.getString("receiptType"), resultSet.getInt("money"),
+                    resultSet.getInt("sourceAccountID"), resultSet.getInt("destAccountID"),
+                    resultSet.getString("description"), resultSet.getInt("id"),
+                    resultSet.getInt("paid"), resultSet.getString("json"));
+        }
+        closeStatementAndConnection();
+        return receipt;
+    }
+
+    public synchronized StringBuilder getIdAllTransactionsJson(int accountId) throws SQLException {
+        StringBuilder result = new StringBuilder("");
+        String getTransactionsSql = "";
+        createConnectionAndStatement();
+
+        closeStatementAndConnection();
+        return result;
+    }
+
+    public synchronized StringBuilder getTransactionsFromIdJson(int accountId) throws SQLException {
+        StringBuilder result = new StringBuilder("");
+        String getTransactionsSql = "";
+        createConnectionAndStatement();
+
+        closeStatementAndConnection();
+        return result;
+    }
+
+    public synchronized StringBuilder getTransactionsToIdJson(int accountId) throws SQLException {
+        StringBuilder result = new StringBuilder("");
+        String getTransactionsSql = "";
+        createConnectionAndStatement();
+
+        closeStatementAndConnection();
+        return result;
     }
 }
