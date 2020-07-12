@@ -1,13 +1,13 @@
 package server.controller.commodity;
 
-import server.data.YaDataManager;
-import server.controller.share.Menu;
 import client.Session;
 import common.model.account.PersonalAccount;
 import common.model.commodity.Comment;
 import common.model.commodity.Commodity;
 import common.model.log.BuyLog;
 import common.model.share.Request;
+import server.controller.share.Menu;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 
@@ -36,7 +36,7 @@ public class CommentsMenu extends Menu {
     public void addComment(String title, String content) throws IOException {
         Comment comment = new Comment(Session.getOnlineAccount(), this.commodity, title, content,
                 hasBoughtThisCommodity());
-        Request request = new Request(comment, Session.getOnlineAccount());
+        Request request = new Request(comment, Session.getOnlineAccount().getUsername());
         YaDataManager.addRequest(request);
     }
 }

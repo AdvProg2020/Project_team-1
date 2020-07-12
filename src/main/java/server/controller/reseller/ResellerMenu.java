@@ -1,10 +1,7 @@
 package server.controller.reseller;
 
 import client.Session;
-import server.controller.comparator.Sort;
-import server.data.YaDataManager;
-import server.controller.share.Menu;
-import server.controller.share.MenuHandler;
+import client.view.commandline.View;
 import common.model.account.BusinessAccount;
 import common.model.commodity.Category;
 import common.model.commodity.Commodity;
@@ -12,7 +9,10 @@ import common.model.commodity.Off;
 import common.model.field.Field;
 import common.model.log.SellLog;
 import common.model.share.Request;
-import client.view.commandline.View;
+import server.controller.comparator.Sort;
+import server.controller.share.Menu;
+import server.controller.share.MenuHandler;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,8 +82,8 @@ public class ResellerMenu extends Menu {
                            ArrayList<Field> categorySpecifications, String description, int amount , String path) throws Exception {
         BusinessAccount businessAccount = getBusinessAccount();
         Commodity newCommodity = new Commodity(brand, name, price, businessAccount, true,
-                category, categorySpecifications, description, amount , path);
-        Request request = new Request(newCommodity, businessAccount);
+                category, categorySpecifications, description, amount, path);
+        Request request = new Request(newCommodity, businessAccount.getUsername());
         YaDataManager.addRequest(request);
     }
 

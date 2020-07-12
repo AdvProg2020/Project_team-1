@@ -1,9 +1,7 @@
 package server.controller.reseller;
 
 import client.Session;
-import server.data.YaDataManager;
-import server.controller.share.Menu;
-import server.controller.comparator.Sort;
+import client.view.commandline.View;
 import common.model.account.BusinessAccount;
 import common.model.account.SimpleAccount;
 import common.model.commodity.Category;
@@ -11,7 +9,9 @@ import common.model.commodity.Commodity;
 import common.model.field.Field;
 import common.model.log.SellLog;
 import common.model.share.Request;
-import client.view.commandline.View;
+import server.controller.comparator.Sort;
+import server.controller.share.Menu;
+import server.data.YaDataManager;
 
 import java.util.ArrayList;
 
@@ -61,7 +61,7 @@ public class ManageResellerProductsMenu extends Menu {
                 (description.equals("-"))?(oldProduct.getDescription()):(description),
                 (amount == -1)?(oldProduct.getInventory()):(amount) , oldProduct.getImagePath());
         editedProduct.setCommodityId(oldProduct.getCommodityId());
-        Request request = new Request(editedProduct, businessAccount);
+        Request request = new Request(editedProduct, businessAccount.getUsername());
         YaDataManager.addRequest(request);
         // Todo delete old product
     }

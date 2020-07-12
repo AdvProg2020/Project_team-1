@@ -1,13 +1,13 @@
 package server.controller.reseller;
 
-import server.controller.share.Menu;
-import server.controller.comparator.Sort;
+import client.view.commandline.View;
+import common.model.account.BusinessAccount;
 import common.model.commodity.Commodity;
 import common.model.commodity.Off;
 import common.model.share.Request;
+import server.controller.comparator.Sort;
+import server.controller.share.Menu;
 import server.data.YaDataManager;
-import common.model.account.BusinessAccount;
-import client.view.commandline.View;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class ManageResellerOffsMenu extends Menu {
         BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
         Off newOff = new Off(businessAccount, commodities, simpleDateFormat.parse(startTime),
                 simpleDateFormat.parse(endTime), discountPercent);
-        Request request = new Request(newOff, businessAccount);
+        Request request = new Request(newOff, businessAccount.getUsername());
         YaDataManager.addRequest(request);
     }
 
@@ -55,10 +55,10 @@ public class ManageResellerOffsMenu extends Menu {
         }
         BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
         Off newOff = new Off(businessAccount, commoditiesInOff,
-                (startTime.equals("-"))?(oldOff.getStartTime()):(simpleDateFormat.parse(startTime)),
-                (endTime.equals("-"))?(oldOff.getEndTime()):(simpleDateFormat.parse(endTime)),
-                (discountPercent == -1)?(oldOff.getDiscountPercent()):(discountPercent));
-        Request request = new Request(newOff, businessAccount);
+                (startTime.equals("-")) ? (oldOff.getStartTime()) : (simpleDateFormat.parse(startTime)),
+                (endTime.equals("-")) ? (oldOff.getEndTime()) : (simpleDateFormat.parse(endTime)),
+                (discountPercent == -1) ? (oldOff.getDiscountPercent()) : (discountPercent));
+        Request request = new Request(newOff, businessAccount.getUsername());
         YaDataManager.addRequest(request);
         YaDataManager.removeOff(oldOff);
     }
