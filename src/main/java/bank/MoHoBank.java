@@ -1,15 +1,14 @@
 package bank;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class MoHoBank {
-    private static Scanner scanner = new Scanner(System.in);
-
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
             throw new Exception("Invalid arguments passed");
@@ -60,7 +59,7 @@ public class MoHoBank {
         public void run() {
             boolean run = true;
             while (run) {
-                String request = "";
+                String request;
                 try {
                     request = inputStream.readUTF();
                     if (debug) {
@@ -95,6 +94,8 @@ public class MoHoBank {
                 }
             }
             closeConnectionToClient();
+            --onlineClientsNumber;
+            System.out.println("bye " + clientId + ". now there are " + onlineClientsNumber + " clients online");
         }
 
         private void getBalance(String[] separatedInput) throws SQLException {
@@ -143,7 +144,25 @@ public class MoHoBank {
                 sendResponse("receipt is paid before");
                 return;
             }
-            //BankAccount bankAccount = bankDataBase.getAccountById()
+            int sourceAccountId = receipt.getSourceAccountID();
+            BankAccount bankAccount = bankDataBase.getAccountById(sourceAccountId);
+            if (sourceAccountId != -1 && bankAccount == null) {
+                sendResponse("invalid account id");
+                return;
+            }
+            if (bankAccount.getBalance() < receipt.getMoney()) {
+                sendResponse("source account does not have enough money");
+                return;
+            }
+            int destAccountId = receipt.getDestAccountID();
+            if (sourceAccountId != -1) {
+                bankDataBase.addToAccountBalance(sourceAccountId, -1 * receipt.getMoney());
+            }
+            if (destAccountId != -1) {
+                bankDataBase.addToAccountBalance(destAccountId, receipt.getMoney());
+            }
+            bankDataBase.payReceipt(receiptId);
+            sendResponse("done successfully");
         }
 
         private void getTransactions(String[] separatedInput) throws SQLException {
@@ -156,7 +175,7 @@ public class MoHoBank {
                 sendTokenExpired();
                 return;
             }
-            StringBuilder result = new StringBuilder("");
+            StringBuilder result = new StringBuilder();
             boolean secondParameterIsId = false;
             switch (separatedInput[2]) {
                 case "+":
@@ -210,7 +229,7 @@ public class MoHoBank {
                 sendResponse("your input contains invalid characters");
                 return;
             }
-            int money = -1;
+            int money;
             try {
                 money = Integer.parseInt(separatedInput[3]);
             } catch (ArithmeticException e) {
@@ -254,7 +273,8 @@ public class MoHoBank {
                 sendTokenExpired();
                 return;
             }
-            bankDataBase.addReceipt(new Receipt(receiptType, money, sourceAccountId, destAccountId, description));
+            sendResponse(String.valueOf(bankDataBase.addReceipt(
+                    new Receipt(receiptType, money, sourceAccountId, destAccountId, description))));
         }
 
         private void sendInvalidParametersPassed() {
