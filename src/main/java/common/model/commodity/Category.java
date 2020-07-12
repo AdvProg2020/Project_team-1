@@ -1,22 +1,18 @@
 package common.model.commodity;
 
+import server.data.YaDataManager;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Category implements Serializable {
     private String name;
-    private ArrayList<Commodity> commodities;
+    private ArrayList<Integer> commoditiesId;
     private ArrayList<CategorySpecification> fieldOptions;
 
-    public Category(String name, int numberOfFields) {
+    public Category(String name, ArrayList<Integer> commoditiesId, ArrayList<CategorySpecification> categorySpecifications) {
         this.name = name;
-        this.commodities = new ArrayList<>();
-        this.fieldOptions = new ArrayList<>();
-    }
-
-    public Category(String name, ArrayList<Commodity> commodities , ArrayList<CategorySpecification> categorySpecifications) {
-        this.name = name;
-        this.commodities = commodities;
+        this.commoditiesId = commoditiesId;
         this.fieldOptions = categorySpecifications;
     }
 
@@ -28,12 +24,12 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public ArrayList<Commodity> getCommodities() {
-        return commodities;
+    public ArrayList<Integer> getCommoditiesId() {
+        return commoditiesId;
     }
 
-    public void setCommodities(ArrayList<Commodity> commodities) {
-        this.commodities = commodities;
+    public void setCommoditiesId(ArrayList<Integer> commoditiesId) {
+        this.commoditiesId = commoditiesId;
     }
 
     public ArrayList<CategorySpecification> getFieldOptions() {
@@ -47,8 +43,12 @@ public class Category implements Serializable {
     @Override
     public String toString() {
         StringBuilder commoditiesNames = new StringBuilder();
-        for (Commodity commodity : commodities) {
-            commoditiesNames.append(commodity.getName());
+        for (int commodityId : commoditiesId) {
+            try {
+                commoditiesNames.append(YaDataManager.getCommodityById(commodityId).getName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             commoditiesNames.append("-");
         }
         StringBuilder options = new StringBuilder();

@@ -1,8 +1,8 @@
 package server.controller.manager;
 
-import server.controller.share.Menu;
 import common.model.commodity.Category;
 import common.model.commodity.Commodity;
+import server.controller.share.Menu;
 import server.data.YaDataManager;
 
 public class ManageAllProducts extends Menu {
@@ -10,10 +10,10 @@ public class ManageAllProducts extends Menu {
         Commodity commodity = YaDataManager.getCommodityById(commodityId);
         YaDataManager.removeCommodity(commodity);
         for (Category category : YaDataManager.getCategories()) {
-            if (category.getCommodities() != null)
-                for (Commodity categoryCommodity : category.getCommodities()) {
-                    if (categoryCommodity.getCommodityId() == commodityId) {
-                        category.getCommodities().remove(categoryCommodity);
+            if (category.getCommoditiesId() != null)
+                for (int categoryCommodityId : category.getCommoditiesId()) {
+                    if (categoryCommodityId == commodityId) {
+                        category.getCommoditiesId().remove(categoryCommodityId);
                         YaDataManager.removeCategory(category);
                         YaDataManager.addCategory(category);
                     }
