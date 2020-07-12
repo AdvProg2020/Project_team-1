@@ -1,7 +1,6 @@
 package common.model.log;
 
-import common.model.commodity.Commodity;
-import common.model.account.SimpleAccount;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.util.Date;
@@ -10,20 +9,16 @@ import java.util.Set;
 public class SellLog extends TransactionLog {
     private double receivedMoney;
     private double deductedMoneyOnSale;
-    private SimpleAccount buyer;
+    private String buyerUsername;
     private Boolean isCommodityDelivered;
 
-    public SellLog(Date date, int receivedMoney, int deductedMoneyOnSale, Set<Commodity> soledCommodities,
-                   SimpleAccount buyer) throws IOException {
+    public SellLog(Date date, int receivedMoney, int deductedMoneyOnSale, Set<Integer> soledCommodities,
+                   String buyerUsername) throws IOException {
         super(date, soledCommodities);
         this.receivedMoney = receivedMoney;
         this.deductedMoneyOnSale = deductedMoneyOnSale;
-        this.buyer = buyer;
+        this.buyerUsername = buyerUsername;
         isCommodityDelivered = false;
-    }
-
-    public String getBuyerUsername() {
-        return buyer.getUsername();
     }
 
     public double getReceivedMoney() {
@@ -34,8 +29,8 @@ public class SellLog extends TransactionLog {
         return deductedMoneyOnSale;
     }
 
-    public SimpleAccount getBuyer() {
-        return buyer;
+    public String getBuyerUsername() {
+        return buyerUsername;
     }
 
     public Boolean getCommodityDelivered() {
@@ -49,14 +44,18 @@ public class SellLog extends TransactionLog {
     @Override
     public String toString() {
         StringBuilder commoditiesNames = new StringBuilder();
-        for (Commodity commodity : commodities) {
-            commoditiesNames.append(commodity.getName());
+        for (int commodityId : commoditiesId) {
+            try {
+                commoditiesNames.append(YaDataManager.getCommodityById(commodityId).getName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             commoditiesNames.append("-");
         }
         return "SellLog{" +
                 "receivedMoney=" + receivedMoney +
                 ", deductedMoneyOnSale=" + deductedMoneyOnSale +
-                ", buyer=" + buyer.getUsername() +
+                ", buyer=" + buyerUsername +
                 ", isCommodityDelivered=" + isCommodityDelivered +
                 ", logId='" + logId + '\'' +
                 ", date=" + date.toString() +

@@ -1,11 +1,11 @@
 package client.view.graphical.commodity;
 
-import server.controller.commodity.CommentsMenu;
-import server.controller.commodity.DigestMenu;
-import server.controller.customer.OrderMenu;
-import server.data.YaDataManager;
-import server.controller.share.CommodityMenu;
-import server.controller.share.MenuHandler;
+import client.Session;
+import client.view.AudioPlayer;
+import client.view.commandline.View;
+import client.view.graphical.MainMenu;
+import common.model.commodity.Comment;
+import common.model.commodity.Commodity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,12 +23,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.commodity.Comment;
-import common.model.commodity.Commodity;
-import client.view.AudioPlayer;
-import client.view.commandline.View;
-import client.view.graphical.MainMenu;
+import server.controller.commodity.CommentsMenu;
+import server.controller.commodity.DigestMenu;
+import server.controller.customer.OrderMenu;
+import server.controller.share.CommodityMenu;
+import server.controller.share.MenuHandler;
+import server.data.YaDataManager;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -160,7 +160,7 @@ public class CommodityPage implements Initializable {
         List<String> commoditiesList = new ArrayList<>();
         try {
             for (Commodity commodity1 : YaDataManager.getCommodities()) {
-                if (commodity1.getCategory().getName().equals(commodity.getCategory().getName()) &&
+                if (commodity1.getCategoryName().equals(commodity.getCategoryName()) &&
                         commodity1.getCommodityId() != commodity.getCommodityId())
                     commoditiesList.add("Name: " + commodity1.getName() + ", Brand: " + commodity1.getBrand());
             }
@@ -175,17 +175,21 @@ public class CommodityPage implements Initializable {
         starButton4.setImage(new Image(emptyStarAddress));
         starButton3.setImage(new Image(emptyStarAddress));
         starButton2.setImage(new Image(emptyStarAddress));
-        if (!orderMenu.canRateProduct(commodity.getCommodityId())) {
-            starButton1.setDisable(true);
-            starButton2.setDisable(true);
-            starButton3.setDisable(true);
-            starButton4.setDisable(true);
-            starButton5.setDisable(true);
-            rateIt.setDisable(true);
+        try {
+            if (!orderMenu.canRateProduct(commodity.getCommodityId())) {
+                starButton1.setDisable(true);
+                starButton2.setDisable(true);
+                starButton3.setDisable(true);
+                starButton4.setDisable(true);
+                starButton5.setDisable(true);
+                rateIt.setDisable(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         for (Comment comment : commodity.getAllComments()) {
             VBox commentVBox = new VBox();
-            commentVBox.getChildren().addAll(new ModifiedLabel("Username: " + comment.getAccount().getUsername() +
+            commentVBox.getChildren().addAll(new ModifiedLabel("Username: " + comment.getUsername() +
                             (commentsMenu.hasBoughtThisCommodity() ? ", is a buyer" : ", isn't a buyer")),
                     new ModifiedLabel("Title: " + comment.getTitle()), new ModifiedLabel(comment.getContent()));
             commentsVBox.getChildren().add(commentVBox);
@@ -197,7 +201,7 @@ public class CommodityPage implements Initializable {
             try {
                 for (Commodity commodity : YaDataManager.getCommodities()) {
                     if (("Name: " + commodity.getName() + ", Brand: " + commodity.getBrand()).equals(comparableCommodities.getValue()) &&
-                            commodity.getCategory().getName().equals(commodityMenu.getCommodity().getCategory().getName())) {
+                            commodity.getCategoryName().equals(commodityMenu.getCommodity().getCategoryName())) {
                         commodityMenu.setComparingCommodity(commodity);
                     }
                 }

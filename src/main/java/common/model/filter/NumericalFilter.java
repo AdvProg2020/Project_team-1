@@ -32,6 +32,6 @@ public class NumericalFilter extends Filter {
     @Override
     public boolean isCommodityMatches(Commodity commodity) {
         NumericalField numericalField = (NumericalField) commodity.getCategorySpecifications().get(correspondingFieldNumber);
-        return rangeStart < numericalField.getValue() && numericalField.getValue() < rangeEnd && category.getName().equals(commodity.getCategory().getName());
+        return rangeStart < numericalField.getValue() && numericalField.getValue() < rangeEnd && category.getName().equals(commodity.getCategoryName());
     }
 }

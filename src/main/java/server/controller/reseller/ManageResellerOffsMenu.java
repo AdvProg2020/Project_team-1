@@ -1,13 +1,13 @@
 package server.controller.reseller;
 
-import server.controller.share.Menu;
-import server.controller.comparator.Sort;
+import client.view.commandline.View;
+import common.model.account.BusinessAccount;
 import common.model.commodity.Commodity;
 import common.model.commodity.Off;
 import common.model.share.Request;
+import server.controller.comparator.Sort;
+import server.controller.share.Menu;
 import server.data.YaDataManager;
-import common.model.account.BusinessAccount;
-import client.view.commandline.View;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,27 +38,33 @@ public class ManageResellerOffsMenu extends Menu {
     public void addOff(ArrayList<Commodity> commodities, String startTime,
                        String endTime, int discountPercent) throws Exception {
         BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
-        Off newOff = new Off(businessAccount, commodities, simpleDateFormat.parse(startTime),
+        ArrayList<Integer> commoditiesId = new ArrayList<>();
+        for (Commodity commodity : commodities) {
+            commoditiesId.add(commodity.getCommodityId());
+        }
+        Off newOff = new Off(businessAccount.getUsername(), commoditiesId, simpleDateFormat.parse(startTime),
                 simpleDateFormat.parse(endTime), discountPercent);
-        Request request = new Request(newOff, businessAccount);
+        Request request = new Request(newOff, businessAccount.getUsername());
         YaDataManager.addRequest(request);
     }
 
     public void editOff(Off oldOff, ArrayList<Commodity> removedProduct, ArrayList<Commodity> addedProduct, String startTime,
                         String endTime, int discountPercent) throws Exception {
-        ArrayList<Commodity> commoditiesInOff = new ArrayList<>(addedProduct);
-
-        for (Commodity commodity : oldOff.getCommodities()) {
-            if (!removedProduct.contains(commodity)) {
-                commoditiesInOff.add(commodity);
+        ArrayList<Integer> commoditiesIdInOff = new ArrayList<>();
+        for (Commodity commodity : addedProduct) {
+            commoditiesIdInOff.add(commodity.getCommodityId());
+        }
+        for (int commodityId : oldOff.getCommoditiesId()) {
+            if (!removedProduct.contains(YaDataManager.getCommodityById(commodityId))) {
+                commoditiesIdInOff.add(commodityId);
             }
         }
         BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
-        Off newOff = new Off(businessAccount, commoditiesInOff,
-                (startTime.equals("-"))?(oldOff.getStartTime()):(simpleDateFormat.parse(startTime)),
-                (endTime.equals("-"))?(oldOff.getEndTime()):(simpleDateFormat.parse(endTime)),
-                (discountPercent == -1)?(oldOff.getDiscountPercent()):(discountPercent));
-        Request request = new Request(newOff, businessAccount);
+        Off newOff = new Off(businessAccount.getUsername(), commoditiesIdInOff,
+                (startTime.equals("-")) ? (oldOff.getStartTime()) : (simpleDateFormat.parse(startTime)),
+                (endTime.equals("-")) ? (oldOff.getEndTime()) : (simpleDateFormat.parse(endTime)),
+                (discountPercent == -1) ? (oldOff.getDiscountPercent()) : (discountPercent));
+        Request request = new Request(newOff, businessAccount.getUsername());
         YaDataManager.addRequest(request);
         YaDataManager.removeOff(oldOff);
     }

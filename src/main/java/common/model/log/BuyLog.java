@@ -1,10 +1,7 @@
 package common.model.log;
 
-import common.model.account.BusinessAccount;
-import common.model.commodity.Commodity;
-import common.model.commodity.DiscountCode;
+import server.data.YaDataManager;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,19 +9,19 @@ import java.util.Set;
 public class BuyLog extends TransactionLog {
     private double payedMoney;
     private double deductedMoney;
-    private DiscountCode discountByCode;
-    private Set<BusinessAccount> sellers;
+    private String discountCode;
+    private Set<String> sellersUsername;
     private boolean isCommodityDelivered;
 
-    public BuyLog(Date date, Set<Commodity> commodities, double payedMoney, double deductedMoney,
-                  DiscountCode discountByCode) throws IOException {
+    public BuyLog(Date date, Set<Integer> commodities, double payedMoney, double deductedMoney,
+                  String discountCode) throws Exception {
         super(date, commodities);
         this.payedMoney = payedMoney;
         this.deductedMoney = deductedMoney;
-        this.discountByCode = discountByCode;
-        this.sellers = new HashSet<>();
-        for (Commodity commodity : commodities) {
-            sellers.add((BusinessAccount) commodity.getSeller());
+        this.discountCode = discountCode;
+        this.sellersUsername = new HashSet<>();
+        for (int commodityId : commodities) {
+            sellersUsername.add(YaDataManager.getCommodityById(commodityId).getSellerUsername());
         }
         isCommodityDelivered = false;
     }
@@ -33,16 +30,16 @@ public class BuyLog extends TransactionLog {
         return deductedMoney;
     }
 
-    public Set<BusinessAccount> getSellers() {
-        return sellers;
+    public Set<String> getSellersUsername() {
+        return sellersUsername;
     }
 
     public double getPayedMoney() {
         return payedMoney;
     }
 
-    public DiscountCode getDiscountByCode() {
-        return discountByCode;
+    public String getDiscountCode() {
+        return discountCode;
     }
 
     public Boolean getCommodityDelivered() {
@@ -56,14 +53,18 @@ public class BuyLog extends TransactionLog {
     @Override
     public String toString() {
         StringBuilder commoditiesNames = new StringBuilder();
-        for (Commodity commodity : commodities) {
-            commoditiesNames.append(commodity.getName());
+        for (int commodityId : commoditiesId) {
+            try {
+                commoditiesNames.append(YaDataManager.getCommodityById(commodityId).getName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             commoditiesNames.append("-");
         }
         return "BuyLog{" +
                 "payedMoney=" + payedMoney +
                 ", deductedMoney=" + deductedMoney +
-                ", sellers=" + sellers +
+                ", sellers=" + sellersUsername +
                 ", isCommodityDelivered=" + isCommodityDelivered +
                 ", logId=" + logId +
                 ", date=" + date +

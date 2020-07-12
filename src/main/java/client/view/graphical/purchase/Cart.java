@@ -1,7 +1,10 @@
 package client.view.graphical.purchase;
 
-import server.controller.customer.CartMenu;
-import server.controller.share.MenuHandler;
+import client.Session;
+import client.view.AudioPlayer;
+import client.view.commandline.View;
+import common.model.account.PersonalAccount;
+import common.model.commodity.Commodity;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,11 +17,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.account.PersonalAccount;
-import common.model.commodity.Commodity;
-import client.view.AudioPlayer;
-import client.view.commandline.View;
+import server.controller.customer.CartMenu;
+import server.controller.share.MenuHandler;
+import server.data.YaDataManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -48,10 +49,15 @@ public class Cart implements Initializable {
             scrollPane.setContent(cartGridPane);
         }
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        totalPrice.setText("Total price: " + cartMenu.calculateTotalPrice() + " Rials");
+        try {
+            totalPrice.setText("Total price: " + cartMenu.calculateTotalPrice() + " Rials");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int counter = 0;
-        for (Commodity commodity : account.getCart().keySet()) {
+        for (int commodityId : account.getCart().keySet()) {
             try {
+                Commodity commodity = YaDataManager.getCommodityById(commodityId);
                 GridPane commodityGridPane = new GridPane();
                 ImageView imageView = new ImageView(new Image(new FileInputStream(commodity.getImagePath())));
                 imageView.setOnMouseClicked(mouseEvent -> {
@@ -65,8 +71,8 @@ public class Cart implements Initializable {
                 imageView.setFitHeight(250);
                 commodityGridPane.add(imageView, 0, 0, 1, 4);
                 commodityGridPane.add(new ModifiedLabel("Name: " + commodity.getName()), 1, 0, 2, 1);
-                commodityGridPane.add(new ModifiedLabel("Number: " + account.getAmount(commodity) + ", Price: " + commodity.getPrice() + " Rials"), 1, 1, 2, 1);
-                commodityGridPane.add(new ModifiedLabel("Total price: " + account.getAmount(commodity) * commodity.getPrice()), 1, 2, 2, 1);
+                commodityGridPane.add(new ModifiedLabel("Number: " + account.getAmount(commodityId) + ", Price: " + commodity.getPrice() + " Rials"), 1, 1, 2, 1);
+                commodityGridPane.add(new ModifiedLabel("Total price: " + account.getAmount(commodityId) * commodity.getPrice()), 1, 2, 2, 1);
                 ImageView plusButton = new ImageView("icons/plus.png");
                 plusButton.setFitWidth(32);
                 plusButton.setFitHeight(32);
@@ -86,7 +92,7 @@ public class Cart implements Initializable {
                 minusButton.setOnMouseClicked(actionEvent -> {
                     try {
                         cartMenu.decrease(commodity.getCommodityId());
-                        if (account.getAmount(commodity) == 0) {
+                        if (account.getAmount(commodityId) == 0) {
                             scrollPane.setContent(null);
                         }
                         initialize(url, resourceBundle);

@@ -1,24 +1,22 @@
 package common.model.commodity;
 
-import server.data.YaDataManager;
-import common.model.account.SimpleAccount;
 import common.model.share.Requestable;
 import common.model.share.Status;
+import server.data.YaDataManager;
 
-import java.io.IOException;
 import java.io.Serializable;
 
-public class Comment implements Requestable , Serializable {
-    private SimpleAccount account;
-    private Commodity commodity;
+public class Comment implements Requestable, Serializable {
+    private String username;
+    private int commodityId;
     private String title;
     private String content;
     private boolean isABuyer;
     private Status status;
 
-    public Comment(SimpleAccount account, Commodity commodity, String title, String content, boolean isABuyer) {
-        this.account = account;
-        this.commodity = commodity;
+    public Comment(String username, int commodityId, String title, String content, boolean isABuyer) {
+        this.username = username;
+        this.commodityId = commodityId;
         this.title = title;
         this.content = content;
         this.isABuyer = isABuyer;
@@ -27,10 +25,10 @@ public class Comment implements Requestable , Serializable {
 
     @Override
     public String toString() {
-        System.out.println(commodity);
+        System.out.println(commodityId);
         return "Comment{" +
-                "account=" + account.getUsername() +
-                ", commodity=" + commodity.getName() +
+                "account=" + username +
+                ", commodity=" + commodityId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", isABuyer=" + isABuyer +
@@ -39,19 +37,19 @@ public class Comment implements Requestable , Serializable {
 
     public String getInformation() {
         if (isABuyer) {
-            return "account: " + this.account.getUsername() + '\n' +
+            return "account: " + this.username + '\n' +
                     "did buy this? true\n" +
                     "title: " + this.title + '\n' +
                     "comment: " + this.content;
         }
-        return "account: " + this.account.getUsername() + '\n' +
+        return "account: " + this.username + '\n' +
                 "did buy this? false\n" +
                 "title: " + this.title + '\n' +
                 "comment: " + this.content;
     }
 
-    public SimpleAccount getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
     public String getTitle() {
@@ -62,8 +60,8 @@ public class Comment implements Requestable , Serializable {
         return content;
     }
 
-    public Commodity getCommodity() {
-        return commodity;
+    public int getCommodityId() {
+        return commodityId;
     }
 
     public boolean isABuyer() {
@@ -79,9 +77,10 @@ public class Comment implements Requestable , Serializable {
     }
 
     @Override
-    public void addObj() throws IOException {
-        YaDataManager.removeCommodity(this.commodity);
-        this.commodity.getAllComments().add(this);
-        YaDataManager.addCommodity(this.commodity);
+    public void addObj() throws Exception {
+        Commodity commodity = YaDataManager.getCommodityById(this.commodityId);
+        commodity.getAllComments().add(this);
+        YaDataManager.removeCommodity(commodity);
+        YaDataManager.addCommodity(commodity);
     }
 }

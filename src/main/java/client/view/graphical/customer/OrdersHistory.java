@@ -1,15 +1,14 @@
 package client.view.graphical.customer;
 
+import client.Session;
+import common.model.account.PersonalAccount;
+import common.model.log.BuyLog;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import client.Session;
-import common.model.account.BusinessAccount;
-import common.model.account.PersonalAccount;
-import common.model.commodity.Commodity;
-import common.model.log.BuyLog;
+import server.data.YaDataManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,11 +28,15 @@ public class OrdersHistory implements Initializable {
                     new TreeItem<>(buyLog.getCommodityDelivered() ? "Delivered" : "Not delivered yet"),
                     new TreeItem<>("Buy date: " + buyLog.getDate().toString()),
                     commoditiesTreeItem, sellersTreeItem);
-            for (Commodity commodity : buyLog.getCommodities()) {
-                commoditiesTreeItem.getChildren().add(new TreeItem<>(commodity.getName()));
+            for (int commodityId : buyLog.getCommoditiesId()) {
+                try {
+                    commoditiesTreeItem.getChildren().add(new TreeItem<>(YaDataManager.getCommodityById(commodityId).getName()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            for (BusinessAccount seller : buyLog.getSellers()) {
-                sellersTreeItem.getChildren().add(new TreeItem<>(seller.getUsername()));
+            for (String username : buyLog.getSellersUsername()) {
+                sellersTreeItem.getChildren().add(new TreeItem<>(username));
             }
             ordersHistoryRootItem.getChildren().add(buyLogTreeItem);
         }

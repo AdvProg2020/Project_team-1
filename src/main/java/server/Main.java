@@ -13,7 +13,8 @@ import java.util.HashMap;
 
 public class Main {
     private static ArrayList<Socket> sockets = new ArrayList<>();
-    private static HashMap<Socket,String> onlineAccountsUsernames = new HashMap<>();
+    private static HashMap<Socket, String> onlineAccountsUsernames = new HashMap<>();
+
     public static void main(String[] args) throws IOException {
         ServerSocket server = new ServerSocket(8888);
         while (true) {
@@ -32,7 +33,7 @@ public class Main {
                     DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                     String input = dataInputStream.readUTF();
                     System.out.println(input);
-                    handleInput(input , socket);
+                    handleInput(input, socket);
                 } catch (IOException | ClassNotFoundException e) {
                     break;
                 }
@@ -40,52 +41,51 @@ public class Main {
         }).start();
     }
 
-    public static void handleInput(String input , Socket socket) throws IOException, ClassNotFoundException {
-        if (input.equalsIgnoreCase("new support account")){
+    public static void handleInput(String input, Socket socket) throws IOException, ClassNotFoundException {
+        if (input.equalsIgnoreCase("new support account")) {
             newSupportAccount(socket);
-        }else if (input.equalsIgnoreCase("get online accounts")){
+        } else if (input.equalsIgnoreCase("get online accounts")) {
             sendOnlineAccounts(socket);
-        }else if (input.startsWith("account logged in:")){
-            updateOnlineAccounts(input , socket);
-        }else if (input.startsWith("Chat between:")){
-            chat(input , socket);
-        }else if (input.startsWith("Start chat")){
-            chatSupport(input ,socket);
+        } else if (input.startsWith("account logged in:")) {
+            updateOnlineAccounts(input, socket);
+        } else if (input.startsWith("Chat between:")) {
+            chat(input, socket);
+        } else if (input.startsWith("Start chat")) {
+            chatSupport(input, socket);
         }
     }
 
-    public static void chat(String input , Socket simpleAccountSocket) throws IOException {
+    public static void chat(String input, Socket simpleAccountSocket) throws IOException {
         String[] splitInput = input.split(" ");
         Socket supportAccountSocket = null;
-        for (Socket socket : onlineAccountsUsernames.keySet()) {
-            if (onlineAccountsUsernames.get(socket).equals(splitInput[3]))
-                supportAccountSocket = socket;
-        }
+        supportAccountSocket = getSocket(splitInput, supportAccountSocket, 3);
         DataOutputStream dataOutputStreamSupportAccount = new DataOutputStream(new BufferedOutputStream(supportAccountSocket.getOutputStream()));
-        dataOutputStreamSupportAccount.writeUTF("new chat with: "+splitInput[2]);
+        dataOutputStreamSupportAccount.writeUTF("new chat with: " + splitInput[2]);
         dataOutputStreamSupportAccount.flush();
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(simpleAccountSocket.getInputStream()));
-        while (true){
+        while (true) {
             String message = dataInputStream.readUTF();
-            if (message.equals("end"))
-                break;
+            System.out.println(message);
             dataOutputStreamSupportAccount.writeUTF(message);
             dataOutputStreamSupportAccount.flush();
+            if (message.startsWith("end chat")) {
+                break;
+            }
         }
     }
 
-    public static void updateOnlineAccounts(String input , Socket socket){
+    public static void updateOnlineAccounts(String input, Socket socket) {
         String[] splitInput = input.split(" ");
-        onlineAccountsUsernames.put(socket,splitInput[3]);
+        onlineAccountsUsernames.put(socket, splitInput[3]);
     }
 
     public static void sendOnlineAccounts(Socket socket) throws IOException {
-        String usernamesString= "";
+        String usernamesString = "";
         for (Socket socket1 : onlineAccountsUsernames.keySet()) {
             usernamesString += onlineAccountsUsernames.get(socket1) + "\n";
         }
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        System.out.println(onlineAccountsUsernames+"l");
+        System.out.println(onlineAccountsUsernames + "l");
         dataOutputStream.writeUTF(usernamesString);
         dataOutputStream.flush();
     }
@@ -106,21 +106,47 @@ public class Main {
         }
     }
 
-    public static void chatSupport(String input , Socket supportAccountSocket) throws IOException {
+    public static void chatSupport(String input, Socket supportAccountSocket) throws IOException {
         String[] splitInput = input.split(" ");
         Socket simpleAccountSocket = null;
+        simpleAccountSocket = getSocket(splitInput, simpleAccountSocket, 3);
+        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(supportAccountSocket.getInputStream()));
+        while (true) {
+            String message = dataInputStream.readUTF();
+            System.out.println(message);
+            String[] splitMessage = message.split(" ");
+            if (message.startsWith("new chat")) {
+                simpleAccountSocket = getSocket(splitInput, simpleAccountSocket, 3);
+                message = getString(splitInput, splitMessage , 4);
+            } else if (!message.startsWith("Start chat with")){
+                simpleAccountSocket = getSocket(splitMessage, simpleAccountSocket, 0);
+                message = getString(splitInput, splitMessage , 1);
+            }
+            System.out.println(message);
+            DataOutputStream dataOutputStreamSupportAccount = new DataOutputStream(new BufferedOutputStream(simpleAccountSocket.getOutputStream()));
+            if (!message.startsWith("Start chat with")) {
+                dataOutputStreamSupportAccount.writeUTF(message);
+                dataOutputStreamSupportAccount.flush();
+            }
+        }
+    }
+
+    public static Socket getSocket(String[] splitInput, Socket simpleAccountSocket, int i) {
         for (Socket socket : onlineAccountsUsernames.keySet()) {
-            if (onlineAccountsUsernames.get(socket).equals(splitInput[4]))
+            if (onlineAccountsUsernames.get(socket).equals(splitInput[i]))
                 simpleAccountSocket = socket;
         }
-        DataOutputStream dataOutputStreamSupportAccount = new DataOutputStream(new BufferedOutputStream(simpleAccountSocket.getOutputStream()));
-        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(supportAccountSocket.getInputStream()));
-        while (true){
-            String message = dataInputStream.readUTF();
-            if (message.equals("end"))
-                break;
-            dataOutputStreamSupportAccount.writeUTF(message);
-            dataOutputStreamSupportAccount.flush();
+        return simpleAccountSocket;
+    }
+
+    public static String getString(String[] splitInput, String[] splitMessage , int origin) {
+        String message;
+        message = "";
+        for (int i = origin ; i < splitMessage.length ; i++) {
+            if (i == origin)
+                message += splitMessage[i];
+            else message += " " + splitMessage[i];
         }
+        return message;
     }
 }

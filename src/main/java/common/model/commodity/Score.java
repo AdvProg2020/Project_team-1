@@ -1,30 +1,28 @@
 package common.model.commodity;
 
-import common.model.account.SimpleAccount;
-
 import java.io.Serializable;
 
 public class Score implements Serializable {
-    private SimpleAccount account;
+    private String username;
     private int score;
-    private Commodity commodity;
+    private int commodityId;
 
-    public Score(SimpleAccount account, int score, Commodity commidity) {
-        this.account = account;
+    public Score(String username, int score, int commodityId) {
+        this.username = username;
         this.score = score;
-        this.commodity = commidity;
+        this.commodityId = commodityId;
     }
 
-    public SimpleAccount getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
     @Override
     public String toString() {
         return "Score{" +
-                "account=" + account.getUsername() +
+                "account=" + username +
                 ", score=" + score +
-                ", commodity=" + commodity.getName() +
+                ", commodity=" + commodityId +
                 '}';
     }
 
@@ -32,7 +30,7 @@ public class Score implements Serializable {
         return score;
     }
 
-    public Commodity getCommodity() {
-        return commodity;
+    public int getCommodityId() {
+        return commodityId;
     }
 }

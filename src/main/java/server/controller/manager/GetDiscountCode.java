@@ -1,10 +1,10 @@
 package server.controller.manager;
 
-import server.controller.share.Menu;
 import common.model.account.PersonalAccount;
-import common.model.commodity.DiscountCode;
-import server.data.YaDataManager;
 import common.model.account.SimpleAccount;
+import common.model.commodity.DiscountCode;
+import server.controller.share.Menu;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.util.Date;
@@ -14,7 +14,7 @@ public class GetDiscountCode extends Menu {
         return YaDataManager.getDiscountCodeWithCode(code);
     }
 
-    public void changeCode(String code, DiscountCode discountCode) throws IOException {
+    public void changeCode(String code, DiscountCode discountCode) throws Exception {
         YaDataManager.removeDiscountCode(discountCode);
         discountCode.setCode(code);
         updateAccountsDiscountCode(discountCode);
@@ -62,11 +62,11 @@ public class GetDiscountCode extends Menu {
 
     public void deleteAccount(String userName, DiscountCode discountCode) throws Exception {
         if (YaDataManager.isUsernameExist(userName)) {
-            for (SimpleAccount account : discountCode.getAccounts()) {
-                if (account.getUsername().equalsIgnoreCase(userName)){
-                    discountCode.deleteAccount(account);
+            for (String username : discountCode.getAccountsUsername()) {
+                if (userName.equalsIgnoreCase(username)) {
+                    discountCode.deleteAccount(YaDataManager.getAccountWithUserName(username));
                     updateAccountsDiscountCode(discountCode);
-                    PersonalAccount personalAccount = (PersonalAccount)getAccountWithUserNameFromDatabase(userName);
+                    PersonalAccount personalAccount = (PersonalAccount) getAccountWithUserNameFromDatabase(userName);
                     personalAccount.removeDiscountCode(discountCode);
                     YaDataManager.removePerson(personalAccount);
                     YaDataManager.addPerson(personalAccount);
@@ -75,13 +75,13 @@ public class GetDiscountCode extends Menu {
                 }
                 return;
             }
-        }
-        else
+        } else
             throw new Exception("user name is not valid");
     }
 
-    public void updateAccountsDiscountCode(DiscountCode discountCode){
-        for (PersonalAccount personalAccount : discountCode.getAccounts()) {
+    public void updateAccountsDiscountCode(DiscountCode discountCode) throws Exception {
+        for (String username : discountCode.getAccountsUsername()) {
+            PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(username);
             personalAccount.removeDiscountCode(discountCode);
             personalAccount.addDiscountCode(discountCode);
         }
@@ -91,7 +91,7 @@ public class GetDiscountCode extends Menu {
     public void addAccount(String userName, DiscountCode discountCode) throws Exception {
         if (YaDataManager.isUsernameExist(userName)) {
             discountCode.addAccount((PersonalAccount) getAccountWithUserNameFromDatabase(userName));
-            ((PersonalAccount)getAccountWithUserNameFromDatabase(userName)).addDiscountCode(discountCode);
+            ((PersonalAccount) getAccountWithUserNameFromDatabase(userName)).addDiscountCode(discountCode);
             updateAccountsDiscountCode(discountCode);
             updateDiscountCode(discountCode);
             updateAccounts(discountCode);
@@ -103,7 +103,8 @@ public class GetDiscountCode extends Menu {
 
     public void deleteDiscountCode(DiscountCode discountCode) throws Exception {
         YaDataManager.removeDiscountCode(discountCode);
-        for (PersonalAccount account : discountCode.getAccounts()) {
+        for (String username : discountCode.getAccountsUsername()) {
+            PersonalAccount account = YaDataManager.getPersonWithUserName(username);
             for (DiscountCode code : account.getDiscountCodes()) {
                 if (code.getCode().equalsIgnoreCase(discountCode.getCode())) {
                     account.removeDiscountCode(discountCode);
@@ -121,10 +122,11 @@ public class GetDiscountCode extends Menu {
         fxmlFileAddress = "../../../fxml/HolyManager/ViewDiscountCode.fxml";
     }
 
-    public void updateAccounts(DiscountCode discountCode) throws IOException {
-        for (SimpleAccount account : discountCode.getAccounts()) {
-            YaDataManager.removePerson((PersonalAccount) account);
-            YaDataManager.addPerson((PersonalAccount) account);
+    public void updateAccounts(DiscountCode discountCode) throws Exception {
+        for (String username : discountCode.getAccountsUsername()) {
+            PersonalAccount account = YaDataManager.getPersonWithUserName(username);
+            YaDataManager.removePerson(account);
+            YaDataManager.addPerson(account);
         }
     }
 

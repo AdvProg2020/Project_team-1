@@ -1,12 +1,11 @@
 package common.model.commodity;
 
-import server.data.YaDataManager;
-import server.controller.Statistics;
 import common.model.account.BusinessAccount;
-import common.model.account.SimpleAccount;
 import common.model.field.Field;
 import common.model.share.Requestable;
 import common.model.share.Status;
+import server.controller.Statistics;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -21,9 +20,9 @@ public class Commodity implements Requestable , Serializable {
     private String name;
     private int price;
     private int inventory;
-    private BusinessAccount seller;
+    private String sellerUsername;
     private Boolean isCommodityAvailable;
-    private Category category;
+    private String categoryName;
     private ArrayList<Field> categorySpecifications;
     private String description;
     private ArrayList<Comment> allComments;
@@ -39,16 +38,16 @@ public class Commodity implements Requestable , Serializable {
     }
 
     public Commodity(String brand, String name, int price,
-                     BusinessAccount seller, Boolean isCommodityAvailable, Category category,
-                     ArrayList<Field> categorySpecifications, String description, int amount , String imagePath) throws IOException {
+                     String sellerUsername, Boolean isCommodityAvailable, String categoryName,
+                     ArrayList<Field> categorySpecifications, String description, int amount, String imagePath) throws IOException {
         this.commodityId = Statistics.updatedStats.commodityId();
         status = Status.UNDER_CHECKING_FOR_CREATE;
         this.brand = brand;
         this.name = name;
         this.price = price;
-        this.seller = seller;
+        this.sellerUsername = sellerUsername;
         this.isCommodityAvailable = isCommodityAvailable;
-        this.category = category;
+        this.categoryName = categoryName;
         this.categorySpecifications = categorySpecifications;
         this.description = description;
         this.allComments = new ArrayList<>();
@@ -68,9 +67,9 @@ public class Commodity implements Requestable , Serializable {
         name = commodity.name;
         price = commodity.price;
         inventory = commodity.inventory;
-        seller = commodity.seller;
+        sellerUsername = commodity.sellerUsername;
         isCommodityAvailable = commodity.isCommodityAvailable;
-        category = commodity.category;
+        categoryName = commodity.categoryName;
         categorySpecifications = new ArrayList<>(commodity.categorySpecifications);
         description = commodity.description;
         allComments = new ArrayList<>(commodity.allComments);
@@ -135,9 +134,10 @@ public class Commodity implements Requestable , Serializable {
     public void addObj() throws Exception {
         YaDataManager.removeCommodity(this);
         YaDataManager.addCommodity(this);
-        YaDataManager.removeBusiness(seller);
-        seller.addCommodity(this);
-        YaDataManager.addBusiness(seller);
+        BusinessAccount businessAccount = YaDataManager.getSellerWithUserName(sellerUsername);
+        YaDataManager.removeBusiness(businessAccount);
+        businessAccount.addCommodity(this);
+        YaDataManager.addBusiness(businessAccount);
     }
 
     public String getBrand() {
@@ -160,8 +160,8 @@ public class Commodity implements Requestable , Serializable {
         this.price = price;
     }
 
-    public SimpleAccount getSeller() {
-        return seller;
+    public String getSellerUsername() {
+        return sellerUsername;
     }
 
     public Boolean getCommodityAvailable() {
@@ -172,8 +172,8 @@ public class Commodity implements Requestable , Serializable {
         isCommodityAvailable = commodityAvailable;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
     public ArrayList<Field> getCategorySpecifications() {
@@ -188,24 +188,8 @@ public class Commodity implements Requestable , Serializable {
         return description;
     }
 
-    @Override
-    public String toString() {
-        return "Commodity{" +
-                "commodityId=" + commodityId +
-                ", status=" + status +
-                ", brand='" + brand + '\'' +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", inventory=" + inventory +
-                ", seller=" + seller +
-                ", isCommodityAvailable=" + isCommodityAvailable +
-                ", category=" + category.getName() +
-                ", description='" + description + '\'' +
-                ", allComments=" + allComments.size() +
-                ", averageScore=" + averageScore +
-                ", numberOfScores=" + numberOfScores +
-                ", numberOfVisits=" + numberOfVisits +
-                '}';
+    public void setSellerUsername(BusinessAccount seller) {
+        this.sellerUsername = seller.getUsername();
     }
 
     public void setDescription(String description) {
@@ -228,12 +212,28 @@ public class Commodity implements Requestable , Serializable {
         this.brand = brand;
     }
 
-    public void setSeller(BusinessAccount seller) {
-        this.seller = seller;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    @Override
+    public String toString() {
+        return "Commodity{" +
+                "commodityId=" + commodityId +
+                ", status=" + status +
+                ", brand='" + brand + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", inventory=" + inventory +
+                ", seller=" + sellerUsername +
+                ", isCommodityAvailable=" + isCommodityAvailable +
+                ", category=" + categoryName +
+                ", description='" + description + '\'' +
+                ", allComments=" + allComments.size() +
+                ", averageScore=" + averageScore +
+                ", numberOfScores=" + numberOfScores +
+                ", numberOfVisits=" + numberOfVisits +
+                '}';
     }
 
     public void setAllComments(ArrayList<Comment> allComments) {

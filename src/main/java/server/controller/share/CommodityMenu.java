@@ -1,11 +1,11 @@
 package server.controller.share;
 
-import server.controller.comparator.Sort;
-import server.data.YaDataManager;
 import client.Session;
 import common.model.commodity.Comment;
 import common.model.commodity.Commodity;
 import common.model.share.Status;
+import server.controller.comparator.Sort;
+import server.data.YaDataManager;
 
 import java.util.ArrayList;
 
@@ -53,7 +53,7 @@ public class CommodityMenu extends Menu {
 
     public Commodity compare(int id) throws Exception {
         Commodity comparingCommodity = YaDataManager.getCommodityById(id);
-        if (!commodity.getCategory().equals(comparingCommodity.getCategory())) {
+        if (!commodity.getCategoryName().equals(comparingCommodity.getCategoryName())) {
             throw new Exception("to compare two products, they have to in the same category");
         }
         if (commodity.getCommodityId() == comparingCommodity.getCommodityId()) {

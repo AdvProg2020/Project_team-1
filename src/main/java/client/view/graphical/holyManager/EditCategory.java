@@ -1,5 +1,10 @@
 package client.view.graphical.holyManager;
 
+import client.Session;
+import client.view.commandline.View;
+import common.model.commodity.Category;
+import common.model.commodity.CategorySpecification;
+import common.model.commodity.Commodity;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -11,10 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.commodity.Category;
-import common.model.commodity.CategorySpecification;
-import client.view.commandline.View;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -87,8 +89,8 @@ public class EditCategory extends HolyManager implements Initializable {
             return;
         }
 
-        if (!title.getText().equals("") && ((options != null && options.size() != 0) || options == null)) {
-            categorySpecifications.add(View.manageCategoryMenu.createCategorySpecification(title.getText() , options));
+        if (!title.getText().equals("") && (options == null || options.size() != 0)) {
+            categorySpecifications.add(View.manageCategoryMenu.createCategorySpecification(title.getText(), options));
             setInformationLabel(Color.GREEN, "Category specification successfully added");
             title.setText("");
         } else {
@@ -96,8 +98,12 @@ public class EditCategory extends HolyManager implements Initializable {
         }
     }
 
-    public void commodity(ActionEvent actionEvent) {
-        AddCommoditiesToCategory.setCommodities(category.getCommodities());
+    public void commodity(ActionEvent actionEvent) throws Exception {
+        ArrayList<Commodity> commodities = new ArrayList<>();
+        for (Integer commodityId : category.getCommoditiesId()) {
+            commodities.add(YaDataManager.getCommodityById(commodityId));
+        }
+        AddCommoditiesToCategory.setCommodities(commodities);
         newPopup(actionEvent, "../../../../fxml/holyManager/AddCommoditiesToCategory.fxml");
     }
 

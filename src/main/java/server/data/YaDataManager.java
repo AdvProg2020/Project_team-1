@@ -4,12 +4,12 @@ import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.*;
-import server.controller.Statistics;
 import common.model.commodity.Category;
 import common.model.commodity.Commodity;
 import common.model.commodity.DiscountCode;
 import common.model.commodity.Off;
 import common.model.share.Request;
+import server.controller.Statistics;
 
 import java.io.File;
 import java.io.FileReader;
@@ -527,7 +527,7 @@ public class YaDataManager {
         if (deleteManagerAccount(username)) {
             return;
         }
-        if (deleteSupportAccount(username)){
+        if (deleteSupportAccount(username)) {
             return;
         }
         throw new Exception();
@@ -549,7 +549,7 @@ public class YaDataManager {
         }
         throw new Exception("there is no product with this ID");
     }
-    
+
     public static boolean isUsernameExist(String username) throws IOException {
         for (ManagerAccount manager : getManagers()) {
             if (manager.getUsername().equalsIgnoreCase(username)) {
@@ -584,6 +584,23 @@ public class YaDataManager {
         for (PersonalAccount personalAccount : getPersons()) {
             if (personalAccount.getUsername().equals(username))
                 return personalAccount;
+        }
+        return null;
+    }
+
+    public static BusinessAccount getSellerWithUserName(String username) throws Exception {
+        for (BusinessAccount businessAccount : getBusinesses()) {
+            if (businessAccount.getUsername().equals(username))
+                return businessAccount;
+        }
+        return null;
+    }
+
+    public static Category getCategoryWithName(String name) throws IOException {
+        for (Category category : getCategories()) {
+            if (category.getName().equals(name)) {
+                return category;
+            }
         }
         return null;
     }

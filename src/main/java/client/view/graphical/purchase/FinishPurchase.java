@@ -1,13 +1,13 @@
 package client.view.graphical.purchase;
 
+import client.Session;
+import client.view.commandline.View;
+import common.model.account.PersonalAccount;
+import common.model.log.BuyLog;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import client.Session;
-import common.model.account.PersonalAccount;
-import common.model.log.BuyLog;
-import client.view.commandline.View;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,8 +25,8 @@ public class FinishPurchase implements Initializable {
         BuyLog buyLog = View.cartMenu.getBuyLog();
         payedMoney.setText(buyLog.getPayedMoney() + " Rials");
         discountMoney.setText(buyLog.getDeductedMoney() + " Rials");
-        if (buyLog.getDiscountByCode() != null) {
-            discountMoney.setText(buyLog.getDiscountByCode().getCode());
+        if (buyLog.getDiscountCode() != null) {
+            discountMoney.setText(buyLog.getDiscountCode());
         } else {
             discountMoney.setText("No discount");
         }
