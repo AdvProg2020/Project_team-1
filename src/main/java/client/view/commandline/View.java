@@ -1,19 +1,5 @@
 package client.view.commandline;
 
-import server.controller.SupportMenu;
-import server.controller.commodity.CommentsMenu;
-import server.controller.commodity.DigestMenu;
-import server.controller.customer.CartMenu;
-import server.controller.customer.Chat;
-import server.controller.customer.CustomerMenu;
-import server.controller.customer.OrderMenu;
-import server.data.YaDataManager;
-import server.controller.manager.*;
-import server.controller.off.OffMenu;
-import server.controller.reseller.ManageResellerOffsMenu;
-import server.controller.reseller.ManageResellerProductsMenu;
-import server.controller.reseller.ResellerMenu;
-import server.controller.share.*;
 import client.Session;
 import common.model.account.BusinessAccount;
 import common.model.account.ManagerAccount;
@@ -23,10 +9,26 @@ import common.model.commodity.*;
 import common.model.field.Field;
 import common.model.field.NumericalField;
 import common.model.field.OptionalField;
-import common.model.filter.*;
+import common.model.filter.Filter;
+import common.model.filter.FilterByCategory;
+import common.model.filter.FilterByName;
 import common.model.log.BuyLog;
 import common.model.log.SellLog;
 import common.model.share.Request;
+import server.controller.SupportMenu;
+import server.controller.commodity.CommentsMenu;
+import server.controller.commodity.DigestMenu;
+import server.controller.customer.CartMenu;
+import server.controller.customer.Chat;
+import server.controller.customer.CustomerMenu;
+import server.controller.customer.OrderMenu;
+import server.controller.manager.*;
+import server.controller.off.OffMenu;
+import server.controller.reseller.ManageResellerOffsMenu;
+import server.controller.reseller.ManageResellerProductsMenu;
+import server.controller.reseller.ResellerMenu;
+import server.controller.share.*;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -186,8 +188,8 @@ public class View {
             System.out.format("%-15s: %-30s %-30s", "name", commodity.getName(), comparingCommodity.getName());
             System.out.format("%-15s: %-30s %-30s", "brand", commodity.getBrand(), comparingCommodity.getBrand());
             System.out.format("%-15s: %-30s %-30s", "price", commodity.getPrice(), comparingCommodity.getPrice());
-            System.out.format("%-15s: %-30s %-30s", "seller", commodity.getSeller().getUsername(), comparingCommodity.
-                    getSeller().getUsername());
+            System.out.format("%-15s: %-30s %-30s", "seller", commodity.getSellerUsername(), comparingCommodity.
+                    getSellerUsername());
             System.out.format("%-15s: %-30s %-30s", "amount", commodity.getInventory(), comparingCommodity.
                     getInventory());
             for (int i = 0; i < commodity.getCategorySpecifications().size(); i++) {
@@ -641,7 +643,7 @@ public class View {
     private void initializeCartMenu() {
         cartMenu.commandProcess = new CommandProcess() {
             @Override
-            public void commandProcessor(String command) {
+            public void commandProcessor(String command) throws Exception {
                 if (command.matches("products")) {
                     cartMenu.products();
                     return;

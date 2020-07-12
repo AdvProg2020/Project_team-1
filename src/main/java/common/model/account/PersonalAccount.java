@@ -1,10 +1,10 @@
 package common.model.account;
 
-import server.data.YaDataManager;
 import common.model.commodity.Commodity;
 import common.model.commodity.DiscountCode;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.log.BuyLog;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.Set;
 public class PersonalAccount extends SimpleAccount {
     private HashMap<DiscountCode, Integer> discountCodes;
     private ArrayList<BuyLog> buyLogs;
-    private HashMap<Commodity, Integer> cart;
+    private HashMap<Integer, Integer> cart;
     private double credit;
 
     public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber,
@@ -39,20 +39,13 @@ public class PersonalAccount extends SimpleAccount {
         cart.clear();
     }
 
-    public boolean hasThisInCart(Commodity commodity) {
-        for (Commodity commodity1 : cart.keySet()) {
-            if (commodity.equals(commodity1)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean hasThisInCart(int commodityId) {
+        return cart.containsKey(commodityId);
     }
 
-    public int getAmount(Commodity commodity) throws Exception {
-        for (Commodity commodity1 : cart.keySet()) {
-            if (commodity.equals(commodity1)) {
-                return cart.get(commodity1);
-            }
+    public int getAmount(int commodityId) {
+        if (cart.containsKey(commodityId)) {
+            return cart.get(commodityId);
         }
         return 0;
     }
@@ -85,39 +78,34 @@ public class PersonalAccount extends SimpleAccount {
         buyLogs.add(buyLog);
     }
 
-    public HashMap<Commodity, Integer> getCart() {
+    public HashMap<Integer, Integer> getCart() {
         return cart;
     }
 
-    private boolean isCommodityInTheCart(Commodity commodity) {
-        for (Commodity commodity1 : cart.keySet()) {
-            if (commodity1.getCommodityId() == commodity.getCommodityId())
-                return true;
-        }
-        return false;
-    }
-
-    public void addToCart(Commodity commodity) throws Exception {
-        if (!isCommodityInTheCart(commodity)) {
+    public void addToCart(Integer commodityId) throws Exception {
+        Commodity commodity = YaDataManager.getCommodityById(commodityId);
+        if (!hasThisInCart(commodityId)) {
             if (commodity.getInventory() > 0)
-                cart.put(commodity, 1);
+                cart.put(commodityId, 1);
             else
                 throw new Exception("We don't enough number of this commodity, excuse us");
         } else {
 
-            if (cart.get(commodity) < commodity.getInventory())
-                cart.put(commodity, cart.get(commodity) + 1);
+            if (cart.get(commodityId) < commodity.getInventory())
+                cart.put(commodityId, cart.get(commodityId) + 1);
             else
                 throw new Exception("We don't enough number of this commodity, excuse us");
         }
     }
 
-    public void removeFromCart(Commodity commodity) throws Exception {
-        for (Commodity commodity1 : cart.keySet()) {
-            if (commodity.equals(commodity1)) {
-                cart.remove(commodity1);
-                return;
+    public void removeFromCart(int commodityId) throws Exception {
+        if (cart.containsKey(commodityId)) {
+            if (cart.get(commodityId) == 1) {
+                cart.remove(commodityId);
+            } else {
+                cart.put(commodityId, cart.get(commodityId) - 1);
             }
+            return;
         }
         throw new Exception("this product is not in your cart");
     }
