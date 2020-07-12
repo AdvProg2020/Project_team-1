@@ -1,7 +1,7 @@
 package common.model.log;
 
 import server.controller.Statistics;
-import common.model.commodity.Commodity;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -11,11 +11,11 @@ import java.util.Set;
 public abstract class TransactionLog implements Serializable {
     protected int logId;
     protected Date date;
-    protected Set<Commodity> commodities;
+    protected Set<Integer> commoditiesId;
 
-    public TransactionLog(Date date, Set<Commodity> commodities) throws IOException {
+    public TransactionLog(Date date, Set<Integer> commoditiesId) throws IOException {
         this.date = date;
-        this.commodities = commodities;
+        this.commoditiesId = commoditiesId;
         logId = Statistics.updatedStats.transactionLogId();
     }
 
@@ -31,14 +31,14 @@ public abstract class TransactionLog implements Serializable {
         return date.toString();
     }
 
-    public Set<Commodity> getCommodities() {
-        return commodities;
+    public Set<Integer> getCommoditiesId() {
+        return commoditiesId;
     }
 
-    public String getCommoditiesNamesString() {
+    public String getCommoditiesNamesString() throws Exception {
         StringBuilder result = new StringBuilder();
-        for (Commodity commodity : commodities) {
-            result.append(commodity.getName());
+        for (Integer commodityId : commoditiesId) {
+            result.append(YaDataManager.getCommodityById(commodityId).getName());
         }
         return result.toString();
     }

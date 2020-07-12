@@ -41,8 +41,8 @@ public class ManageResellerProductsMenu extends Menu {
         Commodity commodity = getCommodityById(productId);
         BusinessAccount businessAccount = (BusinessAccount) Session.getOnlineAccount();
         for (SellLog sellLog : businessAccount.getSellLogs()) {
-            if (sellLog.getCommodities().contains(commodity)) {
-                simpleAccountArrayList.add(sellLog.getBuyer());
+            if (sellLog.getCommoditiesId().contains(commodity)) {
+                simpleAccountArrayList.add(YaDataManager.getPersonWithUserName(sellLog.getBuyerUsername()));
             }
         }
         return simpleAccountArrayList;
@@ -51,15 +51,15 @@ public class ManageResellerProductsMenu extends Menu {
     public void editProduct(Commodity oldProduct, String brand, String name, int price,boolean availability, Category category,
                             ArrayList<Field> categorySpecifications, String description, int amount) throws Exception {
         BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
-        Commodity editedProduct = new Commodity((brand.equals("-"))?(oldProduct.getBrand()):(brand),
-                (name.equals("-"))?(oldProduct.getName()):(name),
-                (price == -1)?(oldProduct.getPrice()):(price),
-                businessAccount,
+        Commodity editedProduct = new Commodity((brand.equals("-")) ? (oldProduct.getBrand()) : (brand),
+                (name.equals("-")) ? (oldProduct.getName()) : (name),
+                (price == -1) ? (oldProduct.getPrice()) : (price),
+                businessAccount.getUsername(),
                 availability,
                 category,
                 categorySpecifications,
-                (description.equals("-"))?(oldProduct.getDescription()):(description),
-                (amount == -1)?(oldProduct.getInventory()):(amount) , oldProduct.getImagePath());
+                (description.equals("-")) ? (oldProduct.getDescription()) : (description),
+                (amount == -1) ? (oldProduct.getInventory()) : (amount), oldProduct.getImagePath());
         editedProduct.setCommodityId(oldProduct.getCommodityId());
         Request request = new Request(editedProduct, businessAccount.getUsername());
         YaDataManager.addRequest(request);
