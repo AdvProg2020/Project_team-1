@@ -1,12 +1,12 @@
 package server.controller.commodity;
 
-import server.data.YaDataManager;
-import server.controller.share.Menu;
-import server.controller.share.MenuHandler;
 import client.Session;
+import client.view.commandline.View;
 import common.model.account.PersonalAccount;
 import common.model.commodity.Commodity;
-import client.view.commandline.View;
+import server.controller.share.Menu;
+import server.controller.share.MenuHandler;
+import server.data.YaDataManager;
 
 public class DigestMenu extends Menu {
     private Commodity commodity;
@@ -22,7 +22,7 @@ public class DigestMenu extends Menu {
             throw new Exception("you have to login or register first");
         }
         PersonalAccount personalAccount = ((PersonalAccount) Session.getOnlineAccount());
-        personalAccount.addToCart(commodity);
+        personalAccount.addToCart(commodity.getCommodityId());
         YaDataManager.removePerson(personalAccount);
         YaDataManager.addPerson(personalAccount);
     }

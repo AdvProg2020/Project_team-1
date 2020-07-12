@@ -15,10 +15,10 @@ public class DiscountCode implements Serializable {
     private int discountPercentage;
     private int maximumDiscountPrice;
     private int maximumNumberOfUses;
-    private ArrayList<PersonalAccount> accounts;
+    private ArrayList<String> accountsUsername;
 
     public DiscountCode(String code, Date startDate, Date finishDate, int discountPercentage, int maximumDiscountPrice,
-                        int maximumNumberOfUses, ArrayList<PersonalAccount> accounts) throws Exception {
+                        int maximumNumberOfUses, ArrayList<String> accountsUsername) throws Exception {
         if (finishDate.compareTo(startDate) < 0) {
             throw new Exception("dates are not valid");
         }
@@ -28,7 +28,7 @@ public class DiscountCode implements Serializable {
         this.code = code;
         this.startDate = startDate;
         this.finishDate = finishDate;
-        this.accounts = accounts;
+        this.accountsUsername = accountsUsername;
     }
 
     public String getCode() {
@@ -90,18 +90,18 @@ public class DiscountCode implements Serializable {
         this.maximumNumberOfUses = maximumNumberOfUses;
     }
 
-    public ArrayList<PersonalAccount> getAccounts() {
-        return accounts;
+    public ArrayList<String> getAccountsUsername() {
+        return accountsUsername;
     }
 
-    public void setAccounts(ArrayList<PersonalAccount> accounts) {
-        this.accounts = accounts;
+    public void setAccountsUsername(ArrayList<String> accountsUsername) {
+        this.accountsUsername = accountsUsername;
     }
 
     public void deleteAccount(SimpleAccount simpleAccount) {
-        for (PersonalAccount account : accounts) {
-            if(account.getUsername().equalsIgnoreCase(simpleAccount.getUsername())){
-                accounts.remove(account);
+        for (String username : accountsUsername) {
+            if (username.equals(simpleAccount.getUsername())) {
+                accountsUsername.remove(simpleAccount.getUsername());
                 return;
             }
         }
@@ -109,7 +109,7 @@ public class DiscountCode implements Serializable {
     }
 
     public void addAccount(PersonalAccount simpleAccount) {
-        accounts.add(simpleAccount);
+        accountsUsername.add(simpleAccount.getUsername());
     }
 
     public void setCode(String code) {
@@ -132,8 +132,8 @@ public class DiscountCode implements Serializable {
     @Override
     public String toString() {
         StringBuilder accountsUserName = new StringBuilder();
-        for (SimpleAccount account : accounts) {
-            accountsUserName.append(account.getUsername());
+        for (String username : accountsUsername) {
+            accountsUserName.append(username);
             accountsUserName.append('-');
         }
         return "DiscountCode{" +

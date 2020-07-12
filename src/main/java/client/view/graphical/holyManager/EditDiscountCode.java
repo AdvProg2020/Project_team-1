@@ -1,17 +1,21 @@
 package client.view.graphical.holyManager;
 
+import client.Session;
+import client.view.commandline.View;
+import common.model.account.PersonalAccount;
+import common.model.commodity.DiscountCode;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.commodity.DiscountCode;
-import client.view.commandline.View;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -37,7 +41,15 @@ public class EditDiscountCode extends ViewDiscountCode implements Initializable 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        AddPersonToDiscountCode.setAccounts(discountCode.getAccounts());
+        ArrayList<PersonalAccount> personalAccounts = new ArrayList<>();
+        for (String username : discountCode.getAccountsUsername()) {
+            try {
+                personalAccounts.add(YaDataManager.getPersonWithUserName(username));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        AddPersonToDiscountCode.setAccounts(personalAccounts);
         AddPersonToDiscountCode.setDiscountCode(discountCode);
         code.setText(discountCode.getCode());
         startDate.setText(discountCode.getStartDate().toString());

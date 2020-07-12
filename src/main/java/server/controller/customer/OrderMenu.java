@@ -25,9 +25,8 @@ public class OrderMenu extends Menu {
             for (int commodityId : log.getCommoditiesId()) {
                 if (commodityId == id) {
                     Commodity commodity = YaDataManager.getCommodityById(commodityId);
-                    new Score(account, rate, commodity);
+                    commodity.updateAverageScore(new Score(account.getUsername(), rate, commodityId));
                     YaDataManager.removeCommodity(commodity);
-                    commodity.updateAverageScore(new Score(account, rate, commodity));
                     YaDataManager.addCommodity(commodity);
                     return;
                 }
@@ -47,7 +46,7 @@ public class OrderMenu extends Menu {
                     if (commodityId == id) {
                         Commodity commodity = YaDataManager.getCommodityById(commodityId);
                         for (Score score : commodity.getScores()) {
-                            if (score.getAccount().getUsername().equals(account.getUsername())) {
+                            if (score.getUsername().equals(account.getUsername())) {
                                 return false;
                             }
                         }

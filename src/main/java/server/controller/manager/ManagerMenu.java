@@ -1,15 +1,15 @@
 package server.controller.manager;
 
 import client.Session;
-import server.data.YaDataManager;
-import server.controller.share.Menu;
-import server.controller.share.MenuHandler;
+import client.view.commandline.View;
 import common.model.account.PersonalAccount;
 import common.model.account.SimpleAccount;
 import common.model.commodity.Category;
 import common.model.commodity.DiscountCode;
 import common.model.share.Request;
-import client.view.commandline.View;
+import server.controller.share.Menu;
+import server.controller.share.MenuHandler;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,9 +55,11 @@ public class ManagerMenu extends Menu {
 
     public void addDiscountCode(String code, Date start, Date finish, int discountPercentage, int maximumDiscountPrice,
                                 int maximumNumberOfUse, ArrayList<PersonalAccount> accountArrayList) throws Exception {
-
-
-        DiscountCode discountCode = new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accountArrayList);
+        ArrayList<String> userNames = new ArrayList<>();
+        for (PersonalAccount personalAccount : accountArrayList) {
+            userNames.add(personalAccount.getUsername());
+        }
+        DiscountCode discountCode = new DiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, userNames);
         for (PersonalAccount account : accountArrayList) {
             account.addDiscountCode(discountCode);
         }
