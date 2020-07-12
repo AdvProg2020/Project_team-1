@@ -175,28 +175,44 @@ public class BankDataBase {
     }
 
     public synchronized StringBuilder getIdAllTransactionsJson(int accountId) throws SQLException {
-        StringBuilder result = new StringBuilder("");
-        String getTransactionsSql = "";
+        StringBuilder result = new StringBuilder();
+        String getTransactionsSql = "SELECT json FROM receipts WHERE destAccountID = " + accountId +
+                " OR sourceAccountID = " + accountId;
         createConnectionAndStatement();
-
+        ResultSet resultSet = statement.executeQuery(getTransactionsSql);
+        while (resultSet.next()) {
+            result.append(resultSet.getString("json"));
+            result.append('*');
+        }
+        result.deleteCharAt(result.length() - 1);
         closeStatementAndConnection();
         return result;
     }
 
     public synchronized StringBuilder getTransactionsFromIdJson(int accountId) throws SQLException {
-        StringBuilder result = new StringBuilder("");
-        String getTransactionsSql = "";
+        StringBuilder result = new StringBuilder();
+        String getTransactionsSql = "SELECT json FROM receipts WHERE sourceAccountID = " + accountId;
         createConnectionAndStatement();
-
+        ResultSet resultSet = statement.executeQuery(getTransactionsSql);
+        while (resultSet.next()) {
+            result.append(resultSet.getString("json"));
+            result.append('*');
+        }
+        result.deleteCharAt(result.length() - 1);
         closeStatementAndConnection();
         return result;
     }
 
     public synchronized StringBuilder getTransactionsToIdJson(int accountId) throws SQLException {
-        StringBuilder result = new StringBuilder("");
-        String getTransactionsSql = "";
+        StringBuilder result = new StringBuilder();
+        String getTransactionsSql = "SELECT json FROM receipts WHERE destAccountID = " + accountId;
         createConnectionAndStatement();
-
+        ResultSet resultSet = statement.executeQuery(getTransactionsSql);
+        while (resultSet.next()) {
+            result.append(resultSet.getString("json"));
+            result.append('*');
+        }
+        result.deleteCharAt(result.length() - 1);
         closeStatementAndConnection();
         return result;
     }
