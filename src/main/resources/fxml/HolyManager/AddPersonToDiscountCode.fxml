@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="pane" prefHeight="505.0" prefWidth="679.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.AddPersonToDiscountCode">
+<AnchorPane fx:id="pane" prefHeight="505.0" prefWidth="679.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.holyManager.AddPersonToDiscountCode">
    <children>
       <Button layoutX="436.0" layoutY="390.0" mnemonicParsing="false" onAction="#add" prefHeight="58.0" prefWidth="167.0" styleClass="normal-button-Green" text="Add" />
    </children>

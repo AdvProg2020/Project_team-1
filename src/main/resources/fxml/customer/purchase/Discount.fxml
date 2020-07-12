@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1200.0" styleClass="background"
-            xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="view.graphical.purchase.GetDiscount">
+            xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="client.view.graphical.purchase.GetDiscount">
     <stylesheets>
         <URL value="@../../Common.css"/>
     </stylesheets>

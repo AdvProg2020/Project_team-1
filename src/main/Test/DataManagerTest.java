@@ -1,8 +1,3 @@
-import model.commodity.Category;
-import controller.data.DataManager;
-import model.account.BusinessAccount;
-import org.junit.Assert;
-
 public class DataManagerTest {
 
     @org.junit.Test

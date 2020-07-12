@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="pane" prefHeight="685.0" prefWidth="1329.0" styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.ViewPersonalInfo">
+<AnchorPane fx:id="pane" prefHeight="685.0" prefWidth="1329.0" styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.holyManager.ViewPersonalInfo">
     <children>
         <Button mnemonicParsing="false" onAction="#viewPersonalInfo" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View personal info" />
         <Button layoutY="61.0" mnemonicParsing="false" onAction="#manageUsers" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage users" />
@@ -28,6 +28,6 @@
       <Button layoutX="1165.0" layoutY="9.0" mnemonicParsing="false" onAction="#play" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
       <Button layoutX="952.0" layoutY="623.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
       <Label fx:id="label" layoutX="308.0" layoutY="165.0" prefHeight="29.0" prefWidth="301.0" styleClass="hint-label" visible="false" />
-      <Button onAction="#goToMainMenu" layoutX="952.0" layoutY="537.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="Main menu" />
+      <Button onAction="#goToMainMenu" layoutX="952.0" layoutY="537.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="client.Main menu" />
     </children>
 </AnchorPane>

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="565.0" prefWidth="971.0" styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.ManagerUsers">
+<AnchorPane prefHeight="565.0" prefWidth="971.0" styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.holyManager.ManagerUsers">
     <children>
         <Button mnemonicParsing="false" onAction="#viewPersonalInfo" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View personal info" />
         <Button layoutY="61.0" mnemonicParsing="false" onAction="#manageUsers" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage users" />
@@ -20,13 +20,14 @@
       <Button fx:id="delete" alignment="CENTER" cancelButton="true" defaultButton="true" ellipsisString="" layoutX="632.0" layoutY="452.0" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#deleteAccount" prefHeight="55.0" prefWidth="210.0" styleClass="delete-button" text="Delete account" textAlignment="JUSTIFY" textFill="WHITE" wrapText="true">
 
       </Button>
-      <Button layoutX="248.0" layoutY="452.0" mnemonicParsing="false" onAction="#addManager" prefHeight="55.0" prefWidth="227.0" styleClass="normal-button" text="Add manager" />
+      <Button layoutX="248.0" layoutY="452.0" mnemonicParsing="false" onAction="#addManager" prefHeight="55.0" prefWidth="242.0" styleClass="normal-button" text="Add manager" />
       <Button layoutX="2.0" layoutY="452.0" mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back" />
       <Button layoutX="2.0" layoutY="512.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="Logout" />
       <Button layoutX="842.0" layoutY="15.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
       <Button layoutX="905.0" layoutY="14.0" mnemonicParsing="false" styleClass="normal-button" text="⏸" />
       <Button layoutX="890.0" layoutY="512.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
-      <Button onAction="#goToMainMenu" layoutX="890.0" layoutY="452.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="227.0" styleClass="forward-button" text="Main menu" />
+      <Button layoutX="890.0" layoutY="452.0" mnemonicParsing="false" onAction="#goToMainMenu" prefHeight="55.0" prefWidth="227.0" styleClass="forward-button" text="client.Main menu" />
+      <Button layoutX="248.0" layoutY="512.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="242.0" styleClass="normal-button" text="Add support account" onAction="#addSupportAccount"/>
     </children>
 
 </AnchorPane>

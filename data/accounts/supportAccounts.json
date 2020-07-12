@@ -1,0 +1,22 @@
+[
+  {
+    "username": "salam12",
+    "firstName": "salam",
+    "lastName": "salam",
+    "email": "salam@gmail.com",
+    "phoneNumber": "09121798944",
+    "hashedPassword": "$2a$10$L72sRfPlDfV6MlJ0uRLnqe.Tcn9juec5sHKdpy1g2qZzKEfdr2/0G",
+    "accountType": "support",
+    "imagePath": "file:/C:/Users/arian/Desktop/Project_team-1-new/target/classes/default-user-image.png"
+  },
+  {
+    "username": "support",
+    "firstName": "salam",
+    "lastName": "salam",
+    "email": "sald@gmial.com",
+    "phoneNumber": "09121798944",
+    "hashedPassword": "$2a$10$57KNKeqT4xbp6ce0GDjZZOuIDPS7TQqz2bat.PmWyAC9P2WW8QkCG",
+    "accountType": "support",
+    "imagePath": "file:/C:/Users/arian/Desktop/Project_team-1-new/target/classes/default-user-image.png"
+  }
+]

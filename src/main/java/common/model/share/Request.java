@@ -1,0 +1,39 @@
+package common.model.share;
+
+import server.controller.Statistics;
+import common.model.account.SimpleAccount;
+
+import java.io.IOException;
+
+public class Request {
+
+    private Requestable obj;
+    private SimpleAccount simpleAccount;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public Request(Requestable obj, SimpleAccount simpleAccount) throws IOException {
+        this.obj = obj;
+        this.simpleAccount = simpleAccount;
+        this.id = Statistics.updatedStats.requestId();
+    }
+
+    public Requestable getObj() {
+        return obj;
+    }
+
+    public SimpleAccount getSimpleAccount() {
+        return simpleAccount;
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "obj=" + obj.toString() +
+                ", id=" + id +
+                '}';
+    }
+}

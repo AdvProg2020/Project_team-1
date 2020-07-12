@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane fx:id="pane" prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphical.holyManager.AddCommoditiesToCategory">
+<AnchorPane fx:id="pane" prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.holyManager.AddCommoditiesToCategory">
    <children>
       <Button layoutX="346.0" layoutY="280.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="121.0" styleClass="normal-button" text="Add" onAction="#addCommodities"/>
    </children>

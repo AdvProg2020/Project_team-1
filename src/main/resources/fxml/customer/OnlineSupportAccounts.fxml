@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="pane" prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.customer.OnlineSupportAccounts">
+   <children>
+      <Button layoutX="14.0" layoutY="267.0" mnemonicParsing="false" onAction="#chat" prefHeight="42.0" prefWidth="135.0" styleClass="normal-button" text="Chat" />
+      <Button layoutX="14.0" layoutY="331.0" mnemonicParsing="false" onAction="#close" styleClass="close-button" text="Close" />
+   </children>
+</AnchorPane>
