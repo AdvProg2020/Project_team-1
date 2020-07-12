@@ -34,7 +34,7 @@ public class CommentsMenu extends Menu {
     }
 
     public void addComment(String title, String content) throws IOException {
-        Comment comment = new Comment(Session.getOnlineAccount(), this.commodity, title, content,
+        Comment comment = new Comment(Session.getOnlineAccount().getUsername(), this.commodity.getCommodityId(), title, content,
                 hasBoughtThisCommodity());
         Request request = new Request(comment, Session.getOnlineAccount().getUsername());
         YaDataManager.addRequest(request);
