@@ -44,10 +44,11 @@ public class SupportAccount implements Initializable {
                     chat1.getItems().remove(chat1.getItems().get(i));
                     i--;
                 }
-                if (messages != null)
+                if (messages != null) {
                     for (Message message : messages) {
                         chat1.getItems().add(message.username + ": " + message.message);
                     }
+                } else usernamePersonWhoSupportAccountChatWith = null;
             }
         });
 
@@ -56,7 +57,6 @@ public class SupportAccount implements Initializable {
     public ArrayList<Message> getMessages() {
         for (CheckBox item : accounts.getItems()) {
             if (item.isSelected()) {
-                usernamePersonWhoSupportAccountChatWith = item.getText();
                 for (SimpleAccount simpleAccount : chatMessages.keySet()) {
                     if (item.getText().equals(simpleAccount.getUsername())) {
                         return chatMessages.get(simpleAccount);
@@ -79,10 +79,12 @@ public class SupportAccount implements Initializable {
                 accountUserName.selectedProperty().addListener(new ChangeListener<Boolean>() {
                     @Override
                     public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                        usernamePersonWhoSupportAccountChatWith = accountUserName.getText();
                         for (CheckBox item : accounts.getItems()) {
                             if (!item.getText().equals(accountUserName.getText()))
                                 item.setSelected(false);
                         }
+                        setUpPane();
                     }
                 });
                 Platform.runLater(new Runnable() {
@@ -97,11 +99,13 @@ public class SupportAccount implements Initializable {
     }
 
     public void send(ActionEvent actionEvent) throws IOException {
-        addMessage("new message from: " + usernamePersonWhoSupportAccountChatWith + " " + textArea.getText(), true);
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        dataOutputStream.writeUTF(usernamePersonWhoSupportAccountChatWith + " " + textArea.getText());
-        dataOutputStream.flush();
-        setUpPane();
+        if (usernamePersonWhoSupportAccountChatWith != null) {
+            addMessage("new message from: " + usernamePersonWhoSupportAccountChatWith + " " + textArea.getText(), true);
+            DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dataOutputStream.writeUTF(usernamePersonWhoSupportAccountChatWith + " " + textArea.getText());
+            dataOutputStream.flush();
+            setUpPane();
+        }
     }
 
     @Override
@@ -122,7 +126,7 @@ public class SupportAccount implements Initializable {
                         System.out.println(input);
                     } else if (input.startsWith("new message from: ")) {
                         addMessage(input, false);
-                    } else if (input.startsWith("end chat")){
+                    } else if (input.startsWith("end chat")) {
                         endChat(input);
                     }
                     setUpPane();
@@ -140,9 +144,9 @@ public class SupportAccount implements Initializable {
         for (SimpleAccount account : chatMessages.keySet()) {
             if (account.getUsername().equals(splitInput[3])) {
                 for (int i = 4; i < splitInput.length; i++)
-                   if (i != 4)
-                    message += " " + splitInput[i];
-                   else message += splitInput[i];
+                    if (i != 4)
+                        message += " " + splitInput[i];
+                    else message += splitInput[i];
                 if (isItSupport)
                     chatMessages.get(account).add(new Message(Session.getOnlineAccount().getUsername(), message));
                 else chatMessages.get(account).add(new Message(account.getUsername(), message));
@@ -161,16 +165,25 @@ public class SupportAccount implements Initializable {
 
     public void endChat(String input) {
         String[] splitInput = input.split(" ");
-        for (CheckBox item : accounts.getItems()) {
-            if (item.getText().equals(splitInput[2])){
-                accounts.getItems().remove(item);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                for (CheckBox item : accounts.getItems()) {
+                    if (item.getText().equals(splitInput[2])) {
+                        accounts.getItems().remove(item);
+                        break;
+                    }
+                }
+                for (SimpleAccount simpleAccount : chatMessages.keySet()) {
+                    if (simpleAccount.getUsername().equals(splitInput[2])) {
+                        chatMessages.remove(simpleAccount);
+                        break;
+                    }
+                }
             }
-        }
-        for (SimpleAccount simpleAccount : chatMessages.keySet()) {
-            if (simpleAccount.getUsername().equals(splitInput[2])){
-                chatMessages.remove(simpleAccount);
-            }
-        }
+        });
+        setUpPane();
+
         setUpPane();
     }
 }

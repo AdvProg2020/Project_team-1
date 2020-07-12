@@ -65,6 +65,7 @@ public class Main {
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(simpleAccountSocket.getInputStream()));
         while (true) {
             String message = dataInputStream.readUTF();
+            System.out.println(message);
             dataOutputStreamSupportAccount.writeUTF(message);
             dataOutputStreamSupportAccount.flush();
             if (message.startsWith("end chat")) {
@@ -112,18 +113,21 @@ public class Main {
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(supportAccountSocket.getInputStream()));
         while (true) {
             String message = dataInputStream.readUTF();
+            System.out.println(message);
             String[] splitMessage = message.split(" ");
             if (message.startsWith("new chat")) {
                 simpleAccountSocket = getSocket(splitInput, simpleAccountSocket, 3);
                 message = getString(splitInput, splitMessage , 4);
-            } else {
+            } else if (!message.startsWith("Start chat with")){
                 simpleAccountSocket = getSocket(splitMessage, simpleAccountSocket, 0);
                 message = getString(splitInput, splitMessage , 1);
             }
+            System.out.println(message);
             DataOutputStream dataOutputStreamSupportAccount = new DataOutputStream(new BufferedOutputStream(simpleAccountSocket.getOutputStream()));
-            System.out.println("Chat support");
-            dataOutputStreamSupportAccount.writeUTF(message);
-            dataOutputStreamSupportAccount.flush();
+            if (!message.startsWith("Start chat with")) {
+                dataOutputStreamSupportAccount.writeUTF(message);
+                dataOutputStreamSupportAccount.flush();
+            }
         }
     }
 
@@ -138,10 +142,10 @@ public class Main {
     public static String getString(String[] splitInput, String[] splitMessage , int origin) {
         String message;
         message = "";
-        for (int i = origin ; i < splitInput.length ; i++) {
+        for (int i = origin ; i < splitMessage.length ; i++) {
             if (i == origin)
                 message += splitMessage[i];
-            else message += " " + splitInput[i];
+            else message += " " + splitMessage[i];
         }
         return message;
     }
