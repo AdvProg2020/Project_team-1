@@ -1,6 +1,8 @@
 package common.model.field;
 
-public abstract class Field {
+import java.io.Serializable;
+
+public abstract class Field implements Serializable {
     private String title;
 
     public Field(String title) {

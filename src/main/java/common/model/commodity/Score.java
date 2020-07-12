@@ -2,7 +2,9 @@ package common.model.commodity;
 
 import common.model.account.SimpleAccount;
 
-public class Score {
+import java.io.Serializable;
+
+public class Score implements Serializable {
     private SimpleAccount account;
     private int score;
     private Commodity commodity;

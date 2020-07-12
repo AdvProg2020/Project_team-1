@@ -3,11 +3,12 @@ package common.model.commodity;
 import common.model.account.PersonalAccount;
 import common.model.account.SimpleAccount;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-public class DiscountCode {
+public class DiscountCode implements Serializable {
     private String code;
     private Date startDate;
     private Date finishDate;

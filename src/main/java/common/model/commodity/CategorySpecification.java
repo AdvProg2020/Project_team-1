@@ -1,8 +1,9 @@
 package common.model.commodity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class CategorySpecification {
+public class CategorySpecification implements Serializable {
     private String title;
     private HashSet<String> options;
 

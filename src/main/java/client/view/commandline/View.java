@@ -4,6 +4,7 @@ import server.controller.SupportMenu;
 import server.controller.commodity.CommentsMenu;
 import server.controller.commodity.DigestMenu;
 import server.controller.customer.CartMenu;
+import server.controller.customer.Chat;
 import server.controller.customer.CustomerMenu;
 import server.controller.customer.OrderMenu;
 import server.data.YaDataManager;
@@ -62,6 +63,7 @@ public class View {
     public static final CreateDiscountCode createDiscountCode = new CreateDiscountCode();
     public static final ManageAllProducts manageAllProducts = new ManageAllProducts();
     public static final SupportMenu supportMenu = new SupportMenu();
+    public static final Chat chat = new Chat();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {

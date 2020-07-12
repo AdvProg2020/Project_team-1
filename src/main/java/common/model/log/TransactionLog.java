@@ -4,10 +4,11 @@ import server.controller.Statistics;
 import common.model.commodity.Commodity;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-public abstract class TransactionLog {
+public abstract class TransactionLog implements Serializable {
     protected int logId;
     protected Date date;
     protected Set<Commodity> commodities;

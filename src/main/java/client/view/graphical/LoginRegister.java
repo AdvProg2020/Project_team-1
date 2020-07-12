@@ -16,10 +16,9 @@ import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
 import client.view.commandline.View;
+import static client.Main.socket;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,9 +64,12 @@ public class LoginRegister implements Initializable {
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
-    public void onLoginButtonClick(MouseEvent mouseEvent) {
+    public void onLoginButtonClick(MouseEvent mouseEvent) throws IOException {
         try {
             loginRegisterMenu.login(loginUsernameTf.getText(), loginPasswordTf.getText());
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            dataOutputStream.writeUTF("account logged in: " + loginUsernameTf.getText() );
+            dataOutputStream.flush();
             Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
         } catch (InvalidLoginInformationException e) {
             loginMessageLabel.setText(e.getMessage());

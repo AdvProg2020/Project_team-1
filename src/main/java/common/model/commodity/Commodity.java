@@ -9,10 +9,11 @@ import common.model.share.Requestable;
 import common.model.share.Status;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Commodity implements Requestable {
+public class Commodity implements Requestable , Serializable {
 
     private int commodityId;
     private Status status;

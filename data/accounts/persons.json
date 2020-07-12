@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "discountCodes": {},
+    "buyLogs": [],
+    "cart": {},
+    "credit": 1000.0,
+    "VALID_USERNAME": "^\\w{2,20}$",
+    "VALID_FIRST_NAME_AND_LAST_NAME": "^[a-zA-z ]{1,20}$",
+    "VALID_EMAIL": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$",
+    "VALID_PHONE_NUMBER": "^(/+98|0098|0)\\d{10}$",
+    "VALID_PASSWORD": "^.{4,20}$",
+    "username": "kashi",
+    "firstName": "salam",
+    "lastName": "salam",
+    "email": "asj@gmail.com",
+    "phoneNumber": "09121798944",
+    "hashedPassword": "$2a$10$zV7GYgXAQPwV1r6CUoGNq.uFeWDbxxhBYdySSJMHHIOY6zyKz0C52",
+    "accountType": "personal"
+  }
+]

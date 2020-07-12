@@ -3,9 +3,10 @@ package common.model.account;
 import common.model.exception.InvalidAccountInfoException;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class SimpleAccount {
+public abstract class SimpleAccount implements Serializable {
     protected final transient String VALID_USERNAME = "^\\w{2,20}$";
     protected final transient String VALID_FIRST_NAME_AND_LAST_NAME = "^[a-zA-z ]{1,20}$";
     protected final transient String VALID_EMAIL = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";

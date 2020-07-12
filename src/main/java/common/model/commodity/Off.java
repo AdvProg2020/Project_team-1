@@ -6,10 +6,11 @@ import common.model.share.Status;
 import server.data.YaDataManager;
 import common.model.account.BusinessAccount;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Off implements Requestable {
+public class Off implements Requestable , Serializable {
 
     private int offID;
     private BusinessAccount owner;
