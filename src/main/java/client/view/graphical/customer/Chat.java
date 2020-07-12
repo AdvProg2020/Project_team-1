@@ -1,7 +1,9 @@
 package client.view.graphical.customer;
 
 import client.Session;
+import client.view.graphical.MainMenu;
 import client.view.graphical.Message;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -29,8 +31,11 @@ public class Chat implements Initializable {
 
     private static String userSupportAccount;
 
-    public void close(ActionEvent actionEvent) {
-
+    public void close(ActionEvent actionEvent) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dataOutputStream.writeUTF("end chat " + Session.getOnlineAccount().getUsername());
+        dataOutputStream.flush();
+        MainMenu.goToUserPanel(actionEvent);
     }
 
     public void addMessage(String input , String username) {
@@ -39,13 +44,20 @@ public class Chat implements Initializable {
     }
 
     public void setUpPane(){
-        for (int i = 0 ; i < messages1.getItems().size() ; i++) {
-            messages1.getItems().remove(messages1.getItems().get(i));
-            i--;
-        }
-        for (Message message : messagesArray) {
-            messages1.getItems().add(message.username + ": " +  message.message);
-        }
+        Platform.runLater(new Runnable(){
+
+            @Override
+            public void run() {
+                for (int i = 0 ; i < messages1.getItems().size() ; i++) {
+                    messages1.getItems().remove(messages1.getItems().get(i));
+                    i--;
+                }
+                for (Message message : messagesArray) {
+                    messages1.getItems().add(message.username + ": " +  message.message);
+                }
+            }
+        });
+
     }
 
     @Override
