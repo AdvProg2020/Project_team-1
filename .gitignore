@@ -6,3 +6,4 @@ src/main/java/Koskalak.java
 target
 database.db
 data
+database.db-journal

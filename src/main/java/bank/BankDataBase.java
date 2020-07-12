@@ -1,5 +1,7 @@
 package bank;
 
+import com.gilecode.yagson.YaGson;
+
 import java.io.File;
 import java.sql.*;
 
@@ -73,17 +75,6 @@ public class BankDataBase {
         closeStatementAndConnection();
     }
 
-    public synchronized void getAccounts() throws SQLException {
-        createConnectionAndStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM accounts");
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String firstName = resultSet.getString("firstname");
-            System.out.println(id + "    " + firstName);
-        }
-        closeStatementAndConnection();
-    }
-
     public synchronized int addAccount(BankAccount bankAccount) throws SQLException {
         String createAccountSql = "INSERT INTO accounts (username, password, firstName, lastName)\n" +
                 "VALUES ('" + bankAccount.getUsername() + "', '" + bankAccount.getPassword() + "', '" +
@@ -118,6 +109,13 @@ public class BankDataBase {
 
     public synchronized int addReceipt(Receipt receipt) throws SQLException {
         createConnectionAndStatement();
+        YaGson mapper = new YaGson();
+        String addReceiptSql = "INSERT INTO " +
+                "receipts (json, receiptType, description, money, sourceAccountID, destAccountID) " +
+                "VALUES ('" + mapper.toJson(receipt) + "', '" + receipt.getReceiptType() + "', '" +
+                receipt.getDescription() + "', " + receipt.getMoney() + ", " + receipt.getSourceAccountID() +
+                ", " + receipt.getDestAccountID() + ")";
+        executeUpdate(addReceiptSql);
         ResultSet resultSet = statement.executeQuery("SELECT Max(id) FROM receipts");
         int id = resultSet.getInt(1);
         closeStatementAndConnection();
@@ -126,13 +124,96 @@ public class BankDataBase {
 
     public synchronized AuthenticationToken getAuthTokenByUuid(String uuid) throws SQLException {
         createConnectionAndStatement();
-        String selectByUuidSql = "SELECT * FROM";
+        String selectByUuidSql = "SELECT * FROM authenticationTokens WHERE uuid = '" + uuid + "'";
         ResultSet resultSet = statement.executeQuery(selectByUuidSql);
         AuthenticationToken authenticationToken = null;
         if (resultSet.next()) {
-            //authenticationToken = new AuthenticationToken()
+            authenticationToken = new AuthenticationToken(resultSet.getInt("id"),
+                    resultSet.getString("uuid"), resultSet.getInt("accountId"),
+                    resultSet.getInt("expired"), resultSet.getLong("create_time"));
         }
         closeStatementAndConnection();
         return authenticationToken;
+    }
+
+    public synchronized void setAuthTokenExpire(String uuid) throws SQLException {
+        createConnectionAndStatement();
+        String expireAuthTokenSql = "UPDATE authenticationTokens SET expired = 1 " +
+                "WHERE uuid = '" + uuid + "'";
+        executeUpdate(expireAuthTokenSql);
+        closeStatementAndConnection();
+    }
+
+    public synchronized BankAccount getAccountById(int accountId) throws SQLException {
+        createConnectionAndStatement();
+        String selectByUsernameSql = "SELECT * FROM accounts WHERE id=" + accountId;
+        ResultSet resultSet = statement.executeQuery(selectByUsernameSql);
+        BankAccount bankAccount = null;
+        if (resultSet.next()) {
+            bankAccount = new BankAccount(
+                    resultSet.getInt("id"), resultSet.getString("username"),
+                    resultSet.getString("password"), resultSet.getString("firstname"),
+                    resultSet.getString("lastname"), resultSet.getInt("balance"));
+        }
+        closeStatementAndConnection();
+        return bankAccount;
+    }
+
+    public synchronized Receipt getReceiptById(int id) throws SQLException {
+        createConnectionAndStatement();
+        String selectByIdSql = "SELECT * FROM receipts WHERE id = " + id;
+        ResultSet resultSet = statement.executeQuery(selectByIdSql);
+        Receipt receipt = null;
+        if (resultSet.next()) {
+            receipt = new Receipt(resultSet.getString("receiptType"), resultSet.getInt("money"),
+                    resultSet.getInt("sourceAccountID"), resultSet.getInt("destAccountID"),
+                    resultSet.getString("description"), resultSet.getInt("id"),
+                    resultSet.getInt("paid"), resultSet.getString("json"));
+        }
+        closeStatementAndConnection();
+        return receipt;
+    }
+
+    public synchronized StringBuilder getIdAllTransactionsJson(int accountId) throws SQLException {
+        StringBuilder result = new StringBuilder();
+        String getTransactionsSql = "SELECT json FROM receipts WHERE destAccountID = " + accountId +
+                " OR sourceAccountID = " + accountId;
+        createConnectionAndStatement();
+        ResultSet resultSet = statement.executeQuery(getTransactionsSql);
+        while (resultSet.next()) {
+            result.append(resultSet.getString("json"));
+            result.append('*');
+        }
+        result.deleteCharAt(result.length() - 1);
+        closeStatementAndConnection();
+        return result;
+    }
+
+    public synchronized StringBuilder getTransactionsFromIdJson(int accountId) throws SQLException {
+        StringBuilder result = new StringBuilder();
+        String getTransactionsSql = "SELECT json FROM receipts WHERE sourceAccountID = " + accountId;
+        createConnectionAndStatement();
+        ResultSet resultSet = statement.executeQuery(getTransactionsSql);
+        while (resultSet.next()) {
+            result.append(resultSet.getString("json"));
+            result.append('*');
+        }
+        result.deleteCharAt(result.length() - 1);
+        closeStatementAndConnection();
+        return result;
+    }
+
+    public synchronized StringBuilder getTransactionsToIdJson(int accountId) throws SQLException {
+        StringBuilder result = new StringBuilder();
+        String getTransactionsSql = "SELECT json FROM receipts WHERE destAccountID = " + accountId;
+        createConnectionAndStatement();
+        ResultSet resultSet = statement.executeQuery(getTransactionsSql);
+        while (resultSet.next()) {
+            result.append(resultSet.getString("json"));
+            result.append('*');
+        }
+        result.deleteCharAt(result.length() - 1);
+        closeStatementAndConnection();
+        return result;
     }
 }
