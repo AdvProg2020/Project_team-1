@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class PersonalAccount extends SimpleAccount {
-    private HashMap<DiscountCode, Integer> discountCodes;
+    private HashMap<String, Integer> discountCodes;
     private ArrayList<BuyLog> buyLogs;
     private HashMap<Integer, Integer> cart;
     private double credit;
@@ -50,24 +50,20 @@ public class PersonalAccount extends SimpleAccount {
         return 0;
     }
 
-    public HashMap<DiscountCode, Integer> discountCodeIntegerHashMap() {
+    public HashMap<String, Integer> discountCodeIntegerHashMap() {
         return discountCodes;
     }
 
-    public Set<DiscountCode> getDiscountCodes() {
+    public Set<String> getDiscountCodes() {
         return discountCodes.keySet();
     }
 
     public void addDiscountCode(DiscountCode discountCode) {
-        discountCodes.put(discountCode, 0);
+        discountCodes.put(discountCode.getCode(), 0);
     }
 
     public void removeDiscountCode(DiscountCode discountCode) {
-        for (DiscountCode code : discountCodes.keySet()) {
-            if (code.getCode().equals(discountCode.getCode())) {
-                discountCodes.remove(code);
-            }
-        }
+        discountCodes.remove(discountCode.getCode());
     }
 
     public ArrayList<BuyLog> getBuyLogs() {
@@ -119,32 +115,27 @@ public class PersonalAccount extends SimpleAccount {
     }
 
     public void doesHaveThisDiscount(DiscountCode discountCode) throws Exception {
-        for (DiscountCode code : discountCodes.keySet()) {
-            if (code.equals(discountCode)) {
-                if (discountCodes.get(code) < code.getMaximumNumberOfUses()) {
-                    return;
-                }
-            }
+        if (!discountCodes.containsKey(discountCode.getCode())) {
+            throw new Exception("you can't use this discount code");
         }
-        throw new Exception("you can't use this discount code");
     }
 
     public void useThisDiscount(DiscountCode discountCode) throws IOException {
+        int numberOfTimesUsed = discountCodes.get(discountCode.getCode()) + 1;
+        discountCodes.put(discountCode.getCode(), numberOfTimesUsed);
         YaDataManager.removePerson(this);
-        int numberOfTimesUsed = discountCodes.get(discountCode) + 1;
-        discountCodes.put(discountCode, numberOfTimesUsed);
         YaDataManager.addPerson(this);
     }
 
     public void dontUseDiscountCode(DiscountCode discountCode) throws IOException {
+        int numberOfTimesUsed = discountCodes.get(discountCode.getCode()) - 1;
+        discountCodes.put(discountCode.getCode(), numberOfTimesUsed);
         YaDataManager.removePerson(this);
-        int numberOfTimesUsed = discountCodes.get(discountCode) - 1;
-        discountCodes.put(discountCode, numberOfTimesUsed);
         YaDataManager.addPerson(this);
     }
 
     public int getNumberOfTimesUsed(DiscountCode discountCode) {
-        return discountCodes.get(discountCode);
+        return discountCodes.get(discountCode.getCode());
     }
 
     @Override

@@ -1,15 +1,16 @@
 package client.view.graphical;
 
-import server.controller.reseller.ManageResellerOffsMenu;
-import server.controller.reseller.ManageResellerProductsMenu;
-import server.controller.reseller.ResellerMenu;
+import client.view.commandline.View;
+import common.model.commodity.Commodity;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import common.model.commodity.Commodity;
-import client.view.commandline.View;
+import server.controller.reseller.ManageResellerOffsMenu;
+import server.controller.reseller.ManageResellerProductsMenu;
+import server.controller.reseller.ResellerMenu;
+import server.data.YaDataManager;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
@@ -29,9 +30,14 @@ public class AddOff implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for (Commodity commodity : resellerMenu.getBusinessAccount().getCommodities()) {
-            CheckBox checkBox = new CheckBox(commodity.getName() + " - " + commodity.getCommodityId());
-            checkBox.setId(String.valueOf(commodity.getCommodityId()));
+        for (int commodityId : resellerMenu.getBusinessAccount().getCommoditiesId()) {
+            CheckBox checkBox = null;
+            try {
+                checkBox = new CheckBox(YaDataManager.getCommodityById(commodityId).getName() + " - " + commodityId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            checkBox.setId(String.valueOf(commodityId));
             productsListView.getItems().add(checkBox);
         }
         percentSlider.valueProperty().addListener((observableValue, number, t1) ->

@@ -12,6 +12,7 @@ public class UsedComparator implements Comparator {
         DiscountCode code1 = (DiscountCode) o1;
         DiscountCode code2 = (DiscountCode) o2;
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        return account.discountCodeIntegerHashMap().get(code1) - account.discountCodeIntegerHashMap().get(code2);
+        return account.discountCodeIntegerHashMap().get(code1.getCode()) -
+                account.discountCodeIntegerHashMap().get(code2.getCode());
     }
 }

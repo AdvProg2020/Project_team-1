@@ -1,21 +1,22 @@
 package common.model.account;
 
-import server.data.YaDataManager;
 import common.model.commodity.Commodity;
 import common.model.commodity.Off;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.log.SellLog;
 import common.model.share.Requestable;
 import common.model.share.Status;
+import server.data.YaDataManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class BusinessAccount extends SimpleAccount implements Requestable {
     private final transient String VALID_BUSINESS_NAME = "^\\w{4,20}$";
     private String businessName;
     private ArrayList<SellLog> sellLogs;
-    private ArrayList<Commodity> commodities;
-    private ArrayList<Off> offs;
+    private ArrayList<Integer> commoditiesId;
+    private ArrayList<Integer> offsId;
     private double credit;
     private Status status;
 
@@ -23,9 +24,9 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
                            String password, String businessName) throws InvalidAccountInfoException {
         super(username, firstName, lastName, email, phoneNumber, password, "reseller");
         changeBusinessName(businessName);
-        sellLogs = new ArrayList<SellLog>();
-        commodities = new ArrayList<Commodity>();
-        offs = new ArrayList<Off>();
+        sellLogs = new ArrayList<>();
+        commoditiesId = new ArrayList<>();
+        offsId = new ArrayList<>();
         credit = 1000;
         status = Status.UNDER_CHECKING_FOR_CREATE;
     }
@@ -34,9 +35,9 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
                            String password, String businessName, String imagePath) throws InvalidAccountInfoException {
         super(username, firstName, lastName, email, phoneNumber, password, "reseller", imagePath);
         changeBusinessName(businessName);
-        sellLogs = new ArrayList<SellLog>();
-        commodities = new ArrayList<Commodity>();
-        offs = new ArrayList<Off>();
+        sellLogs = new ArrayList<>();
+        commoditiesId = new ArrayList<>();
+        offsId = new ArrayList<>();
         credit = 1000;
         status = Status.UNDER_CHECKING_FOR_CREATE;
     }
@@ -49,43 +50,39 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         sellLogs.add(sellLog);
     }
 
-    public ArrayList<Commodity> getCommodities() {
-        return commodities;
+    public ArrayList<Integer> getCommoditiesId() {
+        return commoditiesId;
     }
 
-    public Commodity getCommodityById (int productId) {
-        for (Commodity commodity : commodities) {
-            if (commodity.getCommodityId() == productId) {
-                return commodity;
-            }
+    public Commodity getCommodityById(int productId) throws Exception {
+        if (commoditiesId.contains(productId)) {
+            return YaDataManager.getCommodityById(productId);
         }
         return null;
     }
 
     public void removeCommodity(Commodity commodity) {
-        commodities.remove(commodity);
+        commoditiesId.remove(commodity.getCommodityId());
     }
 
     public void addCommodity(Commodity commodity) {
-        commodities.add(commodity);
+        commoditiesId.add(commodity.getCommodityId());
         System.out.println("mikhad mano add kone");
     }
 
-    public ArrayList<Off> getOffs() {
-        return offs;
+    public ArrayList<Integer> getOffsId() {
+        return offsId;
     }
 
-    public Off getOffById(int id) {
-        for (Off off : offs) {
-            if (off.getOffID() == id) {
-                return off;
-            }
+    public Off getOffById(int id) throws IOException {
+        if (offsId.contains(id)) {
+            return YaDataManager.getOffWithId(id);
         }
         return null;
     }
 
     public void addSale(Off off) {
-        offs.add(off);
+        offsId.add(off.getOffID());
     }
 
     public String getBusinessName() {
@@ -119,10 +116,6 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
-    }
-
-    public void addOff(Off off) {
-        offs.add(off);
     }
 
     @Override

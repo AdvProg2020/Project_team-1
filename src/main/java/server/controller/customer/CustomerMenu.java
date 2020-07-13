@@ -1,12 +1,13 @@
 package server.controller.customer;
 
-import server.controller.comparator.Sort;
-import server.controller.share.Menu;
-import server.controller.share.MenuHandler;
 import client.Session;
 import common.model.account.PersonalAccount;
 import common.model.commodity.DiscountCode;
 import common.model.log.BuyLog;
+import server.controller.comparator.Sort;
+import server.controller.share.Menu;
+import server.controller.share.MenuHandler;
+import server.data.YaDataManager;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,10 @@ public class CustomerMenu extends Menu {
 
     public ArrayList<DiscountCode> getMyDiscounts() throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        ArrayList<DiscountCode> discountCodes = new ArrayList<>(account.getDiscountCodes());
+        ArrayList<DiscountCode> discountCodes = new ArrayList<>();
+        for (String code : account.getDiscountCodes()) {
+            discountCodes.add(YaDataManager.getDiscountCodeWithCode(code));
+        }
         Sort.sortDiscountArrayList(discountCodes, this.discountsSortType);
         discountCodes.removeIf(discountCode -> !discountCode.isOnTime() || discountCode.getMaximumNumberOfUses() ==
                 account.getNumberOfTimesUsed(discountCode));

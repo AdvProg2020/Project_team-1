@@ -105,8 +105,8 @@ public class GetDiscountCode extends Menu {
         YaDataManager.removeDiscountCode(discountCode);
         for (String username : discountCode.getAccountsUsername()) {
             PersonalAccount account = YaDataManager.getPersonWithUserName(username);
-            for (DiscountCode code : account.getDiscountCodes()) {
-                if (code.getCode().equalsIgnoreCase(discountCode.getCode())) {
+            for (String code : account.getDiscountCodes()) {
+                if (code.equalsIgnoreCase(discountCode.getCode())) {
                     account.removeDiscountCode(discountCode);
                 }
             }

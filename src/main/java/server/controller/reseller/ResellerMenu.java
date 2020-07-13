@@ -28,9 +28,12 @@ public class ResellerMenu extends Menu {
         return (BusinessAccount) Session.getOnlineAccount();
     }
 
-    public ArrayList<Commodity> manageCommodities() {
-        ArrayList<Commodity> commodityArrayList = getBusinessAccount().getCommodities();
-        if (MenuHandler.getInstance().getCurrentMenu() != View.manageResellerProductsMenu){
+    public ArrayList<Commodity> manageCommodities() throws Exception {
+        ArrayList<Commodity> commodityArrayList = new ArrayList<>();
+        for (Integer commodityId : getBusinessAccount().getCommoditiesId()) {
+            commodityArrayList.add(YaDataManager.getCommodityById(commodityId));
+        }
+        if (MenuHandler.getInstance().getCurrentMenu() != View.manageResellerProductsMenu) {
             View.manageResellerProductsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.manageResellerProductsMenu);
         }
@@ -43,8 +46,11 @@ public class ResellerMenu extends Menu {
         return sellLogs;
     }
 
-    public ArrayList<Off> manageOffs() {
-        ArrayList<Off> offArrayList = getBusinessAccount().getOffs();
+    public ArrayList<Off> manageOffs() throws IOException {
+        ArrayList<Off> offArrayList = new ArrayList<>();
+        for (Integer offId : getBusinessAccount().getOffsId()) {
+            offArrayList.add(YaDataManager.getOffWithId(offId));
+        }
         if (MenuHandler.getInstance().getCurrentMenu() != View.manageResellerOffMenu) {
             View.manageResellerOffMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.manageResellerOffMenu);

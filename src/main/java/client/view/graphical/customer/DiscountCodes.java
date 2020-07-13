@@ -1,13 +1,14 @@
 package client.view.graphical.customer;
 
+import client.Session;
+import common.model.account.PersonalAccount;
+import common.model.commodity.DiscountCode;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import client.Session;
-import common.model.account.PersonalAccount;
-import common.model.commodity.DiscountCode;
+import server.data.YaDataManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,8 +19,14 @@ public class DiscountCodes implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         TreeItem<String> discountsRootItem = new TreeItem<>("Discount codes");
-        for (DiscountCode discountCode : ((PersonalAccount) Session.getOnlineAccount()).getDiscountCodes()) {
-            TreeItem<String> discountCodesTreeItem = new TreeItem<>(String.valueOf(discountCode.getCode()));
+        for (String code : ((PersonalAccount) Session.getOnlineAccount()).getDiscountCodes()) {
+            TreeItem<String> discountCodesTreeItem = new TreeItem<>(String.valueOf(code));
+            DiscountCode discountCode = null;
+            try {
+                discountCode = YaDataManager.getDiscountCodeWithCode(code);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             discountCodesTreeItem.getChildren().addAll(
                     new TreeItem<>("Discount price limit: " + discountCode.getMaximumDiscountPrice()),
                     new TreeItem<>("Discount Percentage: " + discountCode.getDiscountPercentage()),

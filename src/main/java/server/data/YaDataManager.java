@@ -604,4 +604,13 @@ public class YaDataManager {
         }
         return null;
     }
+
+    public static Off getOffWithId(int id) throws IOException {
+        for (Off off : getOffs()) {
+            if (off.getOffID() == id) {
+                return off;
+            }
+        }
+        return null;
+    }
 }
