@@ -27,7 +27,7 @@ public class MoHoBank {
             try {
                 new HandleBankClient(bankServerSocket.accept(), debug).start();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 System.err.println("Error: Unable to create data stream from socket");
             }
         }
