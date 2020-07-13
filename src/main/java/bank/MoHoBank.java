@@ -1,15 +1,14 @@
 package bank;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class MoHoBank {
-    private static Scanner scanner = new Scanner(System.in);
-
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
             throw new Exception("Invalid arguments passed");
@@ -28,7 +27,7 @@ public class MoHoBank {
             try {
                 new HandleBankClient(bankServerSocket.accept(), debug).start();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 System.err.println("Error: Unable to create data stream from socket");
             }
         }
@@ -50,25 +49,25 @@ public class MoHoBank {
             outputStream = new DataOutputStream(socket.getOutputStream());
             this.debug = debug;
             clientId = lastClientId++;
-            if (debug) {
-                System.out.printf("hello %d\n", clientId);
-            }
             ++onlineClientsNumber;
+            if (debug) {
+                System.out.printf("hello %d. now there are %d clients online\n", clientId, onlineClientsNumber);
+            }
         }
 
         @Override
         public void run() {
             boolean run = true;
             while (run) {
-                String request = "";
+                String request;
                 try {
                     request = inputStream.readUTF();
                     if (debug) {
                         System.out.println("request from " + clientId + " : " + request);
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    System.err.println("Error: Unable to get request from client. Closing socket ...");
+                    //e.printStackTrace();
+                    System.err.println("Error: Unable to get request from client " + clientId + ". Closing socket ...");
                     break;
                 }
                 try {
@@ -90,11 +89,13 @@ public class MoHoBank {
                         sendInvalidInput();
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                     sendDatabaseError();
                 }
             }
             closeConnectionToClient();
+            --onlineClientsNumber;
+            System.out.println("bye " + clientId + ". now there are " + onlineClientsNumber + " clients online");
         }
 
         private void getBalance(String[] separatedInput) throws SQLException {
@@ -126,8 +127,42 @@ public class MoHoBank {
             sendResponse("token is invalid");
         }
 
-        private void pay(String[] separatedInput) {
-
+        private void pay(String[] separatedInput) throws SQLException {
+            int receiptId;
+            try {
+                receiptId = Integer.parseInt(separatedInput[1]);
+            } catch (NumberFormatException e) {
+                sendResponse("invalid receipt id");
+                return;
+            }
+            Receipt receipt = bankDataBase.getReceiptById(receiptId);
+            if (receipt == null) {
+                sendResponse("invalid receipt id");
+                return;
+            }
+            if (receipt.getPaid() != 0) {
+                sendResponse("receipt is paid before");
+                return;
+            }
+            int sourceAccountId = receipt.getSourceAccountID();
+            BankAccount bankAccount = bankDataBase.getAccountById(sourceAccountId);
+            if (sourceAccountId != -1 && bankAccount == null) {
+                sendResponse("invalid account id");
+                return;
+            }
+            if (sourceAccountId != -1 && bankAccount.getBalance() < receipt.getMoney()) {
+                sendResponse("source account does not have enough money");
+                return;
+            }
+            int destAccountId = receipt.getDestAccountID();
+            if (sourceAccountId != -1) {
+                bankDataBase.addToAccountBalance(sourceAccountId, -1 * receipt.getMoney());
+            }
+            if (destAccountId != -1) {
+                bankDataBase.addToAccountBalance(destAccountId, receipt.getMoney());
+            }
+            bankDataBase.payReceipt(receiptId);
+            sendResponse("done successfully");
         }
 
         private void getTransactions(String[] separatedInput) throws SQLException {
@@ -140,7 +175,7 @@ public class MoHoBank {
                 sendTokenExpired();
                 return;
             }
-            StringBuilder result = new StringBuilder("");
+            StringBuilder result = new StringBuilder();
             boolean secondParameterIsId = false;
             switch (separatedInput[2]) {
                 case "+":
@@ -175,37 +210,26 @@ public class MoHoBank {
         }
 
         private void createReceipt(String[] separatedInput) throws SQLException {
-            if (separatedInput.length != 5 && separatedInput.length != 6) {
-                sendResponse("invalid parameters passed");
+            String receiptType = separatedInput[2];
+            if (!receiptType.equals("deposit") && !receiptType.equals("withdraw")
+                    && !receiptType.equals("move")) {
+                sendResponse("invalid receipt type");
+                return;
+            }
+            if (separatedInput.length != 6 && separatedInput.length != 7) {
+                sendInvalidParametersPassed();
                 return;
             }
             if (separatedInput[4].equals(separatedInput[5])) {
                 sendResponse("equal source and dest account");
                 return;
             }
-            AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
-            if (authToken == null) {
-                // bardash too
-                sendTokenIsInvalid();
+            String description = separatedInput.length == 7? separatedInput[6]: "";
+            if (!description.matches("^[A-Za-z1-9 ]+$")) {
+                sendResponse("your input contains invalid characters");
                 return;
             }
-            if (authToken.getExpired() != 0 || isTokenExpired(authToken)) {
-                sendTokenExpired();
-                return;
-            }
-
-
-            //if (separatedInput.)
-
-
-
-
-            if (!separatedInput[2].equals("deposit") && !separatedInput[2].equals("withdraw")
-                    && !separatedInput[2].equals("move")) {
-                sendResponse("invalid receipt type");
-                return;
-            }
-            int money = -1;
+            int money;
             try {
                 money = Integer.parseInt(separatedInput[3]);
             } catch (ArithmeticException e) {
@@ -216,12 +240,45 @@ public class MoHoBank {
                 sendInvalidMoney();
                 return;
             }
+            int sourceAccountId, destAccountId;
+            try {
+                sourceAccountId = Integer.parseInt(separatedInput[4]);
+                destAccountId = Integer.parseInt(separatedInput[5]);
+            } catch (NumberFormatException e) {
+                sendInvalidParametersPassed();
+                return;
+            }
+            if ((!receiptType.equals("deposit") && sourceAccountId == -1)
+                    || (!receiptType.equals("withdraw") && destAccountId == -1)) {
+                sendResponse("invalid account id");
+                return;
+            }
+            BankAccount sourceAccount = bankDataBase.getAccountById(sourceAccountId);
+            BankAccount destAccount = bankDataBase.getAccountById(destAccountId);
+            if (sourceAccount == null && !receiptType.equals("deposit")) {
+                sendResponse("source account id is invalid");
+                return;
+            }
+            if (destAccount == null && !receiptType.equals("withdraw")) {
+                sendResponse("dest account id is invalid");
+                return;
+            }
+            AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
+            if (authToken == null
+                    || (!receiptType.equals("deposit") && sourceAccount.getId() != authToken.getAccountId())) {
+                sendTokenIsInvalid();
+                return;
+            }
+            if (authToken.getExpired() != 0 || isTokenExpired(authToken)) {
+                sendTokenExpired();
+                return;
+            }
+            sendResponse(String.valueOf(bankDataBase.addReceipt(
+                    new Receipt(receiptType, money, sourceAccountId, destAccountId, description))));
+        }
 
-            //if ()
-//            AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
-//            if (authToken == null || authToken.getExpired() == 1) {
-//
-//            }
+        private void sendInvalidParametersPassed() {
+            sendResponse("invalid parameters passed");
         }
 
         private void sendInvalidMoney() {
@@ -249,7 +306,7 @@ public class MoHoBank {
                 outputStream.close();
                 socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 System.err.println("Error: Unable to close client socket");
             }
         }
@@ -283,7 +340,7 @@ public class MoHoBank {
                     System.out.println("response to " + clientId + " : " + response);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 System.err.println("Error: Unable to send response to client. Closing socket ...");
                 closeConnectionToClient();
             }

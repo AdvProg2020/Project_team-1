@@ -12,19 +12,16 @@ public class BankDataBase {
     public BankDataBase() {
         if (!new File("database.db").exists()) {
             try {
-                createConnectionAndStatement();
                 createTables();
-                closeStatementAndConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("Error: Server couldn't create database.db file. Server exiting now ...");
+                //e.printStackTrace();
+                System.err.print("Error: Server couldn't create database.db file. Server exiting now ...");
                 System.exit(1);
             }
         }
     }
 
     private synchronized void createTables() throws SQLException {
-        createConnectionAndStatement();
         String accountsTableSql = "CREATE TABLE accounts (\n" +
                 "    id INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "    username TEXT NOT NULL UNIQUE, \n" +
@@ -56,7 +53,6 @@ public class BankDataBase {
                 "    FOREIGN KEY(destAccountID) REFERENCES accounts(id) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
                 ")";
         executeUpdate(receiptsTableSql);
-        closeStatementAndConnection();
     }
 
     private synchronized void createConnectionAndStatement() throws SQLException {
@@ -84,8 +80,12 @@ public class BankDataBase {
     }
 
     public synchronized BankAccount getAccount(String username) throws SQLException{
-        createConnectionAndStatement();
         String selectByUsernameSql = "SELECT * FROM accounts WHERE username='" + username + "'";
+        return getBankAccount(selectByUsernameSql);
+    }
+
+    private BankAccount getBankAccount(String selectByUsernameSql) throws SQLException {
+        createConnectionAndStatement();
         ResultSet resultSet = statement.executeQuery(selectByUsernameSql);
         BankAccount bankAccount = null;
         if (resultSet.next()) {
@@ -99,16 +99,13 @@ public class BankDataBase {
     }
 
     public synchronized void addAuthenticationToken(AuthenticationToken authToken) throws SQLException {
-        createConnectionAndStatement();
         String addAuthTokenSql = "INSERT INTO authenticationTokens (uuid, accountId, create_time)" +
                 "VALUES ('" + authToken.getUuid() + "', " + authToken.getAccountId() + ", "
                 + authToken.getCreateTime() + ")";
         executeUpdate(addAuthTokenSql);
-        closeStatementAndConnection();
     }
 
     public synchronized int addReceipt(Receipt receipt) throws SQLException {
-        createConnectionAndStatement();
         YaGson mapper = new YaGson();
         String addReceiptSql = "INSERT INTO " +
                 "receipts (json, receiptType, description, money, sourceAccountID, destAccountID) " +
@@ -116,6 +113,7 @@ public class BankDataBase {
                 receipt.getDescription() + "', " + receipt.getMoney() + ", " + receipt.getSourceAccountID() +
                 ", " + receipt.getDestAccountID() + ")";
         executeUpdate(addReceiptSql);
+        createConnectionAndStatement();
         ResultSet resultSet = statement.executeQuery("SELECT Max(id) FROM receipts");
         int id = resultSet.getInt(1);
         closeStatementAndConnection();
@@ -137,26 +135,14 @@ public class BankDataBase {
     }
 
     public synchronized void setAuthTokenExpire(String uuid) throws SQLException {
-        createConnectionAndStatement();
         String expireAuthTokenSql = "UPDATE authenticationTokens SET expired = 1 " +
                 "WHERE uuid = '" + uuid + "'";
         executeUpdate(expireAuthTokenSql);
-        closeStatementAndConnection();
     }
 
     public synchronized BankAccount getAccountById(int accountId) throws SQLException {
-        createConnectionAndStatement();
         String selectByUsernameSql = "SELECT * FROM accounts WHERE id=" + accountId;
-        ResultSet resultSet = statement.executeQuery(selectByUsernameSql);
-        BankAccount bankAccount = null;
-        if (resultSet.next()) {
-            bankAccount = new BankAccount(
-                    resultSet.getInt("id"), resultSet.getString("username"),
-                    resultSet.getString("password"), resultSet.getString("firstname"),
-                    resultSet.getString("lastname"), resultSet.getInt("balance"));
-        }
-        closeStatementAndConnection();
-        return bankAccount;
+        return getBankAccount(selectByUsernameSql);
     }
 
     public synchronized Receipt getReceiptById(int id) throws SQLException {
@@ -175,24 +161,24 @@ public class BankDataBase {
     }
 
     public synchronized StringBuilder getIdAllTransactionsJson(int accountId) throws SQLException {
-        StringBuilder result = new StringBuilder();
         String getTransactionsSql = "SELECT json FROM receipts WHERE destAccountID = " + accountId +
                 " OR sourceAccountID = " + accountId;
-        createConnectionAndStatement();
-        ResultSet resultSet = statement.executeQuery(getTransactionsSql);
-        while (resultSet.next()) {
-            result.append(resultSet.getString("json"));
-            result.append('*');
-        }
-        result.deleteCharAt(result.length() - 1);
-        closeStatementAndConnection();
-        return result;
+        return getTransactionsJsonStringBuilder(getTransactionsSql);
     }
 
     public synchronized StringBuilder getTransactionsFromIdJson(int accountId) throws SQLException {
-        StringBuilder result = new StringBuilder();
         String getTransactionsSql = "SELECT json FROM receipts WHERE sourceAccountID = " + accountId;
+        return getTransactionsJsonStringBuilder(getTransactionsSql);
+    }
+
+    public synchronized StringBuilder getTransactionsToIdJson(int accountId) throws SQLException {
+        String getTransactionsSql = "SELECT json FROM receipts WHERE destAccountID = " + accountId;
+        return getTransactionsJsonStringBuilder(getTransactionsSql);
+    }
+
+    private StringBuilder getTransactionsJsonStringBuilder(String getTransactionsSql) throws SQLException {
         createConnectionAndStatement();
+        StringBuilder result = new StringBuilder();
         ResultSet resultSet = statement.executeQuery(getTransactionsSql);
         while (resultSet.next()) {
             result.append(resultSet.getString("json"));
@@ -203,17 +189,14 @@ public class BankDataBase {
         return result;
     }
 
-    public synchronized StringBuilder getTransactionsToIdJson(int accountId) throws SQLException {
-        StringBuilder result = new StringBuilder();
-        String getTransactionsSql = "SELECT json FROM receipts WHERE destAccountID = " + accountId;
-        createConnectionAndStatement();
-        ResultSet resultSet = statement.executeQuery(getTransactionsSql);
-        while (resultSet.next()) {
-            result.append(resultSet.getString("json"));
-            result.append('*');
-        }
-        result.deleteCharAt(result.length() - 1);
-        closeStatementAndConnection();
-        return result;
+    public synchronized void payReceipt(int receiptId) throws SQLException {
+        String payReceiptSql = "UPDATE receipts SET paid = 1 WHERE id = " + receiptId;
+        executeUpdate(payReceiptSql);
+    }
+
+    public synchronized void addToAccountBalance(int accountId, int amount) throws SQLException {
+        String updateAccountBalanceSql = "UPDATE accounts SET balance = balance + "
+                + amount + " WHERE id = " + accountId;
+        executeUpdate(updateAccountBalanceSql);
     }
 }
