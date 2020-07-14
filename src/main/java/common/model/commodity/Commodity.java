@@ -32,9 +32,18 @@ public class Commodity implements Requestable , Serializable {
     private int numberOfVisits;
     private String imagePath;
     private ArrayList<Score> scores;
+    private String productFilePathOnSellerClient = null;
 
     public String getImagePath() {
         return imagePath;
+    }
+
+    public String getProductFilePathOnSellerClient() {
+        return productFilePathOnSellerClient;
+    }
+
+    public void setProductFilePathOnSellerClient(String productFilePathOnSellerClient) {
+        this.productFilePathOnSellerClient = productFilePathOnSellerClient;
     }
 
     public Commodity(String brand, String name, int price,

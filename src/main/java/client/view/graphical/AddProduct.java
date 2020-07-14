@@ -1,6 +1,8 @@
 package client.view.graphical;
 
-import server.controller.reseller.ResellerMenu;
+import client.view.commandline.View;
+import common.model.commodity.Category;
+import common.model.field.Field;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import common.model.commodity.Category;
-import common.model.field.Field;
-import client.view.commandline.View;
+import server.controller.reseller.ResellerMenu;
 
 import java.io.File;
 import java.net.URL;
@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AddProduct implements Initializable {
+    public CheckBox isProductFileCheckBox;
+    public Button chooseProductFileButton;
     private Stage stage;
 
     public void setStage(Stage stage) {
@@ -40,6 +42,7 @@ public class AddProduct implements Initializable {
     private final TreeItem<String> photosPath = new TreeItem<>("Photos");
     private final TreeItem<String> videosPath = new TreeItem<>("Videos");
     private ArrayList<Field> productCategorySpecification = new ArrayList<>();
+    private String productFilePath = null;
 
     public void setProductCategorySpecification(ArrayList<Field> productCategorySpecification) {
         this.productCategorySpecification = productCategorySpecification;
@@ -54,6 +57,9 @@ public class AddProduct implements Initializable {
         TreeItem<String> root = new TreeItem<>("Media");
         root.getChildren().addAll(photosPath, videosPath);
         selectedMediaTv.setRoot(root);
+        isProductFileCheckBox.setOnAction(actionEvent -> {
+            chooseProductFileButton.setDisable(!isProductFileCheckBox.isSelected());
+        });
     }
 
     public void onCancelClick(MouseEvent mouseEvent) {
@@ -92,7 +98,7 @@ public class AddProduct implements Initializable {
             resellerMenu.addProduct(brandTf.getText(), nameTf.getText(), Integer.parseInt(priceTf.getText()),
                     resellerMenu.getCategoryByName(categoryCb.getValue()),
                     productCategorySpecification, descriptionTextArea.getText(),
-                    Integer.parseInt(amountTf.getText()), imagePath);
+                    Integer.parseInt(amountTf.getText()), imagePath, productFilePath);
             onCancelClick(mouseEvent);
         } catch (Exception e) {
             errorMessageLabel.setText(e.getMessage());
@@ -102,7 +108,8 @@ public class AddProduct implements Initializable {
     private void getCategorySpecification(String categoryName) {
         Popup popupMenu = new Popup();
         Parent parent = null;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../../fxml/reseller/GetCategorySpecification.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                "../../../fxml/reseller/GetCategorySpecification.fxml"));
         Category category = null;
         try {
             category = resellerMenu.getCategoryByName(categoryName);
@@ -116,5 +123,13 @@ public class AddProduct implements Initializable {
         getCategorySpecs.setAddProduct(this);
         popupMenu.getContent().add(parent);
         popupMenu.show(stage);
+    }
+
+    public void onChooseProductFileClicked(MouseEvent mouseEvent) {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
+        if (file != null) {
+            productFilePath = file.getAbsolutePath();
+        }
     }
 }

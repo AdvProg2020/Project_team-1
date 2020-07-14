@@ -2,12 +2,17 @@ package client.view.graphical.customer;
 
 import client.Session;
 import common.model.account.PersonalAccount;
+import common.model.commodity.Commodity;
 import common.model.log.BuyLog;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseEvent;
 import server.data.YaDataManager;
 
 import java.net.URL;
@@ -30,7 +35,14 @@ public class OrdersHistory implements Initializable {
                     commoditiesTreeItem, sellersTreeItem);
             for (int commodityId : buyLog.getCommoditiesId()) {
                 try {
-                    commoditiesTreeItem.getChildren().add(new TreeItem<>(YaDataManager.getCommodityById(commodityId).getName()));
+                    Commodity commodity = YaDataManager.getCommodityById(commodityId);
+                    TreeItem<String> commodityTreeItem = new TreeItem<>(commodity.getName());
+                    if (commodity.getProductFilePathOnSellerClient() != null) {
+                        TreeItem<String> downloadFile = new TreeItem<>("download");
+                        downloadFile.addEventHandler(MouseEvent.MOUSE_CLICKED, this::downloadProductFile);
+                        commodityTreeItem.getChildren().add(downloadFile);
+                    }
+                    commoditiesTreeItem.getChildren().add(commodityTreeItem);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -41,6 +53,12 @@ public class OrdersHistory implements Initializable {
             ordersHistoryRootItem.getChildren().add(buyLogTreeItem);
         }
         ordersHistoryTreeView.setRoot(ordersHistoryRootItem);
+    }
+
+    private void downloadProductFile(MouseEvent mouseEvent) {
+        new Thread(() -> {
+
+        }).start();
     }
 
     public void onCloseClick(ActionEvent actionEvent) {
