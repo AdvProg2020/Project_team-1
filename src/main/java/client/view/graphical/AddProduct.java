@@ -57,6 +57,7 @@ public class AddProduct implements Initializable {
         TreeItem<String> root = new TreeItem<>("Media");
         root.getChildren().addAll(photosPath, videosPath);
         selectedMediaTv.setRoot(root);
+        chooseProductFileButton.setDisable(true);
         isProductFileCheckBox.setOnAction(actionEvent -> {
             chooseProductFileButton.setDisable(!isProductFileCheckBox.isSelected());
         });
@@ -130,6 +131,7 @@ public class AddProduct implements Initializable {
         File file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
         if (file != null) {
             productFilePath = file.getAbsolutePath();
+            chooseProductFileButton.setText(file.getName());
         }
     }
 }
