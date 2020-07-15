@@ -1,5 +1,6 @@
 package client.view.graphical.customer;
 
+import javafx.fxml.FXML;
 import server.controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -64,11 +65,16 @@ public class CustomerPanel {
 
     public void viewOrders(ActionEvent actionEvent) {
         Parent parent = null;
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("../../../../fxml/customer/OrdersHistory.fxml"));
         try {
-            parent = FXMLLoader.load(getClass().getResource("../../../../fxml/customer/OrdersHistory.fxml"));
+            parent = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        OrdersHistory controller = loader.getController();
+        controller.setPopup(popupMenu);
+        controller.setStage((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
         popupMenu.getContent().clear();
         popupMenu.getContent().add(parent);
         popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());

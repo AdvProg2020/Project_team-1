@@ -14,9 +14,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import server.data.YaDataManager;
 
@@ -25,27 +27,38 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class OrdersHistory implements Initializable {
-    public TreeView<String> ordersHistoryTreeView;
+    public TreeView<Node> ordersHistoryTreeView;
+    private Popup popup;
+    private Stage stage;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void setPopup(Popup popup) {
+        this.popup = popup;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        TreeItem<String> ordersHistoryRootItem = new TreeItem<>("Orders history");
+        TreeItem<Node> ordersHistoryRootItem = new TreeItem<>(new Label("Orders history"));
         for (BuyLog buyLog : ((PersonalAccount) Session.getOnlineAccount()).getBuyLogs()) {
-            TreeItem<String> buyLogTreeItem = new TreeItem<>(String.valueOf(buyLog.getLogId()));
-            TreeItem<String> commoditiesTreeItem = new TreeItem<>("Commodities");
-            TreeItem<String> sellersTreeItem = new TreeItem<>("Sellers");
-            buyLogTreeItem.getChildren().addAll(new TreeItem<>("Payed money: " + buyLog.getPayedMoney()),
-                    new TreeItem<>("Deducted money: " + buyLog.getDeductedMoney()),
-                    new TreeItem<>(buyLog.getCommodityDelivered() ? "Delivered" : "Not delivered yet"),
-                    new TreeItem<>("Buy date: " + buyLog.getDate().toString()),
+            TreeItem<Node> buyLogTreeItem = new TreeItem<>(new Label(String.valueOf(buyLog.getLogId())));
+            TreeItem<Node> commoditiesTreeItem = new TreeItem<>(new Label("Commodities"));
+            TreeItem<Node> sellersTreeItem = new TreeItem<>(new Label("Sellers"));
+            buyLogTreeItem.getChildren().addAll(new TreeItem<>(new Label("Payed money: " + buyLog.getPayedMoney())),
+                    new TreeItem<>(new Label("Deducted money: " + buyLog.getDeductedMoney())),
+                    new TreeItem<>(new Label(buyLog.getCommodityDelivered() ? "Delivered" : "Not delivered yet")),
+                    new TreeItem<>(new Label("Buy date: " + buyLog.getDate().toString())),
                     commoditiesTreeItem, sellersTreeItem);
             for (int commodityId : buyLog.getCommoditiesId()) {
                 try {
                     Commodity commodity = YaDataManager.getCommodityById(commodityId);
-                    TreeItem<String> commodityTreeItem = new TreeItem<>(commodity.getName());
+                    TreeItem<Node> commodityTreeItem = new TreeItem<>(new Label(commodity.getName()));
                     if (commodity.getProductFilePathOnSellerClient() != null) {
-                        TreeItem<String> downloadFile = new TreeItem<>("download");
-                        downloadFile.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                        Button downloadButton = new Button("Download product file");
+                        TreeItem<Node> downloadFile = new TreeItem<>(downloadButton);
+                        downloadButton.setOnMouseClicked(mouseEvent -> {
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
                                     "../../../../fxml/customer/DownloadProductFile.fxml"));
                             Parent root = null;
@@ -55,12 +68,10 @@ public class OrdersHistory implements Initializable {
                                 e.printStackTrace();
                             }
                             DownloadProductFile controller = fxmlLoader.getController();
-                            controller.setCommodity(commodity);
-                            Stage stage = new Stage();
-                            assert root != null;
-                            stage.setScene(new Scene(root));
-                            stage.setTitle("Download product file");
-                            stage.show();
+                            controller.initialize(commodity);
+                            popup.getContent().clear();
+                            popup.getContent().add(root);
+                            popup.show(stage);
                         });
                         commodityTreeItem.getChildren().add(downloadFile);
                     }
@@ -70,7 +81,7 @@ public class OrdersHistory implements Initializable {
                 }
             }
             for (String username : buyLog.getSellersUsername()) {
-                sellersTreeItem.getChildren().add(new TreeItem<>(username));
+                sellersTreeItem.getChildren().add(new TreeItem<>(new Label(username)));
             }
             ordersHistoryRootItem.getChildren().add(buyLogTreeItem);
         }

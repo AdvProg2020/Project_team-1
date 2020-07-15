@@ -15,23 +15,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DownloadProductFile implements Initializable {
+public class DownloadProductFile {
 
     public Label infoLabel;
     public ProgressBar progressBar;
     public Label messageToUser;
     private Commodity commodity;
 
-    public void setCommodity(Commodity commodity) {
+    public void initialize(Commodity commodity) {
         this.commodity = commodity;
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
         String fileName = commodity.getProductFilePathOnSellerClient().substring(
-                commodity.getProductFilePathOnSellerClient().lastIndexOf("\\")); //for windows
+              commodity.getProductFilePathOnSellerClient().lastIndexOf("\\") + 1); //for windows
         infoLabel.setText("Getting " + fileName + " from " + commodity.getSellerUsername());
-        getFile(fileName);
+        //getFile(fileName);
     }
 
     private void getFile(String fileName) {
@@ -52,7 +48,7 @@ public class DownloadProductFile implements Initializable {
     }
 
     public void onCancelClicked(MouseEvent mouseEvent) {
-        ((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow()).close();
+        ((Node) mouseEvent.getSource()).getScene().getWindow().hide();
     }
 
     public void onDoneClicked(MouseEvent mouseEvent) {
