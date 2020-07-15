@@ -20,13 +20,13 @@ public class MenuHandler {
     }
 
     public void setCurrentMenu(Menu currentMenu) {
-      if (!AudioPlayer.mediaPlayer.getStatus().equals(MediaPlayer.Status.PAUSED)) {
+/*      if (!AudioPlayer.mediaPlayer.getStatus().equals(MediaPlayer.Status.PAUSED)) {
           AudioPlayer.mediaPlayer.stop();
           if (AudioPlayer.count != 8)
               AudioPlayer.count++;
           else AudioPlayer.count = 1;
           AudioPlayer.music();
-      }
+      }*/
       this.currentMenu = currentMenu;
     }
 }

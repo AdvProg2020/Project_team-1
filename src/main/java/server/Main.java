@@ -1,7 +1,10 @@
 package server;
 
 import client.view.commandline.View;
-import common.model.account.SupportAccount;
+import common.model.account.*;
+import common.model.exception.InvalidAccessException;
+import common.model.exception.InvalidAccountInfoException;
+import common.model.exception.InvalidLoginInformationException;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -9,22 +12,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static client.view.commandline.View.loginRegisterMenu;
+
+
 public class Main {
     private static ArrayList<Socket> sockets = new ArrayList<>();
     private static HashMap<Socket, String> onlineAccountsUsernames = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
         ServerSocket server = new ServerSocket(8888);
-        new Thread(() -> {
-            while (true) {
-                for (Socket socket : sockets) {
-                    if (!socket.isConnected()) {
-                        sockets.remove(socket);
-                        System.out.println(socket.toString());
-                    } else System.out.println("salam AZIZE MAN");
-                }
-            }
-        }).start();
         while (true) {
             Socket socket = server.accept();
             sockets.add(socket);
@@ -39,9 +35,10 @@ public class Main {
                 try {
                     DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                     String input = dataInputStream.readUTF();
-                    System.out.println(input);
+                   System.out.println(input);
                     handleInput(input, socket);
                 } catch (IOException | ClassNotFoundException e) {
+                    System.out.println("in ghat shod");
                     break;
                 }
             }
@@ -59,6 +56,9 @@ public class Main {
             chat(input, socket);
         } else if (input.startsWith("Start chat")) {
             chatSupport(input, socket);
+        } else if (input.startsWith("Register")) {
+            System.out.println("dasd");
+            register(socket);
         }
     }
 
@@ -124,10 +124,10 @@ public class Main {
             String[] splitMessage = message.split(" ");
             if (message.startsWith("new chat")) {
                 simpleAccountSocket = getSocket(splitInput, simpleAccountSocket, 3);
-                message = getString(splitInput, splitMessage , 4);
-            } else if (!message.startsWith("Start chat with")){
+                message = getString(splitInput, splitMessage, 4);
+            } else if (!message.startsWith("Start chat with")) {
                 simpleAccountSocket = getSocket(splitMessage, simpleAccountSocket, 0);
-                message = getString(splitInput, splitMessage , 1);
+                message = getString(splitInput, splitMessage, 1);
             }
             System.out.println(message);
             DataOutputStream dataOutputStreamSupportAccount = new DataOutputStream(new BufferedOutputStream(simpleAccountSocket.getOutputStream()));
@@ -146,14 +146,71 @@ public class Main {
         return simpleAccountSocket;
     }
 
-    public static String getString(String[] splitInput, String[] splitMessage , int origin) {
+    public static String getString(String[] splitInput, String[] splitMessage, int origin) {
         String message;
         message = "";
-        for (int i = origin ; i < splitMessage.length ; i++) {
+        for (int i = origin; i < splitMessage.length; i++) {
             if (i == origin)
                 message += splitMessage[i];
             else message += " " + splitMessage[i];
         }
         return message;
     }
+
+    public static void register(Socket socket) throws IOException, ClassNotFoundException {
+        try {
+            System.out.println("salamss");
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+            String[] information = dataInputStream.readUTF().split(" ");
+            try {
+                loginRegisterMenu.checkUserNameAvailability(information[1]);
+            } catch (InvalidLoginInformationException e) {
+                dataOutputStream.writeUTF(e.getMessage());
+                dataOutputStream.flush();
+            }
+            if (information[0].equals("manager")) {
+                try {
+                    loginRegisterMenu.isThereManagerAccount();
+                } catch (InvalidAccessException e) {
+                    dataOutputStream.writeUTF(e.getMessage());
+                    dataOutputStream.flush();
+                }
+            }
+            if (information[0].equals("personal")) {
+                try {
+                    loginRegisterMenu.registerPersonalAccount(information[1] , information[2] , information[3]
+                            ,information[4] ,information[5] ,information[6] , information[7]);
+                    dataOutputStream.writeUTF("You have registered successfully.");
+                    dataOutputStream.flush();
+                } catch (InvalidAccountInfoException e) {
+                    dataOutputStream.writeUTF(e.getMessage());
+                    dataOutputStream.flush();
+                }
+            }
+            if (information[0].equals("business")) {
+                try {
+                    loginRegisterMenu.registerResellerAccount(information[1] , information[2] , information[3]
+                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
+                    dataOutputStream.flush();
+                } catch (InvalidAccountInfoException e) {
+                    dataOutputStream.writeUTF(e.getMessage());
+                    dataOutputStream.flush();
+                }
+            }
+            if (information[0].equals("manager")) {
+                try {
+                    loginRegisterMenu.registerManagerAccount(information[1] , information[2] , information[3]
+                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
+                    dataOutputStream.flush();
+                } catch (InvalidAccountInfoException e) {
+                    dataOutputStream.writeUTF(e.getMessage());
+                    dataOutputStream.flush();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

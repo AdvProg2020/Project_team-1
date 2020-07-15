@@ -1,5 +1,8 @@
 package client.view.graphical;
 
+import common.model.account.BusinessAccount;
+import common.model.account.ManagerAccount;
+import common.model.account.PersonalAccount;
 import server.controller.share.LoginRegisterMenu;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +19,7 @@ import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
 import client.view.commandline.View;
+
 import static client.Main.socket;
 
 import java.io.*;
@@ -68,7 +72,7 @@ public class LoginRegister implements Initializable {
         try {
             loginRegisterMenu.login(loginUsernameTf.getText(), loginPasswordTf.getText());
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            dataOutputStream.writeUTF("account logged in: " + loginUsernameTf.getText() );
+            dataOutputStream.writeUTF("account logged in: " + loginUsernameTf.getText());
             dataOutputStream.flush();
             Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
         } catch (InvalidLoginInformationException e) {
@@ -76,39 +80,47 @@ public class LoginRegister implements Initializable {
         }
     }
 
-    public void onRegisterButtonClick() {
-        try {
-            loginRegisterMenu.checkUserNameAvailability(registerUsernameTf.getText());
-            if (accountType.getValue() == null) {
-                registerMessageLabel.setText("Select an account type");
-                return;
-            }
-            if (accountType.getValue().equals("manager")) {
-                loginRegisterMenu.isThereManagerAccount();
-            }
-            switch (accountType.getValue()) {
-                case "personal":
-                    loginRegisterMenu.registerPersonalAccount(registerUsernameTf.getText(),
-                            registerFirstNameTf.getText(), registerLastNameTf.getText(), registerEmailTf.getText(),
-                            registerPhoneNumberTf.getText(), registerPassword.getText(), imagePath);
-                    break;
+    public void onRegisterButtonClick() throws IOException {
 
-                case "reseller":
-                    loginRegisterMenu.registerResellerAccount(registerUsernameTf.getText(),
-                            registerFirstNameTf.getText(), registerLastNameTf.getText(), registerEmailTf.getText(),
-                            registerPhoneNumberTf.getText(), registerPassword.getText(), registerBusinessNameTf.getText(),
-                            imagePath);
-                    break;
-
-                case "manager":
-                    loginRegisterMenu.registerManagerAccount(registerUsernameTf.getText(),
-                            registerFirstNameTf.getText(), registerLastNameTf.getText(), registerEmailTf.getText(),
-                            registerPhoneNumberTf.getText(), registerPassword.getText(), imagePath);
-            }
-            registerMessageLabel.setText("You registered successfully");
-        } catch (InvalidLoginInformationException | InvalidAccessException | InvalidAccountInfoException e) {
-            registerMessageLabel.setText(e.getMessage());
+        if (accountType.getValue() == null) {
+            registerMessageLabel.setText("Select an account type");
+            return;
         }
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataOutputStream.writeUTF("Register");
+        dataOutputStream.flush();
+        String information;
+        switch (accountType.getValue()) {
+            case "personal":
+                PersonalAccount personalAccount = null;
+                information = "personal " + registerUsernameTf.getText() + " " +
+                        registerFirstNameTf.getText() + " " + registerLastNameTf.getText() + " " + registerEmailTf.getText() + " " +
+                        registerPhoneNumberTf.getText() + " " + registerPassword.getText() + " " + imagePath;
+                dataOutputStream.writeUTF(information);
+                dataOutputStream.flush();
+                break;
+
+            case "reseller":
+                ManagerAccount managerAccount = null;
+                information = "business " +  registerUsernameTf.getText() + " " +
+                        registerFirstNameTf.getText() + " " + registerLastNameTf.getText() + " " + registerEmailTf.getText() + " " +
+                        registerPhoneNumberTf.getText() + " " + registerPassword.getText() + " " + imagePath;
+                dataOutputStream.writeUTF(information);
+                dataOutputStream.flush();
+                dataOutputStream.writeUTF(information);
+                dataOutputStream.flush();
+                break;
+
+            case "manager":
+                information = "manager " + registerUsernameTf.getText() + " " +
+                        registerFirstNameTf.getText() + " " + registerLastNameTf.getText() + " " + registerEmailTf.getText() + " " +
+                        registerPhoneNumberTf.getText() + " " + registerPassword.getText() + " " + imagePath;
+                dataOutputStream.writeUTF(information);
+                dataOutputStream.flush();
+        }
+        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        String respond = dataInputStream.readUTF();
+        registerMessageLabel.setText(respond);
     }
 
     public void onPickAPhotoClick(MouseEvent mouseEvent) {

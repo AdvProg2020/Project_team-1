@@ -26,6 +26,8 @@ public class PersonalAccount extends SimpleAccount {
         credit = 1000.0;
     }
 
+
+
     public PersonalAccount(String username, String firstName, String lastName, String email, String phoneNumber,
                            String password, String imagePath) throws InvalidAccountInfoException {
         super(username, firstName, lastName, email, phoneNumber, password, "personal", imagePath);

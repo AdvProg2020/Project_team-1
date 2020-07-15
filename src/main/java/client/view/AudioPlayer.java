@@ -19,7 +19,7 @@ public class AudioPlayer {
     public static void music(){
         System.out.println(count);
         Media media =  new Media(AudioPlayer.class.getResource(paths[count]).toExternalForm());
-        mediaPlayer = new MediaPlayer(media);
+        //mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(0.025);
         //mediaPlayer.play();
         System.out.println("salam");

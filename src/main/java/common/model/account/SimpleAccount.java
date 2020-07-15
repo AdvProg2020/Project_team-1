@@ -14,6 +14,11 @@ public abstract class SimpleAccount implements Serializable {
     protected final transient String VALID_PASSWORD = "^.{4,20}$";
     // Todo test password strength
     protected String username;
+
+    public String getPassword() {
+        return password;
+    }
+
     protected String firstName;
     protected String lastName;
     protected String email;
@@ -21,7 +26,7 @@ public abstract class SimpleAccount implements Serializable {
     protected String hashedPassword;
     protected String accountType;
     protected String imagePath;
-
+    private String password;
     public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
                          String password, String accountType) throws InvalidAccountInfoException {
         changeUsername(username);
@@ -119,6 +124,7 @@ public abstract class SimpleAccount implements Serializable {
 
     public void changePassword(String password) throws InvalidAccountInfoException {
         if (password.matches(VALID_PASSWORD)) {
+            this.password = password;
             this.hashedPassword = hashPassword(password);
         } else {
             throw new InvalidAccountInfoException("Invalid password.");
