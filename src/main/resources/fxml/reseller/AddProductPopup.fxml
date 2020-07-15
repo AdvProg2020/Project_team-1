@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane minHeight="1600.0" minWidth="600.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.AddProduct">
+<BorderPane minHeight="600.0" minWidth="600.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.AddProduct">
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <Button alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onCancelClick" styleClass="close-button" text="Cancel" />
