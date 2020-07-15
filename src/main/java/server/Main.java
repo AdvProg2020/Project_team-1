@@ -1,10 +1,11 @@
 package server;
 
 import client.view.commandline.View;
-import common.model.account.*;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
+import common.model.account.SupportAccount;
+import server.data.YaDataManager;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -50,8 +51,6 @@ public class Main {
             newSupportAccount(socket);
         } else if (input.equalsIgnoreCase("get online accounts")) {
             sendOnlineAccounts(socket);
-        } else if (input.startsWith("account logged in:")) {
-            updateOnlineAccounts(input, socket);
         } else if (input.startsWith("Chat between:")) {
             chat(input, socket);
         } else if (input.startsWith("Start chat")) {
@@ -59,6 +58,26 @@ public class Main {
         } else if (input.startsWith("Register")) {
             System.out.println("dasd");
             register(socket);
+        } else if (input.startsWith("login")) {
+            login(input, socket);
+        }
+    }
+
+    public static void login(String input, Socket socket) throws IOException {
+        String[] splitInput = input.split(" ");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        try {
+            View.loginRegisterMenu.login(splitInput[1], splitInput[2]);
+            onlineAccountsUsernames.put(socket, splitInput[1]);
+            objectOutputStream.writeUTF("logged in");
+            objectOutputStream.flush();
+            dataInputStream.readUTF();
+            objectOutputStream.writeObject(YaDataManager.getAccountWithUserName(splitInput[1]));
+            objectOutputStream.flush();
+        } catch (InvalidLoginInformationException e) {
+           objectOutputStream.writeUTF("error:" + e.getMessage());
+           objectOutputStream.flush();
         }
     }
 
@@ -79,11 +98,6 @@ public class Main {
                 break;
             }
         }
-    }
-
-    public static void updateOnlineAccounts(String input, Socket socket) {
-        String[] splitInput = input.split(" ");
-        onlineAccountsUsernames.put(socket, splitInput[3]);
     }
 
     public static void sendOnlineAccounts(Socket socket) throws IOException {

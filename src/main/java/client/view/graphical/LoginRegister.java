@@ -1,6 +1,9 @@
 package client.view.graphical;
 
-import common.model.account.BusinessAccount;
+import client.Session;
+import client.controller.share.ClientLoginRegisterMenu;
+import client.view.commandline.View;
+import common.model.account.SimpleAccount;
 import common.model.account.ManagerAccount;
 import common.model.account.PersonalAccount;
 import server.controller.share.LoginRegisterMenu;
@@ -14,11 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.exception.InvalidAccessException;
-import common.model.exception.InvalidAccountInfoException;
-import common.model.exception.InvalidLoginInformationException;
-import client.view.commandline.View;
 
 import static client.Main.socket;
 
@@ -29,10 +27,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static client.Main.socket;
+
 public class LoginRegister implements Initializable {
 
     public TextField registerBusinessNameTf;
     private final LoginRegisterMenu loginRegisterMenu = View.loginRegisterMenu;
+    private final ClientLoginRegisterMenu clientLoginRegisterMenu = new ClientLoginRegisterMenu();
     public ChoiceBox<String> accountType;
     public Label loginMessageLabel;
     public TextField loginUsernameTf;
@@ -68,20 +69,25 @@ public class LoginRegister implements Initializable {
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
-    public void onLoginButtonClick(MouseEvent mouseEvent) throws IOException {
-        try {
-            loginRegisterMenu.login(loginUsernameTf.getText(), loginPasswordTf.getText());
-            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            dataOutputStream.writeUTF("account logged in: " + loginUsernameTf.getText());
-            dataOutputStream.flush();
-            Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
-        } catch (InvalidLoginInformationException e) {
-            loginMessageLabel.setText(e.getMessage());
+    public void onLoginButtonClick(MouseEvent mouseEvent) throws IOException, ClassNotFoundException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataOutputStream.writeUTF("login: " + loginUsernameTf.getText() + " " + loginPasswordTf.getText());
+        dataOutputStream.flush();
+        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+        String input = objectInputStream.readUTF();
+        System.out.println(input);
+        if (input.startsWith("error:")) {
+            loginMessageLabel.setText(input.split(":")[1]);
+            return;
         }
+        dataOutputStream.writeUTF("send account");
+        dataOutputStream.flush();
+        SimpleAccount simpleAccount = (SimpleAccount) objectInputStream.readObject();
+        ClientLoginRegisterMenu.login(simpleAccount);
+        Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
     public void onRegisterButtonClick() throws IOException {
-
         if (accountType.getValue() == null) {
             registerMessageLabel.setText("Select an account type");
             return;
