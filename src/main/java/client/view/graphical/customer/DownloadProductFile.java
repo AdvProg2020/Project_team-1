@@ -29,7 +29,7 @@ public class DownloadProductFile implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String fileName = commodity.getProductFilePathOnSellerClient().substring(
-        commodity.getProductFilePathOnSellerClient().lastIndexOf('/'));
+                commodity.getProductFilePathOnSellerClient().lastIndexOf("\\")); //for windows
         infoLabel.setText("Getting " + fileName + " from " + commodity.getSellerUsername());
         getFile(fileName);
     }
