@@ -1,10 +1,10 @@
 package server;
 
 import client.view.commandline.View;
+import common.model.account.SupportAccount;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
-import common.model.account.SupportAccount;
 import server.data.YaDataManager;
 
 import java.io.*;
@@ -36,7 +36,7 @@ public class Main {
                 try {
                     DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                     String input = dataInputStream.readUTF();
-                   System.out.println(input);
+                    System.out.println(input);
                     handleInput(input, socket);
                 } catch (IOException | ClassNotFoundException e) {
                     System.out.println("in ghat shod");
@@ -76,8 +76,8 @@ public class Main {
             objectOutputStream.writeObject(YaDataManager.getAccountWithUserName(splitInput[1]));
             objectOutputStream.flush();
         } catch (InvalidLoginInformationException e) {
-           objectOutputStream.writeUTF("error:" + e.getMessage());
-           objectOutputStream.flush();
+            objectOutputStream.writeUTF("error:" + e.getMessage());
+            objectOutputStream.flush();
         }
     }
 
@@ -193,8 +193,8 @@ public class Main {
             }
             if (information[0].equals("personal")) {
                 try {
-                    loginRegisterMenu.registerPersonalAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]);
+                    loginRegisterMenu.registerPersonalAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
                     dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
@@ -204,8 +204,9 @@ public class Main {
             }
             if (information[0].equals("business")) {
                 try {
-                    loginRegisterMenu.registerResellerAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
+                    dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
@@ -214,8 +215,9 @@ public class Main {
             }
             if (information[0].equals("manager")) {
                 try {
-                    loginRegisterMenu.registerManagerAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerManagerAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
+                    dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
