@@ -1,1 +1,64 @@
-[]
+[
+  {
+    "obj": {
+      "@type": "common.model.account.BusinessAccount",
+      "@val": {
+        "VALID_BUSINESS_NAME": "^\\w{4,20}$",
+        "businessName": "maml",
+        "sellLogs": [],
+        "commoditiesId": [],
+        "offsId": [],
+        "credit": 1000.0,
+        "status": "VERIFIED",
+        "VALID_USERNAME": "^\\w{2,20}$",
+        "VALID_FIRST_NAME_AND_LAST_NAME": "^[a-zA-z ]{1,20}$",
+        "VALID_EMAIL": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$",
+        "VALID_PHONE_NUMBER": "^(/+98|0098|0)\\d{10}$",
+        "VALID_PASSWORD": "^.{4,20}$",
+        "username": "mamal",
+        "firstName": "salam",
+        "lastName": "salaam",
+        "email": "mamal@gmail.com",
+        "phoneNumber": "01921798944",
+        "hashedPassword": "$2a$10$R0KF.HqsLxajyFC7IVGxA.RR.XN5heEXByuImqpfoSbiEiAGsVIXa",
+        "accountType": "reseller"
+      }
+    },
+    "id": 1
+  },
+  {
+    "obj": {
+      "@type": "common.model.commodity.Commodity",
+      "@val": {
+        "commodityId": 1,
+        "status": "VERIFIED",
+        "brand": "salam",
+        "name": "salam",
+        "price": 12,
+        "inventory": 12,
+        "sellerUsername": "mamal",
+        "isCommodityAvailable": true,
+        "categoryName": "wqe",
+        "categorySpecifications": [
+          {
+            "@type": "common.model.field.NumericalField",
+            "@val": {
+              "value": 12,
+              "title": "asd"
+            }
+          }
+        ],
+        "description": "salam",
+        "allComments": [],
+        "averageScore": 0.0,
+        "totalScores": 0.0,
+        "numberOfScores": 0,
+        "numberOfVisits": 0,
+        "imagePath": "C:\\Users\\arian\\Pictures\\photo_2020-07-01_21-38-25.jpg",
+        "scores": []
+      }
+    },
+    "applicantUsername": "mamal",
+    "id": 2
+  }
+]

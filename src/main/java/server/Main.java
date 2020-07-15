@@ -15,11 +15,20 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         ServerSocket server = new ServerSocket(8888);
+        new Thread(() -> {
+            while (true) {
+                for (Socket socket : sockets) {
+                    if (!socket.isConnected()) {
+                        sockets.remove(socket);
+                        System.out.println(socket.toString());
+                    } else System.out.println("salam AZIZE MAN");
+                }
+            }
+        }).start();
         while (true) {
-            System.out.println("khobi");
             Socket socket = server.accept();
-            System.out.println("salam");
             sockets.add(socket);
+            System.out.println(socket);
             handleClient(socket);
         }
     }

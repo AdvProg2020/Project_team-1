@@ -1199,7 +1199,7 @@ public class View {
         scanner.nextLine();
         System.out.println("enter image path;");
         String path = scanner.nextLine();
-        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount, path);
+        //resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount, path);
         System.out.println("product request had been sent to managers");
     }
 
