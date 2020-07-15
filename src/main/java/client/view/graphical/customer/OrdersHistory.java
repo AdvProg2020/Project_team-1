@@ -1,5 +1,6 @@
 package client.view.graphical.customer;
 
+import client.Main;
 import client.Session;
 import common.model.account.PersonalAccount;
 import common.model.commodity.Commodity;
@@ -7,14 +8,19 @@ import common.model.log.BuyLog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import server.data.YaDataManager;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -39,7 +45,23 @@ public class OrdersHistory implements Initializable {
                     TreeItem<String> commodityTreeItem = new TreeItem<>(commodity.getName());
                     if (commodity.getProductFilePathOnSellerClient() != null) {
                         TreeItem<String> downloadFile = new TreeItem<>("download");
-                        downloadFile.addEventHandler(MouseEvent.MOUSE_CLICKED, this::downloadProductFile);
+                        downloadFile.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+                                    "../../../../fxml/customer/DownloadProductFile.fxml"));
+                            Parent root = null;
+                            try {
+                                root = fxmlLoader.load();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            DownloadProductFile controller = fxmlLoader.getController();
+                            controller.setCommodity(commodity);
+                            Stage stage = new Stage();
+                            assert root != null;
+                            stage.setScene(new Scene(root));
+                            stage.setTitle("Download product file");
+                            stage.show();
+                        });
                         commodityTreeItem.getChildren().add(downloadFile);
                     }
                     commoditiesTreeItem.getChildren().add(commodityTreeItem);
@@ -53,12 +75,6 @@ public class OrdersHistory implements Initializable {
             ordersHistoryRootItem.getChildren().add(buyLogTreeItem);
         }
         ordersHistoryTreeView.setRoot(ordersHistoryRootItem);
-    }
-
-    private void downloadProductFile(MouseEvent mouseEvent) {
-        new Thread(() -> {
-
-        }).start();
     }
 
     public void onCloseClick(ActionEvent actionEvent) {

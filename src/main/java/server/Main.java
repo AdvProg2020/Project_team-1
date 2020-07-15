@@ -1,9 +1,7 @@
 package server;
 
 import client.view.commandline.View;
-import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
-import server.data.YaDataManager;
 
 import java.io.*;
 import java.net.ServerSocket;
