@@ -854,6 +854,7 @@ public class View {
     }
 
     private void editFields(ViewPersonalInfoMenu viewPersonalInfoMenu, String command) {
+        /*
         Matcher matcher = Pattern.compile("^edit (?<field>(first name||last name||email||phone number)) (?<newfield>\\S+)$").matcher(command);
         matcher.matches();
         try {
@@ -887,6 +888,7 @@ public class View {
             return;
         }
         System.out.println("wrong field");
+        */
     }
 
     private void manageUsers(ManageUsersMenu manageUsersMenu) throws IOException {

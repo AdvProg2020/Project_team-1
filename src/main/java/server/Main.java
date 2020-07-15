@@ -5,6 +5,7 @@ import common.model.account.*;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
+import server.data.YaDataManager;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -29,7 +30,7 @@ public class Main {
         }
     }
 
-    public static void handleClient(Socket socket) {
+    private static void handleClient(Socket socket) {
         new Thread(() -> {
             while (true) {
                 try {
@@ -45,7 +46,7 @@ public class Main {
         }).start();
     }
 
-    public static void handleInput(String input, Socket socket) throws IOException, ClassNotFoundException {
+    private static void handleInput(String input, Socket socket) throws IOException, ClassNotFoundException {
         if (input.equalsIgnoreCase("new support account")) {
             newSupportAccount(socket);
         } else if (input.equalsIgnoreCase("get online accounts")) {
@@ -57,12 +58,13 @@ public class Main {
         } else if (input.startsWith("Start chat")) {
             chatSupport(input, socket);
         } else if (input.startsWith("Register")) {
-            System.out.println("dasd");
             register(socket);
+        }else if (input.startsWith("Edit")){
+            editPersonalInfo(input , socket);
         }
     }
 
-    public static void chat(String input, Socket simpleAccountSocket) throws IOException {
+    private static void chat(String input, Socket simpleAccountSocket) throws IOException {
         String[] splitInput = input.split(" ");
         Socket supportAccountSocket = null;
         supportAccountSocket = getSocket(splitInput, supportAccountSocket, 3);
@@ -81,12 +83,12 @@ public class Main {
         }
     }
 
-    public static void updateOnlineAccounts(String input, Socket socket) {
+    private static void updateOnlineAccounts(String input, Socket socket) {
         String[] splitInput = input.split(" ");
         onlineAccountsUsernames.put(socket, splitInput[3]);
     }
 
-    public static void sendOnlineAccounts(Socket socket) throws IOException {
+    private static void sendOnlineAccounts(Socket socket) throws IOException {
         String usernamesString = "";
         for (Socket socket1 : onlineAccountsUsernames.keySet()) {
             usernamesString += onlineAccountsUsernames.get(socket1) + "\n";
@@ -97,7 +99,7 @@ public class Main {
         dataOutputStream.flush();
     }
 
-    public static void newSupportAccount(Socket socket) throws IOException, ClassNotFoundException {
+    private static void newSupportAccount(Socket socket) throws IOException, ClassNotFoundException {
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         dataOutputStream.writeUTF("Send object");
         dataOutputStream.flush();
@@ -113,7 +115,7 @@ public class Main {
         }
     }
 
-    public static void chatSupport(String input, Socket supportAccountSocket) throws IOException {
+    private static void chatSupport(String input, Socket supportAccountSocket) throws IOException {
         String[] splitInput = input.split(" ");
         Socket simpleAccountSocket = null;
         simpleAccountSocket = getSocket(splitInput, simpleAccountSocket, 3);
@@ -137,8 +139,7 @@ public class Main {
             }
         }
     }
-
-    public static Socket getSocket(String[] splitInput, Socket simpleAccountSocket, int i) {
+    private static Socket getSocket(String[] splitInput, Socket simpleAccountSocket, int i) {
         for (Socket socket : onlineAccountsUsernames.keySet()) {
             if (onlineAccountsUsernames.get(socket).equals(splitInput[i]))
                 simpleAccountSocket = socket;
@@ -146,7 +147,7 @@ public class Main {
         return simpleAccountSocket;
     }
 
-    public static String getString(String[] splitInput, String[] splitMessage, int origin) {
+    private static String getString(String[] splitInput, String[] splitMessage, int origin) {
         String message;
         message = "";
         for (int i = origin; i < splitMessage.length; i++) {
@@ -157,9 +158,8 @@ public class Main {
         return message;
     }
 
-    public static void register(Socket socket) throws IOException, ClassNotFoundException {
+    private static void register(Socket socket) throws IOException, ClassNotFoundException {
         try {
-            System.out.println("salamss");
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             String[] information = dataInputStream.readUTF().split(" ");
@@ -210,6 +210,33 @@ public class Main {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void editPersonalInfo(String input , Socket socket) throws IOException {
+        String[] splitInput = input.split(" ");
+        try {
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            String username = splitInput[2];
+            SimpleAccount simpleAccount = YaDataManager.getAccountWithUserName(username);
+            if (splitInput[1].equals("password")) {
+                View.viewPersonalInfoMenu.editPassword(splitInput[3] , simpleAccount );
+            } else if (splitInput[1].equals("first")) {
+                View.viewPersonalInfoMenu.editFirstName(splitInput[3] , simpleAccount );
+            } else if (splitInput[1].equals("last")) {
+                View.viewPersonalInfoMenu.editLastName(splitInput[3] , simpleAccount );
+            } else if (splitInput[1].equals("email")) {
+                View.viewPersonalInfoMenu.editEmail(splitInput[3] , simpleAccount );
+            } else if (splitInput[1].equals("phone")) {
+                View.viewPersonalInfoMenu.editPhoneNumber(splitInput[3] , simpleAccount );
+            }
+            dataOutputStream.writeUTF("successfully changed");
+            dataOutputStream.flush();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            dataOutputStream.writeUTF(e.getMessage());
+            dataOutputStream.flush();
         }
     }
 

@@ -114,6 +114,7 @@ public abstract class SimpleAccount implements Serializable {
         if (phoneNumber.matches(VALID_PHONE_NUMBER)) {
             this.phoneNumber = phoneNumber;
         } else {
+            System.out.println("exception khordam");
             throw new InvalidAccountInfoException("Invalid Iran phone number.");
         }
     }

@@ -12,14 +12,22 @@ import javafx.scene.paint.Color;
 import client.Session;
 import client.view.commandline.View;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import static client.Main.socket;
 public class ViewPersonalInfo extends HolyManager implements Initializable {
     public ListView userInfo;
     public AnchorPane pane;
     public Label label;
     private ListView<String> personalInfo = new ListView<>();
+    private DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+    private DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+
+    public ViewPersonalInfo() throws IOException {
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -53,8 +61,15 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editFirstName(textField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN , "First name successfully changed");
+                    dataOutputStream.writeUTF("Edit first "+
+                            Session.getOnlineAccount().getUsername() + " " + textField.getText());
+                    dataOutputStream.flush();
+                    String respond = dataInputStream.readUTF();
+                    if (respond.equals("successfully changed")) {
+                        setLabel(Color.GREEN, respond);
+                        Session.getOnlineAccount().changeFirstName(textField.getText());
+                    }
+                    else setLabel(Color.RED , respond);
                     updatePane();
                 } catch (Exception exception) {
                     setLabel(Color.RED , exception.getMessage());
@@ -90,9 +105,14 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editLastName(textField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN , "Last name successfully changed");
-                    updatePane();
+                    dataOutputStream.writeUTF("Edit last name " +
+                            Session.getOnlineAccount().getUsername() + " " +textField.getText());
+                    dataOutputStream.flush();
+                    String respond = dataInputStream.readUTF();
+                    if (respond.equals("successfully changed")) {
+                        setLabel(Color.GREEN, respond);
+                        Session.getOnlineAccount().changeLastName(textField.getText());
+                    } else setLabel(Color.RED , respond);updatePane();
                 } catch (Exception exception) {
                     exception.printStackTrace();
                     setLabel(Color.RED , exception.getMessage());
@@ -116,8 +136,14 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editEmail(textField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN , "Email successfully changed");
+                    dataOutputStream.writeUTF("Edit email " +
+                            Session.getOnlineAccount().getUsername() + " "+ textField.getText());
+                    dataOutputStream.flush();
+                    String respond = dataInputStream.readUTF();
+                    if (respond.equals("successfully changed")) {
+                        setLabel(Color.GREEN, respond);
+                        Session.getOnlineAccount().changeEmail(textField.getText());
+                    }else setLabel(Color.RED , respond);
                     updatePane();
                 } catch (Exception exception) {
                     exception.printStackTrace();
@@ -137,8 +163,14 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editPhoneNumber(textField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN , "Phone successfully changed");
+                    dataOutputStream.writeUTF("Edit phone "+
+                            Session.getOnlineAccount().getUsername() + " " + textField.getText());
+                    dataOutputStream.flush();
+                    String respond = dataInputStream.readUTF();
+                    if (respond.equals("successfully changed")) {
+                        setLabel(Color.GREEN, respond);
+                        Session.getOnlineAccount().changeEmail(textField.getText());
+                    } else setLabel(Color.RED , respond);
                     updatePane();
                 } catch (Exception exception) {
 
@@ -162,10 +194,16 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
                 try {
                     pane.getChildren().remove(change);
                     pane.getChildren().remove(passwordField);
-                    View.viewPersonalInfoMenu.editPassword(passwordField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN , "Password successfully changed");
+                    dataOutputStream.writeUTF("Edit password "+
+                            Session.getOnlineAccount().getUsername() + " " + passwordField.getText());
+                    dataOutputStream.flush();
+                    String respond = dataInputStream.readUTF();
+                    if (respond.equals("successfully changed")) {
+                        setLabel(Color.GREEN, respond);
+                        Session.getOnlineAccount().changePassword(passwordField.getText());
+                    } else setLabel(Color.RED , respond);
                 } catch (Exception exception) {
-                    setLabel(Color.RED , exception.getMessage());
+
                 }
             }
         });

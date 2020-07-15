@@ -13,21 +13,50 @@ import javafx.scene.paint.Color;
 import client.Session;
 import client.view.commandline.View;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static client.Main.socket;
 
 public class ViewInfo implements Initializable {
     public AnchorPane pane;
     public ListView userInfo;
     public Label label;
+    private ListView<String> personalInfo = new ListView<>();
+    private DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+    private DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
 
-    ObservableList<String> firstName;
-    ObservableList<String> lastName;
-    ObservableList<String> email;
-    ObservableList<String> phone;
-    ObservableList<String> userName;
+    public ViewInfo() throws IOException {
+    }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        personalInfo.getItems().add("First name: " + Session.getOnlineAccount().getFirstName());
+        personalInfo.getItems().add("Last name: " + Session.getOnlineAccount().getLastName());
+        personalInfo.getItems().add("Email: " + Session.getOnlineAccount().getEmail());
+        personalInfo.getItems().add("Phone: " + Session.getOnlineAccount().getPhoneNumber());
+        personalInfo.getItems().add("User name: " + Session.getOnlineAccount().getUsername());
+        userInfo.getItems().add(personalInfo);
+    }
+
+    private void updatePane() {
+        userInfo.getItems().remove(personalInfo);
+        personalInfo= new ListView<>();
+        personalInfo.getItems().add("First name: " + Session.getOnlineAccount().getFirstName());
+        personalInfo.getItems().add("Last name: " + Session.getOnlineAccount().getLastName());
+        personalInfo.getItems().add("Email: " + Session.getOnlineAccount().getEmail());
+        personalInfo.getItems().add("Phone: " + Session.getOnlineAccount().getPhoneNumber());
+        personalInfo.getItems().add("User name: " + Session.getOnlineAccount().getUsername());
+        userInfo.getItems().add(personalInfo);
+    }
+
 
     public void editFirstName(ActionEvent actionEvent) {
+        pane.getStylesheets().add("fxml/Common.css");
         TextField textField = getTextField("new first name");
         Button change = getButton();
         pane.getChildren().add(change);
@@ -36,15 +65,38 @@ public class ViewInfo implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editFirstName(textField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN, "First name successfully changed");
-                    removeItems();
-                    addItems();
+                    dataOutputStream.writeUTF("Edit first "+
+                            Session.getOnlineAccount().getUsername() + " " + textField.getText());
+                    dataOutputStream.flush();
+                    String respond = dataInputStream.readUTF();
+                    if (respond.equals("successfully changed")) {
+                        setLabel(Color.GREEN, respond);
+                        Session.getOnlineAccount().changeFirstName(textField.getText());
+                    }
+                    else setLabel(Color.RED , respond);
+                    updatePane();
                 } catch (Exception exception) {
-                    exception.printStackTrace();
+                    setLabel(Color.RED , exception.getMessage());
                 }
             }
         });
+    }
+
+    private Button getButton() {
+        Button change = new Button("Change");
+        change.getStyleClass().add("normal-button");
+        change.setLayoutX(0);
+        change.setLayoutY(250);
+        return change;
+    }
+
+    private TextField getTextField(String name) {
+        TextField textField = new TextField();
+        textField.setPromptText(name);
+        textField.setLayoutX(200);
+        textField.setLayoutY(200);
+        pane.getChildren().add(textField);
+        return textField;
     }
 
     public void editLastName(ActionEvent actionEvent) {
@@ -57,15 +109,25 @@ public class ViewInfo implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editLastName(textField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN, "Last name successfully changed");
-                    updatePane();
+                    dataOutputStream.writeUTF("Edit last name " +
+                            Session.getOnlineAccount().getUsername() + " " +textField.getText());
+                    dataOutputStream.flush();
+                    String respond = dataInputStream.readUTF();
+                    if (respond.equals("successfully changed")) {
+                        setLabel(Color.GREEN, respond);
+                        Session.getOnlineAccount().changeLastName(textField.getText());
+                    } else setLabel(Color.RED , respond);updatePane();
                 } catch (Exception exception) {
                     exception.printStackTrace();
-                    setLabel(Color.RED, exception.getMessage());
+                    setLabel(Color.RED , exception.getMessage());
                 }
             }
         });
+    }
+
+    private void deleteButtonAndTextField(Button change, TextField textField) {
+        pane.getChildren().remove(change);
+        pane.getChildren().remove(textField);
     }
 
     public void editEmail(ActionEvent actionEvent) {
@@ -78,17 +140,22 @@ public class ViewInfo implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editEmail(textField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN, "Email successfully changed");
+                    dataOutputStream.writeUTF("Edit email " +
+                            Session.getOnlineAccount().getUsername() + " "+ textField.getText());
+                    dataOutputStream.flush();
+                    String respond = dataInputStream.readUTF();
+                    if (respond.equals("successfully changed")) {
+                        setLabel(Color.GREEN, respond);
+                        Session.getOnlineAccount().changeEmail(textField.getText());
+                    }else setLabel(Color.RED , respond);
                     updatePane();
                 } catch (Exception exception) {
                     exception.printStackTrace();
-                    setLabel(Color.RED, exception.getMessage());
+                    setLabel(Color.RED , exception.getMessage());
                 }
             }
         });
     }
-
 
     public void editPhone(ActionEvent actionEvent) {
         pane.getStylesheets().add("fxml/Common.css");
@@ -100,20 +167,21 @@ public class ViewInfo implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    View.viewPersonalInfoMenu.editPhoneNumber(textField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN, "Phone successfully changed");
+                    dataOutputStream.writeUTF("Edit phone "+
+                            Session.getOnlineAccount().getUsername() + " " + textField.getText());
+                    dataOutputStream.flush();
+                    String respond = dataInputStream.readUTF();
+                    if (respond.equals("successfully changed")) {
+                        setLabel(Color.GREEN, respond);
+                        Session.getOnlineAccount().changeEmail(textField.getText());
+                    } else setLabel(Color.RED , respond);
                     updatePane();
                 } catch (Exception exception) {
 
-                    setLabel(Color.RED, exception.getMessage());
+                    setLabel(Color.RED , exception.getMessage());
                 }
             }
         });
-    }
-
-    private void updatePane() {
-        removeItems();
-        addItems();
     }
 
     public void editPassword(ActionEvent actionEvent) {
@@ -130,69 +198,30 @@ public class ViewInfo implements Initializable {
                 try {
                     pane.getChildren().remove(change);
                     pane.getChildren().remove(passwordField);
-                    View.viewPersonalInfoMenu.editPassword(passwordField.getText(), Session.getOnlineAccount());
-                    setLabel(Color.GREEN, "Password successfully changed");
+                    dataOutputStream.writeUTF("Edit password "+
+                            Session.getOnlineAccount().getUsername() + " " + passwordField.getText());
+                    dataOutputStream.flush();
+                    String respond = dataInputStream.readUTF();
+                    if (respond.equals("successfully changed")) {
+                        setLabel(Color.GREEN, respond);
+                        Session.getOnlineAccount().changePassword(passwordField.getText());
+                    } else setLabel(Color.RED , respond);
                 } catch (Exception exception) {
-                    setLabel(Color.RED, exception.getMessage());
+
                 }
             }
         });
     }
 
-    private void setLabel(Color color, String text) {
+    private void setLabel(Color color, String text){
         label.setVisible(true);
         label.setTextFill(color);
         label.setText(text);
     }
-
     public void back(ActionEvent actionEvent) {
         ((Node)actionEvent.getSource()).getScene().getWindow().hide();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        addItems();
-    }
-
-    private void addItems() {
-        firstName = FXCollections.observableArrayList("First name: " +
-                Session.getOnlineAccount().getFirstName());
-        lastName = FXCollections.observableArrayList("Last name: " +
-                Session.getOnlineAccount().getLastName());
-        email = FXCollections.observableArrayList("Email: " +
-                Session.getOnlineAccount().getEmail());
-        phone = FXCollections.observableArrayList("Phone: " +
-                Session.getOnlineAccount().getPhoneNumber());
-        userName = FXCollections.observableArrayList("User name: " +
-                Session.getOnlineAccount().getUsername());
-        userInfo.getItems().addAll(userName, firstName, lastName, email, phone);
-    }
-
-    private void removeItems() {
-        userInfo.getItems().removeAll(userName, firstName, lastName, email, phone);
-    }
-
-    private TextField getTextField(String name) {
-        TextField textField = new TextField();
-        textField.setPromptText(name);
-        textField.setLayoutX(10);
-        textField.setLayoutY(200);
-        pane.getChildren().add(textField);
-        return textField;
-    }
-
-    private Button getButton() {
-        Button change = new Button("Change");
-        change.getStyleClass().add("normal-button");
-        change.setLayoutX(250);
-        change.setLayoutY(250);
-        return change;
-    }
-
-    private void deleteButtonAndTextField(Button change, TextField textField) {
-        pane.getChildren().remove(change);
-        pane.getChildren().remove(textField);
-    }
 
 
     public void onCloseClick(MouseEvent mouseEvent) {
