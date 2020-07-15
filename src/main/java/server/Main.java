@@ -1,7 +1,8 @@
 package server;
 
 import client.view.commandline.View;
-import common.model.account.*;
+import common.model.account.SimpleAccount;
+import common.model.account.SupportAccount;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
@@ -30,7 +31,7 @@ public class Main {
         }
     }
 
-    private static void handleClient(Socket socket) {
+    public static void handleClient(Socket socket) {
         new Thread(() -> {
             while (true) {
                 try {
@@ -46,7 +47,7 @@ public class Main {
         }).start();
     }
 
-    private static void handleInput(String input, Socket socket) throws IOException, ClassNotFoundException {
+    public static void handleInput(String input, Socket socket) throws IOException, ClassNotFoundException {
         if (input.equalsIgnoreCase("new support account")) {
             newSupportAccount(socket);
         } else if (input.equalsIgnoreCase("get online accounts")) {
@@ -58,13 +59,34 @@ public class Main {
         } else if (input.startsWith("Start chat")) {
             chatSupport(input, socket);
         } else if (input.startsWith("Register")) {
+            System.out.println("dasd");
             register(socket);
+        } else if (input.startsWith("login")) {
+            login(input, socket);
+        }
+    }
+
+    public static void login(String input, Socket socket) throws IOException {
+        String[] splitInput = input.split(" ");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        try {
+            View.loginRegisterMenu.login(splitInput[1], splitInput[2]);
+            onlineAccountsUsernames.put(socket, splitInput[1]);
+            objectOutputStream.writeUTF("logged in");
+            objectOutputStream.flush();
+            dataInputStream.readUTF();
+            objectOutputStream.writeObject(YaDataManager.getAccountWithUserName(splitInput[1]));
+            objectOutputStream.flush();
+        } catch (InvalidLoginInformationException e) {
+            objectOutputStream.writeUTF("error:" + e.getMessage());
+            objectOutputStream.flush();
         }else if (input.startsWith("Edit")){
             editPersonalInfo(input , socket);
         }
     }
 
-    private static void chat(String input, Socket simpleAccountSocket) throws IOException {
+    public static void chat(String input, Socket simpleAccountSocket) throws IOException {
         String[] splitInput = input.split(" ");
         Socket supportAccountSocket = null;
         supportAccountSocket = getSocket(splitInput, supportAccountSocket, 3);
@@ -115,7 +137,7 @@ public class Main {
         }
     }
 
-    private static void chatSupport(String input, Socket supportAccountSocket) throws IOException {
+    public static void chatSupport(String input, Socket supportAccountSocket) throws IOException {
         String[] splitInput = input.split(" ");
         Socket simpleAccountSocket = null;
         simpleAccountSocket = getSocket(splitInput, simpleAccountSocket, 3);
@@ -160,6 +182,7 @@ public class Main {
 
     private static void register(Socket socket) throws IOException, ClassNotFoundException {
         try {
+            System.out.println("salamss");
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             String[] information = dataInputStream.readUTF().split(" ");

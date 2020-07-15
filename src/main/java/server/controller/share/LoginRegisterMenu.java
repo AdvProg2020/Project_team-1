@@ -1,17 +1,22 @@
 package server.controller.share;
 
 import client.Session;
+import client.view.commandline.View;
 import common.model.account.*;
-import server.data.YaDataManager;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
 import common.model.share.Request;
-import client.view.commandline.View;
+import server.data.YaDataManager;
 
 import java.io.IOException;
 
-public class LoginRegisterMenu extends Menu{
+public class LoginRegisterMenu extends Menu {
+
+    public LoginRegisterMenu() {
+        fxmlFileAddress = "../../../fxml/LoginRegister.fxml";
+        stageTitle = "Login or Register";
+    }
 
     public void checkUserNameAvailability(String username) throws InvalidLoginInformationException {
         try {
@@ -35,7 +40,7 @@ public class LoginRegisterMenu extends Menu{
     }
 
     public void registerManagerAccount(String username, String firstName, String lastName, String email,
-                                       String phoneNumber, String password) throws InvalidAccountInfoException{
+                                       String phoneNumber, String password) throws InvalidAccountInfoException {
         ManagerAccount newAccount = new ManagerAccount(username, firstName, lastName, email, phoneNumber, password);
         try {
             YaDataManager.addManager(newAccount);
@@ -68,7 +73,7 @@ public class LoginRegisterMenu extends Menu{
     }
 
     public void registerManagerAccount(String username, String firstName, String lastName, String email,
-                                       String phoneNumber, String password, String imagePath) throws InvalidAccountInfoException{
+                                       String phoneNumber, String password, String imagePath) throws InvalidAccountInfoException {
         ManagerAccount newAccount = new ManagerAccount(username, firstName, lastName, email, phoneNumber, password, imagePath);
         try {
             YaDataManager.addManager(newAccount);
@@ -89,7 +94,7 @@ public class LoginRegisterMenu extends Menu{
 
     public void registerResellerAccount(String username, String firstName, String lastName, String email,
                                         String phoneNumber, String password, String businessName, String imagePath)
-                                        throws InvalidAccountInfoException {
+            throws InvalidAccountInfoException {
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
                 phoneNumber, password, businessName, imagePath);
         Request request;
@@ -99,11 +104,6 @@ public class LoginRegisterMenu extends Menu{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public LoginRegisterMenu() {
-        fxmlFileAddress = "../../../fxml/LoginRegister.fxml";
-        stageTitle = "Login or Register";
     }
 
     public void login(String username, String password) throws InvalidLoginInformationException {
@@ -117,16 +117,6 @@ public class LoginRegisterMenu extends Menu{
             throw new InvalidLoginInformationException("Invalid username.");
         } else if (!simpleAccount.isPasswordCorrect(password)) {
             throw new InvalidLoginInformationException("Invalid password");
-        }
-        Session.setOnlineAccount(simpleAccount);
-        if (simpleAccount instanceof ManagerAccount){
-            MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
-        }else if (simpleAccount instanceof  BusinessAccount){
-            MenuHandler.getInstance().setCurrentMenu(View.resellerMenu);
-        }else if (simpleAccount instanceof  PersonalAccount){
-            MenuHandler.getInstance().setCurrentMenu(View.customerMenu);
-        }else if (simpleAccount instanceof SupportAccount){
-            MenuHandler.getInstance().setCurrentMenu(View.supportMenu);
         }
     }
 }
