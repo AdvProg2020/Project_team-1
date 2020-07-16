@@ -70,10 +70,14 @@ public class Main {
                             int port = Integer.parseInt(matcher.group("port"));
                             if (onlineFileTransferClients.containsKey(sellerUsername)) {
                                 try {
-                                    DataOutputStream dataOutputStream = new DataOutputStream(onlineFileTransferClients.
+                                    DataOutputStream dataOutputStreamSender = new DataOutputStream(onlineFileTransferClients.
                                             get(sellerUsername).getOutputStream());
-                                    dataOutputStream.writeUTF("send #" + filePath + "# to " +
+                                    DataInputStream dataInputStreamSender = new DataInputStream(onlineFileTransferClients.
+                                            get(sellerUsername).getInputStream());
+                                    dataOutputStreamSender.writeUTF("send #" + filePath + "# to " +
                                             finalSocket1.getInetAddress().getHostAddress() + ":" + port);
+                                    String senderResponse = dataInputStreamSender.readUTF();
+                                    outputStream.writeUTF(senderResponse);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
