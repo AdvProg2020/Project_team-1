@@ -1,13 +1,11 @@
 package server;
 
 import client.view.commandline.View;
-import com.gilecode.yagson.YaGson;
 import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
-import javafx.css.Match;
 import server.data.YaDataManager;
 
 import java.io.*;
@@ -63,17 +61,19 @@ public class Main {
                             e.printStackTrace();
                         }
                     } else if (request.startsWith("get file")) {
-                        Pattern pattern = Pattern.compile("$get file #(?<filePath>.+)# from (?<sellerUsername>\\S+)^");
+                        Pattern pattern = Pattern.compile("$get file #(?<filePath>.+)# from (?<sellerUsername>\\S+)" +
+                                " now listening on port (?<port>\\d+)^");
                         Matcher matcher = pattern.matcher(request);
                         if (matcher.matches()) {
                             String filePath = matcher.group("filePath");
                             String sellerUsername = matcher.group("sellerUsername");
+                            int port = Integer.parseInt(matcher.group("port"));
                             if (onlineFileTransferClients.containsKey(sellerUsername)) {
                                 try {
                                     DataOutputStream dataOutputStream = new DataOutputStream(onlineFileTransferClients.
                                             get(sellerUsername).getOutputStream());
                                     dataOutputStream.writeUTF("send #" + filePath + "# to " +
-                                            finalSocket1.getInetAddress().getHostAddress());
+                                            finalSocket1.getInetAddress().getHostAddress() + ":" + port);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
