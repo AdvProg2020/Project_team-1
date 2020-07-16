@@ -20,9 +20,46 @@ import static client.view.commandline.View.loginRegisterMenu;
 public class Main {
     private static ArrayList<Socket> sockets = new ArrayList<>();
     private static HashMap<Socket, String> onlineAccountsUsernames = new HashMap<>();
+    private static HashMap<String, Socket> onlineFileTransferClients = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        ServerSocket server = new ServerSocket(8888);
+        ServerSocket serverSocket = new ServerSocket(88881); // for p2p file transfer
+        new Thread(() -> {
+            while (true) {
+                Socket socket;
+                DataInputStream dis = null;
+                DataOutputStream dos = null;
+                try {
+                    socket = serverSocket.accept();
+                    dis = new DataInputStream(socket.getInputStream());
+                    dos = new DataOutputStream(socket.getOutputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                DataInputStream inputStream = dis;
+                DataOutputStream outputStream = dos;
+                new Thread(() -> {
+                    String request = "";
+                    try {
+                        request = inputStream.readUTF();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (request.startsWith("add me")) {
+
+                    } else if (request.startsWith("get file")) {
+
+                    } else {
+                        try {
+                            outputStream.writeUTF("chi kos migi?");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        }).start();
+        ServerSocket server = new ServerSocket(8888); // for clients request
         while (true) {
             Socket socket = server.accept();
             sockets.add(socket);

@@ -32,7 +32,7 @@ public class DownloadProductFile {
 
     private void getFile(String fileName) {
         try {
-            Main.outputStream.writeUTF("get_file #" + commodity.getProductFilePathOnSellerClient()
+            Main.outputStream.writeUTF("get file #" + commodity.getProductFilePathOnSellerClient()
                     + "# from " + commodity.getSellerUsername());
             Main.outputStream.flush();
             String response = Main.inputStream.readUTF();
