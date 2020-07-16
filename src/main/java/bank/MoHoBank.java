@@ -51,7 +51,8 @@ public class MoHoBank {
             clientId = lastClientId++;
             ++onlineClientsNumber;
             if (debug) {
-                System.out.printf("hello %d. now there are %d clients online\n", clientId, onlineClientsNumber);
+                System.out.printf("hello %d from %s. now there are %d clients online\n", clientId,
+                        socket.getInetAddress().getHostAddress(), onlineClientsNumber);
             }
         }
 

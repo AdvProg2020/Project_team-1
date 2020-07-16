@@ -1,11 +1,13 @@
 package server;
 
 import client.view.commandline.View;
+import com.gilecode.yagson.YaGson;
 import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
+import javafx.css.Match;
 import server.data.YaDataManager;
 
 import java.io.*;
@@ -13,6 +15,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static client.view.commandline.View.loginRegisterMenu;
 
@@ -26,7 +30,7 @@ public class Main {
         ServerSocket serverSocket = new ServerSocket(88881); // for p2p file transfer
         new Thread(() -> {
             while (true) {
-                Socket socket;
+                Socket socket = null;
                 DataInputStream dis = null;
                 DataOutputStream dos = null;
                 try {
@@ -38,20 +42,59 @@ public class Main {
                 }
                 DataInputStream inputStream = dis;
                 DataOutputStream outputStream = dos;
+                Socket finalSocket = socket;
+                Socket finalSocket1 = socket;
                 new Thread(() -> {
                     String request = "";
                     try {
+                        assert inputStream != null;
                         request = inputStream.readUTF();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     if (request.startsWith("add me")) {
-
+                        String[] separatedRequest = request.split(" ");
+                        try {
+                            if (separatedRequest.length == 3 &&
+                                    YaDataManager.isUsernameExist(separatedRequest[2])) {
+                                onlineFileTransferClients.put(separatedRequest[2], finalSocket);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else if (request.startsWith("get file")) {
-
+                        Pattern pattern = Pattern.compile("$get file #(?<filePath>.+)# from (?<sellerUsername>\\S+)^");
+                        Matcher matcher = pattern.matcher(request);
+                        if (matcher.matches()) {
+                            String filePath = matcher.group("filePath");
+                            String sellerUsername = matcher.group("sellerUsername");
+                            if (onlineFileTransferClients.containsKey(sellerUsername)) {
+                                try {
+                                    DataOutputStream dataOutputStream = new DataOutputStream(onlineFileTransferClients.
+                                            get(sellerUsername).getOutputStream());
+                                    dataOutputStream.writeUTF("send #" + filePath + "# to " +
+                                            finalSocket1.getInetAddress().getHostAddress());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                try {
+                                    outputStream.writeUTF("Error : seller " + sellerUsername + "is not online");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else {
+                            try {
+                                outputStream.writeUTF("Error : invalid request");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     } else {
                         try {
-                            outputStream.writeUTF("chi kos migi?");
+                            assert outputStream != null;
+                            outputStream.writeUTF("request not valid");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

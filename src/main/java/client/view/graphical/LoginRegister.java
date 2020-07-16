@@ -3,6 +3,7 @@ package client.view.graphical;
 import client.Session;
 import client.controller.share.ClientLoginRegisterMenu;
 import client.view.commandline.View;
+import common.model.account.BusinessAccount;
 import common.model.account.SimpleAccount;
 import common.model.account.ManagerAccount;
 import common.model.account.PersonalAccount;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 import static client.Main.socket;
 
 import java.io.*;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,6 +86,26 @@ public class LoginRegister implements Initializable {
         dataOutputStream.flush();
         SimpleAccount simpleAccount = (SimpleAccount) objectInputStream.readObject();
         ClientLoginRegisterMenu.login(simpleAccount);
+        if (simpleAccount instanceof BusinessAccount) {
+            new Thread(() -> {
+                try {
+                    Socket fileTransferSocket = new Socket("127.0.0.1", 88881);
+                    DataOutputStream outputStream = new DataOutputStream(fileTransferSocket.getOutputStream());
+                    DataInputStream inputStream = new DataInputStream(fileTransferSocket.getInputStream());
+                    outputStream.writeUTF("add me " + simpleAccount.getUsername());
+                    while (true) {
+                        String command = inputStream.readUTF();
+                        if (command.startsWith("send")) {
+
+                        } else {
+                            outputStream.writeUTF("invalid request");
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
