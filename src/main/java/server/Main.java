@@ -63,6 +63,8 @@ public class Main {
             register(socket);
         } else if (input.startsWith("login")) {
             login(input, socket);
+        } else if (input.startsWith("Edit")){
+            editPersonalInfo(input , socket);
         }
     }
 
@@ -81,8 +83,6 @@ public class Main {
         } catch (InvalidLoginInformationException e) {
             objectOutputStream.writeUTF("error:" + e.getMessage());
             objectOutputStream.flush();
-        }else if (input.startsWith("Edit")){
-            editPersonalInfo(input , socket);
         }
     }
 
