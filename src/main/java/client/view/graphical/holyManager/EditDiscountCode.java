@@ -10,7 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.net.URL;

@@ -1,7 +1,7 @@
 package common.model.log;
 
 import server.controller.Statistics;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.io.Serializable;

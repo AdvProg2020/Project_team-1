@@ -7,7 +7,7 @@ import common.model.log.BuyLog;
 import server.controller.comparator.Sort;
 import server.controller.share.Menu;
 import server.controller.share.MenuHandler;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.util.ArrayList;
 

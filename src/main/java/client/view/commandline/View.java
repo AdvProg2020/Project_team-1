@@ -28,7 +28,7 @@ import server.controller.reseller.ManageResellerOffsMenu;
 import server.controller.reseller.ManageResellerProductsMenu;
 import server.controller.reseller.ResellerMenu;
 import server.controller.share.*;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.text.ParseException;

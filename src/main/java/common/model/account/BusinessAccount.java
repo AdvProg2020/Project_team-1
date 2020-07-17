@@ -6,7 +6,7 @@ import common.model.exception.InvalidAccountInfoException;
 import common.model.log.SellLog;
 import common.model.share.Requestable;
 import common.model.share.Status;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import common.model.commodity.Commodity;
 import common.model.commodity.DiscountCode;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.log.BuyLog;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;

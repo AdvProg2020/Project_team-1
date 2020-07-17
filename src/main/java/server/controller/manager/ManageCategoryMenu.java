@@ -4,7 +4,7 @@ import common.model.commodity.Category;
 import common.model.commodity.CategorySpecification;
 import common.model.commodity.Commodity;
 import server.controller.share.Menu;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;

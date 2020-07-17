@@ -1,6 +1,6 @@
 package common.model.log;
 
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.util.Date;
 import java.util.HashSet;

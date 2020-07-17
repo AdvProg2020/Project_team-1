@@ -1,6 +1,6 @@
 package common.model.commodity;
 
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;

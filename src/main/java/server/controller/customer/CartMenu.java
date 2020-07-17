@@ -11,7 +11,7 @@ import common.model.log.SellLog;
 import server.controller.comparator.Sort;
 import server.controller.share.Menu;
 import server.controller.share.MenuHandler;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.util.*;

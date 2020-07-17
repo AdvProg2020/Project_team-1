@@ -6,7 +6,7 @@ import common.model.account.SupportAccount;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.*;
 import java.net.ServerSocket;

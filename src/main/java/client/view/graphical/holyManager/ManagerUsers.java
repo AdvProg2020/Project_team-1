@@ -1,8 +1,7 @@
 package client.view.graphical.holyManager;
 
 import common.model.account.*;
-import javafx.scene.chart.XYChart;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

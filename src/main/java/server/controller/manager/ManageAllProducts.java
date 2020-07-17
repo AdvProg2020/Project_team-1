@@ -3,7 +3,7 @@ package server.controller.manager;
 import common.model.commodity.Category;
 import common.model.commodity.Commodity;
 import server.controller.share.Menu;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 public class ManageAllProducts extends Menu {
     public void removeCommodity(int commodityId) throws Exception {

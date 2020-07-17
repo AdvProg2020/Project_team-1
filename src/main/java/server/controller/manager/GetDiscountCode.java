@@ -4,7 +4,7 @@ import common.model.account.PersonalAccount;
 import common.model.account.SimpleAccount;
 import common.model.commodity.DiscountCode;
 import server.controller.share.Menu;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.util.Date;

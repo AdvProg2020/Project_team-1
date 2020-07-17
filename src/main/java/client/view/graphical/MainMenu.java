@@ -1,6 +1,6 @@
 package client.view.graphical;
 
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 import server.controller.share.MenuHandler;
 import javafx.animation.*;
 import javafx.event.ActionEvent;

@@ -1,7 +1,7 @@
 package server.controller.off;
 
 import server.controller.comparator.Sort;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 import server.controller.share.Menu;
 import common.model.commodity.Off;
 

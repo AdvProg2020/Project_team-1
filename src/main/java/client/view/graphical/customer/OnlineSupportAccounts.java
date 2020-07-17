@@ -4,7 +4,6 @@ import client.Session;
 import client.view.commandline.View;
 import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
-import common.model.commodity.DiscountCode;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -13,7 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.controller.share.MenuHandler;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.*;
 import java.net.URL;

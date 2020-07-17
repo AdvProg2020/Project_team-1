@@ -1,6 +1,6 @@
 package server.controller.share;
 
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.util.Collections;
 

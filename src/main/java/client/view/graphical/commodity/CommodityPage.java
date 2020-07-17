@@ -28,7 +28,7 @@ import server.controller.commodity.DigestMenu;
 import server.controller.customer.OrderMenu;
 import server.controller.share.CommodityMenu;
 import server.controller.share.MenuHandler;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

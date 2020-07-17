@@ -1,6 +1,6 @@
 package server.controller.manager;
 
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 import server.controller.share.Menu;
 import common.model.commodity.DiscountCode;
 import client.view.graphical.holyManager.AddPersonToDiscountCode;

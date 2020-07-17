@@ -5,7 +5,7 @@ import common.model.field.Field;
 import common.model.share.Requestable;
 import common.model.share.Status;
 import server.controller.Statistics;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.io.Serializable;

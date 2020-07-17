@@ -2,7 +2,7 @@ package server.controller.share;
 
 
 import common.model.account.*;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 

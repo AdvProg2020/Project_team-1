@@ -5,7 +5,7 @@ import common.model.commodity.Comment;
 import common.model.commodity.Commodity;
 import common.model.share.Status;
 import server.controller.comparator.Sort;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.util.ArrayList;
 

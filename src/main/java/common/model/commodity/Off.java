@@ -4,7 +4,7 @@ import common.model.account.BusinessAccount;
 import common.model.share.Requestable;
 import common.model.share.Status;
 import server.controller.Statistics;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;

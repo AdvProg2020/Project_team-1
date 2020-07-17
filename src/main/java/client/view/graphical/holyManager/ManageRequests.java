@@ -1,6 +1,6 @@
 package client.view.graphical.holyManager;
 
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;

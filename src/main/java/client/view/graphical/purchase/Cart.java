@@ -19,7 +19,7 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import server.controller.customer.CartMenu;
 import server.controller.share.MenuHandler;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -2,7 +2,7 @@ package common.model.commodity;
 
 import common.model.share.Requestable;
 import common.model.share.Status;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.Serializable;
 

@@ -1,6 +1,6 @@
 package client.view.graphical;
 
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;

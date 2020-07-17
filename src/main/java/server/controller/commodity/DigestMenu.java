@@ -6,7 +6,7 @@ import common.model.account.PersonalAccount;
 import common.model.commodity.Commodity;
 import server.controller.share.Menu;
 import server.controller.share.MenuHandler;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 public class DigestMenu extends Menu {
     private Commodity commodity;

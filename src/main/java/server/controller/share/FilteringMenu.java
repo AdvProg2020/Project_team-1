@@ -1,7 +1,7 @@
 package server.controller.share;
 
 import common.model.commodity.Commodity;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 import common.model.filter.Filter;
 
 import java.util.ArrayList;

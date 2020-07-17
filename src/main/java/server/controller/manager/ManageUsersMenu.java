@@ -4,7 +4,7 @@ import common.model.account.*;
 import server.controller.share.Menu;
 import server.controller.share.MenuHandler;
 import client.Session;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 import client.view.commandline.View;
 
 import java.io.IOException;

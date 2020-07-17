@@ -1,6 +1,6 @@
 package server.controller;
 
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 

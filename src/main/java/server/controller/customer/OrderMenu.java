@@ -6,7 +6,7 @@ import common.model.commodity.Commodity;
 import common.model.commodity.Score;
 import common.model.log.BuyLog;
 import server.controller.share.Menu;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 public class OrderMenu extends Menu {
     public BuyLog getOrderWithId(int id) throws Exception {

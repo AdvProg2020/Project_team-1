@@ -1,6 +1,6 @@
 package client.view.graphical;
 
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;

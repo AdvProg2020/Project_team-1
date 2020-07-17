@@ -11,7 +11,7 @@ import common.model.log.SellLog;
 import common.model.share.Request;
 import server.controller.comparator.Sort;
 import server.controller.share.Menu;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.util.ArrayList;
 

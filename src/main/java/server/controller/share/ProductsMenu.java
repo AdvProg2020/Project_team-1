@@ -2,7 +2,7 @@ package server.controller.share;
 
 import common.model.commodity.Category;
 import common.model.commodity.Commodity;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 import client.view.commandline.View;
 
 import java.io.IOException;

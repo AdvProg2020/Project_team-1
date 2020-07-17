@@ -11,12 +11,11 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 

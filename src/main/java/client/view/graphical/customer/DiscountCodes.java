@@ -8,7 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import server.data.YaDataManager;
+import server.dataManager.YaDataManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
