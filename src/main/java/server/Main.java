@@ -1,6 +1,7 @@
 package server;
 
 import client.view.commandline.View;
+import common.Constants;
 import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
 import common.model.exception.InvalidAccessException;
@@ -25,7 +26,7 @@ public class Main {
     private static HashMap<String, Socket> onlineFileTransferClients = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(88881); // for p2p file transfer
+        ServerSocket serverSocket = new ServerSocket(Constants.FILE_SERVER_PORT); // for p2p file transfer
         new Thread(() -> {
             while (true) {
                 Socket socket = null;
@@ -106,7 +107,7 @@ public class Main {
                 }).start();
             }
         }).start();
-        ServerSocket server = new ServerSocket(8888); // for clients request
+        ServerSocket server = new ServerSocket(Constants.SERVER_PORT); // for clients request
         while (true) {
             Socket socket = server.accept();
             sockets.add(socket);
