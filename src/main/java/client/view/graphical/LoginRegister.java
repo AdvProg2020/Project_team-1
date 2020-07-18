@@ -35,8 +35,6 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static client.Main.socket;
-
 public class LoginRegister implements Initializable {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     public TextField registerBusinessNameTf;

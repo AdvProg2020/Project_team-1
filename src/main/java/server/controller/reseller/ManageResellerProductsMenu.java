@@ -1,7 +1,10 @@
 package server.controller.reseller;
 
+import client.Main;
 import client.Session;
 import client.view.commandline.View;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.BusinessAccount;
 import common.model.account.SimpleAccount;
 import common.model.commodity.Category;
@@ -13,6 +16,8 @@ import server.controller.comparator.Sort;
 import server.controller.share.Menu;
 import server.dataManager.YaDataManager;
 
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 
 public class ManageResellerProductsMenu extends Menu {
@@ -62,7 +67,8 @@ public class ManageResellerProductsMenu extends Menu {
                 (amount == -1) ? (oldProduct.getInventory()) : (amount), oldProduct.getImagePath());
         editedProduct.setCommodityId(oldProduct.getCommodityId());
         Request request = new Request(editedProduct, businessAccount.getUsername());
-        YaDataManager.addRequest(request);
+        Main.outputStream.writeUTF("add request " + new YaGsonBuilder().setPrettyPrinting().create().toJson(request,
+                new TypeToken<Request>(){}.getType()));
         // Todo delete old product
     }
 

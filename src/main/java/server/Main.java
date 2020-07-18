@@ -1,23 +1,23 @@
 package server;
 
 import client.view.commandline.View;
-import com.google.gson.internal.$Gson$Preconditions;
 import common.Constants;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.PersonalAccount;
+import common.model.account.BusinessAccount;
 import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
 import common.model.commodity.DiscountCode;
+import common.model.commodity.Category;
+import common.model.commodity.Commodity;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
-import jdk.net.Sockets;
 import server.dataManager.YaDataManager;
 import common.model.share.Request;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static client.view.commandline.View.loginRegisterMenu;
 
@@ -165,8 +166,6 @@ public class Main {
             register(socket);
         } else if (input.startsWith("login")) {
             login(input, socket);
-        } else if (input.startsWith("Edit discount code")) {
-            editDiscountCode(socket , input);
         } else if (input.startsWith("Edit")) {
             editPersonalInfo(input, socket);
         } else if (input.equals("New Commodity")) {
@@ -178,6 +177,14 @@ public class Main {
             sendDiscountCodes(socket);
         }else if (input.startsWith("Delete discount code")){
             deleteDiscountCode(socket,input);
+        } else if (input.equals("categories name")) {
+            sendCategories(socket);
+        } else if (input.equals("send seller commodities")) {
+            sendSellerCommodities(socket);
+        } else if (input.startsWith("name of category is ")) {
+            sendCategoryWithName(socket, input.split(" ", 5)[4]);
+        } else if (input.startsWith("add request")) {
+            YaDataManager.addRequest(yaGson.fromJson(input.split(" ", 3)[2], new TypeToken<Request>(){}.getType()));
         }
     }
 
@@ -193,7 +200,6 @@ public class Main {
             dataInputStream.readUTF();
             dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAccountWithUserName(splitInput[1]), new TypeToken<SimpleAccount>() {
             }.getType()));
-            dataOutputStream.flush();
         } catch (InvalidLoginInformationException e) {
             dataOutputStream.writeUTF("error:" + e.getMessage());
             dataOutputStream.flush();
@@ -297,6 +303,7 @@ public class Main {
 
     private static void register(Socket socket) throws IOException, ClassNotFoundException {
         try {
+            System.out.println("salamss");
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             String[] information = dataInputStream.readUTF().split(" ");
@@ -316,8 +323,8 @@ public class Main {
             }
             if (information[0].equals("personal")) {
                 try {
-                    loginRegisterMenu.registerPersonalAccount(information[1], information[2], information[3]
-                            , information[4], information[5], information[6], information[7]);
+                    loginRegisterMenu.registerPersonalAccount(information[1] , information[2] , information[3]
+                            ,information[4] ,information[5] ,information[6] , information[7]);
                     dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
@@ -327,9 +334,8 @@ public class Main {
             }
             if (information[0].equals("business")) {
                 try {
-                    loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
-                            , information[4], information[5], information[6], information[7]);
-                    dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerResellerAccount(information[1] , information[2] , information[3]
+                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
@@ -338,9 +344,8 @@ public class Main {
             }
             if (information[0].equals("manager")) {
                 try {
-                    loginRegisterMenu.registerManagerAccount(information[1], information[2], information[3]
-                            , information[4], information[5], information[6], information[7]);
-                    dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerManagerAccount(information[1] , information[2] , information[3]
+                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
@@ -384,8 +389,7 @@ public class Main {
         DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         dos.writeUTF("send");
         dos.flush();
-        Request request = yaGson.fromJson(dis.readUTF(), new TypeToken<Request>() {
-        }.getType());
+        Request request = yaGson.fromJson(dis.readUTF(), new TypeToken<Request>(){}.getType());
         System.out.println(request.toString());
         YaDataManager.addRequest(request);
         //get image
@@ -458,5 +462,33 @@ public class Main {
         String[] splitInput = input.split(" ");
         DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(splitInput[3]);
         View.getDiscountCode.deleteDiscountCode(discountCode);
+    }
+
+    private static void sendCategories(Socket socket) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF(yaGson.toJson(YaDataManager.getCategories().stream().map(Category::getName)
+                .collect(Collectors.toCollection(ArrayList::new)), new TypeToken<ArrayList<String>>(){}.getType()));
+    }
+
+    private static void sendSellerCommodities(Socket socket) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        try {
+            BusinessAccount seller = YaDataManager.getSellerWithUserName(onlineAccountsUsernames.get(socket));
+            ArrayList<Commodity> commodities = new ArrayList<>();
+            for (Integer commodityId : seller.getCommoditiesId()) {
+                commodities.add(YaDataManager.getCommodityById(commodityId));
+            }
+            dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>(){}.getType()));
+            dos.flush();
+        } catch (Exception e) {
+            dos.writeUTF("error:" + e.getMessage());
+            dos.flush();
+        }
+    }
+
+    private static void sendCategoryWithName(Socket socket, String name) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF(yaGson.toJson(YaDataManager.getCategoryWithName(name), new TypeToken<Category>(){}.getType()));
+        dos.flush();
     }
 }
