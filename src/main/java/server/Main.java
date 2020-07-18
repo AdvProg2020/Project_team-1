@@ -1,22 +1,29 @@
 package server;
 
 import client.view.commandline.View;
+import com.google.gson.internal.$Gson$Preconditions;
 import common.Constants;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
+import common.model.account.PersonalAccount;
 import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
+import common.model.commodity.DiscountCode;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
+import jdk.net.Sockets;
 import server.dataManager.YaDataManager;
 import common.model.share.Request;
 
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -135,12 +142,14 @@ public class Main {
                 } catch (IOException | ClassNotFoundException e) {
                     System.out.println("in ghat shod");
                     break;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
     }
 
-    public static void handleInput(String input, Socket socket) throws IOException, ClassNotFoundException {
+    public static void handleInput(String input, Socket socket) throws Exception {
         if (input.equalsIgnoreCase("new support account")) {
             newSupportAccount(socket);
         } else if (input.equalsIgnoreCase("get online accounts")) {
@@ -156,11 +165,19 @@ public class Main {
             register(socket);
         } else if (input.startsWith("login")) {
             login(input, socket);
+        } else if (input.startsWith("Edit discount code")) {
+            editDiscountCode(socket , input);
         } else if (input.startsWith("Edit")) {
             editPersonalInfo(input, socket);
         } else if (input.equals("New Commodity")) {
             System.out.println(0);
             addCommodity(socket);
+        } else if (input.equals("new discount code")) {
+            createDiscountCode(socket);
+        } else if (input.equals("Discount codes")) {
+            sendDiscountCodes(socket);
+        }else if (input.startsWith("Delete discount code")){
+            deleteDiscountCode(socket,input);
         }
     }
 
@@ -174,7 +191,8 @@ public class Main {
             dataOutputStream.writeUTF("logged in");
             dataOutputStream.flush();
             dataInputStream.readUTF();
-            dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAccountWithUserName(splitInput[1]), new TypeToken<SimpleAccount>(){}.getType()));
+            dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAccountWithUserName(splitInput[1]), new TypeToken<SimpleAccount>() {
+            }.getType()));
             dataOutputStream.flush();
         } catch (InvalidLoginInformationException e) {
             dataOutputStream.writeUTF("error:" + e.getMessage());
@@ -279,7 +297,6 @@ public class Main {
 
     private static void register(Socket socket) throws IOException, ClassNotFoundException {
         try {
-            System.out.println("salamss");
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             String[] information = dataInputStream.readUTF().split(" ");
@@ -299,8 +316,8 @@ public class Main {
             }
             if (information[0].equals("personal")) {
                 try {
-                    loginRegisterMenu.registerPersonalAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]);
+                    loginRegisterMenu.registerPersonalAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
                     dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
@@ -310,8 +327,9 @@ public class Main {
             }
             if (information[0].equals("business")) {
                 try {
-                    loginRegisterMenu.registerResellerAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
+                    dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
@@ -320,8 +338,9 @@ public class Main {
             }
             if (information[0].equals("manager")) {
                 try {
-                    loginRegisterMenu.registerManagerAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerManagerAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
+                    dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
@@ -365,9 +384,79 @@ public class Main {
         DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         dos.writeUTF("send");
         dos.flush();
-        Request request = yaGson.fromJson(dis.readUTF(), new TypeToken<Request>(){}.getType());
+        Request request = yaGson.fromJson(dis.readUTF(), new TypeToken<Request>() {
+        }.getType());
         System.out.println(request.toString());
         YaDataManager.addRequest(request);
         //get image
+    }
+
+    private static void createDiscountCode(Socket socket) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        String discountCodeInfo = dataInputStream.readUTF();
+        ArrayList<PersonalAccount> accounts = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<ArrayList<PersonalAccount>>() {
+        }.getType());
+        String[] splitDiscountCodeInfo = discountCodeInfo.split(" ");
+        try {
+            View.createDiscountCode.createDiscountCodeNC(splitDiscountCodeInfo[0], splitDiscountCodeInfo[1], splitDiscountCodeInfo[2]
+                    , splitDiscountCodeInfo[3], splitDiscountCodeInfo[4], splitDiscountCodeInfo[5], accounts);
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataOutputStream.writeUTF(e.getMessage());
+            dataOutputStream.flush();
+            return;
+        }
+        dataOutputStream.writeUTF("Discount code successfully created");
+        dataOutputStream.flush();
+    }
+
+    public static void sendDiscountCodes(Socket socket) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getDiscountCodes(), new TypeToken<ArrayList<DiscountCode>>() {
+        }.getType()));
+        dataOutputStream.flush();
+    }
+
+    public static void editDiscountCode(Socket socket, String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(splitInput[3]);
+        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        String discountCodeInfo = dataInputStream.readUTF();
+        System.out.println(discountCodeInfo);
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        ArrayList<PersonalAccount> accounts = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<ArrayList<PersonalAccount>>() {
+        }.getType());
+        String[] splitDiscountCodeInfo = discountCodeInfo.split(" ");
+        try {
+            System.out.println(splitDiscountCodeInfo[0]);
+            View.getDiscountCode.changeCode(splitDiscountCodeInfo[0], discountCode);
+            View.getDiscountCode.changeDiscountPercentage(Integer.parseInt(splitDiscountCodeInfo[3]), discountCode);
+            View.getDiscountCode.changeMaximumNumberOfUses(Integer.parseInt(splitDiscountCodeInfo[5]), discountCode);
+            View.getDiscountCode.changeMaximumDiscountPrice(Integer.parseInt(splitDiscountCodeInfo[4]), discountCode);
+            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+            Date startDateAsli = format.parse(splitDiscountCodeInfo[1]);
+            Date finishDateASli = format.parse(splitDiscountCodeInfo[2]);
+            View.getDiscountCode.changeFinishDate(finishDateASli, discountCode);
+            View.getDiscountCode.changeStartDate(startDateAsli, discountCode);
+            for (String username : discountCode.getAccountsUsername()) {
+                View.getDiscountCode.deleteAccount(username, discountCode);
+            }
+            for (PersonalAccount account : accounts) {
+                View.getDiscountCode.addAccount(account.getUsername(), discountCode);
+            }
+            dataOutputStream.writeUTF("Discount code successfully edited.");
+            dataOutputStream.flush();
+        }catch (Exception e){
+            e.printStackTrace();
+            dataOutputStream.writeUTF("Invalid entry");
+            dataOutputStream.flush();
+        }
+    }
+
+    public static void deleteDiscountCode(Socket socket , String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(splitInput[3]);
+        View.getDiscountCode.deleteDiscountCode(discountCode);
     }
 }

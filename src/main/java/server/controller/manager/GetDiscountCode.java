@@ -15,6 +15,7 @@ public class GetDiscountCode extends Menu {
     }
 
     public void changeCode(String code, DiscountCode discountCode) throws Exception {
+        checkCode(code);
         YaDataManager.removeDiscountCode(discountCode);
         discountCode.setCode(code);
         updateAccountsDiscountCode(discountCode);
@@ -133,6 +134,13 @@ public class GetDiscountCode extends Menu {
     public void updateDiscountCode(DiscountCode discountCode) throws IOException {
         YaDataManager.removeDiscountCode(discountCode);
         YaDataManager.addDiscountCode(discountCode);
+    }
+
+    public void checkCode(String code) throws Exception {
+        for (DiscountCode discountCode : YaDataManager.getDiscountCodes()) {
+            if (code.equals(discountCode.getCode()))
+                throw new Exception("Invalid code");
+        }
     }
 
 }

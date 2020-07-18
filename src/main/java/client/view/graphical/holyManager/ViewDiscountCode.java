@@ -1,5 +1,8 @@
 package client.view.graphical.holyManager;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import server.dataManager.YaDataManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -12,11 +15,16 @@ import javafx.stage.Stage;
 import common.model.commodity.DiscountCode;
 import client.view.commandline.View;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import static client.Main.socket;
 
 public class ViewDiscountCode extends HolyManager implements Initializable {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     public AnchorPane pane;
     public Label errorLabel;
     private ListView<CheckBox> listView = new ListView<>();
@@ -24,24 +32,29 @@ public class ViewDiscountCode extends HolyManager implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         pane.getChildren().add(listView);
-        setUpPane();
-    }
-
-    protected void setUpPane() {
-        listView.getItems().removeAll(listView.getItems());
         try {
-            for (DiscountCode discountCode : YaDataManager.getDiscountCodes()) {
-                listView.getItems().add(new CheckBox(discountCode.getInformation()));
-            }
+            setUpPane();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    protected void setUpPane() throws IOException {
+        listView.getItems().removeAll(listView.getItems());
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataOutputStream.writeUTF("Discount codes");
+        dataOutputStream.flush();
+        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        ArrayList<DiscountCode> discountCodes = yaGson.fromJson(dataInputStream.readUTF() , new TypeToken<ArrayList<DiscountCode>>(){}.getType());
+        for (DiscountCode discountCode : discountCodes) {
+            listView.getItems().add(new CheckBox(discountCode.getInformation()));
         }
         listView.relocate(300,0);
         listView.setPrefHeight(300);
         listView.setPrefWidth(500);
     }
 
-    public void editDiscountCode(ActionEvent actionEvent) {
+    public void editDiscountCode(ActionEvent actionEvent) throws IOException {
         EditDiscountCode.setStage((Stage) ((Node)actionEvent.getSource()).getScene().getWindow());
         errorLabel.setVisible(false);
         if  (checkError()) return;
@@ -106,18 +119,22 @@ public class ViewDiscountCode extends HolyManager implements Initializable {
         errorLabel.setVisible(true);
     }
 
-    public void deleteDiscountCode(ActionEvent actionEvent) {
+    public void deleteDiscountCode(ActionEvent actionEvent) throws IOException {
         DiscountCode discountCode;
         for (CheckBox item : listView.getItems()) {
             if (item.isSelected()){
                 discountCode = getDiscountCode(item);
-                try {
-                    View.getDiscountCode.deleteDiscountCode(discountCode);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
+                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                dataOutputStream.writeUTF("Delete discount code " + discountCode.getCode());
+                dataOutputStream.flush();
             }
         }
-        setUpPane();
+        try {
+            setUpPane();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
+
+
