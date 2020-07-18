@@ -3,6 +3,7 @@ package client.view.graphical;
 import client.Session;
 import client.controller.share.ClientLoginRegisterMenu;
 import client.view.commandline.View;
+import common.Constants;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
@@ -31,6 +32,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static client.Main.socket;
 
 public class LoginRegister implements Initializable {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
@@ -90,14 +95,32 @@ public class LoginRegister implements Initializable {
         if (simpleAccount instanceof BusinessAccount) {
             new Thread(() -> {
                 try {
-                    Socket fileTransferSocket = new Socket("127.0.0.1", 12345);
+                    Socket fileTransferSocket = new Socket(Constants.SERVER_IP, Constants.FILE_SERVER_PORT);
                     DataOutputStream outputStream = new DataOutputStream(fileTransferSocket.getOutputStream());
                     DataInputStream inputStream = new DataInputStream(fileTransferSocket.getInputStream());
                     outputStream.writeUTF("add me " + simpleAccount.getUsername());
+                    Pattern sendFilePattern = Pattern.compile("^send #(?<filePath>.+)# to" +
+                            " (?<hostIp>\\d+\\.\\d+\\.\\d+\\.\\d+):(?<port>\\d+)$");
                     while (true) {
                         String command = inputStream.readUTF();
-                        if (command.startsWith("send")) {
-
+                        Matcher matcher = sendFilePattern.matcher(command);
+                        if (matcher.matches()) {
+                            File file = new File(matcher.group("filePath"));
+                            if (!file.exists()) {
+                                outputStream.writeUTF("File not found");
+                                return;
+                            }
+                            long fileSize = file.length();
+                            outputStream.writeUTF("Sender is ready to send file with size " + fileSize);
+                            String confirmation = inputStream.readUTF();
+                            if (confirmation.equals("send now")) {
+                                Socket fileSocket = new Socket(matcher.group("hostIp"),
+                                        Integer.parseInt(matcher.group("port")));
+                                byte[] bytes = new byte[(int) fileSize];
+                                FileInputStream fileInputStream = new FileInputStream(file);
+                                fileInputStream.read(bytes, 0, bytes.length);
+                                fileSocket.getOutputStream().write(bytes);
+                            }
                         } else {
                             outputStream.writeUTF("invalid request");
                         }

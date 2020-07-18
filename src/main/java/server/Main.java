@@ -1,6 +1,7 @@
 package server;
 
 import client.view.commandline.View;
+import common.Constants;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
@@ -9,9 +10,8 @@ import common.model.account.SupportAccount;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
-import common.model.field.Field;
-import common.model.share.Request;
 import server.dataManager.YaDataManager;
+import common.model.share.Request;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -31,7 +31,7 @@ public class Main {
     private static HashMap<String, Socket> onlineFileTransferClients = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(12345); // for p2p file transfer
+        ServerSocket serverSocket = new ServerSocket(Constants.FILE_SERVER_PORT); // for p2p file transfer
         new Thread(() -> {
             while (true) {
                 Socket socket = null;
@@ -53,6 +53,7 @@ public class Main {
                     try {
                         assert inputStream != null;
                         request = inputStream.readUTF();
+                        System.out.println("File server log : " + request);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -67,8 +68,8 @@ public class Main {
                             e.printStackTrace();
                         }
                     } else if (request.startsWith("get file")) {
-                        Pattern pattern = Pattern.compile("$get file #(?<filePath>.+)# from (?<sellerUsername>\\S+)" +
-                                " now listening on port (?<port>\\d+)^");
+                        Pattern pattern = Pattern.compile("^get file #(?<filePath>.+)# from (?<sellerUsername>\\S+)" +
+                                " now listening on port (?<port>\\d+)$");
                         Matcher matcher = pattern.matcher(request);
                         if (matcher.matches()) {
                             String filePath = matcher.group("filePath");
@@ -84,12 +85,14 @@ public class Main {
                                             finalSocket1.getInetAddress().getHostAddress() + ":" + port);
                                     String senderResponse = dataInputStreamSender.readUTF();
                                     outputStream.writeUTF(senderResponse);
+                                    String receiverResponse = inputStream.readUTF();
+                                    dataOutputStreamSender.writeUTF(receiverResponse);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                             } else {
                                 try {
-                                    outputStream.writeUTF("Error : seller " + sellerUsername + "is not online");
+                                    outputStream.writeUTF("Error : seller " + sellerUsername + " is not online");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -112,7 +115,7 @@ public class Main {
                 }).start();
             }
         }).start();
-        ServerSocket server = new ServerSocket(8888); // for clients request
+        ServerSocket server = new ServerSocket(Constants.SERVER_PORT); // for clients request
         while (true) {
             Socket socket = server.accept();
             sockets.add(socket);
@@ -296,8 +299,8 @@ public class Main {
             }
             if (information[0].equals("personal")) {
                 try {
-                    loginRegisterMenu.registerPersonalAccount(information[1], information[2], information[3]
-                            , information[4], information[5], information[6], information[7]);
+                    loginRegisterMenu.registerPersonalAccount(information[1] , information[2] , information[3]
+                            ,information[4] ,information[5] ,information[6] , information[7]);
                     dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
@@ -307,9 +310,8 @@ public class Main {
             }
             if (information[0].equals("business")) {
                 try {
-                    loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
-                            , information[4], information[5], information[6], information[7]);
-                    dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerResellerAccount(information[1] , information[2] , information[3]
+                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
@@ -318,9 +320,8 @@ public class Main {
             }
             if (information[0].equals("manager")) {
                 try {
-                    loginRegisterMenu.registerManagerAccount(information[1], information[2], information[3]
-                            , information[4], information[5], information[6], information[7]);
-                    dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerManagerAccount(information[1] , information[2] , information[3]
+                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());

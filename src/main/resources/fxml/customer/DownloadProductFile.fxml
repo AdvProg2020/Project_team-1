@@ -32,7 +32,7 @@
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <Button mnemonicParsing="false" onMouseClicked="#onCancelClicked" styleClass="close-button" text="Cancel" />
-            <Button disable="true" mnemonicParsing="false" onMouseClicked="#onDoneClicked" styleClass="add-button" text="Done" />
+            <Button fx:id="doneButton" disable="true" mnemonicParsing="false" onMouseClicked="#onDoneClicked" styleClass="add-button" text="Done" />
          </HBox>
       </bottom>
       <padding>
