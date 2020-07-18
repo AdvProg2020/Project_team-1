@@ -1,11 +1,16 @@
 package server;
 
 import client.view.commandline.View;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
+import common.model.field.Field;
+import common.model.share.Request;
 import server.dataManager.YaDataManager;
 
 import java.io.*;
@@ -20,12 +25,13 @@ import static client.view.commandline.View.loginRegisterMenu;
 
 
 public class Main {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     private static ArrayList<Socket> sockets = new ArrayList<>();
     private static HashMap<Socket, String> onlineAccountsUsernames = new HashMap<>();
     private static HashMap<String, Socket> onlineFileTransferClients = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(88881); // for p2p file transfer
+        ServerSocket serverSocket = new ServerSocket(12345); // for p2p file transfer
         new Thread(() -> {
             while (true) {
                 Socket socket = null;
@@ -121,7 +127,7 @@ public class Main {
                 try {
                     DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                     String input = dataInputStream.readUTF();
-                   System.out.println(input);
+                    System.out.println(input);
                     handleInput(input, socket);
                 } catch (IOException | ClassNotFoundException e) {
                     System.out.println("in ghat shod");
@@ -147,26 +153,29 @@ public class Main {
             register(socket);
         } else if (input.startsWith("login")) {
             login(input, socket);
-        } else if (input.startsWith("Edit")){
-            editPersonalInfo(input , socket);
+        } else if (input.startsWith("Edit")) {
+            editPersonalInfo(input, socket);
+        } else if (input.equals("New Commodity")) {
+            System.out.println(0);
+            addCommodity(socket);
         }
     }
 
-    public static void login(String input, Socket socket) throws IOException {
+    private static void login(String input, Socket socket) throws IOException {
         String[] splitInput = input.split(" ");
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         try {
             View.loginRegisterMenu.login(splitInput[1], splitInput[2]);
             onlineAccountsUsernames.put(socket, splitInput[1]);
-            objectOutputStream.writeUTF("logged in");
-            objectOutputStream.flush();
+            dataOutputStream.writeUTF("logged in");
+            dataOutputStream.flush();
             dataInputStream.readUTF();
-            objectOutputStream.writeObject(YaDataManager.getAccountWithUserName(splitInput[1]));
-            objectOutputStream.flush();
+            dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAccountWithUserName(splitInput[1]), new TypeToken<SimpleAccount>(){}.getType()));
+            dataOutputStream.flush();
         } catch (InvalidLoginInformationException e) {
-            objectOutputStream.writeUTF("error:" + e.getMessage());
-            objectOutputStream.flush();
+            dataOutputStream.writeUTF("error:" + e.getMessage());
+            dataOutputStream.flush();
         }
     }
 
@@ -245,6 +254,7 @@ public class Main {
             }
         }
     }
+
     private static Socket getSocket(String[] splitInput, Socket simpleAccountSocket, int i) {
         for (Socket socket : onlineAccountsUsernames.keySet()) {
             if (onlineAccountsUsernames.get(socket).equals(splitInput[i]))
@@ -286,8 +296,8 @@ public class Main {
             }
             if (information[0].equals("personal")) {
                 try {
-                    loginRegisterMenu.registerPersonalAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]);
+                    loginRegisterMenu.registerPersonalAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
                     dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
@@ -297,8 +307,9 @@ public class Main {
             }
             if (information[0].equals("business")) {
                 try {
-                    loginRegisterMenu.registerResellerAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
+                    dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
@@ -307,8 +318,9 @@ public class Main {
             }
             if (information[0].equals("manager")) {
                 try {
-                    loginRegisterMenu.registerManagerAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerManagerAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
+                    dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
@@ -320,26 +332,26 @@ public class Main {
         }
     }
 
-    private static void editPersonalInfo(String input , Socket socket) throws IOException {
+    private static void editPersonalInfo(String input, Socket socket) throws IOException {
         String[] splitInput = input.split(" ");
         try {
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             String username = splitInput[2];
             SimpleAccount simpleAccount = YaDataManager.getAccountWithUserName(username);
             if (splitInput[1].equals("password")) {
-                View.viewPersonalInfoMenu.editPassword(splitInput[3] , simpleAccount );
+                View.viewPersonalInfoMenu.editPassword(splitInput[3], simpleAccount);
             } else if (splitInput[1].equals("first")) {
-                View.viewPersonalInfoMenu.editFirstName(splitInput[3] , simpleAccount );
+                View.viewPersonalInfoMenu.editFirstName(splitInput[3], simpleAccount);
             } else if (splitInput[1].equals("last")) {
-                View.viewPersonalInfoMenu.editLastName(splitInput[3] , simpleAccount );
+                View.viewPersonalInfoMenu.editLastName(splitInput[3], simpleAccount);
             } else if (splitInput[1].equals("email")) {
-                View.viewPersonalInfoMenu.editEmail(splitInput[3] , simpleAccount );
+                View.viewPersonalInfoMenu.editEmail(splitInput[3], simpleAccount);
             } else if (splitInput[1].equals("phone")) {
-                View.viewPersonalInfoMenu.editPhoneNumber(splitInput[3] , simpleAccount );
+                View.viewPersonalInfoMenu.editPhoneNumber(splitInput[3], simpleAccount);
             }
             dataOutputStream.writeUTF("successfully changed");
             dataOutputStream.flush();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataOutputStream.writeUTF(e.getMessage());
@@ -347,4 +359,14 @@ public class Main {
         }
     }
 
+    private static void addCommodity(Socket socket) throws IOException, ClassNotFoundException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        dos.writeUTF("send");
+        dos.flush();
+        Request request = yaGson.fromJson(dis.readUTF(), new TypeToken<Request>(){}.getType());
+        System.out.println(request.toString());
+        YaDataManager.addRequest(request);
+        //get image
+    }
 }

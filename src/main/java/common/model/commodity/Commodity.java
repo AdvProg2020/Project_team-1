@@ -34,6 +34,28 @@ public class Commodity implements Requestable , Serializable {
     private ArrayList<Score> scores;
     private String productFilePathOnSellerClient = null;
 
+    public Commodity(String brand, String name, int price,
+                     String sellerUsername, Boolean isCommodityAvailable, String categoryName,
+                     ArrayList<Field> categorySpecifications, String description, int amount) throws IOException {
+        this.commodityId = Statistics.updatedStats.commodityId();
+        status = Status.UNDER_CHECKING_FOR_CREATE;
+        this.brand = brand;
+        this.name = name;
+        this.price = price;
+        this.sellerUsername = sellerUsername;
+        this.isCommodityAvailable = isCommodityAvailable;
+        this.categoryName = categoryName;
+        this.categorySpecifications = categorySpecifications;
+        this.description = description;
+        this.allComments = new ArrayList<>();
+        this.averageScore = 0;
+        this.inventory = amount;
+        this.numberOfVisits = 0;
+        this.numberOfScores = 0;
+        this.totalScores = 0;
+        this.scores = new ArrayList<>();
+    }
+
     public String getImagePath() {
         return imagePath;
     }

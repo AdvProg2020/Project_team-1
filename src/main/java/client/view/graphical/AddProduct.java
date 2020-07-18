@@ -16,7 +16,7 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import server.controller.reseller.ResellerMenu;
 
-import java.io.File;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -99,7 +99,8 @@ public class AddProduct implements Initializable {
             resellerMenu.addProduct(brandTf.getText(), nameTf.getText(), Integer.parseInt(priceTf.getText()),
                     resellerMenu.getCategoryByName(categoryCb.getValue()),
                     productCategorySpecification, descriptionTextArea.getText(),
-                    Integer.parseInt(amountTf.getText()), imagePath, productFilePath);
+                    Integer.parseInt(amountTf.getText()), productFilePath);
+            //send image
             onCancelClick(mouseEvent);
         } catch (Exception e) {
             errorMessageLabel.setText(e.getMessage());

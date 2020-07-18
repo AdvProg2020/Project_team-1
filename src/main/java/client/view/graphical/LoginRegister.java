@@ -3,6 +3,9 @@ package client.view.graphical;
 import client.Session;
 import client.controller.share.ClientLoginRegisterMenu;
 import client.view.commandline.View;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.BusinessAccount;
 import common.model.account.SimpleAccount;
 import common.model.account.ManagerAccount;
@@ -29,10 +32,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static client.Main.socket;
-
 public class LoginRegister implements Initializable {
-
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     public TextField registerBusinessNameTf;
     private final LoginRegisterMenu loginRegisterMenu = View.loginRegisterMenu;
     private final ClientLoginRegisterMenu clientLoginRegisterMenu = new ClientLoginRegisterMenu();
@@ -72,11 +73,11 @@ public class LoginRegister implements Initializable {
     }
 
     public void onLoginButtonClick(MouseEvent mouseEvent) throws IOException, ClassNotFoundException {
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         dataOutputStream.writeUTF("login: " + loginUsernameTf.getText() + " " + loginPasswordTf.getText());
         dataOutputStream.flush();
-        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-        String input = objectInputStream.readUTF();
+        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        String input = dataInputStream.readUTF();
         System.out.println(input);
         if (input.startsWith("error:")) {
             loginMessageLabel.setText(input.split(":")[1]);
@@ -84,12 +85,12 @@ public class LoginRegister implements Initializable {
         }
         dataOutputStream.writeUTF("send account");
         dataOutputStream.flush();
-        SimpleAccount simpleAccount = (SimpleAccount) objectInputStream.readObject();
+        SimpleAccount simpleAccount = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<SimpleAccount>(){}.getType());
         ClientLoginRegisterMenu.login(simpleAccount);
         if (simpleAccount instanceof BusinessAccount) {
             new Thread(() -> {
                 try {
-                    Socket fileTransferSocket = new Socket("127.0.0.1", 88881);
+                    Socket fileTransferSocket = new Socket("127.0.0.1", 12345);
                     DataOutputStream outputStream = new DataOutputStream(fileTransferSocket.getOutputStream());
                     DataInputStream inputStream = new DataInputStream(fileTransferSocket.getInputStream());
                     outputStream.writeUTF("add me " + simpleAccount.getUsername());
