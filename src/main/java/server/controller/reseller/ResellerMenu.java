@@ -34,10 +34,12 @@ public class ResellerMenu extends Menu {
     }
 
     public ArrayList<Commodity> manageCommodities() throws Exception {
-        ArrayList<Commodity> commodityArrayList = new ArrayList<>();
-        for (Integer commodityId : getBusinessAccount().getCommoditiesId()) {
-            commodityArrayList.add(YaDataManager.getCommodityById(commodityId));
-        }
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF("send seller commodities");
+        dos.flush();
+        DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        ArrayList<Commodity> commodityArrayList = yaGson.fromJson(dis.readUTF(), new TypeToken<ArrayList<Commodity>>(){}
+        .getType());
         if (MenuHandler.getInstance().getCurrentMenu() != View.manageResellerProductsMenu) {
             View.manageResellerProductsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.manageResellerProductsMenu);
@@ -75,8 +77,11 @@ public class ResellerMenu extends Menu {
     public ArrayList<String> getCategoriesName() {
         ArrayList<String> categoriesName = null;
         try {
-            categoriesName = YaDataManager.getCategories().stream()
-                    .map(Category::getName).collect(Collectors.toCollection(ArrayList::new));
+            DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dos.writeUTF("categories name");
+            dos.flush();
+            DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            categoriesName = yaGson.fromJson(dis.readUTF(), new TypeToken<ArrayList<String>>(){}.getType());
         } catch (IOException e) {
             e.printStackTrace();
         }

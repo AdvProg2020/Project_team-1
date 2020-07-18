@@ -5,8 +5,11 @@ import common.Constants;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
+import common.model.account.BusinessAccount;
 import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
+import common.model.commodity.Category;
+import common.model.commodity.Commodity;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static client.view.commandline.View.loginRegisterMenu;
 
@@ -159,8 +163,15 @@ public class Main {
         } else if (input.startsWith("Edit")) {
             editPersonalInfo(input, socket);
         } else if (input.equals("New Commodity")) {
-            System.out.println(0);
             addCommodity(socket);
+        } else if (input.equals("categories name")) {
+            sendCategories(socket);
+        } else if (input.equals("send seller commodities")) {
+            sendSellerCommodities(socket);
+        } else if (input.startsWith("name of category is ")) {
+            sendCategoryWithName(socket, input.split(" ", 5)[4]);
+        } else if (input.startsWith("add request")) {
+            YaDataManager.addRequest(yaGson.fromJson(input.split(" ", 3)[2], new TypeToken<Request>(){}.getType()));
         }
     }
 
@@ -174,7 +185,8 @@ public class Main {
             dataOutputStream.writeUTF("logged in");
             dataOutputStream.flush();
             dataInputStream.readUTF();
-            dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAccountWithUserName(splitInput[1]), new TypeToken<SimpleAccount>(){}.getType()));
+            dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAccountWithUserName(splitInput[1]),
+                    new TypeToken<SimpleAccount>(){}.getType()));
             dataOutputStream.flush();
         } catch (InvalidLoginInformationException e) {
             dataOutputStream.writeUTF("error:" + e.getMessage());
@@ -369,5 +381,33 @@ public class Main {
         System.out.println(request.toString());
         YaDataManager.addRequest(request);
         //get image
+    }
+
+    private static void sendCategories(Socket socket) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF(yaGson.toJson(YaDataManager.getCategories().stream().map(Category::getName)
+                .collect(Collectors.toCollection(ArrayList::new)), new TypeToken<ArrayList<String>>(){}.getType()));
+    }
+
+    private static void sendSellerCommodities(Socket socket) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        try {
+            BusinessAccount seller = YaDataManager.getSellerWithUserName(onlineAccountsUsernames.get(socket));
+            ArrayList<Commodity> commodities = new ArrayList<>();
+            for (Integer commodityId : seller.getCommoditiesId()) {
+                commodities.add(YaDataManager.getCommodityById(commodityId));
+            }
+            dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>(){}.getType()));
+            dos.flush();
+        } catch (Exception e) {
+            dos.writeUTF("error:" + e.getMessage());
+            dos.flush();
+        }
+    }
+
+    private static void sendCategoryWithName(Socket socket, String name) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF(yaGson.toJson(YaDataManager.getCategoryWithName(name), new TypeToken<Category>(){}.getType()));
+        dos.flush();
     }
 }
