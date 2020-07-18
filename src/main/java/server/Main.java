@@ -48,6 +48,7 @@ public class Main {
                     try {
                         assert inputStream != null;
                         request = inputStream.readUTF();
+                        System.out.println("File server log : " + request);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -62,8 +63,8 @@ public class Main {
                             e.printStackTrace();
                         }
                     } else if (request.startsWith("get file")) {
-                        Pattern pattern = Pattern.compile("$get file #(?<filePath>.+)# from (?<sellerUsername>\\S+)" +
-                                " now listening on port (?<port>\\d+)^");
+                        Pattern pattern = Pattern.compile("^get file #(?<filePath>.+)# from (?<sellerUsername>\\S+)" +
+                                " now listening on port (?<port>\\d+)$");
                         Matcher matcher = pattern.matcher(request);
                         if (matcher.matches()) {
                             String filePath = matcher.group("filePath");
@@ -79,12 +80,14 @@ public class Main {
                                             finalSocket1.getInetAddress().getHostAddress() + ":" + port);
                                     String senderResponse = dataInputStreamSender.readUTF();
                                     outputStream.writeUTF(senderResponse);
+                                    String receiverResponse = inputStream.readUTF();
+                                    dataOutputStreamSender.writeUTF(receiverResponse);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                             } else {
                                 try {
-                                    outputStream.writeUTF("Error : seller " + sellerUsername + "is not online");
+                                    outputStream.writeUTF("Error : seller " + sellerUsername + " is not online");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
