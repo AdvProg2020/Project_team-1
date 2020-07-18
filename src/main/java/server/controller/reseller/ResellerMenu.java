@@ -104,7 +104,6 @@ public class ResellerMenu extends Menu {
         dis.readUTF();
         dos.writeUTF(yaGson.toJson(request, new TypeToken<Request>(){}.getType()));
         dos.flush();
-//        YaDataManager.addRequest(request);
     }
 
     public void removeProduct(int productId) throws Exception {
