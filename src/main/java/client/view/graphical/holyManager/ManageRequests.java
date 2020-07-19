@@ -1,5 +1,8 @@
 package client.view.graphical.holyManager;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import server.dataManager.YaDataManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -9,9 +12,13 @@ import javafx.scene.layout.AnchorPane;
 import common.model.share.Request;
 import common.model.share.Status;
 import client.view.commandline.View;
+import static client.Main.socket;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ManageRequests extends HolyManager implements Initializable {
@@ -19,6 +26,8 @@ public class ManageRequests extends HolyManager implements Initializable {
     ListView<CheckBox> acceptedRequests = new ListView<>();
     ListView<CheckBox> declinedRequests = new ListView<>();
     ListView<CheckBox> unhandledRequests = new ListView<>();
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,7 +55,13 @@ public class ManageRequests extends HolyManager implements Initializable {
         unhandledRequests.getItems().removeAll(unhandledRequests.getItems());
         acceptedRequests.getItems().removeAll(acceptedRequests.getItems());
         declinedRequests.getItems().removeAll(declinedRequests.getItems());
-        for (Request request : YaDataManager.getRequests()) {
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        dataOutputStream.writeUTF("Requests");
+        dataOutputStream.flush();
+        ArrayList<Request> requests = yaGson.fromJson(dataInputStream.readUTF() ,
+                new TypeToken<ArrayList<Request>>(){}.getType());
+        for (Request request : requests) {
             if (request.getObj().getStatus().equals(Status.VERIFIED)) {
                 acceptedRequests.getItems().add(getCheckBox(request));
             } else if (request.getObj().getStatus().equals(Status.DECLINED)) {
@@ -77,7 +92,9 @@ public class ManageRequests extends HolyManager implements Initializable {
     public void deleteSelectedItem(CheckBox item) {
         if (item.isSelected()) {
             try {
-                View.manageRequestMenu.deleteRequest(Integer.parseInt(item.getId()));
+               DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+               dataOutputStream.writeUTF("Delete request " + item.getId());
+               dataOutputStream.flush();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -88,7 +105,9 @@ public class ManageRequests extends HolyManager implements Initializable {
         try {
             for (CheckBox item : unhandledRequests.getItems()) {
                 if (item.isSelected()) {
-                    View.manageRequestMenu.accept(Integer.parseInt(item.getId()));
+                    DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    dataOutputStream.writeUTF("Accept request " + item.getId());
+                    dataOutputStream.flush();
                 }
             }
             setUpPane();
@@ -101,7 +120,9 @@ public class ManageRequests extends HolyManager implements Initializable {
         try {
             for (CheckBox item : unhandledRequests.getItems()) {
                 if (item.isSelected()) {
-                    View.manageRequestMenu.decline(Integer.parseInt(item.getId()));
+                    DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    dataOutputStream.writeUTF("Decline request " + item.getId());
+                    dataOutputStream.flush();
                 }
             }
             setUpPane();

@@ -84,8 +84,8 @@ public class Main {
             register(socket);
         } else if (input.startsWith("login")) {
             login(input, socket);
-        }else if (input.startsWith("Edit discount code")){
-            editDiscountCode(socket , input);
+        } else if (input.startsWith("Edit discount code")) {
+            editDiscountCode(socket, input);
         } else if (input.startsWith("Edit")) {
             editPersonalInfo(input, socket);
         } else if (input.equals("New Commodity")) {
@@ -95,8 +95,8 @@ public class Main {
             createDiscountCode(socket);
         } else if (input.equals("Discount codes")) {
             sendDiscountCodes(socket);
-        }else if (input.startsWith("Delete discount code")){
-            deleteDiscountCode(socket,input);
+        } else if (input.startsWith("Delete discount code")) {
+            deleteDiscountCode(socket, input);
         } else if (input.equals("categories name")) {
             sendCategories(socket);
         } else if (input.equals("send seller commodities")) {
@@ -104,7 +104,16 @@ public class Main {
         } else if (input.startsWith("name of category is ")) {
             sendCategoryWithName(socket, input.split(" ", 5)[4]);
         } else if (input.startsWith("add request")) {
-            YaDataManager.addRequest(yaGson.fromJson(input.split(" ", 3)[2], new TypeToken<Request>(){}.getType()));
+            YaDataManager.addRequest(yaGson.fromJson(input.split(" ", 3)[2], new TypeToken<Request>() {
+            }.getType()));
+        } else if (input.equals("Requests")) {
+            sendRequests(socket);
+        } else if (input.startsWith("Accept request")) {
+            acceptRequest(input);
+        } else if (input.startsWith("Decline request")) {
+            declineRequest(input);
+        } else if (input.startsWith("Delete request")) {
+            deleteRequest(input);
         }
     }
 
@@ -245,8 +254,8 @@ public class Main {
             }
             if (information[0].equals("personal")) {
                 try {
-                    loginRegisterMenu.registerPersonalAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]);
+                    loginRegisterMenu.registerPersonalAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
                     dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
@@ -256,8 +265,9 @@ public class Main {
             }
             if (information[0].equals("business")) {
                 try {
-                    loginRegisterMenu.registerResellerAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
+                    dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
@@ -266,8 +276,9 @@ public class Main {
             }
             if (information[0].equals("manager")) {
                 try {
-                    loginRegisterMenu.registerManagerAccount(information[1] , information[2] , information[3]
-                            ,information[4] ,information[5] ,information[6] , information[7]); dataOutputStream.writeUTF("You have registered successfully.");
+                    loginRegisterMenu.registerManagerAccount(information[1], information[2], information[3]
+                            , information[4], information[5], information[6], information[7]);
+                    dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
@@ -311,7 +322,8 @@ public class Main {
         DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         dos.writeUTF("send");
         dos.flush();
-        Request request = yaGson.fromJson(dis.readUTF(), new TypeToken<Request>(){}.getType());
+        Request request = yaGson.fromJson(dis.readUTF(), new TypeToken<Request>() {
+        }.getType());
         System.out.println(request.toString());
         YaDataManager.addRequest(request);
         //get image
@@ -373,14 +385,14 @@ public class Main {
             }
             dataOutputStream.writeUTF("Discount code successfully edited.");
             dataOutputStream.flush();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             dataOutputStream.writeUTF("Invalid entry");
             dataOutputStream.flush();
         }
     }
 
-    public static void deleteDiscountCode(Socket socket , String input) throws Exception {
+    public static void deleteDiscountCode(Socket socket, String input) throws Exception {
         String[] splitInput = input.split(" ");
         DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(splitInput[3]);
         View.getDiscountCode.deleteDiscountCode(discountCode);
@@ -389,7 +401,8 @@ public class Main {
     private static void sendCategories(Socket socket) throws IOException {
         DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         dos.writeUTF(yaGson.toJson(YaDataManager.getCategories().stream().map(Category::getName)
-                .collect(Collectors.toCollection(ArrayList::new)), new TypeToken<ArrayList<String>>(){}.getType()));
+                .collect(Collectors.toCollection(ArrayList::new)), new TypeToken<ArrayList<String>>() {
+        }.getType()));
     }
 
     private static void sendSellerCommodities(Socket socket) throws IOException {
@@ -400,7 +413,8 @@ public class Main {
             for (Integer commodityId : seller.getCommoditiesId()) {
                 commodities.add(YaDataManager.getCommodityById(commodityId));
             }
-            dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>(){}.getType()));
+            dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>() {
+            }.getType()));
             dos.flush();
         } catch (Exception e) {
             dos.writeUTF("error:" + e.getMessage());
@@ -410,7 +424,8 @@ public class Main {
 
     private static void sendCategoryWithName(Socket socket, String name) throws IOException {
         DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        dos.writeUTF(yaGson.toJson(YaDataManager.getCategoryWithName(name), new TypeToken<Category>(){}.getType()));
+        dos.writeUTF(yaGson.toJson(YaDataManager.getCategoryWithName(name), new TypeToken<Category>() {
+        }.getType()));
         dos.flush();
     }
 
@@ -473,5 +488,28 @@ public class Main {
                 }
             }
         }
+    }
+
+    private static void sendRequests(Socket socket) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getRequests(), new TypeToken<ArrayList<Request>>() {
+        }.getType()));
+        dataOutputStream.flush();
+    }
+
+    private static void acceptRequest(String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        View.manageRequestMenu.accept(Integer.parseInt(splitInput[2]));
+    }
+
+    private static void deleteRequest(String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        View.manageRequestMenu.deleteRequest(Integer.parseInt(splitInput[2]));
+    }
+
+    private static void declineRequest(String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        View.manageRequestMenu.decline(Integer.parseInt(splitInput[2]));
+
     }
 }
