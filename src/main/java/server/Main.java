@@ -109,6 +109,7 @@ public class Main {
     }
 
     private static void login(String input, Socket socket) throws IOException {
+        System.out.println("adk");
         String[] splitInput = input.split(" ");
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -117,9 +118,10 @@ public class Main {
             onlineAccountsUsernames.put(socket, splitInput[1]);
             dataOutputStream.writeUTF("logged in");
             dataOutputStream.flush();
-            dataInputStream.readUTF();
+            System.out.println(dataInputStream.readUTF());
             dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAccountWithUserName(splitInput[1]), new TypeToken<SimpleAccount>() {
             }.getType()));
+            dataOutputStream.flush();
         } catch (InvalidLoginInformationException e) {
             dataOutputStream.writeUTF("error:" + e.getMessage());
             dataOutputStream.flush();
