@@ -40,89 +40,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(Constants.FILE_SERVER_PORT); // for p2p file transfer
-        new Thread(() -> {
-            while (true) {
-                Socket socket = null;
-                DataInputStream dis = null;
-                DataOutputStream dos = null;
-                try {
-                    socket = serverSocket.accept();
-                    dis = new DataInputStream(socket.getInputStream());
-                    dos = new DataOutputStream(socket.getOutputStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                DataInputStream inputStream = dis;
-                DataOutputStream outputStream = dos;
-                Socket finalSocket = socket;
-                Socket finalSocket1 = socket;
-                new Thread(() -> {
-                    String request = "";
-                    try {
-                        assert inputStream != null;
-                        request = inputStream.readUTF();
-                        System.out.println("File server log : " + request);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (request.startsWith("add me")) {
-                        String[] separatedRequest = request.split(" ");
-                        try {
-                            if (separatedRequest.length == 3 &&
-                                    YaDataManager.isUsernameExist(separatedRequest[2])) {
-                                onlineFileTransferClients.put(separatedRequest[2], finalSocket);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else if (request.startsWith("get file")) {
-                        Pattern pattern = Pattern.compile("^get file #(?<filePath>.+)# from (?<sellerUsername>\\S+)" +
-                                " now listening on port (?<port>\\d+)$");
-                        Matcher matcher = pattern.matcher(request);
-                        if (matcher.matches()) {
-                            String filePath = matcher.group("filePath");
-                            String sellerUsername = matcher.group("sellerUsername");
-                            int port = Integer.parseInt(matcher.group("port"));
-                            if (onlineFileTransferClients.containsKey(sellerUsername)) {
-                                try {
-                                    DataOutputStream dataOutputStreamSender = new DataOutputStream(onlineFileTransferClients.
-                                            get(sellerUsername).getOutputStream());
-                                    DataInputStream dataInputStreamSender = new DataInputStream(onlineFileTransferClients.
-                                            get(sellerUsername).getInputStream());
-                                    dataOutputStreamSender.writeUTF("send #" + filePath + "# to " +
-                                            finalSocket1.getInetAddress().getHostAddress() + ":" + port);
-                                    String senderResponse = dataInputStreamSender.readUTF();
-                                    outputStream.writeUTF(senderResponse);
-                                    String receiverResponse = inputStream.readUTF();
-                                    dataOutputStreamSender.writeUTF(receiverResponse);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
-                                try {
-                                    outputStream.writeUTF("Error : seller " + sellerUsername + " is not online");
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        } else {
-                            try {
-                                outputStream.writeUTF("Error : invalid request");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    } else {
-                        try {
-                            assert outputStream != null;
-                            outputStream.writeUTF("request not valid");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-            }
-        }).start();
+        new FileTransferMetadataServer(serverSocket).start();
         ServerSocket server = new ServerSocket(Constants.SERVER_PORT); // for clients request
         while (true) {
             Socket socket = server.accept();
@@ -492,5 +410,66 @@ public class Main {
         DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         dos.writeUTF(yaGson.toJson(YaDataManager.getCategoryWithName(name), new TypeToken<Category>(){}.getType()));
         dos.flush();
+    }
+
+    private static class FileTransferMetadataServer extends Thread {
+
+        private ServerSocket serverSocket;
+
+        public FileTransferMetadataServer(ServerSocket serverSocket) {
+            this.serverSocket = serverSocket;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Socket socket = serverSocket.accept();
+                    new Thread(() -> {
+                        try {
+                            DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+                            DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
+                            Pattern pattern = Pattern.compile("^get file #(?<filePath>.+)# from " +
+                                    "(?<sellerUsername>\\S+) now listening on port (?<port>\\d+)$");
+                            String request = inputStream.readUTF();
+                            Matcher matcher = pattern.matcher(request);
+                            if (request.startsWith("add me")) {
+                                String[] separatedRequest = request.split(" ");
+                                if (separatedRequest.length == 3 &&
+                                        YaDataManager.isUsernameExist(separatedRequest[2])) {
+                                    onlineFileTransferClients.put(separatedRequest[2], socket);
+                                }
+                            } else if (matcher.matches()) {
+                                String filePath = matcher.group("filePath");
+                                String sellerUsername = matcher.group("sellerUsername");
+                                int port = Integer.parseInt(matcher.group("port"));
+                                if (onlineFileTransferClients.containsKey(sellerUsername)) {
+                                    Socket sellerSocket = onlineFileTransferClients.get(sellerUsername);
+                                    DataOutputStream resellerOutputStream =
+                                            new DataOutputStream(sellerSocket.getOutputStream());
+                                    DataInputStream resellerInputStream =
+                                            new DataInputStream(sellerSocket.getInputStream());
+                                    resellerOutputStream.writeUTF("send #" + filePath + "# to " +
+                                            socket.getInetAddress().getHostAddress() + ":" + port);
+                                    String senderResponse = resellerInputStream.readUTF();
+                                    outputStream.writeUTF(senderResponse);
+                                    String receiverResponse = inputStream.readUTF();
+                                    resellerOutputStream.writeUTF(receiverResponse);
+                                } else {
+                                    outputStream.writeUTF("Error : seller " + sellerUsername + " is not online");
+                                }
+                            } else {
+                                outputStream.writeUTF("Request is not valid");
+                            }
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
