@@ -1,5 +1,8 @@
 package server.controller.manager;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.commodity.Category;
 import common.model.commodity.CategorySpecification;
 import common.model.commodity.Commodity;
@@ -10,7 +13,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import static client.Main.inputStream;
+import static client.Main.outputStream;
+
 public class ManageCategoryMenu extends Menu {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+
     public ManageCategoryMenu() {
         fxmlFileAddress = "../../../fxml/HolyManager/ManageCategories.fxml";
     }
@@ -25,9 +33,9 @@ public class ManageCategoryMenu extends Menu {
     }
 
 
-    public boolean checkCategorySpecificationTitle(ArrayList<CategorySpecification> categorySpecifications , String title){
+    public boolean checkCategorySpecificationTitle(ArrayList<CategorySpecification> categorySpecifications, String title) {
         for (CategorySpecification categorySpecification : categorySpecifications) {
-            if (categorySpecification.getTitle().equals(title)){
+            if (categorySpecification.getTitle().equals(title)) {
                 return false;
             }
         }
@@ -142,12 +150,17 @@ public class ManageCategoryMenu extends Menu {
             commoditiesId.add(commodity.getCommodityId());
         }
         Category category = new Category(name, commoditiesId, categorySpecifications);
+        outputStream.writeUTF("new category " + yaGson.toJson(category, new TypeToken<Category>() {
+        }.getType()));
+        outputStream.flush();
+        inputStream.readUTF();
         for (Commodity commodity : commodities) {
-            commodity.setCategoryName(category.getName());
-            YaDataManager.removeCommodity(commodity);
-            YaDataManager.addCommodity(commodity);
+            outputStream.writeUTF("change category for commodity " + commodity.getCommodityId());
+            outputStream.flush();
+            inputStream.readUTF();
         }
-        YaDataManager.addCategory(category);
+        outputStream.writeUTF("done");
+        outputStream.flush();
     }
 
 

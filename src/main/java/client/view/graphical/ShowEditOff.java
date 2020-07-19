@@ -1,6 +1,9 @@
 package client.view.graphical;
 
 import client.view.commandline.View;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.commodity.Commodity;
 import common.model.commodity.Off;
 import javafx.collections.FXCollections;
@@ -16,14 +19,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowEditOff {
+import static client.Main.inputStream;
+import static client.Main.outputStream;
 
+public class ShowEditOff {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     public Label startTime;
     public Label endTime;
     public Label discountPercent;
@@ -31,7 +36,7 @@ public class ShowEditOff {
     public Label errorMessageLabel;
     public TextField productIdTf;
     ArrayList<Commodity> addedProducts = new ArrayList<>(),
-    removedProducts = new ArrayList<>();
+            removedProducts = new ArrayList<>();
     private Off off;
 
     public void initScene(Off off) throws Exception {
@@ -42,7 +47,10 @@ public class ShowEditOff {
         List<HBox> hBoxes = new ArrayList<>();
         for (int commodityId : off.getCommoditiesId()) {
             HBox productHBox = new HBox();
-            Commodity commodity = YaDataManager.getCommodityById(commodityId);
+            outputStream.writeUTF("send commodity with id " + commodityId);
+            outputStream.flush();
+            Commodity commodity = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Commodity>() {
+            }.getType());
             Label productLabel = new Label(commodity.getName() + " #" + commodity.getCommodityId());
             productLabel.getStyleClass().add("hint-label");
             Button remove = new Button("Remove");
@@ -66,8 +74,8 @@ public class ShowEditOff {
     public void onSaveClick(MouseEvent mouseEvent) {
         try {
             View.manageResellerOffMenu.editOff(off, removedProducts, addedProducts,
-                    startTime.getText().equals(off.getStartTime().toString()) ? "-": startTime.getText(),
-                    endTime.getText().equals(off.getEndTime().toString()) ? "-": endTime.getText(),
+                    startTime.getText().equals(off.getStartTime().toString()) ? "-" : startTime.getText(),
+                    endTime.getText().equals(off.getEndTime().toString()) ? "-" : endTime.getText(),
                     (int) Double.parseDouble(discountPercent.getText()));
             onCancelClick(mouseEvent);
         } catch (Exception e) {
@@ -117,7 +125,10 @@ public class ShowEditOff {
 
     public void onAddProductToOffClick(MouseEvent mouseEvent) {
         try {
-            addedProducts.add(View.manageResellerProductsMenu.getCommodityById(Integer.parseInt(productIdTf.getText())));
+            outputStream.writeUTF("send commodity with id " + productIdTf.getText());
+            outputStream.flush();
+            addedProducts.add(yaGson.fromJson(inputStream.readUTF(), new TypeToken<Commodity>() {
+            }.getType()));
         } catch (Exception e) {
             errorMessageLabel.setText(e.getMessage());
         }

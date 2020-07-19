@@ -3,6 +3,9 @@ package client.view.graphical;
 import client.Session;
 import client.view.commandline.View;
 import client.view.graphical.holyManager.HolyManager;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.commodity.Commodity;
 import common.model.commodity.Off;
 import javafx.event.ActionEvent;
@@ -20,14 +23,16 @@ import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import server.controller.share.MenuHandler;
-import server.dataManager.YaDataManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class OffMenu extends HolyManager {
+import static client.Main.inputStream;
+import static client.Main.outputStream;
 
+public class OffMenu extends HolyManager {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     private Pane root;
 
 
@@ -58,10 +63,8 @@ public class OffMenu extends HolyManager {
             setFilterMenuButton(root);
             setMainMenuButton(root);
             setCommodities(root);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (Exception exception) {
-            exception.printStackTrace();
         }
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(root);
@@ -124,7 +127,10 @@ public class OffMenu extends HolyManager {
 
     public boolean checkCommodity(Commodity commodityMain) {
         try {
-            ArrayList<Off> offs = YaDataManager.getOffs();
+            outputStream.writeUTF("send all offs");
+            outputStream.flush();
+            ArrayList<Off> offs = yaGson.fromJson(inputStream.readUTF(), new TypeToken<ArrayList<Off>>() {
+            }.getType());
             for (Off off : offs) {
                 for (int commodityId : off.getCommoditiesId()) {
                     if (commodityId == commodityMain.getCommodityId() && off.isActive())
@@ -138,9 +144,12 @@ public class OffMenu extends HolyManager {
         }
     }
 
-    public Off getOffWithCommodity(Commodity commodityMain){
+    public Off getOffWithCommodity(Commodity commodityMain) {
         try {
-            ArrayList<Off> offs = YaDataManager.getOffs();
+            outputStream.writeUTF("send all offs");
+            outputStream.flush();
+            ArrayList<Off> offs = yaGson.fromJson(inputStream.readUTF(), new TypeToken<ArrayList<Off>>() {
+            }.getType());
             for (Off off : offs) {
                 for (int commodityId : off.getCommoditiesId()) {
                     if (commodityId == commodityMain.getCommodityId() && off.isActive())
@@ -158,38 +167,33 @@ public class OffMenu extends HolyManager {
         int i = 0;
         int j = 100;
         ArrayList<Commodity> commodities = View.productsMenu.getProducts();
-        for (int p = 0; p < commodities.size(); p++) {
-            if (checkCommodity(commodities.get(p))) {
-                Off off = getOffWithCommodity(commodities.get(p));
-                System.out.println(commodities.get(p).getImagePath());
-                FileInputStream inputStream = new FileInputStream(commodities.get(p).getImagePath());
+        for (Commodity commodity : commodities) {
+            if (checkCommodity(commodity)) {
+                Off off = getOffWithCommodity(commodity);
+                System.out.println(commodity.getImagePath());
+                FileInputStream inputStream = new FileInputStream(commodity.getImagePath());
                 Image image = new Image(inputStream);
                 ImageView imageView = new ImageView(image);
-                int finalP = p;
-                Commodity tmp = commodities.get(finalP);
-                imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-                        View.commodityMenu.setCommodity(tmp);
-                        View.digestMenu.setCommodity(tmp);
-                        changeMenuToProductMenu(mouseEvent, tmp);
-                    }
+                imageView.setOnMouseClicked(mouseEvent -> {
+                    View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+                    View.commodityMenu.setCommodity(commodity);
+                    View.digestMenu.setCommodity(commodity);
+                    changeMenuToProductMenu(mouseEvent, commodity);
                 });
                 imageView.setFitWidth(250);
                 imageView.setFitHeight(250);
                 imageView.setLayoutX(i);
                 imageView.setLayoutY(j);
                 root.getChildren().add(imageView);
-                Label name = createLabel(i + 300, j, "Name", commodities.get(p).getName(), false);
-                Label price = createLabel(i + 300, j + 50, "Price", String.valueOf(commodities.get(p).getPrice()), false);
-                Label score = createLabel(i + 300, j + 100, "Score", String.valueOf(commodities.get(p).getAverageScore()), false);
+                Label name = createLabel(i + 300, j, "Name", commodity.getName(), false);
+                Label price = createLabel(i + 300, j + 50, "Price", String.valueOf(commodity.getPrice()), false);
+                Label score = createLabel(i + 300, j + 100, "Score", String.valueOf(commodity.getAverageScore()), false);
                 Label start_date = createLabel(i + 300, j + 150, "Start date", off.getStartTime().toString(), false);
                 Label finish_date = createLabel(i + 300, j + 200, "Finish date", off.getEndTime().toString(), false);
                 Label remainingDay = createLabel(i + 300, j + 250, "Remaining day", String.valueOf((off.getEndTime().getTime() - off.getStartTime().getTime()) / (24 * 60 * 60 * 1000)), false);
                 Label remainingHours = createLabel(i + 300, j + 300, "Remaining hours", String.valueOf((off.getEndTime().getTime() - off.getStartTime().getTime()) / (60 * 60 * 1000)), false);
                 Label discount = createLabel(i + 300, j + 350, "Discount", String.valueOf(off.getDiscountPercent()), false);
-                if (commodities.get(p).getInventory() == 0) {
+                if (commodity.getInventory() == 0) {
                     Label inventory = createLabel(i + 300, j + 150, "Inventory", "0", true);
                     root.getChildren().add(inventory);
                 }
@@ -236,20 +240,17 @@ public class OffMenu extends HolyManager {
         logout.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 250);
         if (Session.getOnlineAccount() == null)
             logout.setDisable(true);
-        logout.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
+        logout.setOnAction(actionEvent -> {
+            try {
                 try {
-                    try {
-                        MenuHandler.getInstance().getCurrentMenu().logout();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
-
-                } catch (Exception exception) {
-                    exception.printStackTrace();
+                    MenuHandler.getInstance().getCurrentMenu().logout();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
         root.getChildren().add(logout);
@@ -260,15 +261,12 @@ public class OffMenu extends HolyManager {
         back.getStyleClass().add("back-button");
         back.setLayoutX(800);
         back.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 150);
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    View.offMenu.goToPreviousMenu();
-                    Session.getSceneHandler().updateScene(((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()));
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
+        back.setOnAction(actionEvent -> {
+            try {
+                View.offMenu.goToPreviousMenu();
+                Session.getSceneHandler().updateScene(((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()));
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
         root.getChildren().add(back);
@@ -278,12 +276,7 @@ public class OffMenu extends HolyManager {
         Button userPanel = new Button("User panel");
         userPanel.getStyleClass().add("forward-button");
         userPanel.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 100);
-        userPanel.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                MainMenu.goToUserPanel(actionEvent);
-            }
-        });
+        userPanel.setOnAction(MainMenu::goToUserPanel);
         root.getChildren().add(userPanel);
     }
 

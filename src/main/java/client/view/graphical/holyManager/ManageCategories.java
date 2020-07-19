@@ -1,6 +1,9 @@
 package client.view.graphical.holyManager;
 
-import server.dataManager.YaDataManager;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
+import common.model.commodity.Category;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -9,15 +12,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import common.model.commodity.Category;
-import client.view.commandline.View;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class ManageCategories extends HolyManager implements Initializable {
+import static client.Main.inputStream;
+import static client.Main.outputStream;
 
+public class ManageCategories extends HolyManager implements Initializable {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     public Label errorLabel;
     public AnchorPane pane;
     private ListView<CheckBox> listView = new ListView<>();
@@ -31,9 +36,13 @@ public class ManageCategories extends HolyManager implements Initializable {
     protected void setUpPane() {
         listView.getItems().removeAll(listView.getItems());
         try {
-            for (Category category : YaDataManager.getCategories()) {
+            outputStream.writeUTF("send categories");
+            outputStream.flush();
+            ArrayList<Category> categories = yaGson.fromJson(inputStream.readUTF(), new TypeToken<ArrayList<Category>>() {
+            }.getType());
+            for (Category category : categories) {
                 listView.getItems().add(new CheckBox(category.toString()));
-                listView.getItems().get(listView.getItems().size()-1).setId(category.getName());
+                listView.getItems().get(listView.getItems().size() - 1).setId(category.getName());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,7 +84,9 @@ public class ManageCategories extends HolyManager implements Initializable {
         for (CheckBox item : listView.getItems()) {
             if (item.isSelected()) {
                 try {
-                    View.manageCategoryMenu.removeCategory(item.getId());
+                    outputStream.writeUTF("delete category " + item.getId());
+                    outputStream.flush();
+                    inputStream.readUTF();
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }
@@ -85,19 +96,22 @@ public class ManageCategories extends HolyManager implements Initializable {
     }
 
     public void editCategory(ActionEvent actionEvent) {
-        EditDiscountCode.setStage((Stage) ((Node)actionEvent.getSource()).getScene().getWindow());
+        EditDiscountCode.setStage((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
         errorLabel.setVisible(false);
-        if  (checkError()) return;
+        if (checkError()) return;
         setCategory();
-        EditCategory.setStage((Stage)(((Node) actionEvent.getSource()).getScene().getWindow()));
-        newPopup(actionEvent , "../../../../fxml/holyManager/EditCategory.fxml");
+        EditCategory.setStage((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+        newPopup(actionEvent, "../../../../fxml/holyManager/EditCategory.fxml");
     }
 
-    public void setCategory(){
+    public void setCategory() {
         for (CheckBox item : listView.getItems()) {
-            if (item.isSelected()){
+            if (item.isSelected()) {
                 try {
-                    Category category = View.manageCategoryMenu.getCategory(item.getId());
+                    outputStream.writeUTF("name of category is " + item.getId());
+                    outputStream.flush();
+                    Category category = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Category>() {
+                    }.getType());
                     EditCategory.setCategory(category);
                 } catch (IOException e) {
                     e.printStackTrace();

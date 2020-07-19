@@ -1,19 +1,20 @@
 package server.controller.manager;
 
-import server.dataManager.YaDataManager;
-import server.controller.share.Menu;
+import common.model.commodity.Off;
 import common.model.share.Request;
 import common.model.share.Status;
+import server.controller.share.Menu;
+import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 
 public class ManageRequestMenu extends Menu {
-    public Request getRequestById(int id) throws Exception {
-            return YaDataManager.getRequest(id);
-    }
-
     public ManageRequestMenu() {
         fxmlFileAddress = "../../../fxml/HolyManager/ManageRequests.fxml";
+    }
+
+    public Request getRequestById(int id) throws Exception {
+        return YaDataManager.getRequest(id);
     }
 
     public void accept(int id) throws Exception {
@@ -21,7 +22,6 @@ public class ManageRequestMenu extends Menu {
         request.getObj().setStatus(Status.VERIFIED);
         request.getObj().addObj();
         updateRequests(request);
-        return;
     }
 
     public void updateRequests(Request request) throws IOException {
@@ -34,11 +34,11 @@ public class ManageRequestMenu extends Menu {
         if (request.getObj() instanceof Comment){
             YaDataManager.removeCommodity(((Comment)request.getObj()).getCommodity());
             YaDataManager.addCommodity(((Comment)request.getObj()).getCommodity());
-        }
-        if (request.getObj() instanceof Off){
+        }*/
+        if (request.getObj() instanceof Off) {
             YaDataManager.removeOff((Off) request.getObj());
             YaDataManager.addOff((Off) request.getObj());
-        }*/
+        }
     }
 
     public void deleteRequest(int id) throws Exception {
@@ -62,8 +62,7 @@ public class ManageRequestMenu extends Menu {
     }*/
 
 
-
-   public void decline(int id) throws Exception {
+    public void decline(int id) throws Exception {
         Request request = getRequestById(id);
         request.getObj().setStatus(Status.DECLINED);
         updateRequests(request);

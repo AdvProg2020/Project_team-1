@@ -1,5 +1,10 @@
 package client.view.graphical.holyManager;
 
+import client.Session;
+import client.view.commandline.View;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import common.model.commodity.CategorySpecification;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -11,9 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.commodity.CategorySpecification;
-import client.view.commandline.View;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,8 +23,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
-public class AddCategory extends HolyManager implements Initializable {
+import static client.Main.inputStream;
+import static client.Main.outputStream;
 
+public class AddCategory extends HolyManager implements Initializable {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+    private static Stage stage;
     public TextField categoryName;
     public TextField title;
     public CheckBox isOptional;
@@ -31,7 +37,6 @@ public class AddCategory extends HolyManager implements Initializable {
     public Label information;
     private HashSet<String> options = null;
     private ArrayList<CategorySpecification> categorySpecifications = new ArrayList<>();
-    private static Stage stage;
 
     public static void setStage(Stage stageA) {
         stage = stageA;
@@ -48,8 +53,8 @@ public class AddCategory extends HolyManager implements Initializable {
             return;
         }
 
-        if (!title.getText().equals("") && ((options != null && options.size() != 0) || options == null)) {
-            categorySpecifications.add(View.manageCategoryMenu.createCategorySpecification(title.getText() , options));
+        if (!title.getText().equals("") && (options == null || options.size() != 0)) {
+            categorySpecifications.add(View.manageCategoryMenu.createCategorySpecification(title.getText(), options));
             setInformationLabel(Color.GREEN, "Category specification successfully added");
             title.setText("");
         } else {
@@ -59,7 +64,9 @@ public class AddCategory extends HolyManager implements Initializable {
 
     public void addCategory(ActionEvent actionEvent) {
         try {
-            if (View.manageCategoryMenu.checkCategoryName(categoryName.getText())) {
+            outputStream.writeUTF("is category name valid? " + categoryName.getText());
+            outputStream.flush();
+            if (inputStream.readUTF().equals("yes")) {
                 setInformationLabel(Color.RED, "Category name is not available.");
                 return;
             }
@@ -93,7 +100,7 @@ public class AddCategory extends HolyManager implements Initializable {
     }
 
     public void addOption(ActionEvent actionEvent) {
-        if (!option.equals("") && option != null) {
+        if (option != null && !option.equals("")) {
             options.add(option.getText());
             setInformationLabel(Color.GREEN, "Option successfully added");
             option.setText("");
