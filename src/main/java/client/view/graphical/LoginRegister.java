@@ -11,6 +11,10 @@ import common.model.account.BusinessAccount;
 import common.model.account.SimpleAccount;
 import common.model.account.ManagerAccount;
 import common.model.account.PersonalAccount;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.stage.Popup;
 import server.controller.share.LoginRegisterMenu;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,6 +58,8 @@ public class LoginRegister implements Initializable {
     public Label registerMessageLabel;
     public Button registerButton;
     public ImageView userPhotoImageView;
+    public TextField bankUserName;
+    public PasswordField bankPassword;
     private String imagePath;
 
     @Override
@@ -68,6 +74,7 @@ public class LoginRegister implements Initializable {
         registerBusinessNameTf.setDisable(true);
         accountType.valueProperty().addListener(
                 (observableValue, s, t1) -> registerBusinessNameTf.setDisable(!t1.equals("reseller")));
+
     }
 
     public void onBackButtonClick(MouseEvent mouseEvent) {
@@ -96,7 +103,7 @@ public class LoginRegister implements Initializable {
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
-    public void onRegisterButtonClick() throws IOException {
+    public void onRegisterButtonClick(ActionEvent actionEvent) throws IOException {
         if (accountType.getValue() == null) {
             registerMessageLabel.setText("Select an account type");
             return;
@@ -107,7 +114,6 @@ public class LoginRegister implements Initializable {
         String information;
         switch (accountType.getValue()) {
             case "personal":
-                PersonalAccount personalAccount = null;
                 information = "personal " + registerUsernameTf.getText() + " " +
                         registerFirstNameTf.getText() + " " + registerLastNameTf.getText() + " " + registerEmailTf.getText() + " " +
                         registerPhoneNumberTf.getText() + " " + registerPassword.getText() + " " + imagePath;
@@ -116,12 +122,10 @@ public class LoginRegister implements Initializable {
                 break;
 
             case "reseller":
-                ManagerAccount managerAccount = null;
+
                 information = "business " +  registerUsernameTf.getText() + " " +
                         registerFirstNameTf.getText() + " " + registerLastNameTf.getText() + " " + registerEmailTf.getText() + " " +
-                        registerPhoneNumberTf.getText() + " " + registerPassword.getText() + " " + imagePath;
-                dataOutputStream.writeUTF(information);
-                dataOutputStream.flush();
+                        registerPhoneNumberTf.getText() + " " + registerPassword.getText() + " " + registerBusinessNameTf.getText() + " " + imagePath;
                 dataOutputStream.writeUTF(information);
                 dataOutputStream.flush();
                 break;
@@ -136,6 +140,9 @@ public class LoginRegister implements Initializable {
         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
         String respond = dataInputStream.readUTF();
         registerMessageLabel.setText(respond);
+        if (respond.equals("You have registered successfully.") && (!accountType.getValue().equals("manager"))){
+            newPopup(actionEvent , "../../../fxml/RegisterBankAccount.fxml");
+        }
     }
 
     public void onPickAPhotoClick(MouseEvent mouseEvent) {
@@ -205,5 +212,16 @@ public class LoginRegister implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+   private void newPopup(ActionEvent actionEvent, String filePath) {
+        Parent parent = null;
+        Popup popupMenu = new Popup();
+        try {
+            parent = FXMLLoader.load(getClass().getResource(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        popupMenu.getContent().add(parent);
+        popupMenu.show((((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 }

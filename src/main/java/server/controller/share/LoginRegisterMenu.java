@@ -5,8 +5,10 @@ import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
 import common.model.share.Request;
+import server.Main;
 import server.dataManager.YaDataManager;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class LoginRegisterMenu extends Menu {
@@ -38,7 +40,10 @@ public class LoginRegisterMenu extends Menu {
     }
 
     public void registerManagerAccount(String username, String firstName, String lastName, String email,
-                                       String phoneNumber, String password) throws InvalidAccountInfoException {
+                                       String phoneNumber, String password) throws InvalidAccountInfoException, IOException {
+        if (YaDataManager.isUsernameExist(username)){
+            throw new InvalidAccountInfoException("User name is not available");
+        }
         ManagerAccount newAccount = new ManagerAccount(username, firstName, lastName, email, phoneNumber, password);
         try {
             YaDataManager.addManager(newAccount);
@@ -48,7 +53,11 @@ public class LoginRegisterMenu extends Menu {
     }
 
     public void registerPersonalAccount(String username, String firstName, String lastName, String email,
-                                        String phoneNumber, String password) throws InvalidAccountInfoException {
+                                        String phoneNumber, String password) throws InvalidAccountInfoException, IOException {
+        System.out.println(username);
+        if (YaDataManager.isUsernameExist(username)){
+            throw new InvalidAccountInfoException("User name is not available");
+        }
         PersonalAccount newAccount = new PersonalAccount(username, firstName, lastName, email, phoneNumber, password);
         try {
             YaDataManager.addPerson(newAccount);
@@ -58,7 +67,10 @@ public class LoginRegisterMenu extends Menu {
     }
 
     public void registerResellerAccount(String username, String firstName, String lastName, String email,
-                                        String phoneNumber, String password, String businessName) throws InvalidAccountInfoException {
+                                        String phoneNumber, String password, String businessName) throws InvalidAccountInfoException, IOException {
+        if (YaDataManager.isUsernameExist(username)){
+            throw new InvalidAccountInfoException("User name is not available");
+        }
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
                 phoneNumber, password, businessName);
         Request request;
@@ -82,6 +94,7 @@ public class LoginRegisterMenu extends Menu {
 
     public void registerPersonalAccount(String username, String firstName, String lastName, String email,
                                         String phoneNumber, String password, String imagePath) throws InvalidAccountInfoException {
+
         PersonalAccount newAccount = new PersonalAccount(username, firstName, lastName, email, phoneNumber, password, imagePath);
         try {
             YaDataManager.addPerson(newAccount);
@@ -91,7 +104,7 @@ public class LoginRegisterMenu extends Menu {
     }
 
     public void registerResellerAccount(String username, String firstName, String lastName, String email,
-                                        String phoneNumber, String password, String businessName, String imagePath)
+                                        String phoneNumber, String password, String businessName, String imagePath )
             throws InvalidAccountInfoException {
         BusinessAccount newAccount = new BusinessAccount(username, firstName, lastName, email,
                 phoneNumber, password, businessName, imagePath);
@@ -117,4 +130,5 @@ public class LoginRegisterMenu extends Menu {
             throw new InvalidLoginInformationException("Invalid password");
         }
     }
+
 }

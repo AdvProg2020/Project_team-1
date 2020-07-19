@@ -34,11 +34,26 @@ public class Main {
     private static ArrayList<Socket> sockets = new ArrayList<>();
     private static HashMap<Socket, String> onlineAccountsUsernames = new HashMap<>();
     private static HashMap<String, Socket> onlineFileTransferClients = new HashMap<>();
+    public   static  Socket socketB;
+
+    static {
+        try {
+            socketB = new Socket("127.0.0.1" , 9999);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(Constants.FILE_SERVER_PORT); // for p2p file transfer
         new FileTransferMetadataServer(serverSocket).start();
         ServerSocket server = new ServerSocket(Constants.SERVER_PORT); // for clients request
+        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
+        dataOutputStream.writeUTF("create_account bank bank bank bank bank");
+        dataOutputStream.flush();
+        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
+        System.out.println(dataInputStream.readUTF());
+        System.out.println(dataInputStream.readUTF());
         while (true) {
             Socket socket = server.accept();
             sockets.add(socket);
@@ -234,15 +249,17 @@ public class Main {
 
     private static void register(Socket socket) throws IOException, ClassNotFoundException {
         try {
-            System.out.println("salamss");
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             String[] information = dataInputStream.readUTF().split(" ");
+            System.out.println(information[1] + " as");
+
             try {
-                loginRegisterMenu.checkUserNameAvailability(information[1]);
+                 loginRegisterMenu.checkUserNameAvailability(information[1]);
             } catch (InvalidLoginInformationException e) {
                 dataOutputStream.writeUTF(e.getMessage());
                 dataOutputStream.flush();
+                return;
             }
             if (information[0].equals("manager")) {
                 try {
@@ -265,10 +282,12 @@ public class Main {
             }
             if (information[0].equals("business")) {
                 try {
+                    String[] bankInfo = dataInputStream.readUTF().split(" ");
                     loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
-                            , information[4], information[5], information[6], information[7]);
+                            , information[4], information[5], information[6], information[7] , information[8]);
                     dataOutputStream.writeUTF("You have registered successfully.");
                     dataOutputStream.flush();
+
                 } catch (InvalidAccountInfoException e) {
                     dataOutputStream.writeUTF(e.getMessage());
                     dataOutputStream.flush();

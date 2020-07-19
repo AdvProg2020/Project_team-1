@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.BankAccountPage">
+   <children>
+      <Button fx:id="register" layoutX="430.0" layoutY="331.0" mnemonicParsing="false" onAction="#register" styleClass="normal-button-Green" text="Register" />
+      <Label layoutX="64.0" layoutY="89.0" prefHeight="29.0" prefWidth="179.0" styleClass="hint-label" text="Bank account username:" />
+      <TextField fx:id="username" layoutX="272.0" layoutY="91.0" prefHeight="33.0" prefWidth="202.0" promptText="User name" />
+      <Label layoutX="64.0" layoutY="147.0" prefHeight="29.0" prefWidth="179.0" styleClass="hint-label" text="Bank account password:" />
+      <PasswordField fx:id="password" layoutX="272.0" layoutY="143.0" prefHeight="33.0" prefWidth="202.0" promptText="Password" />
+      <Label layoutX="66.0" layoutY="200.0" prefHeight="29.0" prefWidth="179.0" styleClass="hint-label" text="First name:" />
+      <Label layoutX="64.0" layoutY="255.0" prefHeight="17.0" prefWidth="179.0" styleClass="hint-label" text="Last name:" />
+      <Label fx:id="error" layoutX="188.0" layoutY="314.0" prefHeight="29.0" prefWidth="179.0" styleClass="hint-label" text="Enter your information:" textFill="#ee0303" />
+      <TextField fx:id="firstName" layoutX="270.0" layoutY="200.0" prefHeight="33.0" prefWidth="210.0" promptText="First name" />
+      <TextField fx:id="lastName" layoutX="268.0" layoutY="255.0" prefHeight="33.0" prefWidth="210.0" promptText="Last name" />
+   </children>
+</AnchorPane>
