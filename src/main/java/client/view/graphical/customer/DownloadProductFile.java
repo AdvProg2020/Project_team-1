@@ -35,6 +35,7 @@ public class DownloadProductFile {
             int port = getFileServerPort();
             if (port == -1) {
                 messageToUser.setText("Error : no free port found on your system to receive file");
+                progressBar.setVisible(false);
                 return;
             }
             ServerSocket fileReceiver = new ServerSocket(port);
@@ -56,14 +57,14 @@ public class DownloadProductFile {
                 Socket senderSocket = fileReceiver.accept();
                 senderSocket.getInputStream().read(bytes);
                 fileOutputStream.write(bytes);
-                fileOutputStream.close();
-                senderSocket.close();
-                fileReceiver.close();
-                fileDataSocket.close();
                 progressBar.setVisible(false);
                 messageToUser.setText("File downloaded successfully");
                 doneButton.setDisable(false);
+                fileOutputStream.close();
+                senderSocket.close();
             }
+            fileReceiver.close();
+            fileDataSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
