@@ -463,7 +463,7 @@ public class Main {
                             } else {
                                 outputStream.writeUTF("Request is not valid");
                             }
-                            socket.close();
+                            //socket.close();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
