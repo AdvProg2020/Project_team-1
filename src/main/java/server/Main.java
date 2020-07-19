@@ -282,7 +282,6 @@ public class Main {
             }
             if (information[0].equals("business")) {
                 try {
-                    String[] bankInfo = dataInputStream.readUTF().split(" ");
                     loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
                             , information[4], information[5], information[6], information[7] , information[8]);
                     dataOutputStream.writeUTF("You have registered successfully.");
