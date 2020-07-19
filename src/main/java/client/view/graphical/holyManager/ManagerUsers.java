@@ -1,5 +1,8 @@
 package client.view.graphical.holyManager;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.*;
 import server.dataManager.YaDataManager;
 import javafx.collections.FXCollections;
@@ -21,6 +24,7 @@ public class ManagerUsers extends HolyManager implements Initializable {
 
     public ListView usersInfo;
     public Button delete;
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
 
 
     @Override
@@ -31,19 +35,27 @@ public class ManagerUsers extends HolyManager implements Initializable {
             DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             dataOutputStream.writeUTF("get online accounts");
             dataOutputStream.flush();
-            String usernames = dataInputStream.readUTF();
-            ArrayList<SimpleAccount> simpleAccounts = getAccounts(usernames);
-            for (ManagerAccount managerAccount : YaDataManager.getManagers()) {
+            ArrayList<SimpleAccount> simpleAccounts = yaGson.fromJson(dataInputStream.readUTF()
+                    , new TypeToken<ArrayList<SimpleAccount>>(){}.getType());
+            dataOutputStream.writeUTF("Send all accounts");
+            dataOutputStream.flush();
+            ArrayList<ManagerAccount> managerAccounts =  yaGson.fromJson(dataInputStream.readUTF()
+                    , new TypeToken<ArrayList<ManagerAccount>>(){}.getType());
+            ArrayList<PersonalAccount> personalAccounts =  yaGson.fromJson(dataInputStream.readUTF()
+                    , new TypeToken<ArrayList<PersonalAccount>>(){}.getType());
+            ArrayList<BusinessAccount> businessAccounts =  yaGson.fromJson(dataInputStream.readUTF()
+                    , new TypeToken<ArrayList<BusinessAccount>>(){}.getType());
+            for (ManagerAccount managerAccount : managerAccounts) {
                 if (isAccountOnline(managerAccount, simpleAccounts))
                     item.add(managerAccount.getInformation() + "\n online");
                 else item.add(managerAccount.getInformation() + "\n offline");
             }
-            for (BusinessAccount business : YaDataManager.getBusinesses()) {
+            for (BusinessAccount business : businessAccounts) {
                 if (isAccountOnline(business, simpleAccounts))
                     item.add(business.getInformation() +"\n online" );
                 else  item.add(business.getInformation() +"\n offline" );
             }
-            for (PersonalAccount person : YaDataManager.getPersons()) {
+            for (PersonalAccount person : personalAccounts) {
                 if (isAccountOnline(person, simpleAccounts))
                     item.add(person.getInformation() + "\n online");
                 else item.add(person.getInformation() + "\n offline");
@@ -69,21 +81,9 @@ public class ManagerUsers extends HolyManager implements Initializable {
         return false;
     }
 
-    public ArrayList<SimpleAccount> getAccounts(String usernames) throws IOException {
-        Scanner scanner = new Scanner(usernames);
-        ArrayList<SimpleAccount> simpleAccounts = new ArrayList<>();
-        while (scanner.hasNextLine()) {
-            SimpleAccount simpleAccount = YaDataManager.getAccountWithUserName(scanner.nextLine());
-            System.out.println(simpleAccount.getUsername());
-            simpleAccounts.add(simpleAccount);
-        }
-        return simpleAccounts;
-    }
 
     public void deleteAccount(ActionEvent actionEvent) {
-
         newPopup(actionEvent, "../../../../fxml/HolyManager/DeleteAccount.fxml");
-
     }
 
 

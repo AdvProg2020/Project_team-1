@@ -63,12 +63,12 @@ public class ManageUsersMenu extends Menu {
         return YaDataManager.getAccountWithUserName(username);
     }
 
-    public void deleteUser(String username) throws Exception {
-        YaDataManager.deleteAccountWithUserName(username);
-        if (Session.getOnlineAccount().getUsername().equalsIgnoreCase(username)) {
-            Session.setOnlineAccount(null);
-            MenuHandler.getInstance().setCurrentMenu(View.loginRegisterMenu);
+    public void deleteUser(String username , String onlineAccount) throws Exception {
+
+        if (onlineAccount.equalsIgnoreCase(username)) {
+          throw new Exception("You cant delete your self.");
         }
+        YaDataManager.deleteAccountWithUserName(username);
     }
 
 

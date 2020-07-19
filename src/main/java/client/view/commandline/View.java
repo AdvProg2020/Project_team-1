@@ -816,7 +816,7 @@ public class View {
         Matcher matcher = Pattern.compile("^delete user (?<username>\\S+)").matcher(command);
         matcher.matches();
         try {
-            manageUsersMenu.deleteUser(matcher.group("username"));
+            manageUsersMenu.deleteUser(matcher.group("username") , "Tof");
         } catch (Exception e) {
             System.out.println("Invalid input please try again");
         }
