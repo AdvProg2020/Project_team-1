@@ -9,6 +9,7 @@ import common.model.account.*;
 import common.model.commodity.Category;
 import common.model.commodity.Commodity;
 import common.model.commodity.DiscountCode;
+import common.model.commodity.Off;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
@@ -128,6 +129,8 @@ public class Main {
             YaDataManager.removeCategory(YaDataManager.getCategoryWithName(input.split(" ", 3)[2]));
         } else if (input.startsWith("send commodity with id ")) {
             sendCommodityWithId(socket, Integer.parseInt(input.split(" ")[4]));
+        } else if (input.equals("send all offs")) {
+            sendAllOffs(socket);
         }
     }
 
@@ -565,6 +568,13 @@ public class Main {
     private static void sendCommodityWithId(Socket socket, int id) throws Exception {
         DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         dos.writeUTF(yaGson.toJson(YaDataManager.getCommodityById(id), new TypeToken<Commodity>() {
+        }.getType()));
+        dos.flush();
+    }
+
+    private static void sendAllOffs(Socket socket) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF(yaGson.toJson(YaDataManager.getOffs(), new TypeToken<ArrayList<Off>>() {
         }.getType()));
         dos.flush();
     }

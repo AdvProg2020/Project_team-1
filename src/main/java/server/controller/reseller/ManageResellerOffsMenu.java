@@ -1,19 +1,24 @@
 package server.controller.reseller;
 
 import client.view.commandline.View;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.BusinessAccount;
 import common.model.commodity.Commodity;
 import common.model.commodity.Off;
 import common.model.share.Request;
 import server.controller.comparator.Sort;
 import server.controller.share.Menu;
-import server.dataManager.YaDataManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class ManageResellerOffsMenu extends Menu {
+import static client.Main.inputStream;
+import static client.Main.outputStream;
 
+public class ManageResellerOffsMenu extends Menu {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d yyyy");
 
     public ManageResellerOffsMenu() {
@@ -45,7 +50,9 @@ public class ManageResellerOffsMenu extends Menu {
         Off newOff = new Off(businessAccount.getUsername(), commoditiesId, simpleDateFormat.parse(startTime),
                 simpleDateFormat.parse(endTime), discountPercent);
         Request request = new Request(newOff, businessAccount.getUsername());
-        YaDataManager.addRequest(request);
+        outputStream.writeUTF("add request " + yaGson.toJson(request, new TypeToken<Request>() {
+        }.getType()));
+        outputStream.flush();
     }
 
     public void editOff(Off oldOff, ArrayList<Commodity> removedProduct, ArrayList<Commodity> addedProduct, String startTime,
@@ -55,7 +62,11 @@ public class ManageResellerOffsMenu extends Menu {
             commoditiesIdInOff.add(commodity.getCommodityId());
         }
         for (int commodityId : oldOff.getCommoditiesId()) {
-            if (!removedProduct.contains(YaDataManager.getCommodityById(commodityId))) {
+            outputStream.writeUTF("send commodity with id " + commodityId);
+            outputStream.flush();
+            Commodity commodity = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Commodity>() {
+            }.getType());
+            if (!removedProduct.contains(commodity)) {
                 commoditiesIdInOff.add(commodityId);
             }
         }
@@ -65,7 +76,8 @@ public class ManageResellerOffsMenu extends Menu {
                 (endTime.equals("-")) ? (oldOff.getEndTime()) : (simpleDateFormat.parse(endTime)),
                 (discountPercent == -1) ? (oldOff.getDiscountPercent()) : (discountPercent));
         Request request = new Request(newOff, businessAccount.getUsername());
-        YaDataManager.addRequest(request);
-        YaDataManager.removeOff(oldOff);
+        outputStream.writeUTF("add request " + yaGson.toJson(request, new TypeToken<Request>() {
+        }.getType()));
+        outputStream.flush();
     }
 }
