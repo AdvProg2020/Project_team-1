@@ -5,10 +5,7 @@ import common.Constants;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
-import common.model.account.PersonalAccount;
-import common.model.account.BusinessAccount;
-import common.model.account.SimpleAccount;
-import common.model.account.SupportAccount;
+import common.model.account.*;
 import common.model.commodity.DiscountCode;
 import common.model.commodity.Category;
 import common.model.commodity.Commodity;
@@ -59,7 +56,7 @@ public class Main {
                     System.out.println(input);
                     handleInput(input, socket);
                 } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("in ghat shod");
+                    deleteSocketAndAccount(socket);
                     break;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -114,6 +111,10 @@ public class Main {
             declineRequest(input);
         } else if (input.startsWith("Delete request")) {
             deleteRequest(input);
+        } else if (input.equals("Send all accounts")){
+            sendAllAccounts(socket);
+        } else if (input.startsWith("Delete account")){
+            deleteAccount(socket,input);
         }
     }
 
@@ -162,13 +163,12 @@ public class Main {
     }
 
     private static void sendOnlineAccounts(Socket socket) throws IOException {
-        String usernamesString = "";
+        ArrayList<SimpleAccount> accounts = new ArrayList<>();
         for (Socket socket1 : onlineAccountsUsernames.keySet()) {
-            usernamesString += onlineAccountsUsernames.get(socket1) + "\n";
+            accounts.add(YaDataManager.getAccountWithUserName(onlineAccountsUsernames.get(socket1)));
         }
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        System.out.println(onlineAccountsUsernames + "l");
-        dataOutputStream.writeUTF(usernamesString);
+        dataOutputStream.writeUTF(yaGson.toJson(accounts , new TypeToken<ArrayList<SimpleAccount>>(){}.getType()));
         dataOutputStream.flush();
     }
 
@@ -510,6 +510,40 @@ public class Main {
     private static void declineRequest(String input) throws Exception {
         String[] splitInput = input.split(" ");
         View.manageRequestMenu.decline(Integer.parseInt(splitInput[2]));
+    }
+
+    private static void sendAllAccounts(Socket socket) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getManagers() ,
+                new TypeToken<ArrayList<ManagerAccount>>(){}.getType()));
+        dataOutputStream.flush();
+        dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getPersons() ,
+                new TypeToken<ArrayList<PersonalAccount>>(){}.getType()));
+        dataOutputStream.flush();
+        dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getBusinesses() ,
+                new TypeToken<ArrayList<BusinessAccount>>(){}.getType()));
+        dataOutputStream.flush();
+    }
+
+    private static void deleteSocketAndAccount(Socket socket) {
+        onlineAccountsUsernames.remove(socket);
+        sockets.remove(socket);
+    }
+
+    private static void deleteAccount(Socket socket , String input) throws IOException {
+        String[] splitInput = input.split(" ");
+        try {
+            View.manageUsersMenu.deleteUser(splitInput[2] , splitInput[3]);
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            dataOutputStream.writeUTF("Account successfully deleted.");
+            dataOutputStream.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            dataOutputStream.writeUTF("error");
+            dataOutputStream.flush();
+        }
 
     }
 }
+
