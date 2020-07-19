@@ -1,21 +1,19 @@
 package client.view.graphical.holyManager;
 
-import server.controller.share.MenuHandler;
+import client.Session;
+import client.view.AudioPlayer;
+import client.view.commandline.View;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import client.Session;
-import client.view.AudioPlayer;
-import client.view.commandline.View;
+import server.controller.share.MenuHandler;
 
 import java.io.IOException;
 
 public class HolyManager {
-
-
     public void viewPersonalInfo(ActionEvent actionEvent) {
         View.viewPersonalInfoMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.viewPersonalInfoMenu);
@@ -87,21 +85,21 @@ public class HolyManager {
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
-    public void pause(ActionEvent actionEvent){
-            AudioPlayer.mediaPlayer.pause();
+    public void pause(ActionEvent actionEvent) {
+        AudioPlayer.mediaPlayer.pause();
     }
 
-    public void play(ActionEvent actionEvent){
+    public void play(ActionEvent actionEvent) {
         AudioPlayer.mediaPlayer.play();
     }
 
-    public void goToProductsMenu(ActionEvent actionEvent){
+    public void goToProductsMenu(ActionEvent actionEvent) {
         View.productsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
-    public void goToMainMenu(ActionEvent actionEvent){
+    public void goToMainMenu(ActionEvent actionEvent) {
         View.mainMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.mainMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));

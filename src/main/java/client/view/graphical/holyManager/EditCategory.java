@@ -2,6 +2,9 @@ package client.view.graphical.holyManager;
 
 import client.Session;
 import client.view.commandline.View;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.commodity.Category;
 import common.model.commodity.CategorySpecification;
 import common.model.commodity.Commodity;
@@ -16,7 +19,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,22 +26,28 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
-public class EditCategory extends HolyManager implements Initializable {
+import static client.Main.inputStream;
+import static client.Main.outputStream;
 
+public class EditCategory extends HolyManager implements Initializable {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+    private static Category category;
+    private static Stage stage;
     public TextField categoryName;
     public TextField title;
     public CheckBox isOptional;
     public Button addOptionId;
     public TextField option;
     public Label information;
-    private static Category category;
     private HashSet<String> options = null;
     private ArrayList<CategorySpecification> categorySpecifications;
-    private static Stage stage;
-
 
     public static void setStage(Stage stage) {
         EditCategory.stage = stage;
+    }
+
+    public static Category getCategory() {
+        return category;
     }
 
     public static void setCategory(Category category) {
@@ -48,8 +56,9 @@ public class EditCategory extends HolyManager implements Initializable {
 
     public void editCategory(ActionEvent actionEvent) {
         try {
-            View.manageCategoryMenu.removeCategory(category.getName());
-            if (View.manageCategoryMenu.checkCategoryName(categoryName.getText())) {
+            outputStream.writeUTF("is category name valid? " + categoryName.getText());
+            outputStream.flush();
+            if (inputStream.readUTF().equals("yes")) {
                 setInformationLabel(Color.RED, "Category name is not available.");
                 return;
             }
@@ -61,6 +70,8 @@ public class EditCategory extends HolyManager implements Initializable {
             try {
                 View.manageCategoryMenu.addCategory(categoryName.getText(), AddCommoditiesToCategory.getCommodities(),
                         categorySpecifications);
+                outputStream.writeUTF("remove category " + category.getName());
+                outputStream.flush();
                 ((Node) actionEvent.getSource()).getScene().getWindow().hide();
                 Session.getSceneHandler().updateScene(stage);
             } catch (Exception exception) {
@@ -70,17 +81,13 @@ public class EditCategory extends HolyManager implements Initializable {
     }
 
     public void addOption(ActionEvent actionEvent) {
-        if (!option.equals("") && option != null) {
+        if (option != null && !option.equals("")) {
             options.add(option.getText());
             setInformationLabel(Color.GREEN, "Option successfully added");
             option.setText("");
         } else {
             setInformationLabel(Color.RED, "Invalid entry.");
         }
-    }
-
-    public static Category getCategory() {
-        return category;
     }
 
     public void addCategorySpecification(ActionEvent actionEvent) {
@@ -101,7 +108,10 @@ public class EditCategory extends HolyManager implements Initializable {
     public void commodity(ActionEvent actionEvent) throws Exception {
         ArrayList<Commodity> commodities = new ArrayList<>();
         for (Integer commodityId : category.getCommoditiesId()) {
-            commodities.add(YaDataManager.getCommodityById(commodityId));
+            outputStream.writeUTF("send commodity with id " + commodityId);
+            outputStream.flush();
+            commodities.add(yaGson.fromJson(inputStream.readUTF(), new TypeToken<Commodity>() {
+            }.getType()));
         }
         AddCommoditiesToCategory.setCommodities(commodities);
         newPopup(actionEvent, "../../../../fxml/holyManager/AddCommoditiesToCategory.fxml");
@@ -113,7 +123,7 @@ public class EditCategory extends HolyManager implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 if (isOptional.isSelected()) {
-                    options = new HashSet<String>();
+                    options = new HashSet<>();
                 } else options = null;
                 option.setVisible(!option.isVisible());
                 addOptionId.setVisible(!addOptionId.isVisible());
@@ -130,6 +140,6 @@ public class EditCategory extends HolyManager implements Initializable {
     }
 
     public void categorySpecification(ActionEvent actionEvent) {
-        newPopup(actionEvent , "../../../../fxml/holyManager/CategorySpecification.fxml" );
+        newPopup(actionEvent, "../../../../fxml/holyManager/CategorySpecification.fxml");
     }
 }

@@ -1,22 +1,22 @@
 package server;
 
 import client.view.commandline.View;
-import common.Constants;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
-import common.model.account.PersonalAccount;
+import common.Constants;
 import common.model.account.BusinessAccount;
+import common.model.account.PersonalAccount;
 import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
-import common.model.commodity.DiscountCode;
 import common.model.commodity.Category;
 import common.model.commodity.Commodity;
+import common.model.commodity.DiscountCode;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
-import server.dataManager.YaDataManager;
 import common.model.share.Request;
+import server.dataManager.YaDataManager;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -89,7 +89,6 @@ public class Main {
         } else if (input.startsWith("Edit")) {
             editPersonalInfo(input, socket);
         } else if (input.equals("New Commodity")) {
-            System.out.println(0);
             addCommodity(socket);
         } else if (input.equals("new discount code")) {
             createDiscountCode(socket);
@@ -98,7 +97,7 @@ public class Main {
         } else if (input.startsWith("Delete discount code")) {
             deleteDiscountCode(socket, input);
         } else if (input.equals("categories name")) {
-            sendCategories(socket);
+            sendCategoriesName(socket);
         } else if (input.equals("send seller commodities")) {
             sendSellerCommodities(socket);
         } else if (input.startsWith("name of category is ")) {
@@ -114,6 +113,20 @@ public class Main {
             declineRequest(input);
         } else if (input.startsWith("Delete request")) {
             deleteRequest(input);
+        } else if (input.equals("send categories")) {
+            sendCategories(socket);
+        } else if (input.startsWith("delete category")) {
+            deleteCategory(socket, input.split(" ", 3)[2]);
+        } else if (input.startsWith("is category name valid? ")) {
+            checkCategoryName(socket, input.split(" ", 5)[4]);
+        } else if (input.startsWith("new category")) {
+            addCategory(socket, input.split(" ", 3)[2]);
+        } else if (input.equals("send all commodities")) {
+            sendAllCommodities(socket);
+        } else if (input.startsWith("remove category")) {
+            YaDataManager.removeCategory(YaDataManager.getCategoryWithName(input.split(" ", 3)[2]));
+        } else if (input.startsWith("send commodity with id ")) {
+            sendCommodityWithId(socket, Integer.parseInt(input.split(" ")[4]));
         }
     }
 
@@ -398,7 +411,7 @@ public class Main {
         View.getDiscountCode.deleteDiscountCode(discountCode);
     }
 
-    private static void sendCategories(Socket socket) throws IOException {
+    private static void sendCategoriesName(Socket socket) throws IOException {
         DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         dos.writeUTF(yaGson.toJson(YaDataManager.getCategories().stream().map(Category::getName)
                 .collect(Collectors.toCollection(ArrayList::new)), new TypeToken<ArrayList<String>>() {
@@ -510,6 +523,69 @@ public class Main {
     private static void declineRequest(String input) throws Exception {
         String[] splitInput = input.split(" ");
         View.manageRequestMenu.decline(Integer.parseInt(splitInput[2]));
+    }
 
+    private static void sendCategories(Socket socket) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF(yaGson.toJson(YaDataManager.getCategories(), new TypeToken<ArrayList<Category>>(){}.getType()));
+        dos.flush();
+    }
+
+    private static void deleteCategory(Socket socket, String name) throws IOException {
+        try {
+            View.manageCategoryMenu.removeCategory(name);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dos.writeUTF("deleted");
+            dos.flush();
+        }
+    }
+
+    private static void checkCategoryName(Socket socket, String name) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        if (YaDataManager.isCategoryExist(name)) {
+            dos.writeUTF("yes");
+        } else {
+            dos.writeUTF("no");
+        }
+        dos.flush();
+    }
+
+    private static void addCategory(Socket socket, String json) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        Category category = yaGson.fromJson(json, new TypeToken<Category>(){}.getType());
+        YaDataManager.addCategory(category);
+        dos.writeUTF("send commodities");
+        dos.flush();
+        DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        String input = dis.readUTF();
+        while (input.startsWith("change category for commodity ")) {
+            int commodityId = Integer.parseInt(input.split(" ")[4]);
+            try {
+                Commodity commodity = YaDataManager.getCommodityById(commodityId);
+                commodity.setCategoryName(category.getName());
+                YaDataManager.removeCommodity(commodity);
+                YaDataManager.addCommodity(commodity);
+                dos.writeUTF("next");
+                dos.flush();
+                input = dis.readUTF();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void sendAllCommodities(Socket socket) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF(yaGson.toJson(YaDataManager.getCommodities(), new TypeToken<ArrayList<Commodity>>(){}.getType()));
+        dos.flush();
+    }
+
+    private static void sendCommodityWithId(Socket socket, int id) throws Exception {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF(yaGson.toJson(YaDataManager.getCommodityById(id), new TypeToken<Commodity>(){}.getType()));
+        dos.flush();
     }
 }
