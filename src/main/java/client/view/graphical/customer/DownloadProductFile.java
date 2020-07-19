@@ -56,6 +56,11 @@ public class DownloadProductFile {
                 Socket senderSocket = fileReceiver.accept();
                 senderSocket.getInputStream().read(bytes);
                 fileOutputStream.write(bytes);
+                fileOutputStream.close();
+                senderSocket.close();
+                fileReceiver.close();
+                fileDataSocket.close();
+                progressBar.setVisible(false);
                 messageToUser.setText("File downloaded successfully");
                 doneButton.setDisable(false);
             }
