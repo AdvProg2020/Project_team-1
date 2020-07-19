@@ -1202,8 +1202,8 @@ public class View {
         System.out.println("enter image path;");
         String path = scanner.nextLine();
         //resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description, amount, path);
-        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description,
-                amount, path, null);
+//        resellerMenu.addProduct(brand, name, price, category, productCategorySpecification, description,
+//                amount, path, null);
         System.out.println("product request had been sent to managers");
     }
 

@@ -1,5 +1,6 @@
 package server.controller.manager;
 
+import common.model.account.PersonalAccount;
 import server.dataManager.YaDataManager;
 import server.controller.share.Menu;
 import common.model.commodity.DiscountCode;
@@ -7,6 +8,7 @@ import client.view.graphical.holyManager.AddPersonToDiscountCode;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import static client.view.commandline.View.managerMenu;
@@ -36,7 +38,7 @@ public class CreateDiscountCode extends Menu {
     }
 
     public void createDiscountCodeNC(String code , String stringStart , String stringFinish ,
-                                     String discountPercentageString , String maximumDiscountPriceString , String maximumNumberOfUseString) throws Exception {
+                                     String discountPercentageString , String maximumDiscountPriceString , String maximumNumberOfUseString , ArrayList<PersonalAccount> accounts) throws Exception {
         checkCode(code);
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         Date start = null;
@@ -71,9 +73,8 @@ public class CreateDiscountCode extends Menu {
         }
         if (!checkDateAndNumbers(finish,start,discountPercentage,maximumDiscountPrice,maximumNumberOfUse))
             throw new Exception("Invalid entry.");
-
-        managerMenu.addDiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, AddPersonToDiscountCode.getAccounts());
-
+        System.out.println(AddPersonToDiscountCode.getAccounts());
+        managerMenu.addDiscountCode(code, start, finish, discountPercentage, maximumDiscountPrice, maximumNumberOfUse, accounts);
     }
 
 }
