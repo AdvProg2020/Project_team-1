@@ -11,6 +11,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import static client.Main.socketB;
+import static client.Main.socket;
 
 public class BankAccountPage {
     public TextField username;
@@ -29,8 +30,16 @@ public class BankAccountPage {
         String respond = dataInputStream.readUTF();
         error.setText(respond);
         if (!(respond.equals("password do not match") || respond.equals("username is not available"))){
+            DataOutputStream dataOutputStream1 = new DataOutputStream(socket.getOutputStream());
+            dataOutputStream1.writeUTF(respond);
+            dataOutputStream1.flush();
+            dataOutputStream.writeUTF("get_token " + username.getText() + " " + password.getText());
+            dataOutputStream.flush();
+            respond = dataInputStream.readUTF();
+            System.out.println(respond);
+            dataOutputStream1.writeUTF(respond);
+            dataOutputStream1.flush();
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
         }
-
     }
 }

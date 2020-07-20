@@ -26,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import server.dataManager.YaDataManager;
 
 import static client.Main.socket;
 
@@ -95,7 +96,8 @@ public class LoginRegister implements Initializable {
         }
         dataOutputStream.writeUTF("send account");
         dataOutputStream.flush();
-        SimpleAccount simpleAccount = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<SimpleAccount>(){}.getType());
+        SimpleAccount simpleAccount = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<SimpleAccount>() {
+        }.getType());
         ClientLoginRegisterMenu.login(simpleAccount);
         if (simpleAccount instanceof BusinessAccount) {
             new SetupFileClient(simpleAccount).start();
@@ -118,12 +120,10 @@ public class LoginRegister implements Initializable {
                         registerFirstNameTf.getText() + " " + registerLastNameTf.getText() + " " + registerEmailTf.getText() + " " +
                         registerPhoneNumberTf.getText() + " " + registerPassword.getText() + " " + imagePath;
                 dataOutputStream.writeUTF(information);
-                dataOutputStream.flush();
                 break;
 
             case "reseller":
-
-                information = "business " +  registerUsernameTf.getText() + " " +
+                information = "business " + registerUsernameTf.getText() + " " +
                         registerFirstNameTf.getText() + " " + registerLastNameTf.getText() + " " + registerEmailTf.getText() + " " +
                         registerPhoneNumberTf.getText() + " " + registerPassword.getText() + " " + registerBusinessNameTf.getText() + " " + imagePath;
                 dataOutputStream.writeUTF(information);
@@ -140,8 +140,8 @@ public class LoginRegister implements Initializable {
         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
         String respond = dataInputStream.readUTF();
         registerMessageLabel.setText(respond);
-        if (respond.equals("You have registered successfully.") && (!accountType.getValue().equals("manager"))){
-            newPopup(actionEvent , "../../../fxml/RegisterBankAccount.fxml");
+        if (respond.equals("You have registered successfully.") && (!accountType.getValue().equals("manager"))) {
+            newPopup(actionEvent, "../../../fxml/RegisterBankAccount.fxml");
         }
     }
 
@@ -213,7 +213,8 @@ public class LoginRegister implements Initializable {
             }
         }
     }
-   private void newPopup(ActionEvent actionEvent, String filePath) {
+
+    private void newPopup(ActionEvent actionEvent, String filePath) {
         Parent parent = null;
         Popup popupMenu = new Popup();
         try {

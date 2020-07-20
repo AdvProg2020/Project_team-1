@@ -27,6 +27,25 @@ public abstract class SimpleAccount implements Serializable {
     protected String accountType;
     protected String imagePath;
     private String password;
+    private String bankToken;
+    private String accountID;
+
+    public String getAccountID() {
+        return accountID;
+    }
+
+    public void setAccountID(String accountID) {
+        this.accountID = accountID;
+    }
+
+    public String getBankToken() {
+        return bankToken;
+    }
+
+    public void setBankToken(String bankToken) {
+        this.bankToken = bankToken;
+    }
+
     public SimpleAccount(String username, String firstName, String lastName, String email, String phoneNumber,
                          String password, String accountType) throws InvalidAccountInfoException {
         changeUsername(username);

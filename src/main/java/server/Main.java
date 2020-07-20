@@ -35,14 +35,17 @@ public class Main {
     private static ArrayList<Socket> sockets = new ArrayList<>();
     private static HashMap<Socket, String> onlineAccountsUserNames = new HashMap<>();
     private static HashMap<String, Socket> onlineFileTransferClients = new HashMap<>();
-    public   static  Socket socketB;
+    public static Socket socketB;
 
     static {
         try {
-            socketB = new Socket("127.0.0.1" , 9999);
+            socketB = new Socket("127.0.0.1", 9999);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Main() throws IOException {
     }
 
     public static void main(String[] args) throws IOException {
@@ -272,7 +275,7 @@ public class Main {
             System.out.println(information[1] + " as");
 
             try {
-                 loginRegisterMenu.checkUserNameAvailability(information[1]);
+                loginRegisterMenu.checkUserNameAvailability(information[1]);
             } catch (InvalidLoginInformationException e) {
                 dataOutputStream.writeUTF(e.getMessage());
                 dataOutputStream.flush();
@@ -286,43 +289,87 @@ public class Main {
                     dataOutputStream.flush();
                 }
             }
+            String bankToken;
             if (information[0].equals("personal")) {
-                try {
-                    loginRegisterMenu.registerPersonalAccount(information[1], information[2], information[3]
-                            , information[4], information[5], information[6], information[7]);
-                    dataOutputStream.writeUTF("You have registered successfully.");
-                    dataOutputStream.flush();
-                } catch (InvalidAccountInfoException e) {
-                    dataOutputStream.writeUTF(e.getMessage());
-                    dataOutputStream.flush();
-                }
+                registerPersonal(dataOutputStream, dataInputStream, information);
             }
             if (information[0].equals("business")) {
-                try {
-                    loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
-                            , information[4], information[5], information[6], information[7] , information[8]);
-                    dataOutputStream.writeUTF("You have registered successfully.");
-                    dataOutputStream.flush();
-
-                } catch (InvalidAccountInfoException e) {
-                    dataOutputStream.writeUTF(e.getMessage());
-                    dataOutputStream.flush();
-                }
+                registerReseller(dataOutputStream, dataInputStream, information);
             }
             if (information[0].equals("manager")) {
-                try {
-                    loginRegisterMenu.registerManagerAccount(information[1], information[2], information[3]
-                            , information[4], information[5], information[6], information[7]);
-                    dataOutputStream.writeUTF("You have registered successfully.");
-                    dataOutputStream.flush();
-                } catch (InvalidAccountInfoException e) {
-                    dataOutputStream.writeUTF(e.getMessage());
-                    dataOutputStream.flush();
-                }
+                registerManager(dataOutputStream, information);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void registerManager(DataOutputStream dataOutputStream, String[] information) throws IOException {
+        try {
+            loginRegisterMenu.registerManagerAccount(information[1], information[2], information[3]
+                    , information[4], information[5], information[6], information[7]);
+            dataOutputStream.writeUTF("You have registered successfully.");
+            dataOutputStream.flush();
+        } catch (InvalidAccountInfoException e) {
+            dataOutputStream.writeUTF(e.getMessage());
+            dataOutputStream.flush();
+        }
+    }
+
+    private static void registerPersonal(DataOutputStream dataOutputStream, DataInputStream dataInputStream, String[] information) throws IOException {
+        try {
+            loginRegisterMenu.registerPersonalAccount(information[1], information[2], information[3]
+                    , information[4], information[5], information[6], information[7]);
+            initializePersonalBankAccount(dataOutputStream, dataInputStream, information);
+        } catch (InvalidAccountInfoException e) {
+            dataOutputStream.writeUTF(e.getMessage());
+            dataOutputStream.flush();
+        }
+    }
+
+    private static void initializePersonalBankAccount(DataOutputStream dataOutputStream, DataInputStream dataInputStream, String[] information) throws IOException {
+        String accountID;
+        String bankToken;
+        dataOutputStream.writeUTF("You have registered successfully.");
+        dataOutputStream.flush();
+        accountID = dataInputStream.readUTF();
+        bankToken = dataInputStream.readUTF();
+        System.out.println("Bank token " + bankToken);
+        System.out.println(information[1]);
+        System.out.println(YaDataManager.getAccountWithUserName(information[1]));
+        YaDataManager.getAccountWithUserName(information[1]).setBankToken(bankToken);
+        YaDataManager.getAccountWithUserName(information[1]).setAccountID(accountID);
+        String receiptID= createReceipt(bankToken, "deposit" , "1000" , "-1" , accountID , "" );
+        System.out.println(payReceipt(receiptID));
+    }
+
+    private static void registerReseller(DataOutputStream dataOutputStream, DataInputStream dataInputStream, String[] information) throws IOException {
+        try {
+            loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
+                    , information[4], information[5], information[6], information[7], information[8]);
+            initializeBankAccount(dataOutputStream, dataInputStream, information);
+        } catch (InvalidAccountInfoException e) {
+            dataOutputStream.writeUTF(e.getMessage());
+            dataOutputStream.flush();
+        }
+    }
+
+    private static void initializeBankAccount(DataOutputStream dataOutputStream, DataInputStream dataInputStream, String[] information) throws IOException {
+        String accountID;
+        String bankToken;
+        dataOutputStream.writeUTF("You have registered successfully.");
+        dataOutputStream.flush();
+        accountID = dataInputStream.readUTF();
+        bankToken = dataInputStream.readUTF();
+        for (Request request : YaDataManager.getRequests()) {
+            if (request.getObj() instanceof BusinessAccount &&
+                    ((BusinessAccount) request.getObj()).getUsername().equals(information[1])){
+                ((BusinessAccount) request.getObj()).setAccountID(accountID);
+                ((BusinessAccount) request.getObj()).setBankToken(bankToken);
+            }
+        }
+        String receiptID= createReceipt(bankToken, "deposit" , "1000" , "-1" , accountID , "" );
+        System.out.println(payReceipt(receiptID));
     }
 
     private static void editPersonalInfo(String input, Socket socket) throws IOException {
@@ -656,5 +703,23 @@ public class Main {
                 }
             }
         }
+
+    }
+
+    private static String createReceipt(String bankToken, String receipt_type, String money, String sourceID, String destID, String description) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
+        dataOutputStream.writeUTF("create_receipt " + bankToken + " " + receipt_type + " " + money + " " +
+        sourceID + " " + destID + " " + description);
+        dataOutputStream.flush();
+        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
+        return dataInputStream.readUTF();
+    }
+
+    private static String payReceipt(String receiptID) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
+        dataOutputStream.writeUTF("pay " + receiptID);
+        dataOutputStream.flush();
+        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
+        return dataInputStream.readUTF();
     }
 }
