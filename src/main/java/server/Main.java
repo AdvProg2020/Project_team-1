@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -32,10 +33,10 @@ import static client.view.commandline.View.loginRegisterMenu;
 
 public class Main {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+    public static Socket socketB;
     private static ArrayList<Socket> sockets = new ArrayList<>();
     private static HashMap<Socket, String> onlineAccountsUserNames = new HashMap<>();
     private static HashMap<String, Socket> onlineFileTransferClients = new HashMap<>();
-    public static Socket socketB;
 
     static {
         try {
@@ -149,11 +150,16 @@ public class Main {
             sendCommodityWithId(socket, Integer.parseInt(input.split(" ")[4]));
         } else if (input.equals("send all offs")) {
             sendAllOffs(socket);
+        } else if (input.startsWith("add to cart ")) {
+            addToCart(onlineAccountsUserNames.get(socket), Integer.parseInt(input.split(" ")[3]));
+        } else if (input.startsWith("remove from cart")) {
+            removeFromCart(onlineAccountsUserNames.get(socket), Integer.parseInt(input.split(" ")[3]));
+        } else if (input.startsWith("add to product views")) {
+            addToVisits(Integer.parseInt(input.split(" ")[4]));
         }
     }
 
     private static void login(String input, Socket socket) throws IOException {
-        System.out.println("adk");
         String[] splitInput = input.split(" ");
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -162,7 +168,6 @@ public class Main {
             onlineAccountsUserNames.put(socket, splitInput[1]);
             dataOutputStream.writeUTF("logged in");
             dataOutputStream.flush();
-            System.out.println(dataInputStream.readUTF());
             dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAccountWithUserName(splitInput[1]), new TypeToken<SimpleAccount>() {
             }.getType()));
             dataOutputStream.flush();
@@ -339,7 +344,7 @@ public class Main {
         System.out.println(YaDataManager.getAccountWithUserName(information[1]));
         YaDataManager.getAccountWithUserName(information[1]).setBankToken(bankToken);
         YaDataManager.getAccountWithUserName(information[1]).setAccountID(accountID);
-        String receiptID= createReceipt(bankToken, "deposit" , "1000" , "-1" , accountID , "" );
+        String receiptID = createReceipt(bankToken, "deposit", "1000", "-1", accountID, "");
         System.out.println(payReceipt(receiptID));
     }
 
@@ -363,12 +368,12 @@ public class Main {
         bankToken = dataInputStream.readUTF();
         for (Request request : YaDataManager.getRequests()) {
             if (request.getObj() instanceof BusinessAccount &&
-                    ((BusinessAccount) request.getObj()).getUsername().equals(information[1])){
+                    ((BusinessAccount) request.getObj()).getUsername().equals(information[1])) {
                 ((BusinessAccount) request.getObj()).setAccountID(accountID);
                 ((BusinessAccount) request.getObj()).setBankToken(bankToken);
             }
         }
-        String receiptID= createReceipt(bankToken, "deposit" , "1000" , "-1" , accountID , "" );
+        String receiptID = createReceipt(bankToken, "deposit", "1000", "-1", accountID, "");
         System.out.println(payReceipt(receiptID));
     }
 
@@ -644,6 +649,37 @@ public class Main {
         dos.flush();
     }
 
+    private static String createReceipt(String bankToken, String receipt_type, String money, String sourceID, String destID, String description) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
+        dataOutputStream.writeUTF("create_receipt " + bankToken + " " + receipt_type + " " + money + " " +
+                sourceID + " " + destID + " " + description);
+        dataOutputStream.flush();
+        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
+        return dataInputStream.readUTF();
+    }
+
+    private static String payReceipt(String receiptID) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
+        dataOutputStream.writeUTF("pay " + receiptID);
+        dataOutputStream.flush();
+        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
+        return dataInputStream.readUTF();
+    }
+
+    private static void addToCart(String username, int id) throws Exception {
+        PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(username);
+        Objects.requireNonNull(personalAccount).addToCart(id);
+    }
+
+    private static void removeFromCart(String username, int id) throws Exception {
+        PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(username);
+        Objects.requireNonNull(personalAccount).removeFromCart(id);
+    }
+
+    private static void addToVisits(int id) throws Exception {
+        Commodity commodity = YaDataManager.getCommodityById(id);
+        commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
+    }
     private static class FileTransferMetadataServer extends Thread {
 
         private ServerSocket serverSocket;
@@ -704,22 +740,5 @@ public class Main {
             }
         }
 
-    }
-
-    private static String createReceipt(String bankToken, String receipt_type, String money, String sourceID, String destID, String description) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
-        dataOutputStream.writeUTF("create_receipt " + bankToken + " " + receipt_type + " " + money + " " +
-        sourceID + " " + destID + " " + description);
-        dataOutputStream.flush();
-        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
-        return dataInputStream.readUTF();
-    }
-
-    private static String payReceipt(String receiptID) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
-        dataOutputStream.writeUTF("pay " + receiptID);
-        dataOutputStream.flush();
-        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
-        return dataInputStream.readUTF();
     }
 }
