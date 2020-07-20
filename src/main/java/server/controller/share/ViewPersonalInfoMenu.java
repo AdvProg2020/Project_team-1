@@ -34,7 +34,6 @@ public class ViewPersonalInfoMenu extends Menu{
     }
 
     public void updateFile(SimpleAccount simpleAccount) throws Exception {
-        System.out.println(simpleAccount.getFirstName());
         if (simpleAccount instanceof BusinessAccount){
             YaDataManager.deleteAccountWithUserName(simpleAccount.getUsername());
             YaDataManager.addBusiness((BusinessAccount) simpleAccount);

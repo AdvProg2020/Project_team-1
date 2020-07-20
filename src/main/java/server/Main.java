@@ -36,6 +36,7 @@ public class Main {
     private static HashMap<Socket, String> onlineAccountsUserNames = new HashMap<>();
     private static HashMap<String, Socket> onlineFileTransferClients = new HashMap<>();
     public static Socket socketB;
+    private static String bankAccountID;
 
     static {
         try {
@@ -53,11 +54,14 @@ public class Main {
         new FileTransferMetadataServer(serverSocket).start();
         ServerSocket server = new ServerSocket(Constants.SERVER_PORT); // for clients request
         DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
-        dataOutputStream.writeUTF("create_account bank bank bank bank bank");
-        dataOutputStream.flush();
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         System.out.println(dataInputStream.readUTF());
-        System.out.println(dataInputStream.readUTF());
+        dataOutputStream.writeUTF("create_account bank bank bank bank bank");
+        dataOutputStream.flush();
+        bankAccountID = dataInputStream.readUTF();
+        System.out.println(bankAccountID + " = bank id");
+        bankAccountID = "10001";
+        System.out.println(bankAccountID);
         while (true) {
             Socket socket = server.accept();
             sockets.add(socket);
@@ -149,6 +153,10 @@ public class Main {
             sendCommodityWithId(socket, Integer.parseInt(input.split(" ")[4]));
         } else if (input.equals("send all offs")) {
             sendAllOffs(socket);
+        } else if (input.startsWith("Deposit to wallet")) {
+            depositToWallet(socket, input);
+        } else if (input.startsWith("Withdraw from wallet")) {
+            withdrawFromWallet(socket, input);
         }
     }
 
@@ -324,22 +332,24 @@ public class Main {
         } catch (InvalidAccountInfoException e) {
             dataOutputStream.writeUTF(e.getMessage());
             dataOutputStream.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private static void initializePersonalBankAccount(DataOutputStream dataOutputStream, DataInputStream dataInputStream, String[] information) throws IOException {
+    private static void initializePersonalBankAccount(DataOutputStream dataOutputStream, DataInputStream dataInputStream, String[] information) throws Exception {
         String accountID;
         String bankToken;
         dataOutputStream.writeUTF("You have registered successfully.");
         dataOutputStream.flush();
         accountID = dataInputStream.readUTF();
         bankToken = dataInputStream.readUTF();
-        System.out.println("Bank token " + bankToken);
+        System.out.println("Bank token " + bankToken + " " + accountID);
         System.out.println(information[1]);
         System.out.println(YaDataManager.getAccountWithUserName(information[1]));
-        YaDataManager.getAccountWithUserName(information[1]).setBankToken(bankToken);
-        YaDataManager.getAccountWithUserName(information[1]).setAccountID(accountID);
-        String receiptID= createReceipt(bankToken, "deposit" , "1000" , "-1" , accountID , "" );
+        loginRegisterMenu.setAccountId(YaDataManager.getAccountWithUserName(information[1]), accountID);
+        System.out.println(YaDataManager.getAccountWithUserName(information[1]).getAccountID());
+        String receiptID = createReceipt(bankToken, "deposit", "1000", "-1", accountID, "");
         System.out.println(payReceipt(receiptID));
     }
 
@@ -347,14 +357,14 @@ public class Main {
         try {
             loginRegisterMenu.registerResellerAccount(information[1], information[2], information[3]
                     , information[4], information[5], information[6], information[7], information[8]);
-            initializeBankAccount(dataOutputStream, dataInputStream, information);
+            initializeResellerBankAccount(dataOutputStream, dataInputStream, information);
         } catch (InvalidAccountInfoException e) {
             dataOutputStream.writeUTF(e.getMessage());
             dataOutputStream.flush();
         }
     }
 
-    private static void initializeBankAccount(DataOutputStream dataOutputStream, DataInputStream dataInputStream, String[] information) throws IOException {
+    private static void initializeResellerBankAccount(DataOutputStream dataOutputStream, DataInputStream dataInputStream, String[] information) throws IOException {
         String accountID;
         String bankToken;
         dataOutputStream.writeUTF("You have registered successfully.");
@@ -363,12 +373,11 @@ public class Main {
         bankToken = dataInputStream.readUTF();
         for (Request request : YaDataManager.getRequests()) {
             if (request.getObj() instanceof BusinessAccount &&
-                    ((BusinessAccount) request.getObj()).getUsername().equals(information[1])){
-                ((BusinessAccount) request.getObj()).setAccountID(accountID);
-                ((BusinessAccount) request.getObj()).setBankToken(bankToken);
+                    ((BusinessAccount) request.getObj()).getUsername().equals(information[1])) {
+                loginRegisterMenu.setAccountIDRequest(request, accountID);
             }
         }
-        String receiptID= createReceipt(bankToken, "deposit" , "1000" , "-1" , accountID , "" );
+        String receiptID = createReceipt(bankToken, "deposit", "1000", "-1", accountID, "");
         System.out.println(payReceipt(receiptID));
     }
 
@@ -391,8 +400,9 @@ public class Main {
             }
             dataOutputStream.writeUTF("successfully changed");
             dataOutputStream.flush();
+            System.out.println("  ss");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataOutputStream.writeUTF(e.getMessage());
             dataOutputStream.flush();
@@ -709,7 +719,7 @@ public class Main {
     private static String createReceipt(String bankToken, String receipt_type, String money, String sourceID, String destID, String description) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
         dataOutputStream.writeUTF("create_receipt " + bankToken + " " + receipt_type + " " + money + " " +
-        sourceID + " " + destID + " " + description);
+                sourceID + " " + destID + " " + description);
         dataOutputStream.flush();
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         return dataInputStream.readUTF();
@@ -721,5 +731,38 @@ public class Main {
         dataOutputStream.flush();
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         return dataInputStream.readUTF();
+    }
+
+    private static void depositToWallet(Socket socket, String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        String clientAccountID = YaDataManager.getAccountWithUserName(splitInput[4]).getAccountID();
+        String receipt = createReceipt(splitInput[3], "move", splitInput[5], clientAccountID, bankAccountID, "");
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        String respond = payReceipt(receipt);
+        dataOutputStream.writeUTF(respond);
+        dataOutputStream.flush();
+        if (respond.equals("done successfully")) {
+            if (YaDataManager.getAccountWithUserName(splitInput[4]) instanceof BusinessAccount) {
+                View.resellerMenu.walletTransaction(Double.parseDouble(splitInput[5]), YaDataManager.getSellerWithUserName(splitInput[4]));
+            } else
+                View.customerMenu.walletTransaction(Double.parseDouble(splitInput[5]), YaDataManager.getPersonWithUserName(splitInput[4]));
+        }
+    }
+
+    private static void withdrawFromWallet(Socket socket, String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        String clientAccountID = YaDataManager.getAccountWithUserName(splitInput[4]).getAccountID();
+        DataOutputStream dataOutputStream1 = new DataOutputStream(socketB.getOutputStream());
+        dataOutputStream1.writeUTF("get_token bank bank");
+        dataOutputStream1.flush();
+        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
+        String receipt = createReceipt(dataInputStream.readUTF(), "move", splitInput[5], bankAccountID, clientAccountID, "");
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        String respond = payReceipt(receipt);
+        dataOutputStream.writeUTF(respond);
+        dataOutputStream.flush();
+        if (respond.equals("done successfully")) {
+            View.resellerMenu.walletTransaction(-(Double.parseDouble(splitInput[5])), YaDataManager.getSellerWithUserName(splitInput[4]));
+        }
     }
 }

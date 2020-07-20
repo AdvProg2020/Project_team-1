@@ -9,6 +9,7 @@ import server.controller.share.Menu;
 import server.controller.share.MenuHandler;
 import server.dataManager.YaDataManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static client.view.commandline.View.*;
@@ -66,5 +67,11 @@ public class CustomerMenu extends Menu {
 
     public void setDiscountsSortType(String discountsSortType) {
         this.discountsSortType = discountsSortType;
+    }
+
+    public void walletTransaction(double amount , PersonalAccount personalAccount) throws IOException {
+        personalAccount.addToCredit(amount);
+        YaDataManager.removePerson(personalAccount);
+        YaDataManager.addPerson(personalAccount);
     }
 }

@@ -119,4 +119,10 @@ public class ResellerMenu extends Menu {
         YaDataManager.addBusiness(businessAccount);
         YaDataManager.removeCommodity(commodity);
     }
+
+    public void walletTransaction(double amount , BusinessAccount businessAccount) throws IOException {
+        businessAccount.addToCredit(amount);
+        YaDataManager.removeBusiness(businessAccount);
+        YaDataManager.addBusiness(businessAccount);
+    }
 }

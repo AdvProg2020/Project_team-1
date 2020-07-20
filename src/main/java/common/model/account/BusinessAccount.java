@@ -27,7 +27,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         sellLogs = new ArrayList<>();
         commoditiesId = new ArrayList<>();
         offsId = new ArrayList<>();
-        credit = 1000;
+        credit = 0.0;
         status = Status.UNDER_CHECKING_FOR_CREATE;
     }
 
@@ -38,7 +38,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         sellLogs = new ArrayList<>();
         commoditiesId = new ArrayList<>();
         offsId = new ArrayList<>();
-        credit = 1000;
+        credit = 0.0;
         status = Status.UNDER_CHECKING_FOR_CREATE;
     }
 

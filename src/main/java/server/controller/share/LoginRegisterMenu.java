@@ -131,4 +131,16 @@ public class LoginRegisterMenu extends Menu {
         }
     }
 
+    public void setAccountId(SimpleAccount simpleAccount , String accountID) throws Exception {
+        simpleAccount.setAccountID(accountID);
+        YaDataManager.deleteAccountWithUserName(simpleAccount.getUsername());
+        YaDataManager.addPerson((PersonalAccount) simpleAccount);
+    }
+
+    public void setAccountIDRequest(Request request , String accountID) throws IOException {
+        ((BusinessAccount)request.getObj()).setAccountID(accountID);
+        YaDataManager.removeRequest(request);
+        YaDataManager.addRequest(request);
+    }
+
 }

@@ -105,7 +105,7 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
                     deleteButtonAndTextField(change, textField);
-                    dataOutputStream.writeUTF("Edit last name " +
+                    dataOutputStream.writeUTF("Edit lastname " +
                             Session.getOnlineAccount().getUsername() + " " +textField.getText());
                     dataOutputStream.flush();
                     String respond = dataInputStream.readUTF();
@@ -169,7 +169,7 @@ public class ViewPersonalInfo extends HolyManager implements Initializable {
                     String respond = dataInputStream.readUTF();
                     if (respond.equals("successfully changed")) {
                         setLabel(Color.GREEN, respond);
-                        Session.getOnlineAccount().changeEmail(textField.getText());
+                        Session.getOnlineAccount().changePhoneNumber(textField.getText());
                     } else setLabel(Color.RED , respond);
                     updatePane();
                 } catch (Exception exception) {

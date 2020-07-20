@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.Wallet">
+   <children>
+      <Button layoutX="197.0" layoutY="200.0" mnemonicParsing="false" onAction="#deposit" prefHeight="25.0" prefWidth="179.0" styleClass="normal-button-Green" text="Deposit" />
+      <Button fx:id="withdrawButton" layoutX="197.0" layoutY="277.0" maxHeight="55.0" minWidth="179.0" mnemonicParsing="false" onAction="#withdraw" prefHeight="55.0" prefWidth="179.0" styleClass="normal-button" text="Withdraw" />
+      <TextField fx:id="money" layoutX="212.0" layoutY="156.0" prefHeight="33.0" prefWidth="138.0" promptText="Money" />
+      <Label layoutX="138.0" layoutY="31.0" styleClass="hint-label" text="Your wallet balance:" />
+      <Label fx:id="balance" layoutX="311.0" layoutY="31.0" styleClass="hint-label" text="Label" />
+      <Label fx:id="error" layoutX="118.0" layoutY="350.0" prefHeight="29.0" prefWidth="319.0" styleClass="hint-label" visible="false" />
+      <Button layoutX="456.0" layoutY="323.0" mnemonicParsing="false" onAction="#close" styleClass="close-button" text="Close" />
+      <TextField fx:id="bankUsername" layoutX="212.0" layoutY="71.0" prefHeight="33.0" prefWidth="138.0" promptText="Bank username" />
+      <PasswordField fx:id="password" layoutX="212.0" layoutY="115.0" prefHeight="33.0" prefWidth="138.0" promptText="Password" />
+   </children>
+</AnchorPane>

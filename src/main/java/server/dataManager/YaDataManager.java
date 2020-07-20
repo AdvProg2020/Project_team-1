@@ -201,9 +201,9 @@ public class YaDataManager {
         return businessAccounts;
     }
 
-    public static void addBusiness(BusinessAccount managerAccount) throws IOException {
+    public static void addBusiness(BusinessAccount businessAccount) throws IOException {
         ArrayList<BusinessAccount> businessAccounts = getBusinesses();
-        businessAccounts.add(managerAccount);
+        businessAccounts.add(businessAccount);
         updateBusinesses(businessAccounts);
     }
 

@@ -104,4 +104,20 @@ public class CustomerPanel {
         popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());
         OnlineSupportAccounts.setStage((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
     }
+
+    public void wallet(ActionEvent actionEvent) {
+        newPopup(actionEvent , "../../../../fxml/Wallet.fxml");
+    }
+
+    protected void newPopup(ActionEvent actionEvent, String filePath) {
+        Parent parent = null;
+        Popup popupMenu = new Popup();
+        try {
+            parent = FXMLLoader.load(getClass().getResource(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        popupMenu.getContent().add(parent);
+        popupMenu.show((((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
 }
