@@ -156,6 +156,8 @@ public class Main {
             removeFromCart(onlineAccountsUserNames.get(socket), Integer.parseInt(input.split(" ")[3]));
         } else if (input.startsWith("add to product views")) {
             addToVisits(Integer.parseInt(input.split(" ")[4]));
+        } else if (input.equals("get total price")) {
+            sendTotalPrice(socket);
         }
     }
 
@@ -680,6 +682,14 @@ public class Main {
         Commodity commodity = YaDataManager.getCommodityById(id);
         commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
     }
+
+    private static void sendTotalPrice(Socket socket) throws Exception {
+        PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(onlineAccountsUserNames.get(socket));
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF("Total price: " + View.cartMenu.calculateTotalPrice(personalAccount) + " Rials");
+        dos.flush();
+    }
+
     private static class FileTransferMetadataServer extends Thread {
 
         private ServerSocket serverSocket;

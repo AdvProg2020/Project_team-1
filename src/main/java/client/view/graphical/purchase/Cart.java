@@ -56,7 +56,9 @@ public class Cart implements Initializable {
         }
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         try {
-            totalPrice.setText("Total price: " + cartMenu.calculateTotalPrice() + " Rials");
+            outputStream.writeUTF("get total price");
+            outputStream.flush();
+            totalPrice.setText(inputStream.readUTF());
         } catch (Exception e) {
             e.printStackTrace();
         }
