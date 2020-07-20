@@ -1,6 +1,8 @@
 package server.controller.customer;
 
 import client.Session;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
 import common.model.account.BusinessAccount;
 import common.model.account.PersonalAccount;
 import common.model.commodity.Commodity;
@@ -16,24 +18,25 @@ import server.dataManager.YaDataManager;
 import java.io.IOException;
 import java.util.*;
 
+import static client.Main.outputStream;
 import static client.view.commandline.View.cartMenu;
 import static client.view.commandline.View.commodityMenu;
 
 public class CartMenu extends Menu {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     private String productSortType = "visits";
     private BuyLog buyLog;
-
-    public BuyLog getBuyLog() {
-        return buyLog;
-    }
 
     public CartMenu() {
         fxmlFileAddress = "../../../fxml/customer/Cart.fxml";
     }
 
-    public int calculateTotalPrice() throws Exception {
+    public BuyLog getBuyLog() {
+        return buyLog;
+    }
+
+    public int calculateTotalPrice(PersonalAccount account) throws Exception {
         int price = 0;
-        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         HashMap<Integer, Integer> cart = account.getCart();
         for (int commodityId : cart.keySet()) {
             Commodity commodity = YaDataManager.getCommodityById(commodityId);
@@ -45,15 +48,19 @@ public class CartMenu extends Menu {
     public void decrease(int id) throws Exception {
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         personalAccount.removeFromCart(id);
+        outputStream.writeUTF("remove from cart " + id);
+        outputStream.flush();
     }
 
-    public int getAmountInCart(Commodity commodity) throws Exception {
+    public int getAmountInCart(Commodity commodity) {
         return ((PersonalAccount) Session.getOnlineAccount()).getAmount(commodity.getCommodityId());
     }
 
     public void increase(int id) throws Exception {
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         personalAccount.addToCart(id);
+        outputStream.writeUTF("add to cart " + id);
+        outputStream.flush();
     }
 
     public DiscountCode getDiscountCodeWithCode(String code) throws Exception {
@@ -88,7 +95,7 @@ public class CartMenu extends Menu {
 
     public void purchase(DiscountCode discountCode) throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        int price = calculateTotalPrice();
+        int price = calculateTotalPrice(account);
         if (discountCode != null && !discountCode.equals(""))
             price = cartMenu.useDiscountCode(price, discountCode);
         if ((double) price > account.getCredit()) {
@@ -98,8 +105,9 @@ public class CartMenu extends Menu {
             throw new Exception("you don't have enough money to pay");
         }
         account.addToCredit(-price);
-        BuyLog buyLog = new BuyLog(new Date(), new HashSet<>(account.getCart().keySet()), price, calculateTotalPrice() -
-                price, discountCode == null ? "No discount" : discountCode.getCode());
+        BuyLog buyLog = new BuyLog(new Date(), new HashSet<>(account.getCart().keySet()), price,
+                calculateTotalPrice(account) - price,
+                discountCode == null ? "No discount" : discountCode.getCode());
         account.addBuyLog(buyLog);
         reduceCommodityAmount(account.getCart());
         account.clearCart();

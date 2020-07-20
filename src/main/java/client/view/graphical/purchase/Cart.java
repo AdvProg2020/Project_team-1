@@ -3,6 +3,9 @@ package client.view.graphical.purchase;
 import client.Session;
 import client.view.AudioPlayer;
 import client.view.commandline.View;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.PersonalAccount;
 import common.model.commodity.Commodity;
 import javafx.event.ActionEvent;
@@ -19,14 +22,17 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import server.controller.customer.CartMenu;
 import server.controller.share.MenuHandler;
-import server.dataManager.YaDataManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static client.Main.inputStream;
+import static client.Main.outputStream;
+
 public class Cart implements Initializable {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     private final CartMenu cartMenu = View.cartMenu;
     public Label totalPrice;
     public GridPane cartGridPane;
@@ -50,20 +56,31 @@ public class Cart implements Initializable {
         }
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         try {
-            totalPrice.setText("Total price: " + cartMenu.calculateTotalPrice() + " Rials");
+            outputStream.writeUTF("get total price");
+            outputStream.flush();
+            totalPrice.setText(inputStream.readUTF());
         } catch (Exception e) {
             e.printStackTrace();
         }
         int counter = 0;
         for (int commodityId : account.getCart().keySet()) {
             try {
-                Commodity commodity = YaDataManager.getCommodityById(commodityId);
+                outputStream.writeUTF("send commodity with id " + commodityId);
+                outputStream.flush();
+                Commodity commodity = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Commodity>() {
+                }.getType());
                 GridPane commodityGridPane = new GridPane();
                 ImageView imageView = new ImageView(new Image(new FileInputStream(commodity.getImagePath())));
                 imageView.setOnMouseClicked(mouseEvent -> {
                     View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
                     View.commodityMenu.setCommodity(commodity);
                     commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
+                    try {
+                        outputStream.writeUTF("add to product views " + commodityId);
+                        outputStream.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     MenuHandler.getInstance().setCurrentMenu(View.commodityMenu);
                     Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
                 });
@@ -79,6 +96,7 @@ public class Cart implements Initializable {
                 plusButton.setOnMouseClicked(actionEvent -> {
                     try {
                         cartMenu.increase(commodity.getCommodityId());
+                        scrollPane.setContent(null);
                         initialize(url, resourceBundle);
                         error.setText("Increased successfully");
                     } catch (Exception e) {
@@ -92,9 +110,7 @@ public class Cart implements Initializable {
                 minusButton.setOnMouseClicked(actionEvent -> {
                     try {
                         cartMenu.decrease(commodity.getCommodityId());
-                        if (account.getAmount(commodityId) == 0) {
-                            scrollPane.setContent(null);
-                        }
+                        scrollPane.setContent(null);
                         initialize(url, resourceBundle);
                         error.setText("Decreased successfully");
                     } catch (Exception e) {

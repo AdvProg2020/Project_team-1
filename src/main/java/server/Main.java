@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -54,6 +55,8 @@ public class Main {
         new FileTransferMetadataServer(serverSocket).start();
         ServerSocket server = new ServerSocket(Constants.SERVER_PORT); // for clients request
         DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
+        dataOutputStream.writeUTF("create_account bank bank bank bank bank");
+        dataOutputStream.flush();
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         System.out.println(dataInputStream.readUTF());
         dataOutputStream.writeUTF("create_account bank bank bank bank bank");
@@ -157,11 +160,18 @@ public class Main {
             depositToWallet(socket, input);
         } else if (input.startsWith("Withdraw from wallet")) {
             withdrawFromWallet(socket, input);
+        } else if (input.startsWith("add to cart ")) {
+            addToCart(onlineAccountsUserNames.get(socket), Integer.parseInt(input.split(" ")[3]));
+        } else if (input.startsWith("remove from cart")) {
+            removeFromCart(onlineAccountsUserNames.get(socket), Integer.parseInt(input.split(" ")[3]));
+        } else if (input.startsWith("add to product views")) {
+            addToVisits(Integer.parseInt(input.split(" ")[4]));
+        } else if (input.equals("get total price")) {
+            sendTotalPrice(socket);
         }
     }
 
     private static void login(String input, Socket socket) throws IOException {
-        System.out.println("adk");
         String[] splitInput = input.split(" ");
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -651,6 +661,30 @@ public class Main {
         DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         dos.writeUTF(yaGson.toJson(YaDataManager.getOffs(), new TypeToken<ArrayList<Off>>() {
         }.getType()));
+        dos.flush();
+    }
+
+
+
+    private static void addToCart(String username, int id) throws Exception {
+        PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(username);
+        Objects.requireNonNull(personalAccount).addToCart(id);
+    }
+
+    private static void removeFromCart(String username, int id) throws Exception {
+        PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(username);
+        Objects.requireNonNull(personalAccount).removeFromCart(id);
+    }
+
+    private static void addToVisits(int id) throws Exception {
+        Commodity commodity = YaDataManager.getCommodityById(id);
+        commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
+    }
+
+    private static void sendTotalPrice(Socket socket) throws Exception {
+        PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(onlineAccountsUserNames.get(socket));
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dos.writeUTF("Total price: " + View.cartMenu.calculateTotalPrice(personalAccount) + " Rials");
         dos.flush();
     }
 
