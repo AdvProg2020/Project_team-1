@@ -4,6 +4,10 @@ import client.Session;
 import client.view.AudioPlayer;
 import client.view.commandline.View;
 import client.view.graphical.MainMenu;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
+import common.model.commodity.Category;
 import common.model.commodity.Comment;
 import common.model.commodity.Commodity;
 import javafx.collections.FXCollections;
@@ -28,7 +32,6 @@ import server.controller.commodity.DigestMenu;
 import server.controller.customer.OrderMenu;
 import server.controller.share.CommodityMenu;
 import server.controller.share.MenuHandler;
-import server.dataManager.YaDataManager;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,7 +41,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static client.Main.inputStream;
+import static client.Main.outputStream;
+
 public class CommodityPage implements Initializable {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
     private final CommodityMenu commodityMenu = View.commodityMenu;
     private final DigestMenu digestMenu = View.digestMenu;
     private final CommentsMenu commentsMenu = View.commentsMenu;
@@ -51,7 +58,7 @@ public class CommodityPage implements Initializable {
     public GridPane fieldsGridPane;
     public Label commodityBrand;
     public ImageView commodityImage;
-    public ChoiceBox comparableCommodities;
+    public ChoiceBox<String> comparableCommodities;
     public Button logOutButton;
     public Button addToCartButton;
     public Label addToCartLabel;
@@ -159,15 +166,20 @@ public class CommodityPage implements Initializable {
         }
         List<String> commoditiesList = new ArrayList<>();
         try {
-            for (Commodity commodity1 : YaDataManager.getCommodities()) {
-                if (commodity1.getCategoryName().equals(commodity.getCategoryName()) &&
-                        commodity1.getCommodityId() != commodity.getCommodityId())
-                    commoditiesList.add("Name: " + commodity1.getName() + ", Brand: " + commodity1.getBrand());
+            outputStream.writeUTF("name of category is " + commodity.getCategoryName());
+            outputStream.flush();
+            Category category = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Category>() {
+            }.getType());
+            for (int commodityId : category.getCommoditiesId()) {
+                outputStream.writeUTF("send commodity with id " + commodityId);
+                outputStream.flush();
+                Commodity commodity1 = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Commodity>() {
+                }.getType());
+                commoditiesList.add("Name: " + commodity1.getName() + ", Brand: " + commodity1.getBrand());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         ObservableList<String> observableList = FXCollections.observableList(commoditiesList);
         comparableCommodities.setItems(observableList);
         starButton5.setImage(new Image(emptyStarAddress));
@@ -199,7 +211,12 @@ public class CommodityPage implements Initializable {
     public void onCompareClick(MouseEvent mouseEvent) {
         if (comparableCommodities.getValue() != null) {
             try {
-                for (Commodity commodity : YaDataManager.getCommodities()) {
+                outputStream.writeUTF("send all commodities");
+                outputStream.flush();
+                ArrayList<Commodity> commodities = yaGson.fromJson(inputStream.readUTF(),
+                        new TypeToken<ArrayList<Commodity>>() {
+                        }.getType());
+                for (Commodity commodity : commodities) {
                     if (("Name: " + commodity.getName() + ", Brand: " + commodity.getBrand()).equals(comparableCommodities.getValue()) &&
                             commodity.getCategoryName().equals(commodityMenu.getCommodity().getCategoryName())) {
                         commodityMenu.setComparingCommodity(commodity);

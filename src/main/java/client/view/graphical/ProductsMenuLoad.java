@@ -1,7 +1,9 @@
 package client.view.graphical;
 
-import server.controller.share.FilteringMenu;
-import server.controller.share.MenuHandler;
+import client.Session;
+import client.view.AudioPlayer;
+import client.view.commandline.View;
+import common.model.commodity.Commodity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -16,22 +18,21 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.commodity.Commodity;
-import client.view.AudioPlayer;
-import client.view.commandline.View;
+import server.controller.share.FilteringMenu;
+import server.controller.share.MenuHandler;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class ProductsMenuLoad {
-    public Pane getRoot() {
-        return root;
-    }
     private Pane root;
     private int count = 0;
     private int blockIncrement = 2;
+
+    public Pane getRoot() {
+        return root;
+    }
 
     public void initializeProductsRoot(Stage stage) {
         root = new Pane();
@@ -43,10 +44,8 @@ public class ProductsMenuLoad {
             setCategoryMenuButton(root);
             setFilterMenuButton(root);
             setCommodities(root);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (Exception exception) {
-            exception.printStackTrace();
         }
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(root);
@@ -55,30 +54,16 @@ public class ProductsMenuLoad {
     }
 
     private void setPlayPauseButton(Pane pane) {
-
         Button pause = new Button("\u23F8");
         Button play = new Button("\u25B6");
         pane.getChildren().add(pause);
         pane.getChildren().add(play);
         pause.getStyleClass().add("normal-button");
         play.getStyleClass().add("normal-button-Green");
-        pause.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                AudioPlayer.mediaPlayer.pause();
-            }
-        });
-
-        play.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                AudioPlayer.mediaPlayer.play();
-            }
-        });
-
+        pause.setOnAction(actionEvent -> AudioPlayer.mediaPlayer.pause());
+        play.setOnAction(actionEvent -> AudioPlayer.mediaPlayer.play());
         pause.relocate(900, 0);
         play.relocate(800, 0);
-
     }
 
     private void setSortMenuButton(Pane root) {
@@ -99,20 +84,17 @@ public class ProductsMenuLoad {
     }
 
     private void sort(MenuButton sort, int index, String sortName, Pane root) {
-        sort.getItems().get(index).setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
+        sort.getItems().get(index).setOnAction(actionEvent -> {
+            try {
+                View.sortingMenu.sort(sortName);
+                deleteCommodities(root);
                 try {
-                    View.sortingMenu.sort(sortName);
-                    deleteCommodities(root);
-                    try {
-                        setCommodities(root);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception exception) {
-                    exception.printStackTrace();
+                    setCommodities(root);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
     }
@@ -126,7 +108,7 @@ public class ProductsMenuLoad {
         }
     }
 
-    private void setCategoryMenuButton(Pane root) throws IOException {
+    private void setCategoryMenuButton(Pane root) {
         Button categories = new Button("Categories");
         categories.setMinHeight(30);
         categories.setMinWidth(100);
@@ -139,26 +121,19 @@ public class ProductsMenuLoad {
         int i = 0;
         int j = 100;
         ArrayList<Commodity> commodities = View.productsMenu.getProducts();
-        int end;
-        if (count + blockIncrement>= commodities.size())
-            end = commodities.size();
-        else end = count + blockIncrement;
-        for (int p = count ; p < end; p++ ) {
+        int end = Math.min(count + blockIncrement, commodities.size());
+        for (int p = count; p < end; p++) {
             System.out.println(commodities.get(p).getImagePath());
             FileInputStream inputStream = new FileInputStream(commodities.get(p).getImagePath());
             Image image = new Image(inputStream);
             ImageView imageView = new ImageView(image);
-            int finalP = p;
-            Commodity tmp = commodities.get(finalP);
-            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-                    View.commodityMenu.setCommodity(tmp);
-                    View.digestMenu.setCommodity(tmp);
-                    View.commentsMenu.setCommodity(tmp);
-                    changeMenuToProductMenu(mouseEvent, tmp);
-                }
+            Commodity tmp = commodities.get(p);
+            imageView.setOnMouseClicked(mouseEvent -> {
+                View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+                View.commodityMenu.setCommodity(tmp);
+                View.digestMenu.setCommodity(tmp);
+                View.commentsMenu.setCommodity(tmp);
+                changeMenuToProductMenu(mouseEvent, tmp);
             });
             imageView.setFitWidth(250);
             imageView.setFitHeight(250);
@@ -192,12 +167,7 @@ public class ProductsMenuLoad {
         Button userPanel = new Button("User panel");
         userPanel.getStyleClass().add("forward-button");
         userPanel.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 100);
-        userPanel.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                MainMenu.goToUserPanel(actionEvent);
-            }
-        });
+        userPanel.setOnAction(MainMenu::goToUserPanel);
         root.getChildren().add(userPanel);
     }
 
@@ -208,20 +178,17 @@ public class ProductsMenuLoad {
         logout.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 250);
         if (Session.getOnlineAccount() == null)
             logout.setDisable(true);
-        logout.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
+        logout.setOnAction(actionEvent -> {
+            try {
                 try {
-                    try {
-                        MenuHandler.getInstance().getCurrentMenu().logout();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
-
-                } catch (Exception exception) {
-                    exception.printStackTrace();
+                    MenuHandler.getInstance().getCurrentMenu().logout();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
         root.getChildren().add(logout);
@@ -266,7 +233,7 @@ public class ProductsMenuLoad {
     }
 
     private void filter(MenuItem filer, Pane root, String fileName) {
-        filer.setOnAction(new EventHandler<ActionEvent>() {
+        filer.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 Parent parent = null;
@@ -287,28 +254,25 @@ public class ProductsMenuLoad {
         back.getStyleClass().add("back-button");
         back.setLayoutX(800);
         back.setLayoutY(root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 150);
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    View.productsMenu.goToPreviousMenu();
-                    Session.getSceneHandler().updateScene(((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()));
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
+        back.setOnAction(actionEvent -> {
+            try {
+                View.productsMenu.goToPreviousMenu();
+                Session.getSceneHandler().updateScene(((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()));
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
         root.getChildren().add(back);
     }
 
     private void setCategoryButtonOnAction(Button categoryMenuButton, Pane root) {
-        categoryMenuButton.setOnAction(new EventHandler<ActionEvent>() {
+        categoryMenuButton.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 Parent parent = null;
                 Popup popupMenu = new Popup();
                 try {
-                    parent = FXMLLoader.load(getClass().getResource("../../../fxml/" + "CategoriesPopup" + ".fxml"));
+                    parent = FXMLLoader.load(getClass().getResource("../../../fxml/CategoriesPopup.fxml"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -318,44 +282,38 @@ public class ProductsMenuLoad {
         });
     }
 
-    private void setNextButton(){
+    private void setNextButton() {
         Button next = new Button("Next page");
         next.getStyleClass().add("normal-button");
-        next.relocate(450 ,  root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 100);
+        next.relocate(450, root.getChildren().get(root.getChildren().size() - 1).getLayoutY() + 100);
         root.getChildren().add(next);
         if (count + blockIncrement >= FilteringMenu.getFilteredCommodities().size())
             next.setDisable(true);
-        next.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent){
-                count += blockIncrement;
-                try {
-                    deleteCommodities(root);
-                    setCommodities(root);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        next.setOnAction(actionEvent -> {
+            count += blockIncrement;
+            try {
+                deleteCommodities(root);
+                setCommodities(root);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
 
-    private void setBackButton(){
+    private void setBackButton() {
         Button back = new Button("Back");
         back.getStyleClass().add("normal-button");
-        back.relocate(350 ,  root.getChildren().get(root.getChildren().size() - 2).getLayoutY() + 100);
+        back.relocate(350, root.getChildren().get(root.getChildren().size() - 2).getLayoutY() + 100);
         root.getChildren().add(back);
-        if (count - blockIncrement < 0 )
+        if (count - blockIncrement < 0)
             back.setDisable(true);
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent){
-                count -= blockIncrement;
-                try {
-                    deleteCommodities(root);
-                    setCommodities(root);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        back.setOnAction(actionEvent -> {
+            count -= blockIncrement;
+            try {
+                deleteCommodities(root);
+                setCommodities(root);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

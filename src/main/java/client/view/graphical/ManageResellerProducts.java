@@ -1,8 +1,8 @@
 package client.view.graphical;
 
-import server.controller.reseller.ManageResellerProductsMenu;
-import server.controller.reseller.ResellerMenu;
-import server.controller.share.MenuHandler;
+import client.Session;
+import client.view.commandline.View;
+import common.model.commodity.Commodity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -19,9 +19,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.commodity.Commodity;
-import client.view.commandline.View;
+import server.controller.reseller.ManageResellerProductsMenu;
+import server.controller.reseller.ResellerMenu;
+import server.controller.share.MenuHandler;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,7 +29,6 @@ import java.net.URL;
 import java.util.*;
 
 public class ManageResellerProducts implements Initializable {
-
     private final ManageResellerProductsMenu manageResellerProductsMenu = View.manageResellerProductsMenu;
     private final ResellerMenu resellerMenu = View.resellerMenu;
     public TilePane manageProductsTilePane;

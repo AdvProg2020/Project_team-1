@@ -1,27 +1,22 @@
 package client.view.graphical;
 
-import server.dataManager.YaDataManager;
-import server.controller.share.MenuHandler;
-import javafx.animation.*;
+import client.Session;
+import client.view.AudioPlayer;
+import client.view.commandline.View;
+import common.model.account.BusinessAccount;
+import common.model.account.ManagerAccount;
+import common.model.account.PersonalAccount;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import client.Session;
-import common.model.account.BusinessAccount;
-import common.model.account.ManagerAccount;
-import common.model.account.PersonalAccount;
-import client.view.AudioPlayer;
-import client.view.commandline.View;
+import server.controller.share.MenuHandler;
+import server.dataManager.YaDataManager;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,16 +29,6 @@ public class MainMenu implements Initializable {
     public AnchorPane pane;
     private int count = 0;
     private int blockIncrement = 3;
-
-    public void products(ActionEvent actionEvent) {
-        View.productsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
-        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
-    }
-
-    public void userPanel(ActionEvent actionEvent) {
-        goToUserPanel(actionEvent);
-    }
 
     public static void goToUserPanel(ActionEvent actionEvent) {
         if (Session.getOnlineAccount() == null) {
@@ -63,6 +48,16 @@ public class MainMenu implements Initializable {
             MenuHandler.getInstance().setCurrentMenu(View.resellerMenu);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         }
+    }
+
+    public void products(ActionEvent actionEvent) {
+        View.productsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
+        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
+    public void userPanel(ActionEvent actionEvent) {
+        goToUserPanel(actionEvent);
     }
 
     public void offs(ActionEvent actionEvent) {
@@ -133,37 +128,30 @@ public class MainMenu implements Initializable {
     }
 
     public void setImage() throws IOException {
-
-
-
-
-        FileInputStream inputStream = new FileInputStream(YaDataManager.getCommodities().get(count).getImagePath());
-        Image image = new Image(inputStream);
-        ImageView imageViewTmp = new ImageView(image);
-        imageViewTmp.setFitHeight(222);
-        imageViewTmp.setFitWidth(333);
-        imageViewTmp.relocate(272, 64);
-        pane.getChildren().add(imageViewTmp);
-        pane.getChildren().remove(imageView);
-        pane.getChildren().add(imageView);
-        label.setVisible(false);
-
-        Timeline timeLine = new Timeline();
-        KeyValue keyValue = new KeyValue(imageView.translateYProperty() , 200 , Interpolator.EASE_IN);
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
-        timeLine.getKeyFrames().add(keyFrame);
-        timeLine.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                pane.getChildren().remove(imageView);
-                imageView = imageViewTmp ;
-                pane.getChildren().remove(imageViewTmp);
-                pane.getChildren().add(imageView);
-            }
-        });
-        timeLine.play();
-
-
-
+//        FileInputStream inputStream = new FileInputStream(YaDataManager.getCommodities().get(count).getImagePath());
+//        Image image = new Image(inputStream);
+//        ImageView imageViewTmp = new ImageView(image);
+//        imageViewTmp.setFitHeight(222);
+//        imageViewTmp.setFitWidth(333);
+//        imageViewTmp.relocate(272, 64);
+//        pane.getChildren().add(imageViewTmp);
+//        pane.getChildren().remove(imageView);
+//        pane.getChildren().add(imageView);
+//        label.setVisible(false);
+//
+//        Timeline timeLine = new Timeline();
+//        KeyValue keyValue = new KeyValue(imageView.translateYProperty() , 200 , Interpolator.EASE_IN);
+//        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1),keyValue);
+//        timeLine.getKeyFrames().add(keyFrame);
+//        timeLine.setOnFinished(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                pane.getChildren().remove(imageView);
+//                imageView = imageViewTmp ;
+//                pane.getChildren().remove(imageViewTmp);
+//                pane.getChildren().add(imageView);
+//            }
+//        });
+//        timeLine.play();
     }
 }

@@ -16,14 +16,15 @@ import server.controller.comparator.Sort;
 import server.controller.share.Menu;
 import server.controller.share.MenuHandler;
 import server.dataManager.YaDataManager;
-import static client.Main.socket;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+
+import static client.Main.*;
 
 public class ResellerMenu extends Menu {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+
     public ResellerMenu() {
         fxmlFileAddress = "../../../fxml/Reseller.fxml";
         stageTitle = "Reseller panel";
@@ -38,8 +39,9 @@ public class ResellerMenu extends Menu {
         dos.writeUTF("send seller commodities");
         dos.flush();
         DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-        ArrayList<Commodity> commodityArrayList = yaGson.fromJson(dis.readUTF(), new TypeToken<ArrayList<Commodity>>(){}
-        .getType());
+        ArrayList<Commodity> commodityArrayList = yaGson.fromJson(dis.readUTF(), new TypeToken<ArrayList<Commodity>>() {
+        }
+                .getType());
         if (MenuHandler.getInstance().getCurrentMenu() != View.manageResellerProductsMenu) {
             View.manageResellerProductsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.manageResellerProductsMenu);
@@ -66,12 +68,10 @@ public class ResellerMenu extends Menu {
     }
 
     public Category getCategoryByName(String categoryString) throws Exception {
-        for (Category category : YaDataManager.getCategories()) {
-            if (category.getName().equalsIgnoreCase(categoryString)) {
-                return category;
-            }
-        }
-        throw new Exception("Category not found");
+        outputStream.writeUTF("name of category is " + categoryString);
+        outputStream.flush();
+        return yaGson.fromJson(inputStream.readUTF(), new TypeToken<Category>() {
+        }.getType());
     }
 
     public ArrayList<String> getCategoriesName() {
@@ -81,7 +81,8 @@ public class ResellerMenu extends Menu {
             dos.writeUTF("categories name");
             dos.flush();
             DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            categoriesName = yaGson.fromJson(dis.readUTF(), new TypeToken<ArrayList<String>>(){}.getType());
+            categoriesName = yaGson.fromJson(dis.readUTF(), new TypeToken<ArrayList<String>>() {
+            }.getType());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,7 +96,7 @@ public class ResellerMenu extends Menu {
     }
 
     public void addProduct(String brand, String name, int price, Category category,
-                           ArrayList<Field> categorySpecifications, String description, int amount ,
+                           ArrayList<Field> categorySpecifications, String description, int amount,
                            String productFilePath) throws Exception {
         BusinessAccount businessAccount = getBusinessAccount();
         Commodity newCommodity = new Commodity(brand, name, price, businessAccount.getUsername(), true,
@@ -107,7 +108,8 @@ public class ResellerMenu extends Menu {
         dos.writeUTF("New Commodity");
         dos.flush();
         dis.readUTF();
-        dos.writeUTF(yaGson.toJson(request, new TypeToken<Request>(){}.getType()));
+        dos.writeUTF(yaGson.toJson(request, new TypeToken<Request>() {
+        }.getType()));
         dos.flush();
     }
 
@@ -120,7 +122,7 @@ public class ResellerMenu extends Menu {
         YaDataManager.removeCommodity(commodity);
     }
 
-    public void walletTransaction(double amount , BusinessAccount businessAccount) throws IOException {
+    public void walletTransaction(double amount, BusinessAccount businessAccount) throws IOException {
         businessAccount.addToCredit(amount);
         YaDataManager.removeBusiness(businessAccount);
         YaDataManager.addBusiness(businessAccount);

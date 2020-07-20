@@ -657,7 +657,7 @@ public class View {
                 } else if (command.matches("decrease (?<id>\\d+)")) {
                     decreaseCommodityInCart(command);
                 } else if (command.equals("show total price")) {
-                    System.out.println("total price is " + cartMenu.calculateTotalPrice());
+                    System.out.println("total price is " + cartMenu.calculateTotalPrice((PersonalAccount) Session.getOnlineAccount()));
                 } else if (command.equals("purchase")) {
                     purchase();
                 } else if (command.equals("back")) {
@@ -816,7 +816,7 @@ public class View {
         Matcher matcher = Pattern.compile("^delete user (?<username>\\S+)").matcher(command);
         matcher.matches();
         try {
-            manageUsersMenu.deleteUser(matcher.group("username") , "Tof");
+            manageUsersMenu.deleteUser(matcher.group("username"), "Tof");
         } catch (Exception e) {
             System.out.println("Invalid input please try again");
         }

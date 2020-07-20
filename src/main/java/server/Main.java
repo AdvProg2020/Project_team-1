@@ -6,10 +6,7 @@ import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.Constants;
 import common.model.account.*;
-import common.model.commodity.Category;
-import common.model.commodity.Commodity;
-import common.model.commodity.DiscountCode;
-import common.model.commodity.Off;
+import common.model.commodity.*;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
@@ -33,10 +30,10 @@ import static client.view.commandline.View.loginRegisterMenu;
 
 public class Main {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+    public static Socket socketB;
     private static ArrayList<Socket> sockets = new ArrayList<>();
     private static HashMap<Socket, String> onlineAccountsUserNames = new HashMap<>();
     private static HashMap<String, Socket> onlineFileTransferClients = new HashMap<>();
-    public static Socket socketB;
     private static String bankAccountID;
 
     static {
@@ -103,9 +100,9 @@ public class Main {
         } else if (input.startsWith("Start chat")) {
             chatSupport(input, socket);
         } else if (input.startsWith("Register")) {
-            System.out.println("dasd");
             register(socket);
         } else if (input.startsWith("login")) {
+            System.out.println(socket);
             login(input, socket);
         } else if (input.startsWith("Edit discount code")) {
             editDiscountCode(socket, input);
@@ -168,19 +165,19 @@ public class Main {
             addToVisits(Integer.parseInt(input.split(" ")[4]));
         } else if (input.equals("get total price")) {
             sendTotalPrice(socket);
+        } else if (input.startsWith("add score ")) {
+            rateProduct(Integer.parseInt(input.split(" ")[2]), Integer.parseInt(input.split(" ")[3]),
+                    socket);
         }
     }
 
     private static void login(String input, Socket socket) throws IOException {
         String[] splitInput = input.split(" ");
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         try {
             View.loginRegisterMenu.login(splitInput[1], splitInput[2]);
             onlineAccountsUserNames.put(socket, splitInput[1]);
-            dataOutputStream.writeUTF("logged in");
-            dataOutputStream.flush();
-            System.out.println(dataInputStream.readUTF());
+            System.out.println(socket);
             dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAccountWithUserName(splitInput[1]), new TypeToken<SimpleAccount>() {
             }.getType()));
             dataOutputStream.flush();
@@ -505,6 +502,7 @@ public class Main {
         dos.writeUTF(yaGson.toJson(YaDataManager.getCategories().stream().map(Category::getName)
                 .collect(Collectors.toCollection(ArrayList::new)), new TypeToken<ArrayList<String>>() {
         }.getType()));
+        dos.flush();
     }
 
     private static void sendSellerCommodities(Socket socket) throws IOException {
@@ -665,20 +663,25 @@ public class Main {
     }
 
 
-
     private static void addToCart(String username, int id) throws Exception {
         PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(username);
         Objects.requireNonNull(personalAccount).addToCart(id);
+        YaDataManager.removePerson(personalAccount);
+        YaDataManager.addPerson(personalAccount);
     }
 
     private static void removeFromCart(String username, int id) throws Exception {
         PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(username);
         Objects.requireNonNull(personalAccount).removeFromCart(id);
+        YaDataManager.removePerson(personalAccount);
+        YaDataManager.addPerson(personalAccount);
     }
 
     private static void addToVisits(int id) throws Exception {
         Commodity commodity = YaDataManager.getCommodityById(id);
         commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
+        YaDataManager.removeCommodity(commodity);
+        YaDataManager.addCommodity(commodity);
     }
 
     private static void sendTotalPrice(Socket socket) throws Exception {
@@ -686,6 +689,63 @@ public class Main {
         DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         dos.writeUTF("Total price: " + View.cartMenu.calculateTotalPrice(personalAccount) + " Rials");
         dos.flush();
+    }
+
+    private static void rateProduct(int id, int rate, Socket socket) throws Exception {
+        Commodity commodity = YaDataManager.getCommodityById(id);
+        commodity.updateAverageScore(new Score(onlineAccountsUserNames.get(socket), rate, id));
+        YaDataManager.removeCommodity(commodity);
+        YaDataManager.addCommodity(commodity);
+    }
+
+    private static String createReceipt(String bankToken, String receipt_type, String money, String sourceID, String destID, String description) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
+        dataOutputStream.writeUTF("create_receipt " + bankToken + " " + receipt_type + " " + money + " " +
+                sourceID + " " + destID + " " + description);
+        dataOutputStream.flush();
+        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
+        return dataInputStream.readUTF();
+    }
+
+    private static String payReceipt(String receiptID) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
+        dataOutputStream.writeUTF("pay " + receiptID);
+        dataOutputStream.flush();
+        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
+        return dataInputStream.readUTF();
+    }
+
+    private static void depositToWallet(Socket socket, String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        String clientAccountID = YaDataManager.getAccountWithUserName(splitInput[4]).getAccountID();
+        String receipt = createReceipt(splitInput[3], "move", splitInput[5], clientAccountID, bankAccountID, "");
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        String respond = payReceipt(receipt);
+        dataOutputStream.writeUTF(respond);
+        dataOutputStream.flush();
+        if (respond.equals("done successfully")) {
+            if (YaDataManager.getAccountWithUserName(splitInput[4]) instanceof BusinessAccount) {
+                View.resellerMenu.walletTransaction(Double.parseDouble(splitInput[5]), YaDataManager.getSellerWithUserName(splitInput[4]));
+            } else
+                View.customerMenu.walletTransaction(Double.parseDouble(splitInput[5]), YaDataManager.getPersonWithUserName(splitInput[4]));
+        }
+    }
+
+    private static void withdrawFromWallet(Socket socket, String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        String clientAccountID = YaDataManager.getAccountWithUserName(splitInput[4]).getAccountID();
+        DataOutputStream dataOutputStream1 = new DataOutputStream(socketB.getOutputStream());
+        dataOutputStream1.writeUTF("get_token bank bank");
+        dataOutputStream1.flush();
+        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
+        String receipt = createReceipt(dataInputStream.readUTF(), "move", splitInput[5], bankAccountID, clientAccountID, "");
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        String respond = payReceipt(receipt);
+        dataOutputStream.writeUTF(respond);
+        dataOutputStream.flush();
+        if (respond.equals("done successfully")) {
+            View.resellerMenu.walletTransaction(-(Double.parseDouble(splitInput[5])), YaDataManager.getSellerWithUserName(splitInput[4]));
+        }
     }
 
     private static class FileTransferMetadataServer extends Thread {
@@ -748,55 +808,5 @@ public class Main {
             }
         }
 
-    }
-
-    private static String createReceipt(String bankToken, String receipt_type, String money, String sourceID, String destID, String description) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
-        dataOutputStream.writeUTF("create_receipt " + bankToken + " " + receipt_type + " " + money + " " +
-                sourceID + " " + destID + " " + description);
-        dataOutputStream.flush();
-        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
-        return dataInputStream.readUTF();
-    }
-
-    private static String payReceipt(String receiptID) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
-        dataOutputStream.writeUTF("pay " + receiptID);
-        dataOutputStream.flush();
-        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
-        return dataInputStream.readUTF();
-    }
-
-    private static void depositToWallet(Socket socket, String input) throws Exception {
-        String[] splitInput = input.split(" ");
-        String clientAccountID = YaDataManager.getAccountWithUserName(splitInput[4]).getAccountID();
-        String receipt = createReceipt(splitInput[3], "move", splitInput[5], clientAccountID, bankAccountID, "");
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        String respond = payReceipt(receipt);
-        dataOutputStream.writeUTF(respond);
-        dataOutputStream.flush();
-        if (respond.equals("done successfully")) {
-            if (YaDataManager.getAccountWithUserName(splitInput[4]) instanceof BusinessAccount) {
-                View.resellerMenu.walletTransaction(Double.parseDouble(splitInput[5]), YaDataManager.getSellerWithUserName(splitInput[4]));
-            } else
-                View.customerMenu.walletTransaction(Double.parseDouble(splitInput[5]), YaDataManager.getPersonWithUserName(splitInput[4]));
-        }
-    }
-
-    private static void withdrawFromWallet(Socket socket, String input) throws Exception {
-        String[] splitInput = input.split(" ");
-        String clientAccountID = YaDataManager.getAccountWithUserName(splitInput[4]).getAccountID();
-        DataOutputStream dataOutputStream1 = new DataOutputStream(socketB.getOutputStream());
-        dataOutputStream1.writeUTF("get_token bank bank");
-        dataOutputStream1.flush();
-        DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
-        String receipt = createReceipt(dataInputStream.readUTF(), "move", splitInput[5], bankAccountID, clientAccountID, "");
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        String respond = payReceipt(receipt);
-        dataOutputStream.writeUTF(respond);
-        dataOutputStream.flush();
-        if (respond.equals("done successfully")) {
-            View.resellerMenu.walletTransaction(-(Double.parseDouble(splitInput[5])), YaDataManager.getSellerWithUserName(splitInput[4]));
-        }
     }
 }

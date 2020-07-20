@@ -6,7 +6,8 @@ import common.model.account.PersonalAccount;
 import common.model.commodity.Commodity;
 import server.controller.share.Menu;
 import server.controller.share.MenuHandler;
-import server.dataManager.YaDataManager;
+
+import static client.Main.outputStream;
 
 public class DigestMenu extends Menu {
     private Commodity commodity;
@@ -23,7 +24,7 @@ public class DigestMenu extends Menu {
         }
         PersonalAccount personalAccount = ((PersonalAccount) Session.getOnlineAccount());
         personalAccount.addToCart(commodity.getCommodityId());
-        YaDataManager.removePerson(personalAccount);
-        YaDataManager.addPerson(personalAccount);
+        outputStream.writeUTF("add to cart " + commodity.getCommodityId());
+        outputStream.flush();
     }
 }

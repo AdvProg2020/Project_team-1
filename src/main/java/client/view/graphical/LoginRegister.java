@@ -3,32 +3,27 @@ package client.view.graphical;
 import client.Session;
 import client.controller.share.ClientLoginRegisterMenu;
 import client.view.commandline.View;
-import common.Constants;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
+import common.Constants;
 import common.model.account.BusinessAccount;
 import common.model.account.SimpleAccount;
-import common.model.account.ManagerAccount;
-import common.model.account.PersonalAccount;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.stage.Popup;
-import server.controller.share.LoginRegisterMenu;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
-import server.dataManager.YaDataManager;
-
-import static client.Main.socket;
+import server.controller.share.LoginRegisterMenu;
 
 import java.io.*;
 import java.net.Socket;
@@ -40,11 +35,13 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static client.Main.socket;
+
 public class LoginRegister implements Initializable {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-    public TextField registerBusinessNameTf;
     private final LoginRegisterMenu loginRegisterMenu = View.loginRegisterMenu;
     private final ClientLoginRegisterMenu clientLoginRegisterMenu = new ClientLoginRegisterMenu();
+    public TextField registerBusinessNameTf;
     public ChoiceBox<String> accountType;
     public Label loginMessageLabel;
     public TextField loginUsernameTf;
@@ -85,18 +82,17 @@ public class LoginRegister implements Initializable {
 
     public void onLoginButtonClick(MouseEvent mouseEvent) throws IOException, ClassNotFoundException {
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        dataOutputStream.writeUTF("login: " + loginUsernameTf.getText() + " " + loginPasswordTf.getText());
+        dataOutputStream.writeUTF("login " + loginUsernameTf.getText() + " " + loginPasswordTf.getText());
         dataOutputStream.flush();
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        System.out.println(socket);
         String input = dataInputStream.readUTF();
         System.out.println(input);
         if (input.startsWith("error:")) {
             loginMessageLabel.setText(input.split(":")[1]);
             return;
         }
-        dataOutputStream.writeUTF("send account");
-        dataOutputStream.flush();
-        SimpleAccount simpleAccount = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<SimpleAccount>() {
+        SimpleAccount simpleAccount = yaGson.fromJson(input, new TypeToken<SimpleAccount>() {
         }.getType());
         ClientLoginRegisterMenu.login(simpleAccount);
         if (simpleAccount instanceof BusinessAccount) {
@@ -165,6 +161,18 @@ public class LoginRegister implements Initializable {
         System.exit(0);
     }
 
+    private void newPopup(ActionEvent actionEvent, String filePath) {
+        Parent parent = null;
+        Popup popupMenu = new Popup();
+        try {
+            parent = FXMLLoader.load(getClass().getResource(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        popupMenu.getContent().add(parent);
+        popupMenu.show((((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
     private static class SetupFileClient extends Thread {
 
         private SimpleAccount simpleAccount;
@@ -212,17 +220,5 @@ public class LoginRegister implements Initializable {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void newPopup(ActionEvent actionEvent, String filePath) {
-        Parent parent = null;
-        Popup popupMenu = new Popup();
-        try {
-            parent = FXMLLoader.load(getClass().getResource(filePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        popupMenu.getContent().add(parent);
-        popupMenu.show((((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 }
