@@ -205,10 +205,12 @@ public class LoginRegister implements Initializable {
                         if (confirmation.equals("send now")) {
                             Socket fileSocket = new Socket(matcher.group("hostIp"),
                                     Integer.parseInt(matcher.group("port")));
-                            byte[] bytes = new byte[(int) fileSize];
+                            byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
                             FileInputStream fileInputStream = new FileInputStream(file);
-                            fileInputStream.read(bytes, 0, bytes.length);
-                            fileSocket.getOutputStream().write(bytes);
+                            DataOutputStream fileOutputStream = new DataOutputStream(fileSocket.getOutputStream());
+                            while (fileInputStream.read(buffer) > 0) {
+                                fileOutputStream.write(buffer);
+                            }
                             fileSocket.close();
                             fileInputStream.close();
                         }
