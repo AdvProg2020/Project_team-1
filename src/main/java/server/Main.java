@@ -11,6 +11,7 @@ import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
 import common.model.share.Request;
+import server.controller.Statistics;
 import server.dataManager.YaDataManager;
 
 import java.io.*;
@@ -168,6 +169,10 @@ public class Main {
         } else if (input.startsWith("add score ")) {
             rateProduct(Integer.parseInt(input.split(" ")[2]), Integer.parseInt(input.split(" ")[3]),
                     socket);
+        } else if (input.startsWith("Set min currency")){
+            setMinimumCurrency(input);
+        } else if (input.startsWith("Set wage")){
+            setWage(input);
         }
     }
 
@@ -807,6 +812,15 @@ public class Main {
                 }
             }
         }
+    }
 
+    private static void setMinimumCurrency(String input) throws IOException {
+        String[] splitInput = input.split(" ");
+        Statistics.updatedStats.setMinimumCurrency(Double.parseDouble(splitInput[3]));
+    }
+
+    private static void setWage(String input) throws IOException {
+        String[] splitInput = input.split(" ");
+        Statistics.updatedStats.setWage(Double.parseDouble(splitInput[2]));
     }
 }

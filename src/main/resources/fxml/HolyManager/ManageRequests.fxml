@@ -24,11 +24,12 @@
       <Label layoutX="310.0" layoutY="287.0" styleClass="hint-label" text="Unhandled requests" />
       <Label layoutX="691.0" layoutY="287.0" styleClass="hint-label" text="Accepted requests" />
       <Label layoutX="1158.0" layoutY="287.0" styleClass="hint-label" text="Declined requests" />
-      <Button layoutX="2.0" layoutY="474.0" mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back" />
-      <Button layoutX="2.0" layoutY="556.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="Logout" />
+      <Button layoutY="515.0" mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back" />
+      <Button layoutY="584.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="Logout" />
       <Button layoutX="1196.0" layoutY="15.0" mnemonicParsing="false" onAction="#play" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
       <Button layoutX="1258.0" layoutY="15.0" mnemonicParsing="false" onAction="#pause" styleClass="normal-button" text="⏸" />
       <Button layoutX="1184.0" layoutY="542.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
-      <Button onAction="#goToMainMenu" layoutX="1184.0" layoutY="474.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="client.Main menu" />
+      <Button layoutX="1184.0" layoutY="474.0" mnemonicParsing="false" onAction="#goToMainMenu" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="client.Main menu" />
+      <Button onAction="#setValues" layoutX="-2.0" layoutY="454.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="242.0" styleClass="normal-button" text="Set values" />
    </children>
 </AnchorPane>

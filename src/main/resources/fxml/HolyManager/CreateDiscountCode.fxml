@@ -37,6 +37,7 @@
    <Button layoutX="842.0" layoutY="5.0" mnemonicParsing="false" onAction="#play" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
    <Button layoutX="902.0" layoutY="5.0" mnemonicParsing="false" onAction="#pause" styleClass="normal-button" text="⏸" />
    <Button layoutX="727.0" layoutY="632.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
-   <Button onAction="#goToMainMenu" layoutX="727.0" layoutY="558.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="client.Main menu" />
+   <Button layoutX="727.0" layoutY="558.0" mnemonicParsing="false" onAction="#goToMainMenu" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="client.Main menu" />
+   <Button onAction="#setValues" layoutX="3.0" layoutY="447.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="242.0" styleClass="normal-button" text="Set values" />
 
 </AnchorPane>

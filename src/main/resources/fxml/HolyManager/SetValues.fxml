@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="popup-pane" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.holyManager.HolyManager">
+   <children>
+      <Button layoutX="153.0" layoutY="145.0" mnemonicParsing="false" onAction="#setMinimumCurrency" styleClass="normal-button" text="Set minimum currency" />
+      <Button layoutX="150.0" layoutY="210.0" mnemonicParsing="false" onAction="#setWage" prefHeight="55.0" prefWidth="250.0" styleClass="normal-button" text="Set wage" />
+      <TextField fx:id="minCurrencyOrWage" layoutX="150.0" layoutY="97.0" prefHeight="33.0" prefWidth="250.0" promptText="Minimum currency or wage" />
+      <Label fx:id="error" layoutX="143.0" layoutY="293.0" prefHeight="29.0" prefWidth="283.0" styleClass="hint-label" text="Label" visible="false" />
+   </children>
+</AnchorPane>
