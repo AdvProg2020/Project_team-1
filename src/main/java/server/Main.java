@@ -53,8 +53,6 @@ public class Main {
         new FileTransferMetadataServer(serverSocket).start();
         ServerSocket server = new ServerSocket(Constants.SERVER_PORT); // for clients request
         DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
-        dataOutputStream.writeUTF("create_account bank bank bank bank bank");
-        dataOutputStream.flush();
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         System.out.println(dataInputStream.readUTF());
         dataOutputStream.writeUTF("create_account bank bank bank bank bank");
@@ -710,7 +708,7 @@ public class Main {
     private static String createReceipt(String bankToken, String receipt_type, String money, String sourceID, String destID, String description) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
         dataOutputStream.writeUTF("create_receipt " + bankToken + " " + receipt_type + " " + money + " " +
-                sourceID + " " + destID + " " + description);
+                sourceID + " " + destID );
         dataOutputStream.flush();
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         return dataInputStream.readUTF();
@@ -729,7 +727,9 @@ public class Main {
         String clientAccountID = YaDataManager.getAccountWithUserName(splitInput[4]).getAccountID();
         String receipt = createReceipt(splitInput[3], "move", splitInput[5], clientAccountID, bankAccountID, "");
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        System.out.println("Recipet" + receipt);
         String respond = payReceipt(receipt);
+        System.out.println("respond " + respond);
         dataOutputStream.writeUTF(respond);
         dataOutputStream.flush();
         if (respond.equals("done successfully")) {
@@ -743,12 +743,21 @@ public class Main {
     private static void withdrawFromWallet(Socket socket, String input) throws Exception {
         String[] splitInput = input.split(" ");
         String clientAccountID = YaDataManager.getAccountWithUserName(splitInput[4]).getAccountID();
+        Double credit = YaDataManager.getSellerWithUserName(splitInput[4]).getCredit();
+        Double minCurrency = Statistics.updatedStats.getMinimumCurrency();
+        Double money = Double.parseDouble(splitInput[5]);
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        if (credit - money < minCurrency){
+           dataOutputStream.writeUTF("You must have " + minCurrency + " in your wallet.");
+           dataOutputStream.flush();
+           return;
+        }
         DataOutputStream dataOutputStream1 = new DataOutputStream(socketB.getOutputStream());
         dataOutputStream1.writeUTF("get_token bank bank");
         dataOutputStream1.flush();
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         String receipt = createReceipt(dataInputStream.readUTF(), "move", splitInput[5], bankAccountID, clientAccountID, "");
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        System.out.println(receipt);
         String respond = payReceipt(receipt);
         dataOutputStream.writeUTF(respond);
         dataOutputStream.flush();
