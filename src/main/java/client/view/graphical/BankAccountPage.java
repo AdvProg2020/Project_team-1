@@ -29,7 +29,8 @@ public class BankAccountPage {
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         String respond = dataInputStream.readUTF();
         error.setText(respond);
-        if (!(respond.equals("password do not match") || respond.equals("username is not available"))){
+        System.out.println(respond);
+        if (!(respond.equals("password do not match") || respond.equals("username is not available") || respond.equals("invalid input") || respond.equals("database error"))){
             DataOutputStream dataOutputStream1 = new DataOutputStream(socket.getOutputStream());
             dataOutputStream1.writeUTF(respond);
             dataOutputStream1.flush();
