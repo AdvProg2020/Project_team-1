@@ -18,10 +18,9 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -175,6 +174,10 @@ public class Main {
             sendOffWithId(socket, Integer.parseInt(input.split(" ")[4]));
         } else if (input.startsWith("remove commodity with id ")) {
             removeCommodity(Integer.parseInt(input.split(" ")[4]));
+        } else if (input.equals("has an auction?")) {
+            hasAnAuction(socket);
+        } else if (input.startsWith("new auction")) {
+            makeNewAuction(socket, input);
         }
     }
 
@@ -789,6 +792,51 @@ public class Main {
         YaDataManager.removeBusiness(seller);
         YaDataManager.addBusiness(seller);
         YaDataManager.removeCommodity(commodity);
+    }
+
+    private static void hasAnAuction(Socket socket) throws IOException {
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        for (Auction auction : YaDataManager.getAuctions()) {
+            if (auction.getOwnerUsername().equals(onlineAccountsUserNames.get(socket))) {
+                dos.writeUTF("yes");
+                dos.flush();
+                return;
+            }
+        }
+        dos.writeUTF("no");
+        dos.flush();
+    }
+
+    private static void makeNewAuction(Socket socket, String input) throws Exception {
+        Commodity commodity = YaDataManager.getCommodityById(Integer.parseInt(input.split(" ")[2]));
+        Date deadline = yaGson.fromJson(input.split(" ", 5)[4], new TypeToken<Date>(){}.getType());
+        Auction auction = new Auction(onlineAccountsUserNames.get(socket), commodity.getCommodityId(), deadline,
+                commodity.getPrice());
+        new Thread(() -> {
+            Timer timer = new Timer();
+            timer.schedule(new AuctionCloser(auction), deadline);
+        }).start();
+        YaDataManager.addAuction(auction);
+    }
+
+    private static class AuctionCloser extends TimerTask {
+        private Auction auction;
+
+        public AuctionCloser(Auction auction) {
+            this.auction = auction;
+        }
+
+        @Override
+        public void run() {
+            if (auction.getTopBidder() != null) {
+                //purchase and deduct money from buyer wallet and add to seller wallet
+            }
+            try {
+                YaDataManager.removeAuction(this.auction);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static class FileTransferMetadataServer extends Thread {

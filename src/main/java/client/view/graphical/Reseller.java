@@ -131,4 +131,8 @@ public class Reseller implements Initializable {
     public void wallet(ActionEvent actionEvent) {
        newPopup(actionEvent , "../../../fxml/Wallet.fxml");
     }
+
+    public void addToAuction(ActionEvent actionEvent) {
+        newPopup(actionEvent, "../../../fxml/reseller/Auction.fxml");
+    }
 }

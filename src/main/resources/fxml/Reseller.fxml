@@ -29,6 +29,7 @@
                <Button mnemonicParsing="false" onMouseClicked="#onCategoriesClick" styleClass="normal-button" text="Categories" />
                <Button mnemonicParsing="false" onMouseClicked="#onManageOffsClick" styleClass="normal-button" text="Manage offs" />
                <Button onAction="#wallet" mnemonicParsing="false" prefHeight="55.0" prefWidth="115.0" styleClass="normal-button" text="Wallet" />
+               <Button onAction="#addToAuction" mnemonicParsing="false" styleClass="normal-button" text="New Auction" />
             </VBox>
          </center>
          <left>

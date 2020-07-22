@@ -12,7 +12,7 @@ public class Auction {
     public Auction(String ownerUsername, int commodityId, Date deadline, int topBid) throws Exception {
         this.ownerUsername = ownerUsername;
         this.commodityId = commodityId;
-        setDeadline(deadline);
+        this.deadline = deadline;
         this.topBid = topBid;
         this.topBidder = null;
     }
@@ -27,14 +27,6 @@ public class Auction {
 
     public Date getDeadline() {
         return deadline;
-    }
-
-    public void setDeadline(Date deadline) throws Exception {
-        if (deadline.after(new Date())) {
-            this.deadline = deadline;
-            return;
-        }
-        throw new Exception("you have to assign a deadline for future");
     }
 
     public void newBid(String username, int offer) {
