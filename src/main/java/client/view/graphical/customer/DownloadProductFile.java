@@ -52,11 +52,13 @@ public class DownloadProductFile {
                 new File("Downloads").mkdir();
                 FileOutputStream fileOutputStream = new FileOutputStream("Downloads/"+fileName);
                 long fileSize = Long.parseLong(matcher.group("fileSize"));
-                byte[] bytes = new byte[(int) fileSize];
+                byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
                 outputStream.writeUTF("send now");
                 Socket senderSocket = fileReceiver.accept();
-                senderSocket.getInputStream().read(bytes);
-                fileOutputStream.write(bytes);
+                DataInputStream fileInputStream = new DataInputStream(senderSocket.getInputStream());
+                while (fileInputStream.read(buffer) > 0) {
+                    fileOutputStream.write(buffer);
+                }
                 progressBar.setVisible(false);
                 messageToUser.setText("File downloaded successfully");
                 doneButton.setDisable(false);
