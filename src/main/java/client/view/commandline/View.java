@@ -1141,28 +1141,28 @@ public class View {
     }
 
     private void viewCompanyInfo() {
-        System.out.println(resellerMenu.getBusinessAccount().getBusinessName());
+//        System.out.println(resellerMenu.getBusinessAccount().getBusinessName());
     }
 
     private void viewSalesHistory() {
-        BusinessAccount businessAccount = resellerMenu.getBusinessAccount();
-        for (SellLog sellLog : businessAccount.getSellLogs()) {
-            System.out.println(sellLog.toString());
-        }
+//        BusinessAccount businessAccount = resellerMenu.getBusinessAccount();
+//        for (SellLog sellLog : businessAccount.getSellLogs()) {
+//            System.out.println(sellLog.toString());
+//        }
     }
 
     private void sortSalesHistory(String command) throws Exception {
         Matcher matcher = Pattern.compile("sort sales history by (?<field>\\S+)").matcher(command);
         matcher.matches();
-        for (SellLog sellLog : resellerMenu.sortSalesHistory(matcher.group("field"))) {
-            System.out.println(sellLog.toString());
-        }
+//        for (SellLog sellLog : resellerMenu.sortSalesHistory(matcher.group("field"))) {
+//            System.out.println(sellLog.toString());
+//        }
     }
 
     private void manageResellerProduct() throws Exception {
-        for (Commodity commodity : resellerMenu.manageCommodities()) {
-            System.out.println(commodity.getInformation());
-        }
+//        for (Commodity commodity : resellerMenu.manageCommodities()) {
+//            System.out.println(commodity.getInformation());
+//        }
     }
 
     private void addProduct() throws Exception {
@@ -1175,25 +1175,25 @@ public class View {
         scanner.nextLine();
         System.out.println("enter product category:");
         String categoryString = scanner.nextLine();
-        Category category = resellerMenu.getCategoryByName(categoryString);
+//        Category category = resellerMenu.getCategoryByName(categoryString);
         System.out.println("enter product specification bellow");
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
-        for (int i = 0; i < category.getFieldOptions().size(); ++i) {
-            CategorySpecification categorySpecification = category.getFieldOptions().get(i);
-            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
-            if (categorySpecification.getOptions() == null) {
-                productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), scanner.nextInt()));
-                scanner.nextLine();
-            } else {
-                StringBuilder options = new StringBuilder();
-                for (String option : categorySpecification.getOptions()) {
-                    options.append(option);
-                    options.append('-');
-                }
-                System.out.println("(" + options.toString() + ")");
-                productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), scanner.nextLine()));
-            }
-        }
+//        for (int i = 0; i < category.getFieldOptions().size(); ++i) {
+//            CategorySpecification categorySpecification = category.getFieldOptions().get(i);
+//            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
+//            if (categorySpecification.getOptions() == null) {
+//                productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), scanner.nextInt()));
+//                scanner.nextLine();
+//            } else {
+//                StringBuilder options = new StringBuilder();
+//                for (String option : categorySpecification.getOptions()) {
+//                    options.append(option);
+//                    options.append('-');
+//                }
+//                System.out.println("(" + options.toString() + ")");
+//                productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), scanner.nextLine()));
+//            }
+//        }
         System.out.println("enter product description:");
         String description = scanner.nextLine();
         System.out.println("enter product amount:");
@@ -1211,7 +1211,7 @@ public class View {
         Matcher matcher = Pattern.compile("^remove product (?<productId>\\d+)$").matcher(command);
         matcher.matches();
         int productId = Integer.parseInt(matcher.group("productId"));
-        resellerMenu.removeProduct(productId);
+//        resellerMenu.removeProduct(productId);
     }
 
     private void showCategories() throws Exception {
@@ -1221,21 +1221,21 @@ public class View {
     }
 
     private void sortCategories(String command) throws Exception {
-        Matcher matcher = Pattern.compile("sort categories (?<field>\\S+)").matcher(command);
-        matcher.matches();
-        for (Category category : resellerMenu.sortCategories(matcher.group("field"))) {
-            System.out.println(category.toString());
-        }
+//        Matcher matcher = Pattern.compile("sort categories (?<field>\\S+)").matcher(command);
+//        matcher.matches();
+//        for (Category category : resellerMenu.sortCategories(matcher.group("field"))) {
+//            System.out.println(category.toString());
+//        }
     }
 
     public void viewResellerOffs() throws Exception {
-        for (Off off : resellerMenu.manageOffs()) {
-            System.out.println(off.toString());
-        }
+//        for (Off off : resellerMenu.manageOffs()) {
+//            System.out.println(off.toString());
+//        }
     }
 
     private void viewResellerBalance() {
-        System.out.println(resellerMenu.getBusinessAccount().getCredit());
+//        System.out.println(resellerMenu.getBusinessAccount().getCredit());
     }
 
     private void resellerMenuHelp() {
@@ -1327,44 +1327,44 @@ public class View {
         if (categoryString.equals("-")) {
             category = YaDataManager.getCategoryWithName(oldCommodity.getCategoryName());
         } else {
-            category = resellerMenu.getCategoryByName(categoryString);
+//            category = resellerMenu.getCategoryByName(categoryString);
         }
         System.out.println("is product available?(y/n)");
         boolean availability = scanner.nextLine().equals("y");
         System.out.println("enter product specification:\n" +
                 "(type '-' if optional field remained unchanged and '-1' if numerical field remained unchanged)");
         ArrayList<Field> productCategorySpecification = new ArrayList<>();
-        for (int i = 0; i < category.getFieldOptions().size(); ++i) {
-            CategorySpecification categorySpecification = category.getFieldOptions().get(i);
-            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
-            if (categorySpecification.getOptions() == null) {
-                int val = scanner.nextInt();
-                if (val == -1) {
-                    val = ((NumericalField) oldCommodity.getCategorySpecifications().get(i)).getValue();
-                }
-                productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), val));
-                scanner.nextLine();
-            } else {
-                String val = scanner.nextLine();
-                if (val.equals("-")) {
-                    val = ((OptionalField) oldCommodity.getCategorySpecifications().get(i)).getValue();
-                }
-                StringBuilder options = new StringBuilder();
-                for (String option : categorySpecification.getOptions()) {
-                    options.append(option);
-                    options.append('-');
-                }
-                System.out.println("(" + options.toString() + ")");
-                productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), val));
-            }
-        }
+//        for (int i = 0; i < category.getFieldOptions().size(); ++i) {
+//            CategorySpecification categorySpecification = category.getFieldOptions().get(i);
+//            System.out.println("Enter product " + categorySpecification.getTitle() + ":");
+//            if (categorySpecification.getOptions() == null) {
+//                int val = scanner.nextInt();
+//                if (val == -1) {
+//                    val = ((NumericalField) oldCommodity.getCategorySpecifications().get(i)).getValue();
+//                }
+//                productCategorySpecification.add(new NumericalField(categorySpecification.getTitle(), val));
+//                scanner.nextLine();
+//            } else {
+//                String val = scanner.nextLine();
+//                if (val.equals("-")) {
+//                    val = ((OptionalField) oldCommodity.getCategorySpecifications().get(i)).getValue();
+//                }
+//                StringBuilder options = new StringBuilder();
+//                for (String option : categorySpecification.getOptions()) {
+//                    options.append(option);
+//                    options.append('-');
+//                }
+//                System.out.println("(" + options.toString() + ")");
+//                productCategorySpecification.add(new OptionalField(categorySpecification.getTitle(), val));
+//            }
+//        }
         System.out.println("enter product description (type '-' if this field remained unchanged):");
         String description = scanner.nextLine();
         System.out.println("enter product amount (type '-1' if this field remained unchanged):");
         int amount = scanner.nextInt();
         scanner.nextLine();
-        manageResellerProductsMenu.editProduct(oldCommodity, brand, name, price, availability, category, productCategorySpecification,
-                description, amount);
+//        manageResellerProductsMenu.editProduct(oldCommodity, brand, name, price, availability, category, productCategorySpecification,
+//                description, amount);
         System.out.println("product edit request had been sent");
     }
 

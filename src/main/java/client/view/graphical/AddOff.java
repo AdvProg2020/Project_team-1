@@ -1,5 +1,6 @@
 package client.view.graphical;
 
+import client.controller.reseller.ClientResellerMenu;
 import client.view.commandline.View;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
@@ -34,7 +35,7 @@ public class AddOff implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for (int commodityId : resellerMenu.getBusinessAccount().getCommoditiesId()) {
+        for (int commodityId : ClientResellerMenu.getBusinessAccount().getCommoditiesId()) {
             CheckBox checkBox = null;
             try {
                 outputStream.writeUTF("send commodity with id ");

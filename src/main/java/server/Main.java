@@ -169,10 +169,14 @@ public class Main {
         } else if (input.startsWith("add score ")) {
             rateProduct(Integer.parseInt(input.split(" ")[2]), Integer.parseInt(input.split(" ")[3]),
                     socket);
-        } else if (input.startsWith("Set min currency")){
+        } else if (input.startsWith("Set min currency")) {
             setMinimumCurrency(input);
-        } else if (input.startsWith("Set wage")){
+        } else if (input.startsWith("Set wage")) {
             setWage(input);
+        } else if (input.startsWith("send off with id ")) {
+            sendOffWithId(socket, Integer.parseInt(input.split(" ")[4]));
+        } else if (input.startsWith("remove commodity with id ")) {
+            removeCommodity(Integer.parseInt(input.split(" ")[4]));
         }
     }
 
@@ -753,6 +757,31 @@ public class Main {
         }
     }
 
+    private static void sendOffWithId(Socket socket, int id) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getOffWithId(id), new TypeToken<Off>() {
+        }.getType()));
+        dataOutputStream.flush();
+    }
+
+    private static void setMinimumCurrency(String input) throws IOException {
+        String[] splitInput = input.split(" ");
+        Statistics.updatedStats.setMinimumCurrency(Double.parseDouble(splitInput[3]));
+    }
+
+    private static void setWage(String input) throws IOException {
+        String[] splitInput = input.split(" ");
+        Statistics.updatedStats.setWage(Double.parseDouble(splitInput[2]));
+    }
+
+    private static void removeCommodity(int id) throws Exception {
+        Commodity commodity = YaDataManager.getCommodityById(id);
+        BusinessAccount seller = YaDataManager.getSellerWithUserName(commodity.getSellerUsername());
+        YaDataManager.removeBusiness(seller);
+        YaDataManager.addBusiness(seller);
+        YaDataManager.removeCommodity(commodity);
+    }
+
     private static class FileTransferMetadataServer extends Thread {
 
         private ServerSocket serverSocket;
@@ -812,15 +841,5 @@ public class Main {
                 }
             }
         }
-    }
-
-    private static void setMinimumCurrency(String input) throws IOException {
-        String[] splitInput = input.split(" ");
-        Statistics.updatedStats.setMinimumCurrency(Double.parseDouble(splitInput[3]));
-    }
-
-    private static void setWage(String input) throws IOException {
-        String[] splitInput = input.split(" ");
-        Statistics.updatedStats.setWage(Double.parseDouble(splitInput[2]));
     }
 }

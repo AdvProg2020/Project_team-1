@@ -4,10 +4,7 @@ import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.*;
-import common.model.commodity.Category;
-import common.model.commodity.Commodity;
-import common.model.commodity.DiscountCode;
-import common.model.commodity.Off;
+import common.model.commodity.*;
 import common.model.share.Request;
 import server.controller.Statistics;
 
@@ -23,7 +20,7 @@ public class YaDataManager {
 
     private static final File statisticsJson;
 
-    private static final File supportJson;
+    private static final File supportsJson;
 
     private static final File managersJson;
 
@@ -41,6 +38,8 @@ public class YaDataManager {
 
     private static final File categoriesJson;
 
+    private static final File auctionsJson;
+
     static {
         initializeDataDirectories();
         statisticsJson = new File("data/statistics.json");
@@ -52,7 +51,8 @@ public class YaDataManager {
         commoditiesJson = new File("data/commodities.json");
         offsJson = new File("data/offs.json");
         categoriesJson = new File("data/categories.json");
-        supportJson = new File("data/accounts/supportAccounts.json");
+        supportsJson = new File("data/accounts/supportAccounts.json");
+        auctionsJson = new File("data/auctions.json");
         initializeDataFiles();
     }
 
@@ -78,8 +78,8 @@ public class YaDataManager {
                 yaGson.toJson(new ArrayList<ManagerAccount>(), allManagersFileWriter);
                 allManagersFileWriter.close();
             }
-            if (!supportJson.exists()) {
-                FileWriter allSupportsFileWriter = new FileWriter(supportJson);
+            if (!supportsJson.exists()) {
+                FileWriter allSupportsFileWriter = new FileWriter(supportsJson);
                 yaGson.toJson(new ArrayList<SupportAccount>(), allSupportsFileWriter);
                 allSupportsFileWriter.close();
             }
@@ -107,6 +107,11 @@ public class YaDataManager {
                 FileWriter allCategoriesFileWriter = new FileWriter(categoriesJson);
                 yaGson.toJson(new ArrayList<Category>(), allCategoriesFileWriter);
                 allCategoriesFileWriter.close();
+            }
+            if (!auctionsJson.exists()) {
+                FileWriter allAuctionsFileWriter = new FileWriter(auctionsJson);
+                yaGson.toJson(new ArrayList<Auction>(), allAuctionsFileWriter);
+                allAuctionsFileWriter.close();
             }
             if (!commoditiesJson.exists()) {
                 FileWriter allCommoditiesFileWriter = new FileWriter(commoditiesJson);
@@ -146,7 +151,7 @@ public class YaDataManager {
     }
 
     public static ArrayList<SupportAccount> getSupports() throws IOException {
-        FileReader fileReader = new FileReader(supportJson);
+        FileReader fileReader = new FileReader(supportsJson);
         Type type = new TypeToken<ArrayList<SupportAccount>>() {
         }.getType();
         ArrayList<SupportAccount> supportAccounts = yaGson.fromJson(fileReader, type);
@@ -155,7 +160,7 @@ public class YaDataManager {
     }
 
     private static void updateSupports(ArrayList<SupportAccount> supportAccounts) throws IOException {
-        FileWriter fileWriter = new FileWriter(supportJson);
+        FileWriter fileWriter = new FileWriter(supportsJson);
         Type type = new TypeToken<ArrayList<SupportAccount>>() {
         }.getType();
         yaGson.toJson(supportAccounts, type, fileWriter);
@@ -430,6 +435,39 @@ public class YaDataManager {
         fileWriter.close();
     }
 
+    public static ArrayList<Auction> getAuctions() throws IOException {
+        FileReader fileReader = new FileReader(auctionsJson);
+        Type type = new TypeToken<ArrayList<Auction>>() {
+        }.getType();
+        ArrayList<Auction> auctions = yaGson.fromJson(fileReader, type);
+        fileReader.close();
+        return auctions;
+    }
+
+    public static void addAuction(Auction auction) throws IOException {
+        ArrayList<Auction> auctions = getAuctions();
+        auctions.add(auction);
+        updateAuctions(auctions);
+    }
+
+    public static void removeAuction(Auction auction) throws IOException {
+        ArrayList<Auction> auctions = getAuctions();
+        for (Auction auction1 : auctions) {
+            if (auction1.getCommodityId() == auction.getCommodityId()) {
+                auctions.remove(auction1);
+                break;
+            }
+        }
+        updateAuctions(auctions);
+    }
+
+    private static void updateAuctions(ArrayList<Auction> auctions) throws IOException {
+        FileWriter fileWriter = new FileWriter(auctionsJson);
+        Type type = new TypeToken<ArrayList<Auction>>() {
+        }.getType();
+        yaGson.toJson(auctions, type, fileWriter);
+        fileWriter.close();
+    }
 
     public static boolean isCategoryExist(String name) throws IOException {
         for (Category category : getCategories()) {

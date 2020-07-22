@@ -1,6 +1,6 @@
 package client.view.graphical;
 
-import client.view.commandline.View;
+import client.controller.reseller.ClientResellerMenu;
 import common.model.commodity.Category;
 import common.model.field.Field;
 import javafx.collections.FXCollections;
@@ -14,23 +14,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import server.controller.reseller.ResellerMenu;
 
-import java.io.*;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AddProduct implements Initializable {
+    private final TreeItem<String> photosPath = new TreeItem<>("Photos");
+    private final TreeItem<String> videosPath = new TreeItem<>("Videos");
     public CheckBox isProductFileCheckBox;
     public Button chooseProductFileButton;
-    private Stage stage;
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    private final ResellerMenu resellerMenu = View.resellerMenu;
     public TextField brandTf;
     public TextField nameTf;
     public TextField priceTf;
@@ -39,10 +33,13 @@ public class AddProduct implements Initializable {
     public TreeView<String> selectedMediaTv;
     public ComboBox<String> categoryCb;
     public Label errorMessageLabel;
-    private final TreeItem<String> photosPath = new TreeItem<>("Photos");
-    private final TreeItem<String> videosPath = new TreeItem<>("Videos");
+    private Stage stage;
     private ArrayList<Field> productCategorySpecification = new ArrayList<>();
     private String productFilePath = null;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     public void setProductCategorySpecification(ArrayList<Field> productCategorySpecification) {
         this.productCategorySpecification = productCategorySpecification;
@@ -50,7 +47,7 @@ public class AddProduct implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<String> observableList = FXCollections.observableList(resellerMenu.getCategoriesName());
+        ObservableList<String> observableList = FXCollections.observableList(ClientResellerMenu.getCategoriesName());
         categoryCb.setItems(observableList);
         categoryCb.valueProperty().addListener(
                 (observableValue, s, t1) -> getCategorySpecification(t1));
@@ -96,8 +93,8 @@ public class AddProduct implements Initializable {
                 throw new Exception("Choose a photo");
             }
             String imagePath = photosPath.getChildren().get(0).getValue();
-            resellerMenu.addProduct(brandTf.getText(), nameTf.getText(), Integer.parseInt(priceTf.getText()),
-                    resellerMenu.getCategoryByName(categoryCb.getValue()),
+            ClientResellerMenu.addProduct(brandTf.getText(), nameTf.getText(), Integer.parseInt(priceTf.getText()),
+                    ClientResellerMenu.getCategoryByName(categoryCb.getValue()),
                     productCategorySpecification, descriptionTextArea.getText(),
                     Integer.parseInt(amountTf.getText()), productFilePath);
             //send image
@@ -114,7 +111,7 @@ public class AddProduct implements Initializable {
                 "../../../fxml/reseller/GetCategorySpecification.fxml"));
         Category category = null;
         try {
-            category = resellerMenu.getCategoryByName(categoryName);
+            category = ClientResellerMenu.getCategoryByName(categoryName);
             parent = loader.load();
         } catch (Exception e) {
             e.printStackTrace();

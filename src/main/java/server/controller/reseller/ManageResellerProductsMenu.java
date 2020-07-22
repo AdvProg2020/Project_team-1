@@ -2,6 +2,7 @@ package server.controller.reseller;
 
 import client.Main;
 import client.Session;
+import client.controller.reseller.ClientResellerMenu;
 import client.view.commandline.View;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
@@ -28,13 +29,13 @@ public class ManageResellerProductsMenu extends Menu {
     }
 
     public ArrayList<Commodity> sort(String field) throws Exception {
-        ArrayList<Commodity> commodities = View.resellerMenu.manageCommodities();
+        ArrayList<Commodity> commodities = ClientResellerMenu.manageCommodities();
         Sort.sortProductArrayList(commodities, field);
         return commodities;
     }
 
     public Commodity getCommodityById(int productId) throws Exception {
-        Commodity commodity = View.resellerMenu.getBusinessAccount().getCommodityById(productId);
+        Commodity commodity = ClientResellerMenu.getBusinessAccount().getCommodityById(productId);
         if (commodity == null) {
             throw new Exception("Commodity not found");
         }
@@ -55,7 +56,7 @@ public class ManageResellerProductsMenu extends Menu {
 
     public void editProduct(Commodity oldProduct, String brand, String name, int price,boolean availability, Category category,
                             ArrayList<Field> categorySpecifications, String description, int amount) throws Exception {
-        BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
+        BusinessAccount businessAccount = ClientResellerMenu.getBusinessAccount();
         Commodity editedProduct = new Commodity((brand.equals("-")) ? (oldProduct.getBrand()) : (brand),
                 (name.equals("-")) ? (oldProduct.getName()) : (name),
                 (price == -1) ? (oldProduct.getPrice()) : (price),

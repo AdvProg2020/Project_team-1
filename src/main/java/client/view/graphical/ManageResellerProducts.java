@@ -1,6 +1,7 @@
 package client.view.graphical;
 
 import client.Session;
+import client.controller.reseller.ClientResellerMenu;
 import client.view.commandline.View;
 import common.model.commodity.Commodity;
 import javafx.collections.FXCollections;
@@ -20,7 +21,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import server.controller.reseller.ManageResellerProductsMenu;
-import server.controller.reseller.ResellerMenu;
 import server.controller.share.MenuHandler;
 
 import java.io.FileInputStream;
@@ -30,7 +30,6 @@ import java.util.*;
 
 public class ManageResellerProducts implements Initializable {
     private final ManageResellerProductsMenu manageResellerProductsMenu = View.manageResellerProductsMenu;
-    private final ResellerMenu resellerMenu = View.resellerMenu;
     public TilePane manageProductsTilePane;
     public ChoiceBox<String> manageProductsSortField;
     public ToggleButton manageProductsSortOrderToggleButton;
@@ -72,7 +71,7 @@ public class ManageResellerProducts implements Initializable {
             ArrayList<Commodity> commodities = null;
             try {
                 if (manageProductsSortField.getValue() == null) {
-                    commodities = resellerMenu.manageCommodities();
+                    commodities = ClientResellerMenu.manageCommodities();
                 } else {
                     commodities = manageResellerProductsMenu.sort(manageProductsSortField.getValue());
                 }
@@ -124,7 +123,7 @@ public class ManageResellerProducts implements Initializable {
                     Optional<ButtonType> result = confirmation.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.YES) {
                         try {
-                            resellerMenu.removeProduct(commodity.getCommodityId());
+                            ClientResellerMenu.removeProduct(commodity.getCommodityId());
                         } catch (Exception e) {
                             // Be Kiram
                         }

@@ -1,6 +1,7 @@
 package client.view.graphical;
 
 import client.Session;
+import client.controller.reseller.ClientResellerMenu;
 import client.view.commandline.View;
 import common.model.commodity.Off;
 import javafx.collections.FXCollections;
@@ -68,7 +69,7 @@ public class ManageResellerOffs implements Initializable {
             ArrayList<Off> offs = null;
             try {
                 if (manageOffsSortField.getValue() == null) {
-                    offs = resellerMenu.manageOffs();
+                    offs = ClientResellerMenu.manageOffs();
                 } else {
                     offs = manageResellerOffsMenu.sort(manageOffsSortField.getValue());
                 }

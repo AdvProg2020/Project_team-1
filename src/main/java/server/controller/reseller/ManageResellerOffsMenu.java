@@ -1,5 +1,6 @@
 package server.controller.reseller;
 
+import client.controller.reseller.ClientResellerMenu;
 import client.view.commandline.View;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
@@ -27,13 +28,13 @@ public class ManageResellerOffsMenu extends Menu {
     }
 
     public ArrayList<Off> sort(String field) throws Exception {
-        ArrayList<Off> offs = View.resellerMenu.manageOffs();
+        ArrayList<Off> offs = ClientResellerMenu.manageOffs();
         Sort.sortOffArrayList(offs, field);
         return offs;
     }
 
     public Off getOffById(int offId) throws Exception {
-        Off off = View.resellerMenu.getBusinessAccount().getOffById(offId);
+        Off off = ClientResellerMenu.getBusinessAccount().getOffById(offId);
         if (off == null) {
             throw new Exception("Off ID not found");
         }
@@ -42,7 +43,7 @@ public class ManageResellerOffsMenu extends Menu {
 
     public void addOff(ArrayList<Commodity> commodities, String startTime,
                        String endTime, int discountPercent) throws Exception {
-        BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
+        BusinessAccount businessAccount = ClientResellerMenu.getBusinessAccount();
         ArrayList<Integer> commoditiesId = new ArrayList<>();
         for (Commodity commodity : commodities) {
             commoditiesId.add(commodity.getCommodityId());
@@ -70,7 +71,7 @@ public class ManageResellerOffsMenu extends Menu {
                 commoditiesIdInOff.add(commodityId);
             }
         }
-        BusinessAccount businessAccount = View.resellerMenu.getBusinessAccount();
+        BusinessAccount businessAccount = ClientResellerMenu.getBusinessAccount();
         Off newOff = new Off(businessAccount.getUsername(), commoditiesIdInOff,
                 (startTime.equals("-")) ? (oldOff.getStartTime()) : (simpleDateFormat.parse(startTime)),
                 (endTime.equals("-")) ? (oldOff.getEndTime()) : (simpleDateFormat.parse(endTime)),

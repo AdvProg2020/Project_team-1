@@ -1,5 +1,6 @@
 package client.view.graphical;
 
+import client.controller.reseller.ClientResellerMenu;
 import javafx.event.ActionEvent;
 import server.controller.reseller.ResellerMenu;
 import javafx.fxml.FXMLLoader;
@@ -23,13 +24,6 @@ public class Reseller implements Initializable {
 
     public Label resellerBalanceLabel;
     public final ResellerMenu resellerMenu = View.resellerMenu;
-    public Label tableViewPopupTitleLabel;
-    public Label phoneNumberLabel;
-    public Label emailLabel;
-    public Label lastNameLabel;
-    public Label firstNameLabel;
-    public ImageView userPhotoImageView;
-    public Label usernameLabel;
     Popup popupMenu = new Popup();
 
     public void onPersonalInfoClick(MouseEvent mouseEvent) {
@@ -82,7 +76,7 @@ public class Reseller implements Initializable {
 
     public void onManageProductsClick(MouseEvent mouseEvent) {
         try {
-            resellerMenu.manageCommodities();
+            ClientResellerMenu.manageCommodities();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,7 +99,7 @@ public class Reseller implements Initializable {
 
     public void onManageOffsClick(MouseEvent mouseEvent) {
         try {
-            resellerMenu.manageOffs();
+            ClientResellerMenu.manageOffs();
         } catch (Exception e) {
             e.printStackTrace();
         }
