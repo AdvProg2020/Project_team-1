@@ -161,6 +161,10 @@ public class Commodity implements Requestable , Serializable {
         this.status = status;
     }
 
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     @Override
     public void addObj() throws Exception {
         YaDataManager.removeCommodity(this);

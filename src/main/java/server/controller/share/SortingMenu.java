@@ -22,10 +22,7 @@ public class SortingMenu extends Menu {
 
     public void sort(String sort) throws Exception {
         currentSort = sort;
-        outputStream.writeUTF("send all commodities");
-        outputStream.flush();
-        ArrayList<Commodity> commodities = yaGson.fromJson(inputStream.readUTF(), new TypeToken<ArrayList<Commodity>>() {
-        }.getType());
+        ArrayList<Commodity> commodities = FilteringMenu.getFilteredCommodities();
         if (sort.equalsIgnoreCase("price")) {
             commodities.sort(price);
         } else if (sort.equalsIgnoreCase("Number of visits")) {
@@ -40,11 +37,7 @@ public class SortingMenu extends Menu {
     }
 
     public void disableSort() throws Exception {
-        currentSort = "Number of visits";
-        outputStream.writeUTF("send all commodities");
-        outputStream.flush();
-        ArrayList<Commodity> commodities = yaGson.fromJson(inputStream.readUTF(), new TypeToken<ArrayList<Commodity>>() {
-        }.getType());
-        commodities.sort(numberOfVisits);
+        currentSort = "Number of visits" ;
+        FilteringMenu.getFilteredCommodities().sort(numberOfVisits);
     }
 }

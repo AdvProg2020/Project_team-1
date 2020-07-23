@@ -19,7 +19,10 @@ public class FilteringMenu extends Menu {
 
     static {
         try {
-            filteredCommodities = new ArrayList<Commodity>(YaDataManager.getCommodities());
+            outputStream.writeUTF("send all commodities");
+            outputStream.flush();
+            filteredCommodities = yaGson.fromJson(inputStream.readUTF(), new TypeToken<ArrayList<Commodity>>() {
+            }.getType());
         } catch (Exception e) {
             e.printStackTrace();
         }

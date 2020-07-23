@@ -447,7 +447,7 @@ public class Main {
         }.getType());
         dos.writeUTF("send picture");
         long fileSize = Long.parseLong(dis.readUTF());
-        FileOutputStream file = new FileOutputStream("data\\media\\products\\"  + Integer.toString(((Commodity) request.getObj()).getCommodityId()) + ".jpg");
+        FileOutputStream file = new FileOutputStream("data\\media\\products\\"  + Integer.toString(((Commodity) request.getObj()).getCommodityId()));
         byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
         long counter = 0;
         while (counter < fileSize) {

@@ -123,6 +123,7 @@ public class ProductsMenuLoad {
         ArrayList<Commodity> commodities = View.productsMenu.getProducts();
         int end = Math.min(count + blockIncrement, commodities.size());
         for (int p = count; p < end; p++) {
+            commodities.get(p).setImagePath("tmp\\" + p);
             System.out.println(commodities.get(p).getImagePath());
             FileInputStream inputStream = new FileInputStream(commodities.get(p).getImagePath());
             Image image = new Image(inputStream);
