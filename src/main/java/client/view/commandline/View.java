@@ -1,6 +1,7 @@
 package client.view.commandline;
 
 import client.Session;
+import client.controller.commodity.AuctionMenu;
 import common.model.account.BusinessAccount;
 import common.model.account.ManagerAccount;
 import common.model.account.PersonalAccount;
@@ -66,6 +67,7 @@ public class View {
     public static final ManageAllProducts manageAllProducts = new ManageAllProducts();
     public static final SupportMenu supportMenu = new SupportMenu();
     public static final Chat chat = new Chat();
+    public static final AuctionMenu auctionMenu = new AuctionMenu();
     private final Scanner scanner = new Scanner(System.in);
 
     public View() {

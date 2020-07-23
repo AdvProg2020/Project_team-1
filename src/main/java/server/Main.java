@@ -58,6 +58,16 @@ public class Main {
         System.out.println(bankAccountID + " = bank id");
         bankAccountID = "10001";
         System.out.println(bankAccountID);
+        for (Auction auction : YaDataManager.getAuctions()) {
+            if (auction.getDeadline().after(new Date())) {
+                new Thread(() -> {
+                    Timer timer = new Timer();
+                    timer.schedule(new AuctionCloser(auction), auction.getDeadline());
+                }).start();
+            } else {
+                //purchase
+            }
+        }
         while (true) {
             Socket socket = server.accept();
             sockets.add(socket);
@@ -178,6 +188,43 @@ public class Main {
             makeNewAuction(socket, input);
         } else if (input.startsWith("is commodity in auction? ")) {
             isCommodityInAuction(socket, Integer.parseInt(input.split(" ")[4]));
+        } else if (input.startsWith("update auction ")) {
+            sendAuction(socket, Integer.parseInt(input.split(" ")[2]));
+        } else if (input.equals("send blocked money")) {
+            sendBlockedMoney(socket);
+        } else if (input.startsWith("new bid ")) {
+            newBid(socket, Integer.parseInt(input.split(" ")[2]), Integer.parseInt(input.split(" ")[4]));
+        }
+    }
+
+    private static void newBid(Socket socket, int money, int id) throws IOException {
+        for (Auction auction : YaDataManager.getAuctions()) {
+            if (auction.getCommodityId() == id) {
+                auction.newBid(onlineAccountsUserNames.get(socket), money);
+                return;
+            }
+        }
+    }
+
+    private static void sendBlockedMoney(Socket socket) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        int money = 0;
+        for (Auction auction : YaDataManager.getAuctions()) {
+            if (auction.getTopBidder().equals(onlineAccountsUserNames.get(socket))) {
+                money += auction.getTopBid();
+            }
+        }
+        dataOutputStream.write(money);
+    }
+
+    private static void sendAuction(Socket socket, int id) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        for (Auction auction : YaDataManager.getAuctions()) {
+            if (id == auction.getCommodityId()) {
+                dataOutputStream.writeUTF(yaGson.toJson(auction, new TypeToken<Auction>() {
+                }.getType()));
+                return;
+            }
         }
     }
 
