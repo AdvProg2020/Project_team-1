@@ -227,7 +227,7 @@ public class MoHoBank {
                 return;
             }
             String description = separatedInput.length == 7? separatedInput[6]: "";
-            if (!description.matches("^[A-Za-z1-9 ]+$")) {
+            if (!description.matches("^[A-Za-z1-9]*$")) {
                 sendResponse("your input contains invalid characters");
                 return;
             }
