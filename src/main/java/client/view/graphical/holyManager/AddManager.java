@@ -41,7 +41,7 @@ public class AddManager {
         try {
             ManagerAccount managerAccount = new ManagerAccount(registerUsernameTf.getText(),registerFirstNameTf.getText() , registerLastNameTf.getText(), registerEmailTf.getText()
                     , registerPhoneNumberTf.getText() , registerPassword.getText() , userPhotoImageView.getImage().getUrl());
-            View.manageUsersMenu.createNewManager(managerAccount);
+            View.manageUsersPanel.createNewManager(managerAccount);
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
         }catch (Exception e){
             registerMessageLabel.setText(e.getMessage());

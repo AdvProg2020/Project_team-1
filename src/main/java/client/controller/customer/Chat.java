@@ -1,4 +1,4 @@
-package server.controller.customer;
+package client.controller.customer;
 
 import server.controller.share.Menu;
 

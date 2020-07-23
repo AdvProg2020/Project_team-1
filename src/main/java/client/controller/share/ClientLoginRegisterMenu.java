@@ -13,7 +13,7 @@ public class ClientLoginRegisterMenu {
         } else if (simpleAccount instanceof BusinessAccount) {
             MenuHandler.getInstance().setCurrentMenu(View.resellerMenu);
         } else if (simpleAccount instanceof PersonalAccount) {
-            MenuHandler.getInstance().setCurrentMenu(View.customerMenu);
+            MenuHandler.getInstance().setCurrentMenu(View.customerPanel);
         } else if (simpleAccount instanceof SupportAccount) {
             MenuHandler.getInstance().setCurrentMenu(View.supportMenu);
         }

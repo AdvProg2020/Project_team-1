@@ -194,7 +194,34 @@ public class Main {
             sendBlockedMoney(socket);
         } else if (input.startsWith("new bid ")) {
             newBid(socket, Integer.parseInt(input.split(" ")[2]), Integer.parseInt(input.split(" ")[4]));
+        } else if (input.startsWith("update commodity ")) {
+            updateCommodity(yaGson.fromJson(input.split(" ")[2], new TypeToken<Commodity>() {
+            }.getType()));
+        } else if (input.startsWith("get discount with code")) {
+            sendDiscountWithCode(socket, input.split(" ", 5)[4]);
+        } else if (input.startsWith("update person ")) {
+            updatePerson(socket, yaGson.fromJson(input.split(" ", 3)[2], new TypeToken<PersonalAccount>() {
+            }.getType()));
+        } else if (input.startsWith("add manager ")) {
+            YaDataManager.addManager(yaGson.fromJson(input.split(" ", 3)[2], new TypeToken<ManagerAccount>() {
+            }.getType()));
         }
+    }
+
+    private static void updatePerson(Socket socket, PersonalAccount person) throws IOException {
+        YaDataManager.removePerson(person);
+        YaDataManager.addPerson(person);
+    }
+
+    private static void sendDiscountWithCode(Socket socket, String code) throws Exception {
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+        dos.writeUTF(yaGson.toJson(YaDataManager.getDiscountCodeWithCode(code), new TypeToken<DiscountCode>() {
+        }.getType()));
+    }
+
+    private static void updateCommodity(Commodity commodity) throws IOException {
+        YaDataManager.removeCommodity(commodity);
+        YaDataManager.addCommodity(commodity);
     }
 
     private static void newBid(Socket socket, int money, int id) throws IOException {
@@ -486,7 +513,7 @@ public class Main {
         }
     }
 
-    private static void addCommodity(Socket socket) throws IOException{
+    private static void addCommodity(Socket socket) throws IOException {
         DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         DataInputStream dis = new DataInputStream(socket.getInputStream());
         dos.writeUTF("send");
@@ -494,14 +521,14 @@ public class Main {
         }.getType());
         dos.writeUTF("send picture");
         long fileSize = Long.parseLong(dis.readUTF());
-        FileOutputStream file = new FileOutputStream("data\\media\\products\\"  + Integer.toString(((Commodity) request.getObj()).getCommodityId()));
+        FileOutputStream file = new FileOutputStream("data\\media\\products\\" + Integer.toString(((Commodity) request.getObj()).getCommodityId()));
         byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
         long counter = 0;
         while (counter < fileSize) {
             dis.read(buffer);
             System.out.println("kire khar");
             file.write(buffer);
-            counter+= Constants.FILE_BUFFER_SIZE;
+            counter += Constants.FILE_BUFFER_SIZE;
         }
         System.out.println("mamal koonie");
         file.close();

@@ -3,16 +3,11 @@ package server.controller.manager;
 import common.model.commodity.Off;
 import common.model.share.Request;
 import common.model.share.Status;
-import server.controller.share.Menu;
 import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 
-public class ManageRequestMenu extends Menu {
-    public ManageRequestMenu() {
-        fxmlFileAddress = "../../../fxml/HolyManager/ManageRequests.fxml";
-    }
-
+public class ManageRequestMenu {
     public Request getRequestById(int id) throws Exception {
         return YaDataManager.getRequest(id);
     }

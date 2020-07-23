@@ -13,7 +13,7 @@ import java.util.Date;
 
 import static client.view.commandline.View.managerMenu;
 
-public class CreateDiscountCode extends Menu {
+public class CreateDiscountCode {
     public void checkCode(String code) throws Exception {
         for (DiscountCode discountCode : YaDataManager.getDiscountCodes()) {
             if (discountCode.getCode().equals(code))
@@ -31,10 +31,6 @@ public class CreateDiscountCode extends Menu {
         if (maximumDiscountPrice <= 0)
             return false;
         return maximumNumberOfUse > 0;
-    }
-
-    public CreateDiscountCode() {
-        fxmlFileAddress = "../../../fxml/HolyManager/CreateDiscountCode.fxml";
     }
 
     public void createDiscountCodeNC(String code , String stringStart , String stringFinish ,

@@ -9,7 +9,7 @@ import server.dataManager.YaDataManager;
 import java.io.IOException;
 import java.util.Date;
 
-public class GetDiscountCode extends Menu {
+public class GetDiscountCode {
     public DiscountCode getDiscountCode(String code) throws Exception {
         return YaDataManager.getDiscountCodeWithCode(code);
     }
@@ -117,10 +117,6 @@ public class GetDiscountCode extends Menu {
 
     public SimpleAccount getAccountWithUserNameFromDatabase(String username) throws IOException {
         return YaDataManager.getAccountWithUserName(username);
-    }
-
-    public GetDiscountCode() {
-        fxmlFileAddress = "../../../fxml/HolyManager/ViewDiscountCode.fxml";
     }
 
     public void updateAccounts(DiscountCode discountCode) throws Exception {

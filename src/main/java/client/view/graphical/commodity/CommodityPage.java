@@ -7,6 +7,7 @@ import client.view.graphical.MainMenu;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
+import common.model.commodity.Auction;
 import common.model.commodity.Category;
 import common.model.commodity.Comment;
 import common.model.commodity.Commodity;
@@ -27,10 +28,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import server.controller.commodity.CommentsMenu;
-import server.controller.commodity.DigestMenu;
-import server.controller.customer.OrderMenu;
-import server.controller.share.CommodityMenu;
 import server.controller.share.MenuHandler;
 
 import java.io.FileInputStream;
@@ -46,10 +43,6 @@ import static client.Main.outputStream;
 
 public class CommodityPage implements Initializable {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-    private final CommodityMenu commodityMenu = View.commodityMenu;
-    private final DigestMenu digestMenu = View.digestMenu;
-    private final CommentsMenu commentsMenu = View.commentsMenu;
-    private final OrderMenu orderMenu = View.orderMenu;
     private final String emptyStarAddress = "stars/emptyStar.png";
     private final String fullStarAddress = "stars/fullStar.png";
     public Label commodityName;
@@ -81,7 +74,7 @@ public class CommodityPage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Commodity commodity = commodityMenu.getCommodity();
+        Commodity commodity = View.productMenu.getCommodity();
         commodityName.setText("Name: " + commodity.getName());
         commodityDescription.setText("Description: " + commodity.getDescription());
         commodityPriceAndRating.setText("Price: " + commodity.getPrice() + "Rials,\t\tRating: ");
@@ -199,7 +192,7 @@ public class CommodityPage implements Initializable {
         starButton3.setImage(new Image(emptyStarAddress));
         starButton2.setImage(new Image(emptyStarAddress));
         try {
-            if (!orderMenu.canRateProduct(commodity.getCommodityId())) {
+            if (!View.productMenu.canRateProduct(commodity.getCommodityId())) {
                 starButton1.setDisable(true);
                 starButton2.setDisable(true);
                 starButton3.setDisable(true);
@@ -213,7 +206,7 @@ public class CommodityPage implements Initializable {
         for (Comment comment : commodity.getAllComments()) {
             VBox commentVBox = new VBox();
             commentVBox.getChildren().addAll(new ModifiedLabel("Username: " + comment.getUsername() +
-                            (commentsMenu.hasBoughtThisCommodity() ? ", is a buyer" : ", isn't a buyer")),
+                            (View.productMenu.hasBoughtThisCommodity() ? ", is a buyer" : ", isn't a buyer")),
                     new ModifiedLabel("Title: " + comment.getTitle()), new ModifiedLabel(comment.getContent()));
             commentsVBox.getChildren().add(commentVBox);
         }
@@ -229,8 +222,8 @@ public class CommodityPage implements Initializable {
                         }.getType());
                 for (Commodity commodity : commodities) {
                     if (("Name: " + commodity.getName() + ", Brand: " + commodity.getBrand()).equals(comparableCommodities.getValue()) &&
-                            commodity.getCategoryName().equals(commodityMenu.getCommodity().getCategoryName())) {
-                        commodityMenu.setComparingCommodity(commodity);
+                            commodity.getCategoryName().equals(View.productMenu.getCommodity().getCategoryName())) {
+                        View.productMenu.setComparingCommodity(commodity);
                     }
                 }
             } catch (IOException e) {
@@ -250,7 +243,7 @@ public class CommodityPage implements Initializable {
     public void onAddClick(MouseEvent mouseEvent) {
         if (!addToCartButton.getText().equals("Auction")) {
             try {
-                digestMenu.addToCart();
+                View.productMenu.addToCart();
                 addToCartLabel.setText("Added to cart successfully");
                 System.out.println("slaam");
             } catch (Exception e) {
@@ -259,12 +252,20 @@ public class CommodityPage implements Initializable {
                 addToCartLabel.setText(e.getMessage());
             }
         } else {
-            //go to auction page
+            View.auctionMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+            try {
+                outputStream.writeUTF("update auction " + View.productMenu.getCommodity().getCommodityId());
+                outputStream.flush();
+                View.auctionMenu.setAuction(yaGson.fromJson(inputStream.readUTF(), new TypeToken<Auction>() {
+                }.getType()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void onBackClick(MouseEvent mouseEvent) {
-        commodityMenu.goToPreviousMenu();
+        View.productMenu.goToPreviousMenu();
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
@@ -280,7 +281,7 @@ public class CommodityPage implements Initializable {
 
     public void onLogOutClick(MouseEvent mouseEvent) {
         try {
-            commodityMenu.logout();
+            View.productMenu.logout();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -298,7 +299,7 @@ public class CommodityPage implements Initializable {
         fullStar.setFitHeight(32);
         starButton1 = fullStar;
         try {
-            orderMenu.rateProduct(commodityMenu.getCommodity().getCommodityId(), rate);
+            View.productMenu.rateProduct(View.productMenu.getCommodity().getCommodityId(), rate);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -370,7 +371,7 @@ public class CommodityPage implements Initializable {
             return;
         }
         try {
-            commentsMenu.addComment(titleBox.getText(), commentBox.getText());
+            View.productMenu.addComment(titleBox.getText(), commentBox.getText());
             error.setText("Your comment will be reviewed and after approving by manager will be published");
         } catch (IOException e) {
             e.printStackTrace();

@@ -12,7 +12,8 @@ public class FilterByCategory {
     public void filterByCategory(ActionEvent actionEvent) {
         String categoryName = categoryNameTextField.getText();
         try {
-            View.filteringMenu.filter(new common.model.filter.FilterByCategory("Filter by category "+categoryName , View.manageCategoryMenu.getCategory(categoryName)));
+            View.filteringMenu.filter(new common.model.filter.FilterByCategory("Filter by category " +
+                    categoryName , View.manageCategoriesMenu.getCategory(categoryName)));
             if (MenuHandler.getInstance().getCurrentMenu().getFxmlFileAddress().equals("../../Products.fxml")) {
                 SceneHandler.getProductsMenuLoad().deleteCommodities(SceneHandler.getProductsMenuLoad().getRoot());
                 SceneHandler.getProductsMenuLoad().setCommodities(SceneHandler.getProductsMenuLoad().getRoot());

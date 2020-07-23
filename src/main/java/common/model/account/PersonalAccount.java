@@ -125,8 +125,6 @@ public class PersonalAccount extends SimpleAccount {
     public void useThisDiscount(DiscountCode discountCode) throws IOException {
         int numberOfTimesUsed = discountCodes.get(discountCode.getCode()) + 1;
         discountCodes.put(discountCode.getCode(), numberOfTimesUsed);
-        YaDataManager.removePerson(this);
-        YaDataManager.addPerson(this);
     }
 
     public void dontUseDiscountCode(DiscountCode discountCode) throws IOException {

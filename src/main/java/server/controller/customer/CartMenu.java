@@ -3,6 +3,7 @@ package server.controller.customer;
 import client.Session;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import common.model.account.BusinessAccount;
 import common.model.account.PersonalAccount;
 import common.model.commodity.Commodity;
@@ -18,13 +19,13 @@ import server.dataManager.YaDataManager;
 import java.io.IOException;
 import java.util.*;
 
+import static client.Main.inputStream;
 import static client.Main.outputStream;
 import static client.view.commandline.View.cartMenu;
-import static client.view.commandline.View.commodityMenu;
+import static client.view.commandline.View.productMenu;
 
 public class CartMenu extends Menu {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-    private String productSortType = "visits";
     private BuyLog buyLog;
 
     public CartMenu() {
@@ -52,10 +53,6 @@ public class CartMenu extends Menu {
         outputStream.flush();
     }
 
-    public int getAmountInCart(Commodity commodity) {
-        return ((PersonalAccount) Session.getOnlineAccount()).getAmount(commodity.getCommodityId());
-    }
-
     public void increase(int id) throws Exception {
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         personalAccount.addToCart(id);
@@ -66,16 +63,22 @@ public class CartMenu extends Menu {
     public DiscountCode getDiscountCodeWithCode(String code) throws Exception {
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         if (!code.equals("")) {
-            DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(code);
+            outputStream.writeUTF("send discount with code " + code);
+            outputStream.flush();
+            DiscountCode discountCode = yaGson.fromJson(inputStream.readUTF(), new TypeToken<DiscountCode>() {
+            }.getType());
             account.doesHaveThisDiscount(discountCode);
             discountCode.isActive();
             account.useThisDiscount(discountCode);
+            outputStream.writeUTF("update person " + yaGson.toJson(Session.getOnlineAccount(), new TypeToken<PersonalAccount>() {
+                    }.getType()));
+            outputStream.flush();
             return discountCode;
         }
         return null;
     }
 
-    public int getDiscountPercentage(Commodity commodity) throws IOException {
+    private int getDiscountPercentage(Commodity commodity) throws IOException {
         for (Off off : YaDataManager.getOffs()) {
             if (off.isActive()) {
                 for (int offCommodityId : off.getCommoditiesId()) {
@@ -93,7 +96,7 @@ public class CartMenu extends Menu {
         return price;
     }
 
-    public void purchase(DiscountCode discountCode) throws Exception {
+    public void purchase(DiscountCode discountCode) throws Exception { // FIXME: 07/24/2020
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
         int price = calculateTotalPrice(account);
         if (discountCode != null && !discountCode.equals(""))
@@ -147,39 +150,5 @@ public class CartMenu extends Menu {
             }
         } catch (NullPointerException ignored) {
         }
-    }
-
-    public void checkIsCommoditiesAvailable() throws Exception {
-        HashMap<Integer, Integer> cart = ((PersonalAccount) Session.getOnlineAccount()).getCart();
-        for (int commodityId : cart.keySet()) {
-            Commodity commodity = YaDataManager.getCommodityById(commodityId);
-            if (commodity.getInventory() < cart.get(commodityId)) {
-                throw new Exception("Some of products in your cart are not available");
-            }
-        }
-    }
-
-    public void goToCommodityMenu(int id) throws Exception {
-        Commodity commodity = YaDataManager.getCommodityById(id);
-        YaDataManager.removeCommodity(commodity);
-        commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
-        YaDataManager.addCommodity(commodity);
-        MenuHandler.getInstance().setCurrentMenu(commodityMenu);
-        commodityMenu.setCommodity(commodity);
-        commodityMenu.setPreviousMenu(cartMenu);
-    }
-
-    public void setProductSortType(String productSortType) {
-        this.productSortType = productSortType;
-    }
-
-    public ArrayList<Commodity> getCartProducts() throws Exception {
-        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        ArrayList<Commodity> commodities = new ArrayList<>();
-        for (Integer commodityId : account.getCart().keySet()) {
-            commodities.add(YaDataManager.getCommodityById(commodityId));
-        }
-        Sort.sortProductArrayList(commodities, this.productSortType);
-        return commodities;
     }
 }

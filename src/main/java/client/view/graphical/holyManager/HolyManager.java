@@ -31,40 +31,34 @@ public class HolyManager {
     }
 
     public void manageUsers(ActionEvent actionEvent) {
-        View.manageUsersMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.manageUsersMenu);
+        View.manageUsersPanel.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.manageUsersPanel);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
     public void manageCategories(ActionEvent actionEvent) {
-        View.manageCategoryMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.manageCategoryMenu);
+        View.manageCategoriesMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.manageCategoriesMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
 
     }
 
     public void manageRequests(ActionEvent actionEvent) {
-        View.manageRequestMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.manageRequestMenu);
+        View.manageRequestsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.manageRequestsMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
 
-    }
-
-    public void manageAllProducts(ActionEvent actionEvent) {
-        View.manageAllProducts.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.manageAllProducts);
-        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
     public void viewDiscountCode(ActionEvent actionEvent) {
-        View.getDiscountCode.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.getDiscountCode);
+        View.getDiscountCodeMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.getDiscountCodeMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
     public void createDiscountCode(ActionEvent actionEvent) {
-        View.createDiscountCode.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.createDiscountCode);
+        View.createDiscountCodeMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.createDiscountCodeMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 

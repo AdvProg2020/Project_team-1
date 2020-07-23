@@ -130,10 +130,8 @@ public class ProductsMenuLoad {
             ImageView imageView = new ImageView(image);
             Commodity tmp = commodities.get(p);
             imageView.setOnMouseClicked(mouseEvent -> {
-                View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-                View.commodityMenu.setCommodity(tmp);
-                View.digestMenu.setCommodity(tmp);
-                View.commentsMenu.setCommodity(tmp);
+                View.productMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+                View.productMenu.setCommodity(tmp);
                 changeMenuToProductMenu(mouseEvent, tmp);
             });
             imageView.setFitWidth(250);
@@ -197,7 +195,7 @@ public class ProductsMenuLoad {
 
     private void changeMenuToProductMenu(MouseEvent mouseEvent, Commodity commodity) {
         commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
-        MenuHandler.getInstance().setCurrentMenu(View.commodityMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.productMenu);
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 

@@ -58,7 +58,7 @@ public class FilterByCategorySpecificationOptionalField {
     public void showFields(ActionEvent actionEvent) {
         String categoryName = categoryNameTextField.getText();
         try {
-            category = View.manageCategoryMenu.getCategory(categoryName);
+            category = View.manageCategoriesMenu.getCategory(categoryName);
             if (category == null)
                 throw new Exception();
         } catch (Exception e) {

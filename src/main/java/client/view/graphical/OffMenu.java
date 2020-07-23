@@ -175,9 +175,8 @@ public class OffMenu extends HolyManager {
                 Image image = new Image(inputStream);
                 ImageView imageView = new ImageView(image);
                 imageView.setOnMouseClicked(mouseEvent -> {
-                    View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-                    View.commodityMenu.setCommodity(commodity);
-                    View.digestMenu.setCommodity(commodity);
+                    View.productMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+                    View.productMenu.setCommodity(commodity);
                     changeMenuToProductMenu(mouseEvent, commodity);
                 });
                 imageView.setFitWidth(250);
@@ -229,7 +228,7 @@ public class OffMenu extends HolyManager {
 
     private void changeMenuToProductMenu(MouseEvent mouseEvent, Commodity commodity) {
         commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
-        MenuHandler.getInstance().setCurrentMenu(View.commodityMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.productMenu);
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 

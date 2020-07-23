@@ -72,8 +72,8 @@ public class Cart implements Initializable {
                 GridPane commodityGridPane = new GridPane();
                 ImageView imageView = new ImageView(new Image(new FileInputStream(commodity.getImagePath())));
                 imageView.setOnMouseClicked(mouseEvent -> {
-                    View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-                    View.commodityMenu.setCommodity(commodity);
+                    View.productMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+                    View.productMenu.setCommodity(commodity);
                     commodity.setNumberOfVisits(commodity.getNumberOfVisits() + 1);
                     try {
                         outputStream.writeUTF("add to product views " + commodityId);
@@ -81,7 +81,7 @@ public class Cart implements Initializable {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    MenuHandler.getInstance().setCurrentMenu(View.commodityMenu);
+                    MenuHandler.getInstance().setCurrentMenu(View.productMenu);
                     Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
                 });
                 imageView.setFitWidth(250);

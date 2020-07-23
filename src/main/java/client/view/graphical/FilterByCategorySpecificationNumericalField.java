@@ -26,7 +26,7 @@ public class FilterByCategorySpecificationNumericalField {
         int endRange = 0;
         String categoryName = categoryNameTextField.getText();
         try {
-            category = View.manageCategoryMenu.getCategory(categoryName);
+            category = View.manageCategoriesMenu.getCategory(categoryName);
             if (category == null)
                 throw new Exception();
             startRange = Integer.parseInt(startRangeTextField.getText());
@@ -73,7 +73,7 @@ public class FilterByCategorySpecificationNumericalField {
     public void showFields(ActionEvent actionEvent) {
         String categoryName = categoryNameTextField.getText();
         try {
-            category = View.manageCategoryMenu.getCategory(categoryName);
+            category = View.manageCategoriesMenu.getCategory(categoryName);
             if (category == null)
                 throw new Exception();
         } catch (Exception e) {

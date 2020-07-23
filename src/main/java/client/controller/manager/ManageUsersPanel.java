@@ -1,14 +1,38 @@
-package server.controller.manager;
+package client.controller.manager;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.BusinessAccount;
 import common.model.account.ManagerAccount;
 import common.model.account.PersonalAccount;
 import common.model.account.SupportAccount;
+import server.controller.share.Menu;
 import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 
-public class ManageUsersMenu {
+import static client.Main.outputStream;
+
+public class ManageUsersPanel extends Menu {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+
+    public ManageUsersPanel() {
+        fxmlFileAddress = "../../../fxml/HolyManager/ManageUsers.fxml";
+    }
+
+    public void createNewManager(ManagerAccount managerAccount) throws Exception {
+        if (YaDataManager.isUsernameExist(managerAccount.getUsername())) {
+            throw new Exception("Invalid username");
+        }
+        if (checkEmail(managerAccount.getEmail())) {
+            throw new Exception("This email is unavailable");
+        }
+        outputStream.writeUTF("add manager " + yaGson.toJson(managerAccount, new TypeToken<ManagerAccount>() {
+        }.getType()));
+        outputStream.flush();
+    }
+
     private boolean checkEmail(String email) throws IOException {
         for (ManagerAccount manager : YaDataManager.getManagers()) {
             if (manager.getEmail().equals(email)) {
@@ -31,23 +55,5 @@ public class ManageUsersMenu {
         }
 
         return false;
-    }
-
-    public void deleteUser(String username, String onlineAccount) throws Exception {
-
-        if (onlineAccount.equalsIgnoreCase(username)) {
-            throw new Exception("You cant delete your self.");
-        }
-        YaDataManager.deleteAccountWithUserName(username);
-    }
-
-    public void createNewSupport(SupportAccount supportAccount) throws Exception {
-        if (YaDataManager.isUsernameExist(supportAccount.getUsername())) {
-            throw new Exception("Invalid username");
-        }
-        if (checkEmail(supportAccount.getEmail())) {
-            throw new Exception("This email is unavailable");
-        }
-        YaDataManager.addSupport(supportAccount);
     }
 }

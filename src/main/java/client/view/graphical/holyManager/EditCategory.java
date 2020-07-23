@@ -68,7 +68,7 @@ public class EditCategory extends HolyManager implements Initializable {
         }
         if (!categoryName.getText().equals("")) {
             try {
-                View.manageCategoryMenu.addCategory(categoryName.getText(), AddCommoditiesToCategory.getCommodities(),
+                View.manageCategoriesMenu.addCategory(categoryName.getText(), AddCommoditiesToCategory.getCommodities(),
                         categorySpecifications);
                 outputStream.writeUTF("remove category " + category.getName());
                 outputStream.flush();
@@ -91,13 +91,13 @@ public class EditCategory extends HolyManager implements Initializable {
     }
 
     public void addCategorySpecification(ActionEvent actionEvent) {
-        if (!View.manageCategoryMenu.checkCategorySpecificationTitle(categorySpecifications, title.getText())) {
+        if (!View.manageCategoriesMenu.checkCategorySpecificationTitle(categorySpecifications, title.getText())) {
             setInformationLabel(Color.RED, "Title is unavailable.");
             return;
         }
 
         if (!title.getText().equals("") && (options == null || options.size() != 0)) {
-            categorySpecifications.add(View.manageCategoryMenu.createCategorySpecification(title.getText(), options));
+            categorySpecifications.add(View.manageCategoriesMenu.createCategorySpecification(title.getText(), options));
             setInformationLabel(Color.GREEN, "Category specification successfully added");
             title.setText("");
         } else {

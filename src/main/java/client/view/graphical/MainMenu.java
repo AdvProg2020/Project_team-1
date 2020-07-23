@@ -40,8 +40,8 @@ public class MainMenu implements Initializable {
             MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         } else if (Session.getOnlineAccount() instanceof PersonalAccount) {
-            View.customerMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-            MenuHandler.getInstance().setCurrentMenu(View.customerMenu);
+            View.customerPanel.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+            MenuHandler.getInstance().setCurrentMenu(View.customerPanel);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         } else if (Session.getOnlineAccount() instanceof BusinessAccount) {
             View.resellerMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());

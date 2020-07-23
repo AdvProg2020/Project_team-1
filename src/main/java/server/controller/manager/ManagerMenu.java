@@ -18,18 +18,13 @@ import java.util.Date;
 public class ManagerMenu extends Menu {
 
     public void manageUsers(){
-        MenuHandler.getInstance().setCurrentMenu(View.manageUsersMenu);
-        View.manageUsersMenu.setPreviousMenu(View.managerMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.manageUsersPanel);
+        View.manageUsersPanel.setPreviousMenu(View.managerMenu);
     }
 
     public void viewPersonalInfo(){
         View.viewPersonalInfoMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.viewPersonalInfoMenu);
-    }
-
-    public void manageAllProducts(){
-        MenuHandler.getInstance().setCurrentMenu(View.manageAllProducts);
-        View.manageAllProducts.setPreviousMenu(View.managerMenu);
     }
 
     public boolean isNumeric(String s) {
@@ -69,8 +64,8 @@ public class ManagerMenu extends Menu {
     }
 
     public ArrayList<Category> manageCategory() throws IOException {
-        MenuHandler.getInstance().setCurrentMenu(View.manageCategoryMenu);
-        View.manageCategoryMenu.setPreviousMenu(View.managerMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.manageCategoriesMenu);
+        View.manageCategoriesMenu.setPreviousMenu(View.managerMenu);
         return getAllCategories();
     }
 
@@ -79,8 +74,8 @@ public class ManagerMenu extends Menu {
     }
 
     public ArrayList<Request> manageRequest() throws IOException {
-        MenuHandler.getInstance().setCurrentMenu(View.manageRequestMenu);
-        View.manageRequestMenu.setPreviousMenu(View.managerMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.manageRequestsMenu);
+        View.manageRequestsMenu.setPreviousMenu(View.managerMenu);
         return getAllRequests();
     }
 
@@ -97,8 +92,8 @@ public class ManagerMenu extends Menu {
     }
 
     public ArrayList<DiscountCode> viewDiscountCodesCommand() throws Exception {
-        MenuHandler.getInstance().setCurrentMenu(View.getDiscountCode);
-        View.getDiscountCode.setPreviousMenu(View.managerMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.getDiscountCodeMenu);
+        View.getDiscountCodeMenu.setPreviousMenu(View.managerMenu);
         return getAllDiscountCodes();
     }
 

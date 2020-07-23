@@ -29,7 +29,7 @@ public class CategorySpecification implements Initializable {
         for (CheckBox item : listView.getItems()) {
             if (item.isSelected()){
                 try {
-                    View.manageCategoryMenu.removeCategorySpecification(item.getText() , EditCategory.getCategory());
+                    View.manageCategoriesMenu.removeCategorySpecification(item.getText() , EditCategory.getCategory());
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }

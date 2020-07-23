@@ -64,6 +64,9 @@ public class AuctionPage implements Initializable {
             topBid.setText(auction.getTopBid() + " Rials");
             topBidder.setText(auction.getTopBidder());
         }
+        if (Session.getOnlineAccount() == null || Session.getOnlineAccount().getAccountType().equals("personal")) {
+            submitButton.setDisable(true);
+        }
     }
 
     public void submit(ActionEvent actionEvent) throws IOException {
