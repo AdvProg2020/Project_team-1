@@ -77,7 +77,7 @@ public class DownloadProductFile {
         int port = 1024;
         do {
             try {
-                serverSocket = new ServerSocket(1024);
+                serverSocket = new ServerSocket(port);
                 serverSocket.close();
                 return port;
             } catch (IOException e) {

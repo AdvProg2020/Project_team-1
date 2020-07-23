@@ -121,14 +121,14 @@ public class ProductsMenuLoad {
         int i = 0;
         int j = 100;
         ArrayList<Commodity> commodities = View.productsMenu.getProducts();
-        int end = Math.min(count + blockIncrement, commodities.size());
-        for (int p = count; p < end; p++) {
-            commodities.get(p).setImagePath("tmp\\" + p);
-            System.out.println(commodities.get(p).getImagePath());
-            FileInputStream inputStream = new FileInputStream(commodities.get(p).getImagePath());
+        //int end = Math.min(count + blockIncrement, commodities.size());
+        for (Commodity commodity :commodities) {
+            commodity.setImagePath("tmp\\" + commodity.getCommodityId() + ".png");
+            System.out.println(commodity.getImagePath());
+            FileInputStream inputStream = new FileInputStream(commodity.getImagePath());
             Image image = new Image(inputStream);
             ImageView imageView = new ImageView(image);
-            Commodity tmp = commodities.get(p);
+            Commodity tmp = commodity;
             imageView.setOnMouseClicked(mouseEvent -> {
                 View.commodityMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
                 View.commodityMenu.setCommodity(tmp);
@@ -141,10 +141,10 @@ public class ProductsMenuLoad {
             imageView.setLayoutX(i);
             imageView.setLayoutY(j);
             root.getChildren().add(imageView);
-            Label name = createLabel(i + 300, j, "Name", commodities.get(p).getName(), false);
-            Label price = createLabel(i + 300, j + 50, "Price", String.valueOf(commodities.get(p).getPrice()), false);
-            Label score = createLabel(i + 300, j + 100, "Score", String.valueOf(commodities.get(p).getAverageScore()), false);
-            if (commodities.get(p).getInventory() == 0) {
+            Label name = createLabel(i + 300, j, "Name", commodity.getName(), false);
+            Label price = createLabel(i + 300, j + 50, "Price", String.valueOf(commodity.getPrice()), false);
+            Label score = createLabel(i + 300, j + 100, "Score", String.valueOf(commodity.getAverageScore()), false);
+            if (commodity.getInventory() == 0) {
                 Label inventory = createLabel(i + 300, j + 150, "Inventory", "0", true);
                 root.getChildren().add(inventory);
             }

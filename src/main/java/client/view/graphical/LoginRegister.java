@@ -84,7 +84,6 @@ public class LoginRegister implements Initializable {
         System.out.println(socket);
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataOutputStream.writeUTF("login " + loginUsernameTf.getText() + " " + loginPasswordTf.getText());
-        dataOutputStream.flush();
         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
         System.out.println(socket);
         String input = dataInputStream.readUTF();
@@ -109,7 +108,6 @@ public class LoginRegister implements Initializable {
         }
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataOutputStream.writeUTF("Register");
-        dataOutputStream.flush();
         String information;
         switch (accountType.getValue()) {
             case "personal":
