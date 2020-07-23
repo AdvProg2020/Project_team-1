@@ -53,6 +53,7 @@ public class MoHoBank {
             if (debug) {
                 System.out.printf("hello %d from %s. now there are %d clients online\n", clientId,
                         socket.getInetAddress().getHostAddress(), onlineClientsNumber);
+                outputStream.writeUTF("hello" + clientId);
             }
         }
 
