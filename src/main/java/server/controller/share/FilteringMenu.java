@@ -23,9 +23,19 @@ public class FilteringMenu extends Menu {
     static {
         try {
             outputStream.writeUTF("send all commodities");
-            outputStream.flush();
             filteredCommodities = yaGson.fromJson(inputStream.readUTF(), new TypeToken<ArrayList<Commodity>>() {
             }.getType());
+            outputStream.writeUTF("send pictures");
+            int pictureName = 0;
+            byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+            new File("tmp").mkdir();
+            while ((pictureName = Integer.parseInt(inputStream.readUTF())) > 0) {
+                FileOutputStream file = new FileOutputStream("tmp\\" + pictureName);
+                while (inputStream.read(buffer) > 0) {
+                    file.write(buffer);
+                }
+                file.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,7 +56,6 @@ public class FilteringMenu extends Menu {
     public static void updateFilteredCommodities() throws Exception {
         filteredCommodities = new ArrayList<>();
         outputStream.writeUTF("send all commodities");
-        outputStream.flush();
         ArrayList<Commodity> commodities = yaGson.fromJson(inputStream.readUTF(), new TypeToken<ArrayList<Commodity>>() {
         }.getType());
         for (Commodity commodity : commodities) {
@@ -54,7 +63,6 @@ public class FilteringMenu extends Menu {
                 filteredCommodities.add(commodity);
         }
         outputStream.writeUTF("send pictures");
-        outputStream.flush();
         int pictureName = 0;
         byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
         new File("tmp").mkdir();
