@@ -677,9 +677,21 @@ public class Main {
 
     private static void sendAllCommodities(Socket socket) throws IOException {
         DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-        dos.writeUTF(yaGson.toJson(YaDataManager.getCommodities(), new TypeToken<ArrayList<Commodity>>() {
+        DataInputStream dis = new DataInputStream(socket.getInputStream());
+        ArrayList<Commodity> commodities = YaDataManager.getCommodities();
+        dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>() {
         }.getType()));
-
+        if (dis.readUTF().equals("send pictures")) {
+            for (Commodity commodity : commodities) {
+                FileInputStream file = new FileInputStream("data\\media\\product\\" + commodity.getCommodityId());
+                dos.writeUTF(Integer.toString(commodity.getCommodityId()));
+                byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+                while (file.read(buffer) > 0) {
+                    dos.write(buffer);
+                }
+                file.close();
+            }
+        }
     }
 
     private static void sendCommodityWithId(Socket socket, int id) throws Exception {

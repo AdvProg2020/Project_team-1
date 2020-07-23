@@ -3,10 +3,13 @@ package server.controller.share;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
+import common.Constants;
 import common.model.commodity.Commodity;
 import common.model.filter.Filter;
 import server.dataManager.YaDataManager;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import static client.Main.inputStream;
@@ -49,6 +52,18 @@ public class FilteringMenu extends Menu {
         for (Commodity commodity : commodities) {
             if (canCommodityPassFilter(commodity))
                 filteredCommodities.add(commodity);
+        }
+        outputStream.writeUTF("send pictures");
+        outputStream.flush();
+        int pictureName = 0;
+        byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+        new File("tmp").mkdir();
+        while ((pictureName = Integer.parseInt(inputStream.readUTF())) > 0) {
+            FileOutputStream file = new FileOutputStream("tmp\\" + pictureName);
+            while (inputStream.read(buffer) > 0) {
+                file.write(buffer);
+            }
+            file.close();
         }
     }
 
