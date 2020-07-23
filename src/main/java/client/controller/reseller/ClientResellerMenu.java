@@ -100,21 +100,22 @@ public class ClientResellerMenu extends Menu {
                 category.getName(), categorySpecifications, description, amount);
         newCommodity.setProductFilePathOnSellerClient(productFilePath);
         Request request = new Request(newCommodity, businessAccount.getUsername());
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+        DataInputStream dis = new DataInputStream(socket.getInputStream());
         dos.writeUTF("New Commodity");
-        dos.flush();
         dis.readUTF();
         dos.writeUTF(yaGson.toJson(request, new TypeToken<Request>() {
         }.getType()));
-        dos.flush();
         if (dis.readUTF().equals("send picture")) {
+            long fileSize = new File(imagePath).length();
+            dos.writeUTF(fileSize + "");
             FileInputStream file = new FileInputStream(imagePath);
+
             byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
             while (file.read(buffer) > 0) {
                 dos.write(buffer);
-                dos.flush();
             }
+            file.close();
         }
     }
 

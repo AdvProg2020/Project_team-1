@@ -81,10 +81,11 @@ public class LoginRegister implements Initializable {
     }
 
     public void onLoginButtonClick(MouseEvent mouseEvent) throws IOException, ClassNotFoundException {
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        System.out.println(socket);
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataOutputStream.writeUTF("login " + loginUsernameTf.getText() + " " + loginPasswordTf.getText());
         dataOutputStream.flush();
-        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
         System.out.println(socket);
         String input = dataInputStream.readUTF();
         System.out.println(input);
