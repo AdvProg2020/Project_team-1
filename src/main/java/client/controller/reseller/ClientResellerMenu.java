@@ -5,6 +5,7 @@ import client.view.commandline.View;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
+import common.Constants;
 import common.model.account.BusinessAccount;
 import common.model.commodity.Category;
 import common.model.commodity.Commodity;
@@ -93,20 +94,29 @@ public class ClientResellerMenu extends Menu {
 
     public static void addProduct(String brand, String name, int price, Category category,
                            ArrayList<Field> categorySpecifications, String description, int amount,
-                           String productFilePath) throws Exception {
+                           String productFilePath, String imagePath) throws Exception {
         BusinessAccount businessAccount = getBusinessAccount();
         Commodity newCommodity = new Commodity(brand, name, price, businessAccount.getUsername(), true,
                 category.getName(), categorySpecifications, description, amount);
         newCommodity.setProductFilePathOnSellerClient(productFilePath);
         Request request = new Request(newCommodity, businessAccount.getUsername());
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+        DataInputStream dis = new DataInputStream(socket.getInputStream());
         dos.writeUTF("New Commodity");
-        dos.flush();
         dis.readUTF();
         dos.writeUTF(yaGson.toJson(request, new TypeToken<Request>() {
         }.getType()));
-        dos.flush();
+        if (dis.readUTF().equals("send picture")) {
+            long fileSize = new File(imagePath).length();
+            dos.writeUTF(fileSize + "");
+            FileInputStream file = new FileInputStream(imagePath);
+
+            byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+            while (file.read(buffer) > 0) {
+                dos.write(buffer);
+            }
+            file.close();
+        }
     }
 
     public static void removeProduct(int productId) throws Exception {

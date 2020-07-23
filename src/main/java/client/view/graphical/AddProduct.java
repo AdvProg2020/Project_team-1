@@ -96,8 +96,7 @@ public class AddProduct implements Initializable {
             ClientResellerMenu.addProduct(brandTf.getText(), nameTf.getText(), Integer.parseInt(priceTf.getText()),
                     ClientResellerMenu.getCategoryByName(categoryCb.getValue()),
                     productCategorySpecification, descriptionTextArea.getText(),
-                    Integer.parseInt(amountTf.getText()), productFilePath);
-            //send image
+                    Integer.parseInt(amountTf.getText()), productFilePath, imagePath);
             onCancelClick(mouseEvent);
         } catch (Exception e) {
             errorMessageLabel.setText(e.getMessage());

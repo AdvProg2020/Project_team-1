@@ -53,7 +53,7 @@ public class Main {
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         System.out.println(dataInputStream.readUTF());
         dataOutputStream.writeUTF("create_account bank bank bank bank bank");
-        dataOutputStream.flush();
+
         bankAccountID = dataInputStream.readUTF();
         System.out.println(bankAccountID + " = bank id");
         bankAccountID = "10001";
@@ -80,7 +80,7 @@ public class Main {
         new Thread(() -> {
             while (true) {
                 try {
-                    DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                    DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                     String input = dataInputStream.readUTF();
                     System.out.println(input);
                     handleInput(input, socket);
@@ -229,31 +229,31 @@ public class Main {
     }
 
     private static void isCommodityInAuction(Socket socket, int id) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         for (Auction auction : YaDataManager.getAuctions()) {
             if (auction.getCommodityId() == id) {
                 dataOutputStream.writeUTF("yes");
-                dataOutputStream.flush();
+
                 return;
             }
         }
         dataOutputStream.writeUTF("no");
-        dataOutputStream.flush();
+
     }
 
     private static void login(String input, Socket socket) throws IOException {
         String[] splitInput = input.split(" ");
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         try {
             View.loginRegisterMenu.login(splitInput[1], splitInput[2]);
             onlineAccountsUserNames.put(socket, splitInput[1]);
             System.out.println(socket);
             dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAccountWithUserName(splitInput[1]), new TypeToken<SimpleAccount>() {
             }.getType()));
-            dataOutputStream.flush();
+
         } catch (InvalidLoginInformationException e) {
             dataOutputStream.writeUTF("error:" + e.getMessage());
-            dataOutputStream.flush();
+
         }
     }
 
@@ -286,25 +286,25 @@ public class Main {
         for (Socket socket1 : onlineAccountsUserNames.keySet()) {
             accounts.add(YaDataManager.getAccountWithUserName(onlineAccountsUserNames.get(socket1)));
         }
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataOutputStream.writeUTF(yaGson.toJson(accounts, new TypeToken<ArrayList<SimpleAccount>>() {
         }.getType()));
-        dataOutputStream.flush();
+
     }
 
     private static void newSupportAccount(Socket socket) throws IOException, ClassNotFoundException {
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataOutputStream.writeUTF("Send object");
-        dataOutputStream.flush();
+
         ObjectInputStream objectInputStream = new ObjectInputStream((socket.getInputStream()));
         SupportAccount supportAccount = (SupportAccount) objectInputStream.readObject();
         try {
             View.manageUsersMenu.createNewSupport(supportAccount);
             dataOutputStream.writeUTF("Support account successfully added");
-            dataOutputStream.flush();
+
         } catch (Exception e) {
             dataOutputStream.writeUTF(e.getMessage());
-            dataOutputStream.flush();
+
         }
     }
 
@@ -363,7 +363,7 @@ public class Main {
                 loginRegisterMenu.checkUserNameAvailability(information[1]);
             } catch (InvalidLoginInformationException e) {
                 dataOutputStream.writeUTF(e.getMessage());
-                dataOutputStream.flush();
+
                 return;
             }
             if (information[0].equals("manager")) {
@@ -371,7 +371,7 @@ public class Main {
                     loginRegisterMenu.isThereManagerAccount();
                 } catch (InvalidAccessException e) {
                     dataOutputStream.writeUTF(e.getMessage());
-                    dataOutputStream.flush();
+
                 }
             }
             String bankToken;
@@ -394,10 +394,10 @@ public class Main {
             loginRegisterMenu.registerManagerAccount(information[1], information[2], information[3]
                     , information[4], information[5], information[6], information[7]);
             dataOutputStream.writeUTF("You have registered successfully.");
-            dataOutputStream.flush();
+
         } catch (InvalidAccountInfoException e) {
             dataOutputStream.writeUTF(e.getMessage());
-            dataOutputStream.flush();
+
         }
     }
 
@@ -408,7 +408,7 @@ public class Main {
             initializePersonalBankAccount(dataOutputStream, dataInputStream, information);
         } catch (InvalidAccountInfoException e) {
             dataOutputStream.writeUTF(e.getMessage());
-            dataOutputStream.flush();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -418,7 +418,7 @@ public class Main {
         String accountID;
         String bankToken;
         dataOutputStream.writeUTF("You have registered successfully.");
-        dataOutputStream.flush();
+
         accountID = dataInputStream.readUTF();
         bankToken = dataInputStream.readUTF();
         System.out.println("Bank token " + bankToken + " " + accountID);
@@ -437,7 +437,7 @@ public class Main {
             initializeResellerBankAccount(dataOutputStream, dataInputStream, information);
         } catch (InvalidAccountInfoException e) {
             dataOutputStream.writeUTF(e.getMessage());
-            dataOutputStream.flush();
+
         }
     }
 
@@ -445,7 +445,7 @@ public class Main {
         String accountID;
         String bankToken;
         dataOutputStream.writeUTF("You have registered successfully.");
-        dataOutputStream.flush();
+
         accountID = dataInputStream.readUTF();
         bankToken = dataInputStream.readUTF();
         for (Request request : YaDataManager.getRequests()) {
@@ -476,31 +476,42 @@ public class Main {
                 View.viewPersonalInfoMenu.editPhoneNumber(splitInput[3], simpleAccount);
             }
             dataOutputStream.writeUTF("successfully changed");
-            dataOutputStream.flush();
+
             System.out.println("  ss");
         } catch (Exception e) {
 
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataOutputStream.writeUTF(e.getMessage());
-            dataOutputStream.flush();
+
         }
     }
 
-    private static void addCommodity(Socket socket) throws IOException, ClassNotFoundException {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+    private static void addCommodity(Socket socket) throws IOException{
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+        DataInputStream dis = new DataInputStream(socket.getInputStream());
         dos.writeUTF("send");
-        dos.flush();
         Request request = yaGson.fromJson(dis.readUTF(), new TypeToken<Request>() {
         }.getType());
+        dos.writeUTF("send picture");
+        long fileSize = Long.parseLong(dis.readUTF());
+        FileOutputStream file = new FileOutputStream("data\\media\\products\\"  + Integer.toString(((Commodity) request.getObj()).getCommodityId()));
+        byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+        long counter = 0;
+        while (counter < fileSize) {
+            dis.read(buffer);
+            System.out.println("kire khar");
+            file.write(buffer);
+            counter+= Constants.FILE_BUFFER_SIZE;
+        }
+        System.out.println("mamal koonie");
+        file.close();
         System.out.println(request.toString());
         YaDataManager.addRequest(request);
-        //get image
     }
 
     private static void createDiscountCode(Socket socket) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
         String discountCodeInfo = dataInputStream.readUTF();
         ArrayList<PersonalAccount> accounts = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<ArrayList<PersonalAccount>>() {
         }.getType());
@@ -511,18 +522,18 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
             dataOutputStream.writeUTF(e.getMessage());
-            dataOutputStream.flush();
+
             return;
         }
         dataOutputStream.writeUTF("Discount code successfully created");
-        dataOutputStream.flush();
+
     }
 
     public static void sendDiscountCodes(Socket socket) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getDiscountCodes(), new TypeToken<ArrayList<DiscountCode>>() {
         }.getType()));
-        dataOutputStream.flush();
+
     }
 
     public static void editDiscountCode(Socket socket, String input) throws Exception {
@@ -553,11 +564,11 @@ public class Main {
                 View.getDiscountCode.addAccount(account.getUsername(), discountCode);
             }
             dataOutputStream.writeUTF("Discount code successfully edited.");
-            dataOutputStream.flush();
+
         } catch (Exception e) {
             e.printStackTrace();
             dataOutputStream.writeUTF("Invalid entry");
-            dataOutputStream.flush();
+
         }
     }
 
@@ -568,15 +579,15 @@ public class Main {
     }
 
     private static void sendCategoriesName(Socket socket) throws IOException {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         dos.writeUTF(yaGson.toJson(YaDataManager.getCategories().stream().map(Category::getName)
                 .collect(Collectors.toCollection(ArrayList::new)), new TypeToken<ArrayList<String>>() {
         }.getType()));
-        dos.flush();
+
     }
 
     private static void sendSellerCommodities(Socket socket) throws IOException {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         try {
             BusinessAccount seller = YaDataManager.getSellerWithUserName(onlineAccountsUserNames.get(socket));
             ArrayList<Commodity> commodities = new ArrayList<>();
@@ -585,25 +596,25 @@ public class Main {
             }
             dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>() {
             }.getType()));
-            dos.flush();
+
         } catch (Exception e) {
             dos.writeUTF("error:" + e.getMessage());
-            dos.flush();
+
         }
     }
 
     private static void sendCategoryWithName(Socket socket, String name) throws IOException {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         dos.writeUTF(yaGson.toJson(YaDataManager.getCategoryWithName(name), new TypeToken<Category>() {
         }.getType()));
-        dos.flush();
+
     }
 
     private static void sendRequests(Socket socket) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getRequests(), new TypeToken<ArrayList<Request>>() {
         }.getType()));
-        dataOutputStream.flush();
+
     }
 
     private static void acceptRequest(String input) throws Exception {
@@ -622,10 +633,10 @@ public class Main {
     }
 
     private static void sendCategories(Socket socket) throws IOException {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         dos.writeUTF(yaGson.toJson(YaDataManager.getCategories(), new TypeToken<ArrayList<Category>>() {
         }.getType()));
-        dos.flush();
+
     }
 
     private static void sendAllAccounts(Socket socket) throws IOException {
@@ -633,15 +644,15 @@ public class Main {
         dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getManagers(),
                 new TypeToken<ArrayList<ManagerAccount>>() {
                 }.getType()));
-        dataOutputStream.flush();
+
         dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getPersons(),
                 new TypeToken<ArrayList<PersonalAccount>>() {
                 }.getType()));
-        dataOutputStream.flush();
+
         dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getBusinesses(),
                 new TypeToken<ArrayList<BusinessAccount>>() {
                 }.getType()));
-        dataOutputStream.flush();
+
     }
 
     private static void deleteSocketAndAccount(Socket socket) {
@@ -655,12 +666,12 @@ public class Main {
             View.manageUsersMenu.deleteUser(splitInput[2], splitInput[3]);
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataOutputStream.writeUTF("Account successfully deleted.");
-            dataOutputStream.flush();
+
         } catch (Exception e) {
             e.printStackTrace();
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataOutputStream.writeUTF("error");
-            dataOutputStream.flush();
+
         }
     }
 
@@ -670,30 +681,30 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
             dos.writeUTF("deleted");
-            dos.flush();
+
         }
     }
 
     private static void checkCategoryName(Socket socket, String name) throws IOException {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         if (YaDataManager.isCategoryExist(name)) {
             dos.writeUTF("yes");
         } else {
             dos.writeUTF("no");
         }
-        dos.flush();
+
     }
 
     private static void addCategory(Socket socket, String json) throws IOException {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         Category category = yaGson.fromJson(json, new TypeToken<Category>() {
         }.getType());
         YaDataManager.addCategory(category);
         dos.writeUTF("send commodities");
-        dos.flush();
-        DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+
+        DataInputStream dis = new DataInputStream(socket.getInputStream());
         String input = dis.readUTF();
         while (input.startsWith("change category for commodity ")) {
             int commodityId = Integer.parseInt(input.split(" ")[4]);
@@ -703,7 +714,7 @@ public class Main {
                 YaDataManager.removeCommodity(commodity);
                 YaDataManager.addCommodity(commodity);
                 dos.writeUTF("next");
-                dos.flush();
+
                 input = dis.readUTF();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -712,24 +723,24 @@ public class Main {
     }
 
     private static void sendAllCommodities(Socket socket) throws IOException {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         dos.writeUTF(yaGson.toJson(YaDataManager.getCommodities(), new TypeToken<ArrayList<Commodity>>() {
         }.getType()));
-        dos.flush();
+
     }
 
     private static void sendCommodityWithId(Socket socket, int id) throws Exception {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         dos.writeUTF(yaGson.toJson(YaDataManager.getCommodityById(id), new TypeToken<Commodity>() {
         }.getType()));
-        dos.flush();
+
     }
 
     private static void sendAllOffs(Socket socket) throws IOException {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         dos.writeUTF(yaGson.toJson(YaDataManager.getOffs(), new TypeToken<ArrayList<Off>>() {
         }.getType()));
-        dos.flush();
+
     }
 
 
@@ -756,9 +767,9 @@ public class Main {
 
     private static void sendTotalPrice(Socket socket) throws Exception {
         PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(onlineAccountsUserNames.get(socket));
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         dos.writeUTF("Total price: " + View.cartMenu.calculateTotalPrice(personalAccount) + " Rials");
-        dos.flush();
+
     }
 
     private static void rateProduct(int id, int rate, Socket socket) throws Exception {
@@ -772,7 +783,7 @@ public class Main {
         DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
         dataOutputStream.writeUTF("create_receipt " + bankToken + " " + receipt_type + " " + money + " " +
                 sourceID + " " + destID);
-        dataOutputStream.flush();
+
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         return dataInputStream.readUTF();
     }
@@ -780,7 +791,7 @@ public class Main {
     private static String payReceipt(String receiptID) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
         dataOutputStream.writeUTF("pay " + receiptID);
-        dataOutputStream.flush();
+
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         return dataInputStream.readUTF();
     }
@@ -794,7 +805,7 @@ public class Main {
         String respond = payReceipt(receipt);
         System.out.println("respond " + respond);
         dataOutputStream.writeUTF(respond);
-        dataOutputStream.flush();
+
         if (respond.equals("done successfully")) {
             if (YaDataManager.getAccountWithUserName(splitInput[4]) instanceof BusinessAccount) {
                 View.resellerMenu.walletTransaction(Double.parseDouble(splitInput[5]), YaDataManager.getSellerWithUserName(splitInput[4]));
@@ -812,7 +823,7 @@ public class Main {
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         if (credit - money < minCurrency) {
             dataOutputStream.writeUTF("You must have " + minCurrency + " in your wallet.");
-            dataOutputStream.flush();
+
             return;
         }
         DataOutputStream dataOutputStream1 = new DataOutputStream(socketB.getOutputStream());
@@ -823,17 +834,17 @@ public class Main {
         System.out.println(receipt);
         String respond = payReceipt(receipt);
         dataOutputStream.writeUTF(respond);
-        dataOutputStream.flush();
+
         if (respond.equals("done successfully")) {
             View.resellerMenu.walletTransaction(-(Double.parseDouble(splitInput[5])), YaDataManager.getSellerWithUserName(splitInput[4]));
         }
     }
 
     private static void sendOffWithId(Socket socket, int id) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getOffWithId(id), new TypeToken<Off>() {
         }.getType()));
-        dataOutputStream.flush();
+
     }
 
     private static void setMinimumCurrency(String input) throws IOException {
@@ -855,16 +866,16 @@ public class Main {
     }
 
     private static void hasAnAuction(Socket socket) throws IOException {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         for (Auction auction : YaDataManager.getAuctions()) {
             if (auction.getOwnerUsername().equals(onlineAccountsUserNames.get(socket))) {
                 dos.writeUTF("yes");
-                dos.flush();
+
                 return;
             }
         }
         dos.writeUTF("no");
-        dos.flush();
+
     }
 
     private static void makeNewAuction(Socket socket, String input) throws Exception {
