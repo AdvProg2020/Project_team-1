@@ -53,6 +53,7 @@ public class MoHoBank {
             if (debug) {
                 System.out.printf("hello %d from %s. now there are %d clients online\n", clientId,
                         socket.getInetAddress().getHostAddress(), onlineClientsNumber);
+                outputStream.writeUTF("hello" + clientId);
             }
         }
 
@@ -226,7 +227,7 @@ public class MoHoBank {
                 return;
             }
             String description = separatedInput.length == 7? separatedInput[6]: "";
-            if (!description.matches("^[A-Za-z1-9 ]+$")) {
+            if (!description.matches("^[A-Za-z1-9]*$")) {
                 sendResponse("your input contains invalid characters");
                 return;
             }

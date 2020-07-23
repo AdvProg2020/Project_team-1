@@ -54,9 +54,14 @@ public class Main {
         System.out.println(dataInputStream.readUTF());
         dataOutputStream.writeUTF("create_account bank bank bank bank bank");
 
-        bankAccountID = dataInputStream.readUTF();
+        String tmp = dataInputStream.readUTF();
+        try {
+            Integer.parseInt(tmp);
+            bankAccountID = tmp;
+        }catch (Exception e){
+
+        }
         System.out.println(bankAccountID + " = bank id");
-        bankAccountID = "10001";
         System.out.println(bankAccountID);
         for (Auction auction : YaDataManager.getAuctions()) {
             if (auction.getDeadline().after(new Date())) {
@@ -526,11 +531,9 @@ public class Main {
         long counter = 0;
         while (counter < fileSize) {
             dis.read(buffer);
-            System.out.println("kire khar");
-            file.write(buffer);
-            counter += Constants.FILE_BUFFER_SIZE;
+             file.write(buffer);
+            counter+= Constants.FILE_BUFFER_SIZE;
         }
-        System.out.println("mamal koonie");
         file.close();
         System.out.println(request.toString());
         YaDataManager.addRequest(request);
@@ -755,10 +758,18 @@ public class Main {
         ArrayList<Commodity> commodities = YaDataManager.getCommodities();
         dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>() {
         }.getType()));
+        System.out.println("mamaml");
         if (dis.readUTF().equals("send pictures")) {
+            dos.writeUTF(String.valueOf(commodities.size()));
+            System.out.println("salam");
             for (Commodity commodity : commodities) {
-                FileInputStream file = new FileInputStream("data\\media\\product\\" + commodity.getCommodityId());
+                System.out.println("Salam");
+                FileInputStream file = new FileInputStream("data\\media\\products\\" + commodity.getCommodityId());
+                System.out.println("saasldm");
                 dos.writeUTF(Integer.toString(commodity.getCommodityId()));
+                System.out.println("SSSS");
+                System.out.println(new File("data\\media\\products\\" + commodity.getCommodityId()).length());
+                dos.writeUTF(String.valueOf(new File("data\\media\\products\\" + commodity.getCommodityId()).length()));
                 byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
                 while (file.read(buffer) > 0) {
                     dos.write(buffer);

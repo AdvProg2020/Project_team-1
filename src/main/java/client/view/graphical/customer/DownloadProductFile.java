@@ -56,8 +56,10 @@ public class DownloadProductFile {
                 outputStream.writeUTF("send now");
                 Socket senderSocket = fileReceiver.accept();
                 DataInputStream fileInputStream = new DataInputStream(senderSocket.getInputStream());
-                while (fileInputStream.read(buffer) > 0) {
+                long downloaded = 0;
+                while (fileInputStream.read(buffer) > 0 && downloaded < fileSize) {
                     fileOutputStream.write(buffer);
+                    downloaded += Constants.FILE_BUFFER_SIZE;
                 }
                 progressBar.setVisible(false);
                 messageToUser.setText("File downloaded successfully");
@@ -77,7 +79,7 @@ public class DownloadProductFile {
         int port = 1024;
         do {
             try {
-                serverSocket = new ServerSocket(1024);
+                serverSocket = new ServerSocket(port);
                 serverSocket.close();
                 return port;
             } catch (IOException e) {

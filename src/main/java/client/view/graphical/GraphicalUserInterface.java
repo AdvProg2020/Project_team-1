@@ -10,7 +10,10 @@ public class GraphicalUserInterface extends Application {
 
     @Override
     public void start(Stage stage){
+        System.out.println("MAmaml");
         MenuHandler.getInstance().setCurrentMenu(View.mainMenu);
+        System.out.println("MAmaml");
         Session.getSceneHandler().updateScene(stage);
+
     }
 }

@@ -25,9 +25,10 @@ public class SceneHandler {
         //MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
     }
     public void updateScene(Stage stage) {
-        Menu menu = MenuHandler.getInstance().getCurrentMenu();
+        System.out.println("MAmaml");
 
-        if (menu.getFxmlFileAddress().equals("../../Products.fxml"))
+        Menu menu = MenuHandler.getInstance().getCurrentMenu();
+         if (menu.getFxmlFileAddress().equals("../../Products.fxml"))
             productsMenuLoad.initializeProductsRoot(stage);
         else if (menu.getFxmlFileAddress().equals("../../../fxml/OffMenu.fxml"))
             offMenu.initialize(stage);
