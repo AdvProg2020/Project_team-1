@@ -1,4 +1,4 @@
-package server.controller.reseller;
+package client.controller.reseller;
 
 import client.controller.reseller.ClientResellerMenu;
 import client.view.commandline.View;
@@ -31,14 +31,6 @@ public class ManageResellerOffsMenu extends Menu {
         ArrayList<Off> offs = ClientResellerMenu.manageOffs();
         Sort.sortOffArrayList(offs, field);
         return offs;
-    }
-
-    public Off getOffById(int offId) throws Exception {
-        Off off = ClientResellerMenu.getBusinessAccount().getOffById(offId);
-        if (off == null) {
-            throw new Exception("Off ID not found");
-        }
-        return off;
     }
 
     public void addOff(ArrayList<Commodity> commodities, String startTime,

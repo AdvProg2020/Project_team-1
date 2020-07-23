@@ -3,17 +3,12 @@ package server.controller.manager;
 import common.model.account.PersonalAccount;
 import common.model.account.SimpleAccount;
 import common.model.commodity.DiscountCode;
-import server.controller.share.Menu;
 import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.util.Date;
 
 public class GetDiscountCode {
-    public DiscountCode getDiscountCode(String code) throws Exception {
-        return YaDataManager.getDiscountCodeWithCode(code);
-    }
-
     public void changeCode(String code, DiscountCode discountCode) throws Exception {
         checkCode(code);
         YaDataManager.removeDiscountCode(discountCode);
@@ -24,7 +19,7 @@ public class GetDiscountCode {
     }
 
     public void changeStartDate(Date startDate, DiscountCode discountCode) throws Exception {
-        if (discountCode.getFinishDate().compareTo(discountCode.getStartDate()) < 0){
+        if (discountCode.getFinishDate().compareTo(discountCode.getStartDate()) < 0) {
             throw new Exception("invalid start date");
         }
         discountCode.setStartDate(startDate);
@@ -54,7 +49,7 @@ public class GetDiscountCode {
         updateDiscountCode(discountCode);
     }
 
-    public void changeDiscountPercentage(int discountPercentage , DiscountCode discountCode) throws Exception {
+    public void changeDiscountPercentage(int discountPercentage, DiscountCode discountCode) throws Exception {
         discountCode.setDiscountPercentage(discountPercentage);
         updateDiscountCode(discountCode);
         updateAccounts(discountCode);
@@ -96,8 +91,7 @@ public class GetDiscountCode {
             updateAccountsDiscountCode(discountCode);
             updateDiscountCode(discountCode);
             updateAccounts(discountCode);
-        }
-        else
+        } else
             throw new Exception();
     }
 

@@ -15,7 +15,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import server.controller.reseller.ManageResellerProductsMenu;
+import client.controller.reseller.ManageResellerProductsMenu;
 import server.dataManager.YaDataManager;
 import static client.Main.socket;
 

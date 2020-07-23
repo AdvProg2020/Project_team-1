@@ -15,7 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import server.controller.reseller.ManageResellerOffsMenu;
+import client.controller.reseller.ManageResellerOffsMenu;
 import server.controller.reseller.ResellerMenu;
 import server.controller.share.MenuHandler;
 

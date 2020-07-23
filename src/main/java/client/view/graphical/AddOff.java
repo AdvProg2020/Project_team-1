@@ -11,7 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import server.controller.reseller.ManageResellerOffsMenu;
+import client.controller.reseller.ManageResellerOffsMenu;
 import server.controller.reseller.ResellerMenu;
 
 import java.net.URL;

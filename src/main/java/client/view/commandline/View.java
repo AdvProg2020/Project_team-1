@@ -5,17 +5,20 @@ import client.controller.commodity.ProductMenu;
 import client.controller.customer.Chat;
 import client.controller.customer.CustomerPanel;
 import client.controller.manager.*;
+import client.controller.reseller.SellerPanel;
 import server.controller.SupportMenu;
 import server.controller.customer.CartMenu;
 import server.controller.customer.CustomerMenu;
 import server.controller.manager.*;
-import server.controller.off.OffMenu;
-import server.controller.reseller.ManageResellerOffsMenu;
-import server.controller.reseller.ManageResellerProductsMenu;
+import client.controller.commodity.OffMenu;
+import client.controller.reseller.ManageResellerOffsMenu;
+import client.controller.reseller.ManageResellerProductsMenu;
 import server.controller.reseller.ResellerMenu;
 import server.controller.share.*;
 
 public class View {
+    public static final ManagerPanel managerPanel = new ManagerPanel();
+    public static final SellerPanel sellerPanel = new SellerPanel();
     public static final ManageUsersPanel manageUsersPanel = new ManageUsersPanel();
     public static final MainMenu mainMenu = new MainMenu();
     public static final GetDiscountCodeMenu getDiscountCodeMenu = new GetDiscountCodeMenu();

@@ -36,16 +36,16 @@ public class MainMenu implements Initializable {
             MenuHandler.getInstance().setCurrentMenu(View.loginRegisterMenu);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         } else if (Session.getOnlineAccount() instanceof ManagerAccount) {
-            View.managerMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-            MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
+            View.managerPanel.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+            MenuHandler.getInstance().setCurrentMenu(View.managerPanel);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         } else if (Session.getOnlineAccount() instanceof PersonalAccount) {
             View.customerPanel.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.customerPanel);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         } else if (Session.getOnlineAccount() instanceof BusinessAccount) {
-            View.resellerMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-            MenuHandler.getInstance().setCurrentMenu(View.resellerMenu);
+            View.sellerPanel.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+            MenuHandler.getInstance().setCurrentMenu(View.sellerPanel);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         }
     }

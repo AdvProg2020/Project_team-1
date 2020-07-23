@@ -20,7 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
-import server.controller.reseller.ManageResellerProductsMenu;
+import client.controller.reseller.ManageResellerProductsMenu;
 import server.controller.share.MenuHandler;
 
 import java.io.FileInputStream;

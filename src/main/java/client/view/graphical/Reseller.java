@@ -1,20 +1,18 @@
 package client.view.graphical;
 
+import client.Session;
 import client.controller.reseller.ClientResellerMenu;
+import client.view.commandline.View;
+import common.model.account.BusinessAccount;
 import javafx.event.ActionEvent;
-import server.controller.reseller.ResellerMenu;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import client.Session;
-import common.model.account.BusinessAccount;
-import client.view.commandline.View;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,7 +21,6 @@ import java.util.ResourceBundle;
 public class Reseller implements Initializable {
 
     public Label resellerBalanceLabel;
-    public final ResellerMenu resellerMenu = View.resellerMenu;
     Popup popupMenu = new Popup();
 
     public void onPersonalInfoClick(MouseEvent mouseEvent) {
@@ -90,7 +87,7 @@ public class Reseller implements Initializable {
 
     public void onLogoutClick(MouseEvent mouseEvent) {
         try {
-            resellerMenu.logout();
+            View.sellerPanel.logout();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,7 +104,7 @@ public class Reseller implements Initializable {
     }
 
     public void onMainMenuClick(MouseEvent mouseEvent) {
-        resellerMenu.goToMainMenu(null);
+        View.sellerPanel.goToMainMenu(null);
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 
@@ -129,7 +126,7 @@ public class Reseller implements Initializable {
     }
 
     public void wallet(ActionEvent actionEvent) {
-       newPopup(actionEvent , "../../../fxml/Wallet.fxml");
+        newPopup(actionEvent, "../../../fxml/Wallet.fxml");
     }
 
     public void addToAuction(ActionEvent actionEvent) {
