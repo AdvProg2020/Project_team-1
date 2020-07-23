@@ -59,6 +59,9 @@ public class YaDataManager {
     private static void initializeDataDirectories() {
         new File("data").mkdir();
         new File("data/accounts").mkdir();
+        new File("data/media").mkdir();
+        new File("data/media/products").mkdir();
+        new File("data/media/users").mkdir();
     }
 
     private static void initializeDataFiles() {

@@ -446,9 +446,16 @@ public class Main {
         dos.flush();
         Request request = yaGson.fromJson(dis.readUTF(), new TypeToken<Request>() {
         }.getType());
+        dos.writeUTF("send picture");
+        dos.flush();
+        FileOutputStream file = new FileOutputStream(Integer.toString(((Commodity) request.getObj()).getCommodityId()));
+        byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+        while (dis.read() > 0) {
+            file.write(buffer);
+        }
+        file.close();
         System.out.println(request.toString());
         YaDataManager.addRequest(request);
-        //get image
     }
 
     private static void createDiscountCode(Socket socket) throws IOException {
