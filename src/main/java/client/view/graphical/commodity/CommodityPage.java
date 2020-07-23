@@ -154,15 +154,26 @@ public class CommodityPage implements Initializable {
             fieldsGridPane.add(new ModifiedLabel
                     (String.valueOf(commodity.getCategorySpecifications().get(i).getValue())), 1, i + 1);
         }
-        if (Session.getOnlineAccount() != null) {
-            logOutButton.setDisable(false);
-            if (Session.getOnlineAccount().getAccountType().equals("personal")) {
-                addToCartButton.setDisable(false);
+        try {
+            outputStream.writeUTF("is commodity in auction? " + commodity.getCommodityId());
+            outputStream.flush();
+            if (inputStream.readUTF().equals("no")) {
+                if (Session.getOnlineAccount() != null) {
+                    logOutButton.setDisable(false);
+                    if (!Session.getOnlineAccount().getAccountType().equals("personal")) {
+                        addToCartButton.setDisable(true);
+                    }
+                } else {
+                    logOutButton.setDisable(true);
+                }
             } else {
-                addToCartButton.setDisable(true);
+                addToCartButton.setText("Auction");
+                if (Session.getOnlineAccount() == null) {
+                    logOutButton.setDisable(true);
+                }
             }
-        } else {
-            logOutButton.setDisable(true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         List<String> commoditiesList = new ArrayList<>();
         try {
@@ -237,16 +248,19 @@ public class CommodityPage implements Initializable {
     }
 
     public void onAddClick(MouseEvent mouseEvent) {
-        try {
-            digestMenu.addToCart();
-            addToCartLabel.setText("Added to cart successfully");
-            System.out.println("slaam");
-        } catch (Exception e) {
-            System.out.println("slaam12 +" + e.getMessage());
-            e.printStackTrace();
-            addToCartLabel.setText(e.getMessage());
+        if (!addToCartButton.getText().equals("Auction")) {
+            try {
+                digestMenu.addToCart();
+                addToCartLabel.setText("Added to cart successfully");
+                System.out.println("slaam");
+            } catch (Exception e) {
+                System.out.println("slaam12 +" + e.getMessage());
+                e.printStackTrace();
+                addToCartLabel.setText(e.getMessage());
+            }
+        } else {
+            //go to auction page
         }
-
     }
 
     public void onBackClick(MouseEvent mouseEvent) {

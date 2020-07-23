@@ -19,8 +19,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -178,7 +176,22 @@ public class Main {
             hasAnAuction(socket);
         } else if (input.startsWith("new auction")) {
             makeNewAuction(socket, input);
+        } else if (input.startsWith("is commodity in auction? ")) {
+            isCommodityInAuction(socket, Integer.parseInt(input.split(" ")[4]));
         }
+    }
+
+    private static void isCommodityInAuction(Socket socket, int id) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        for (Auction auction : YaDataManager.getAuctions()) {
+            if (auction.getCommodityId() == id) {
+                dataOutputStream.writeUTF("yes");
+                dataOutputStream.flush();
+                return;
+            }
+        }
+        dataOutputStream.writeUTF("no");
+        dataOutputStream.flush();
     }
 
     private static void login(String input, Socket socket) throws IOException {
@@ -711,7 +724,7 @@ public class Main {
     private static String createReceipt(String bankToken, String receipt_type, String money, String sourceID, String destID, String description) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
         dataOutputStream.writeUTF("create_receipt " + bankToken + " " + receipt_type + " " + money + " " +
-                sourceID + " " + destID );
+                sourceID + " " + destID);
         dataOutputStream.flush();
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         return dataInputStream.readUTF();
@@ -750,10 +763,10 @@ public class Main {
         Double minCurrency = Statistics.updatedStats.getMinimumCurrency();
         Double money = Double.parseDouble(splitInput[5]);
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        if (credit - money < minCurrency){
-           dataOutputStream.writeUTF("You must have " + minCurrency + " in your wallet.");
-           dataOutputStream.flush();
-           return;
+        if (credit - money < minCurrency) {
+            dataOutputStream.writeUTF("You must have " + minCurrency + " in your wallet.");
+            dataOutputStream.flush();
+            return;
         }
         DataOutputStream dataOutputStream1 = new DataOutputStream(socketB.getOutputStream());
         dataOutputStream1.writeUTF("get_token bank bank");
@@ -809,7 +822,8 @@ public class Main {
 
     private static void makeNewAuction(Socket socket, String input) throws Exception {
         Commodity commodity = YaDataManager.getCommodityById(Integer.parseInt(input.split(" ")[2]));
-        Date deadline = yaGson.fromJson(input.split(" ", 5)[4], new TypeToken<Date>(){}.getType());
+        Date deadline = yaGson.fromJson(input.split(" ", 5)[4], new TypeToken<Date>() {
+        }.getType());
         Auction auction = new Auction(onlineAccountsUserNames.get(socket), commodity.getCommodityId(), deadline,
                 commodity.getPrice());
         new Thread(() -> {
