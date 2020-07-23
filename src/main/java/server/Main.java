@@ -54,9 +54,14 @@ public class Main {
         System.out.println(dataInputStream.readUTF());
         dataOutputStream.writeUTF("create_account bank bank bank bank bank");
 
-        bankAccountID = dataInputStream.readUTF();
+        String tmp = dataInputStream.readUTF();
+        try {
+            Integer.parseInt(tmp);
+            bankAccountID = tmp;
+        }catch (Exception e){
+
+        }
         System.out.println(bankAccountID + " = bank id");
-        bankAccountID = "10001";
         System.out.println(bankAccountID);
         for (Auction auction : YaDataManager.getAuctions()) {
             if (auction.getDeadline().after(new Date())) {

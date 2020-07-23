@@ -31,6 +31,7 @@ public class Wallet implements Initializable {
         String token = getToken();
         if (token == null) return;
         try {
+            Double.parseDouble(money.getText());
             String respond = sendTransaction(token, "Deposit to wallet ");
             if (respond.equals("done successfully")){
                 if (Session.getOnlineAccount() instanceof BusinessAccount)
