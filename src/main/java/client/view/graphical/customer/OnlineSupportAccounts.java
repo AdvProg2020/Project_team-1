@@ -2,6 +2,9 @@ package client.view.graphical.customer;
 
 import client.Session;
 import client.view.commandline.View;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.account.SimpleAccount;
 import common.model.account.SupportAccount;
 import javafx.event.ActionEvent;
@@ -23,11 +26,12 @@ import java.util.Scanner;
 import static client.Main.socket;
 
 public class OnlineSupportAccounts implements Initializable {
+    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
 
     public AnchorPane pane;
     private ArrayList<SimpleAccount> simpleAccounts;
     private ListView<CheckBox> listView = new ListView<>();
-   private static Stage stage;
+    private static Stage stage;
 
     public static void setStage(Stage stage) {
         OnlineSupportAccounts.stage = stage;
@@ -48,23 +52,24 @@ public class OnlineSupportAccounts implements Initializable {
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         dataOutputStream.writeUTF("get online accounts");
         dataOutputStream.flush();
-        String usernames = dataInputStream.readUTF();
-        simpleAccounts = getAccounts(usernames);
+        simpleAccounts = yaGson.fromJson(dataInputStream.readUTF() , new TypeToken<ArrayList<SimpleAccount>>(){}.getType());
         listView.getItems().removeAll(listView.getItems());
         for (SimpleAccount simpleAccount : simpleAccounts) {
             if (simpleAccount instanceof SupportAccount) {
                 listView.getItems().add(new CheckBox(simpleAccount.getInformation()));
-                listView.getItems().get(listView.getItems().size()-1).setId(simpleAccount.getUsername());
+                listView.getItems().get(listView.getItems().size() - 1).setId(simpleAccount.getUsername());
             }
         }
-        listView.relocate(300,0);
+        listView.relocate(300, 0);
         listView.setPrefHeight(300);
         listView.setPrefWidth(500);
     }
 
     public ArrayList<SimpleAccount> getAccounts(String usernames) throws IOException {
         Scanner scanner = new Scanner(usernames);
+
         ArrayList<SimpleAccount> simpleAccounts = new ArrayList<>();
+        System.out.println("Salam" + usernames + "ahsant");
         while (scanner.hasNextLine()) {
             SimpleAccount simpleAccount = YaDataManager.getAccountWithUserName(scanner.nextLine());
             System.out.println(simpleAccount.getUsername());
@@ -84,7 +89,7 @@ public class OnlineSupportAccounts implements Initializable {
                 username = item.getId();
         }
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        dataOutputStream.writeUTF("Chat between: " + Session.getOnlineAccount().getUsername() + " " + username );
+        dataOutputStream.writeUTF("Chat between: " + Session.getOnlineAccount().getUsername() + " " + username);
         dataOutputStream.flush();
         Chat.setUserSupportAccount(username);
         MenuHandler.getInstance().setCurrentMenu(View.chat);
