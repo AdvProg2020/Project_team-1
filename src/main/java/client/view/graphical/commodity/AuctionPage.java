@@ -16,9 +16,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import client.controller.share.MenuHandler;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,6 +40,7 @@ public class AuctionPage implements Initializable {
     public Button submitButton;
     public Label error;
     public Label name;
+    public ImageView imageView;
     private Auction auction;
 
     @Override
@@ -64,9 +68,14 @@ public class AuctionPage implements Initializable {
             topBid.setText(auction.getTopBid() + " Rials");
             topBidder.setText(auction.getTopBidder());
         }
-        if (Session.getOnlineAccount() == null || Session.getOnlineAccount().getAccountType().equals("personal")) {
+        if (Session.getOnlineAccount() == null || !Session.getOnlineAccount().getAccountType().equals("personal")) {
             submitButton.setDisable(true);
         }
+        commodity.setImagePath("tmp\\" + commodity.getCommodityId() + ".png");
+        FileInputStream inputStream = new FileInputStream(commodity.getImagePath());
+        Image image = new Image(inputStream);
+        imageView.setImage(image);
+        imageView.setFitWidth(400);
     }
 
     public void submit(ActionEvent actionEvent) throws IOException {
@@ -84,14 +93,14 @@ public class AuctionPage implements Initializable {
         int blocked = inputStream.read();
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
         if (bid < auction.getTopBid() || (double) (bid - blocked) > personalAccount.getCredit()) {
-            error.setText("Your offer is not accepted");
-            return;
+            error.setText("Your offer is not valid");
+        } else {
+            auction.newBid(Session.getOnlineAccount().getUsername(), bid);
+            auctionMenu.setAuction(auction);
+            outputStream.writeUTF("new bid " + bid + " for " + auction.getCommodityId());
+            outputStream.flush();
+            setUpPane();
         }
-        auction.newBid(Session.getOnlineAccount().getUsername(), bid);
-        auctionMenu.setAuction(auction);
-        outputStream.writeUTF("new bid " + bid + " for " + auction.getCommodityId());
-        outputStream.flush();
-        setUpPane();
     }
 
     public void back(ActionEvent actionEvent) {

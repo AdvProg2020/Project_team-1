@@ -6,8 +6,8 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background" stylesheets="@Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.commodity.AuctionPage">
     <children>
-        <ImageView fitHeight="320.0" fitWidth="240.0" layoutX="85.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="50.0" />
-        <VBox layoutX="419.0" layoutY="50.0" prefHeight="320.0" prefWidth="600.0" spacing="10.0" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="50.0">
+        <ImageView fx:id="imageView" fitHeight="320.0" fitWidth="240.0" layoutX="85.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="50.0" />
+        <VBox layoutX="419.0" layoutY="50.0" prefHeight="320.0" prefWidth="600.0" spacing="10.0" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0">
             <children>
                 <Label fx:id="name" styleClass="scene-title" text="Name" />
                 <Label fx:id="brand" styleClass="hint-label" text="Brand" />
@@ -23,10 +23,10 @@
                 <Label fx:id="error" styleClass="error-message-label" />
             </children>
         </VBox>
-        <Button layoutX="14.0" layoutY="761.0" mnemonicParsing="false" styleClass="back-button" text="Back" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" onAction="#back"/>
-        <Button layoutX="59.0" layoutY="689.0" mnemonicParsing="false" styleClass="logout-button" text="Log Out" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="10.0" onAction="#logout"/>
-      <Button layoutX="986.0" layoutY="707.0" mnemonicParsing="false" styleClass="forward-button" text="Products" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="14.0" onAction="#products"/>
-      <Button layoutX="986.0" layoutY="669.0" mnemonicParsing="false" styleClass="forward-button" text="User Panel" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="14.0" onAction="#userPanel"/>
-      <Button layoutX="632.0" layoutY="734.0" mnemonicParsing="false" styleClass="normal-button" text="Main Menu" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="532.0" AnchorPane.rightAnchor="532.0" onAction="#mainMenu"/>
+        <Button layoutX="14.0" layoutY="761.0" mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
+        <Button layoutX="59.0" layoutY="689.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="Log Out" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="10.0" />
+      <Button layoutX="986.0" layoutY="707.0" mnemonicParsing="false" onAction="#products" styleClass="forward-button" text="Products" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="14.0" />
+      <Button layoutX="986.0" layoutY="669.0" mnemonicParsing="false" onAction="#userPanel" styleClass="forward-button" text="User Panel" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="14.0" />
+      <Button layoutX="632.0" layoutY="734.0" mnemonicParsing="false" onAction="#mainMenu" styleClass="normal-button" text="Main Menu" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="532.0" AnchorPane.rightAnchor="532.0" />
     </children>
 </AnchorPane>

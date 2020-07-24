@@ -53,7 +53,6 @@ public class Main {
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         System.out.println(dataInputStream.readUTF());
         dataOutputStream.writeUTF("create_account bank bank bank bank bank");
-
         String tmp = dataInputStream.readUTF();
         try {
             Integer.parseInt(tmp);
@@ -241,10 +240,10 @@ public class Main {
     }
 
     private static void sendBlockedMoney(Socket socket) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         int money = 0;
         for (Auction auction : YaDataManager.getAuctions()) {
-            if (auction.getTopBidder().equals(onlineAccountsUserNames.get(socket))) {
+            if (auction.getTopBidder() != null && auction.getTopBidder().equals(onlineAccountsUserNames.get(socket))) {
                 money += auction.getTopBid();
             }
         }
@@ -252,7 +251,7 @@ public class Main {
     }
 
     private static void sendAuction(Socket socket, int id) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         for (Auction auction : YaDataManager.getAuctions()) {
             if (id == auction.getCommodityId()) {
                 dataOutputStream.writeUTF(yaGson.toJson(auction, new TypeToken<Auction>() {

@@ -258,6 +258,9 @@ public class CommodityPage implements Initializable {
                 outputStream.flush();
                 View.auctionMenu.setAuction(yaGson.fromJson(inputStream.readUTF(), new TypeToken<Auction>() {
                 }.getType()));
+                View.auctionMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+                MenuHandler.getInstance().setCurrentMenu(View.auctionMenu);
+                Session.getSceneHandler().updateScene((Stage) (((Node) mouseEvent.getSource()).getScene().getWindow()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
