@@ -1,7 +1,6 @@
 package client.controller.share;
 
 import common.model.commodity.Commodity;
-import server.controller.share.FilteringMenu;
 
 import java.util.ArrayList;
 

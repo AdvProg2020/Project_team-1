@@ -1,4 +1,4 @@
-package server.controller.share;
+package client.controller.share;
 
 import client.controller.share.Menu;
 import com.gilecode.yagson.YaGson;
@@ -8,13 +8,13 @@ import common.Constants;
 import common.model.commodity.Commodity;
 import common.model.filter.Filter;
 
-import static client.Main.socket;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+
+import static client.Main.socket;
 
 
 public class FilteringMenu extends Menu {
@@ -61,10 +61,6 @@ public class FilteringMenu extends Menu {
         return filteredCommodities;
     }
 
-    public static void setFilteredCommodities(ArrayList<Commodity> filteredCommodities) {
-        FilteringMenu.filteredCommodities = filteredCommodities;
-    }
-
     public static ArrayList<Filter> getCurrentFilters() {
         return currentFilters;
     }
@@ -87,7 +83,7 @@ public class FilteringMenu extends Menu {
         while (commodityReceivedAmount > 0) {
             pictureName = Integer.parseInt(inputStream.readUTF());
             System.out.println(pictureName);
-            FileOutputStream file = new FileOutputStream("tmp\\" + pictureName + ".png" );
+            FileOutputStream file = new FileOutputStream("tmp\\" + pictureName + ".png");
             long counter = 0;
             long fileSize = Long.parseLong(inputStream.readUTF());
             System.out.println(fileSize);
@@ -99,14 +95,6 @@ public class FilteringMenu extends Menu {
             commodityReceivedAmount--;
             file.close();
         }
-    }
-
-    public static boolean canCommodityPassFilter(Commodity commodity) {
-        for (Filter filter : currentFilters) {
-            if (!filter.isCommodityMatches(commodity))
-                return false;
-        }
-        return true;
     }
 
     public void disableFilter(String filterName) throws Exception {

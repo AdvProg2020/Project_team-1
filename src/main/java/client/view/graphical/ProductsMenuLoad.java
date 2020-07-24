@@ -18,7 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import server.controller.share.FilteringMenu;
+import client.controller.share.FilteringMenu;
 import client.controller.share.MenuHandler;
 
 import java.io.FileInputStream;

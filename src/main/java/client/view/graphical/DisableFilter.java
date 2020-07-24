@@ -1,6 +1,6 @@
 package client.view.graphical;
 
-import server.controller.share.FilteringMenu;
+import client.controller.share.FilteringMenu;
 import client.controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
