@@ -7,7 +7,7 @@
 <AnchorPane fx:id="pane" prefHeight="617.0" prefWidth="1098.0" styleClass="background" stylesheets="@../Common.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.graphical.holyManager.ViewDiscountCode">
     <Button layoutY="14.0" mnemonicParsing="false" onAction="#viewPersonalInfo" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View personal info" />
     <Button layoutY="76.0" mnemonicParsing="false" onAction="#manageUsers" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage users" />
-    <Button layoutY="142.0" mnemonicParsing="false" onAction="#manageAllProducts" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage all products" />
+    <Button onAction="#setValues" layoutY="123.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Set values" />
     <Button layoutY="207.0" mnemonicParsing="false" onAction="#createDiscountCode" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Create discount code">
         <font>
             <Font size="36.0" />
@@ -25,7 +25,4 @@
    <Button layoutX="966.0" layoutY="2.0" mnemonicParsing="false" onAction="#play" prefHeight="55.0" prefWidth="52.0" styleClass="normal-button-Green" text="▶" />
    <Button layoutX="946.0" layoutY="548.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
    <Button layoutX="948.0" layoutY="473.0" mnemonicParsing="false" onAction="#goToMainMenu" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="client.Main menu" />
-   <Button onAction="#setValues" layoutY="460.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="242.0" styleClass="normal-button" text="Set values" />
-
-
 </AnchorPane>

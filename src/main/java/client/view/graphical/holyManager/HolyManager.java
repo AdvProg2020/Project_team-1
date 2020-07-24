@@ -45,7 +45,6 @@ public class HolyManager {
         View.manageRequestsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.manageRequestsMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
-
     }
 
     public void viewDiscountCode(ActionEvent actionEvent) {

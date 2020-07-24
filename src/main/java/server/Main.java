@@ -54,7 +54,6 @@ public class Main {
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         System.out.println(dataInputStream.readUTF());
         dataOutputStream.writeUTF("create_account bank bank bank bank bank");
-
         String tmp = dataInputStream.readUTF();
         try {
             Integer.parseInt(tmp);
@@ -73,6 +72,7 @@ public class Main {
                 }).start();
             } else {
                 //purchase
+                YaDataManager.removeAuction(auction);
             }
         }
         while (true) {
@@ -239,16 +239,18 @@ public class Main {
         for (Auction auction : YaDataManager.getAuctions()) {
             if (auction.getCommodityId() == id) {
                 auction.newBid(onlineAccountsUserNames.get(socket), money);
+                YaDataManager.removeAuction(auction);
+                YaDataManager.addAuction(auction);
                 return;
             }
         }
     }
 
     private static void sendBlockedMoney(Socket socket) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         int money = 0;
         for (Auction auction : YaDataManager.getAuctions()) {
-            if (auction.getTopBidder().equals(onlineAccountsUserNames.get(socket))) {
+            if (auction.getTopBidder() != null && auction.getTopBidder().equals(onlineAccountsUserNames.get(socket))) {
                 money += auction.getTopBid();
             }
         }
@@ -256,7 +258,7 @@ public class Main {
     }
 
     private static void sendAuction(Socket socket, int id) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         for (Auction auction : YaDataManager.getAuctions()) {
             if (id == auction.getCommodityId()) {
                 dataOutputStream.writeUTF(yaGson.toJson(auction, new TypeToken<Auction>() {
@@ -271,12 +273,10 @@ public class Main {
         for (Auction auction : YaDataManager.getAuctions()) {
             if (auction.getCommodityId() == id) {
                 dataOutputStream.writeUTF("yes");
-
                 return;
             }
         }
         dataOutputStream.writeUTF("no");
-
     }
 
     private static void login(String input, Socket socket) throws IOException {
@@ -632,7 +632,17 @@ public class Main {
             }
             dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>() {
             }.getType()));
-
+            for (Commodity commodity : commodities) {
+                dos.writeUTF(Integer.toString(commodity.getCommodityId()));
+                File file = new File("data\\media\\products\\" + commodity.getCommodityId());
+                dos.writeUTF(String.valueOf(file.length()));
+                FileInputStream fileInputStream = new FileInputStream(file);
+                byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+                while (fileInputStream.read(buffer) > 0) {
+                    dos.write(buffer);
+                }
+                fileInputStream.close();
+            }
         } catch (Exception e) {
             dos.writeUTF("error:" + e.getMessage());
 
@@ -926,12 +936,10 @@ public class Main {
         for (Auction auction : YaDataManager.getAuctions()) {
             if (auction.getOwnerUsername().equals(onlineAccountsUserNames.get(socket))) {
                 dos.writeUTF("yes");
-
                 return;
             }
         }
         dos.writeUTF("no");
-
     }
 
     private static void makeNewAuction(Socket socket, String input) throws Exception {

@@ -84,6 +84,7 @@ public class ManageResellerProducts implements Initializable {
                 AnchorPane productAnchorPane = new AnchorPane();
                 productAnchorPane.setMaxHeight(318);
                 productAnchorPane.setMaxWidth(318);
+                commodity.setImagePath("tmp\\" + commodity.getCommodityId() + ".jpg");
                 ImageView productImage = new ImageView(new Image(new FileInputStream(commodity.getImagePath())));
                 productImage.setPreserveRatio(true);
                 productImage.setFitHeight(250);

@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
 
-
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.control.Button?>
-<GridPane  prefHeight="700.0" prefWidth="800.0" styleClass="popup-pane" stylesheets="@../Common.css"
+<?import javafx.scene.layout.*?>
+<GridPane prefHeight="700.0" prefWidth="800.0" styleClass="popup-pane" stylesheets="@../Common.css"
           xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="client.view.graphical.holyManager.AddSupportAccount">
     <columnConstraints>
@@ -60,7 +56,8 @@
                        GridPane.columnIndex="1" GridPane.rowIndex="1"/>
         <Label fx:id="registerMessageLabel" styleClass="error-message-label" text="Enter your information"
                GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER"/>
-        <Button mnemonicParsing="false" styleClass="normal-button" onAction="#onPickAPhotoClick" text="Pick a photo" GridPane.columnIndex="2"
+        <Button mnemonicParsing="false" styleClass="normal-button" onAction="#onPickAPhotoClick" text="Pick a photo"
+                GridPane.columnIndex="2"
                 GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER"/>
         <ImageView fx:id="userPhotoImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
                    preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1"
@@ -77,6 +74,7 @@
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
     </BorderPane.margin>
 
-    <Button fx:id="registerButton" onAction="#createSupportAccount" mnemonicParsing="false" styleClass="forward-button" text="Register" GridPane.columnIndex="3" GridPane.rowIndex="8"/>
+    <Button fx:id="registerButton" onAction="#createSupportAccount" mnemonicParsing="false" styleClass="forward-button"
+            text="Register" GridPane.columnIndex="3" GridPane.rowIndex="8"/>
 
 </GridPane>

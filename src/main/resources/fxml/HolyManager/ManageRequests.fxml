@@ -8,7 +8,7 @@
    <children>
       <Button mnemonicParsing="false" onAction="#viewPersonalInfo" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="View personal info" />
       <Button layoutY="61.0" mnemonicParsing="false" onAction="#manageUsers" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage users" />
-      <Button layoutY="123.0" mnemonicParsing="false" onAction="#manageAllProducts" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Manage all products" />
+      <Button onAction="#setValues" layoutY="123.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Set values" />
       <Button layoutY="186.0" mnemonicParsing="false" onAction="#createDiscountCode" prefHeight="48.0" prefWidth="242.0" styleClass="normal-button" text="Create discount code">
          <font>
             <Font size="36.0" />
@@ -30,6 +30,5 @@
       <Button layoutX="1258.0" layoutY="15.0" mnemonicParsing="false" onAction="#pause" styleClass="normal-button" text="⏸" />
       <Button layoutX="1184.0" layoutY="542.0" mnemonicParsing="false" onAction="#goToProductsMenu" styleClass="forward-button" text="Go to products menu" />
       <Button layoutX="1184.0" layoutY="474.0" mnemonicParsing="false" onAction="#goToMainMenu" prefHeight="55.0" prefWidth="231.0" styleClass="forward-button" text="client.Main menu" />
-      <Button onAction="#setValues" layoutX="-2.0" layoutY="454.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="242.0" styleClass="normal-button" text="Set values" />
    </children>
 </AnchorPane>
