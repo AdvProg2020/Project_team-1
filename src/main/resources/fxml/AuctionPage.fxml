@@ -24,9 +24,12 @@
             </children>
         </VBox>
         <Button layoutX="14.0" layoutY="761.0" mnemonicParsing="false" onAction="#back" styleClass="back-button" text="Back" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
-        <Button layoutX="59.0" layoutY="689.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="Log Out" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="10.0" fx:id="logoutButton"/>
+        <Button fx:id="logoutButton" layoutX="59.0" layoutY="689.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="Log Out" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="10.0" />
       <Button layoutX="986.0" layoutY="707.0" mnemonicParsing="false" onAction="#products" styleClass="forward-button" text="Products" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="14.0" />
       <Button layoutX="986.0" layoutY="669.0" mnemonicParsing="false" onAction="#userPanel" styleClass="forward-button" text="User Panel" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="14.0" />
       <Button layoutX="632.0" layoutY="734.0" mnemonicParsing="false" onAction="#mainMenu" styleClass="normal-button" text="Main Menu" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="532.0" AnchorPane.rightAnchor="532.0" />
+      <TextField layoutX="657.0" layoutY="495.0" prefHeight="34.0" prefWidth="310.0" promptText="message" styleClass="text-field" fx:id="textArea"/>
+      <Button layoutX="763.0" layoutY="544.0" mnemonicParsing="false" styleClass="normal-button-Green" text="Send" onAction="#send"/>
+      <ListView layoutX="249.0" layoutY="396.0" prefHeight="295.0" prefWidth="395.0" fx:id="messages1"/>
     </children>
 </AnchorPane>

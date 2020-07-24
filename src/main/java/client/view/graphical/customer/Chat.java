@@ -44,20 +44,15 @@ public class Chat implements Initializable {
     }
 
     public void setUpPane(){
-        Platform.runLater(new Runnable(){
-
-            @Override
-            public void run() {
-                for (int i = 0 ; i < messages1.getItems().size() ; i++) {
-                    messages1.getItems().remove(messages1.getItems().get(i));
-                    i--;
-                }
-                for (Message message : messagesArray) {
-                    messages1.getItems().add(message.username + ": " +  message.message);
-                }
+        Platform.runLater(() -> {
+            for (int i = 0 ; i < messages1.getItems().size() ; i++) {
+                messages1.getItems().remove(messages1.getItems().get(i));
+                i--;
+            }
+            for (Message message : messagesArray) {
+                messages1.getItems().add(message.username + ": " +  message.message);
             }
         });
-
     }
 
     @Override

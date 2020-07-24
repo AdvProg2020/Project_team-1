@@ -11,6 +11,10 @@ public class Menu {
     protected String fxmlFileAddress;
     protected String stageTitle;
 
+    public Menu getPreviousMenu() {
+        return previousMenu;
+    }
+
     public Menu() {
         previousMenu = null;
     }

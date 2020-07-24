@@ -58,7 +58,6 @@ public class ManageRequests extends HolyManager implements Initializable {
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
         dataOutputStream.writeUTF("Requests");
-        dataOutputStream.flush();
         ArrayList<Request> requests = yaGson.fromJson(dataInputStream.readUTF() ,
                 new TypeToken<ArrayList<Request>>(){}.getType());
         for (Request request : requests) {
@@ -107,7 +106,6 @@ public class ManageRequests extends HolyManager implements Initializable {
                 if (item.isSelected()) {
                     DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     dataOutputStream.writeUTF("Accept request " + item.getId());
-                    dataOutputStream.flush();
                 }
             }
             setUpPane();
@@ -122,7 +120,6 @@ public class ManageRequests extends HolyManager implements Initializable {
                 if (item.isSelected()) {
                     DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     dataOutputStream.writeUTF("Decline request " + item.getId());
-                    dataOutputStream.flush();
                 }
             }
             setUpPane();

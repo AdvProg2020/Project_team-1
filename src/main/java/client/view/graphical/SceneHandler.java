@@ -21,6 +21,7 @@ public class SceneHandler {
 
     private static final ProductsMenuLoad productsMenuLoad = new ProductsMenuLoad();
     private static final OffMenu offMenu = new OffMenu();
+    private static AuctionsPage auctionsPage = new AuctionsPage();
     static {
         //MenuHandler.getInstance().setCurrentMenu(View.managerMenu);
     }
@@ -32,6 +33,8 @@ public class SceneHandler {
             productsMenuLoad.initializeProductsRoot(stage);
         else if (menu.getFxmlFileAddress().equals("../../../fxml/OffMenu.fxml"))
             offMenu.initialize(stage);
+        else if (menu.getFxmlFileAddress().equals("../../AuctionsMenu.fxml"))
+            auctionsPage.initializeProductsRoot(stage);
         else {
             Parent root = null;
             try {

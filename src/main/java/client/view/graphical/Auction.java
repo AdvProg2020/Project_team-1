@@ -69,7 +69,7 @@ public class Auction implements Initializable {
             return;
         }
         String date = deadlineTF.getText();
-        if (!date.matches("\\d{1,2}-\\d{1,2}-\\d{4} \\d{1,2}:\\d{1,2}:\\d{1,2}")) {
+        if (!date.matches("(([0-2]\\d)|(3[01]))|-((0[1-9])|(1[0-2]))-202\\d (([01]\\d)|(2[0-3])):(([0-5]\\d)|(60)):(([0-5]\\d)|(60))")) {
             infoLabel.setText("Enter a valid deadline");
             return;
         }
@@ -90,9 +90,9 @@ public class Auction implements Initializable {
                         " deadline " + yaGson.toJson(deadline, new TypeToken<Date>() {
                 }.getType()));
                 outputStream.flush();
+                close(actionEvent);
                 return;
             }
         }
-        close(actionEvent);
     }
 }

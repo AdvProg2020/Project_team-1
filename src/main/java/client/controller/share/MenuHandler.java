@@ -8,6 +8,10 @@ public class MenuHandler {
     private MenuHandler() {
     }
 
+    public Menu getPreviousMenu() {
+        return currentMenu.getPreviousMenu();
+    }
+
     public static MenuHandler getInstance() {
         return singletonInstance;
     }

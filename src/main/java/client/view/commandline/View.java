@@ -18,6 +18,7 @@ import server.controller.reseller.ResellerMenu;
 import server.controller.share.*;
 
 public class View {
+    public static final AuctionsMenu auctionsMenu = new AuctionsMenu();
     public static final ManagerPanel managerPanel = new ManagerPanel();
     public static final PersonalInfoPanel personalInfoPanel = new PersonalInfoPanel();
     public static final LoginRegisterPanel loginRegisterPanel = new LoginRegisterPanel();
