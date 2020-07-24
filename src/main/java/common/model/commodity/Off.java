@@ -64,6 +64,10 @@ public class Off implements Requestable, Serializable {
         }
     }
 
+    public String getOwnerUsername() {
+        return ownerUsername;
+    }
+
     public void setCommoditiesId(ArrayList<Integer> commoditiesId) {
         this.commoditiesId = commoditiesId;
     }

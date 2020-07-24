@@ -93,5 +93,6 @@ public class Auction implements Initializable {
                 return;
             }
         }
+        close(actionEvent);
     }
 }

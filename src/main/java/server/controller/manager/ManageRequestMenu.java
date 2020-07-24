@@ -1,5 +1,8 @@
 package server.controller.manager;
 
+import common.model.account.BusinessAccount;
+import common.model.commodity.Comment;
+import common.model.commodity.Commodity;
 import common.model.commodity.Off;
 import common.model.share.Request;
 import common.model.share.Status;
@@ -19,20 +22,34 @@ public class ManageRequestMenu {
         updateRequests(request);
     }
 
-    public void updateRequests(Request request) throws IOException {
+    public void updateRequests(Request request) throws Exception {
         YaDataManager.removeRequest(request);
         YaDataManager.addRequest(request);
-        /*if (request.getObj() instanceof Commodity){
-            YaDataManager.removeCommodity((Commodity)request.getObj());
-            YaDataManager.addCommodity((Commodity)request.getObj());
-        }
-        if (request.getObj() instanceof Comment){
-            YaDataManager.removeCommodity(((Comment)request.getObj()).getCommodity());
-            YaDataManager.addCommodity(((Comment)request.getObj()).getCommodity());
-        }*/
+//        if (request.getObj() instanceof Commodity){
+//            YaDataManager.removeCommodity((Commodity)request.getObj());
+//            YaDataManager.addCommodity((Commodity)request.getObj());
+//        }
+//        if (request.getObj() instanceof Comment){
+//            YaDataManager.removeCommodity(((Comment)request.getObj()).getCommodity());
+//            YaDataManager.addCommodity(((Comment)request.getObj()).getCommodity());
+//        }
         if (request.getObj() instanceof Off) {
-            YaDataManager.removeOff((Off) request.getObj());
-            YaDataManager.addOff((Off) request.getObj());
+            Off off = (Off) request.getObj();
+            YaDataManager.removeOff(off);
+            YaDataManager.addOff(off);
+            BusinessAccount owner = YaDataManager.getSellerWithUserName(off.getOwnerUsername());
+            if (!owner.getOffsId().contains(off.getOffID())) {
+                owner.getOffsId().add(off.getOffID());
+            }
+        }
+        if (request.getObj() instanceof Commodity) {
+            Commodity commodity = (Commodity) request.getObj();
+            YaDataManager.removeCommodity(commodity);
+            YaDataManager.addCommodity(commodity);
+            BusinessAccount owner = YaDataManager.getSellerWithUserName(commodity.getSellerUsername());
+            if (!owner.getCommoditiesId().contains(commodity.getCommodityId())) {
+                owner.getCommoditiesId().add(commodity.getCommodityId());
+            }
         }
     }
 

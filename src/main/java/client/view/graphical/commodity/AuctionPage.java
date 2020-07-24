@@ -41,6 +41,7 @@ public class AuctionPage implements Initializable {
     public Label error;
     public Label name;
     public ImageView imageView;
+    public Button logoutButton;
     private Auction auction;
 
     @Override
@@ -70,6 +71,9 @@ public class AuctionPage implements Initializable {
         }
         if (Session.getOnlineAccount() == null || !Session.getOnlineAccount().getAccountType().equals("personal")) {
             submitButton.setDisable(true);
+        }
+        if (Session.getOnlineAccount() == null) {
+            logoutButton.setDisable(true);
         }
         commodity.setImagePath("tmp\\" + commodity.getCommodityId() + ".png");
         FileInputStream inputStream = new FileInputStream(commodity.getImagePath());

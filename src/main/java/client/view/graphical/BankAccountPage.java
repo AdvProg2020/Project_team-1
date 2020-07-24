@@ -25,7 +25,6 @@ public class BankAccountPage {
         DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
         dataOutputStream.writeUTF("create_account " +firstName.getText() + " " +
                 lastName.getText() + " " + username.getText() + " " + password.getText()+ " "+ password.getText());
-        dataOutputStream.flush();
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         String respond = dataInputStream.readUTF();
         error.setText(respond);
@@ -33,13 +32,10 @@ public class BankAccountPage {
         if (!(respond.equals("password do not match") || respond.equals("username is not available") || respond.equals("invalid input") || respond.equals("database error"))){
             DataOutputStream dataOutputStream1 = new DataOutputStream(socket.getOutputStream());
             dataOutputStream1.writeUTF(respond);
-            dataOutputStream1.flush();
             dataOutputStream.writeUTF("get_token " + username.getText() + " " + password.getText());
-            dataOutputStream.flush();
             respond = dataInputStream.readUTF();
             System.out.println(respond);
             dataOutputStream1.writeUTF(respond);
-            dataOutputStream1.flush();
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
         }
     }
