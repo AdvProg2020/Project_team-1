@@ -641,6 +641,7 @@ public class Main {
 
     private static void sendSellerCommodities(Socket socket) throws IOException {
         DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+        DataInputStream dis = new DataInputStream(socket.getInputStream());
         try {
             BusinessAccount seller = YaDataManager.getSellerWithUserName(onlineAccountsUserNames.get(socket));
             ArrayList<Commodity> commodities = new ArrayList<>();
@@ -649,17 +650,29 @@ public class Main {
             }
             dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>() {
             }.getType()));
-            for (Commodity commodity : commodities) {
-                dos.writeUTF(Integer.toString(commodity.getCommodityId()));
-                File file = new File("data\\media\\products\\" + commodity.getCommodityId());
-                dos.writeUTF(String.valueOf(file.length()));
-                FileInputStream fileInputStream = new FileInputStream(file);
-                byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
-                while (fileInputStream.read(buffer) > 0) {
-                    dos.write(buffer);
+            System.out.println("Sa lammm");
+            String confirmation = dis.readUTF();
+            System.out.println(confirmation);
+            if (confirmation.equals("send pictures")) {
+                System.out.println("sa lam");
+                dos.writeUTF(String.valueOf(commodities.size()));
+                System.out.println("salam");
+                for (Commodity commodity : commodities) {
+                    System.out.println("Salam");
+                    FileInputStream file = new FileInputStream("data\\media\\products\\" + commodity.getCommodityId());
+                    System.out.println("saasldm");
+                    dos.writeUTF(Integer.toString(commodity.getCommodityId()));
+                    System.out.println("SSSS");
+                    System.out.println(new File("data\\media\\products\\" + commodity.getCommodityId()).length());
+                    dos.writeUTF(String.valueOf(new File("data\\media\\products\\" + commodity.getCommodityId()).length()));
+                    byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+                    while (file.read(buffer) > 0) {
+                        dos.write(buffer);
+                    }
+                    file.close();
                 }
-                fileInputStream.close();
             }
+            System.out.println("rad shod");
         } catch (Exception e) {
             dos.writeUTF("error:" + e.getMessage());
 
