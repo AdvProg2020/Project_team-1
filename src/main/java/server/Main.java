@@ -10,6 +10,8 @@ import common.model.commodity.*;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
+import common.model.log.BuyLog;
+import common.model.log.SellLog;
 import common.model.share.Request;
 import server.controller.Statistics;
 import server.dataManager.YaDataManager;
@@ -71,7 +73,41 @@ public class Main {
                     timer.schedule(new AuctionCloser(auction), auction.getDeadline());
                 }).start();
             } else {
-                //purchase
+                try {
+                    PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(auction.getTopBidder());
+                    BusinessAccount businessAccount = YaDataManager.getSellerWithUserName(auction.getOwnerUsername());
+                    Objects.requireNonNull(personalAccount).addToCredit(-auction.getTopBid());
+                    int depositPrice = auction.getTopBid();
+                    int wage = (int) Math.round((Statistics.updatedStats.getWage() * depositPrice) / 100);
+                    int pureDepositPrice = depositPrice - wage;
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socketB.getOutputStream()));
+                    String token;
+                    dos.writeUTF("get_token bank bank");
+                    dos.flush();
+                    DataInputStream dis = new DataInputStream(socketB.getInputStream());
+                    token = dis.readUTF();
+                    dos.writeUTF("create_receipt " + token + " move " + depositPrice + " " + personalAccount.getAccountID() + " 1 ");
+                    dos.flush();
+                    String receipt = dis.readUTF();
+                    dos.writeUTF("pay " + receipt);
+                    dos.flush();
+                    Objects.requireNonNull(businessAccount).addToCredit(pureDepositPrice);
+                    YaDataManager.removeBusiness(businessAccount);
+                    YaDataManager.addBusiness(businessAccount);
+                    HashSet<Integer> auctionCart = new HashSet<>();
+                    auctionCart.add(auction.getCommodityId());
+                    BuyLog buyLog = new BuyLog(auction.getDeadline(), auctionCart, depositPrice, depositPrice, "No discount");
+                    personalAccount.addBuyLog(buyLog);
+                    Commodity commodity = YaDataManager.getCommodityById(auction.getCommodityId());
+                    commodity.setInventory(commodity.getInventory() - 1);
+                    YaDataManager.removePerson(personalAccount);
+                    YaDataManager.addPerson(personalAccount);
+                    businessAccount.addSellLog(new SellLog(auction.getDeadline(), pureDepositPrice, 0, auctionCart, personalAccount.getUsername()));
+                    YaDataManager.removeBusiness(businessAccount);
+                    YaDataManager.addBusiness(businessAccount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 YaDataManager.removeAuction(auction);
             }
         }
@@ -1039,7 +1075,41 @@ public class Main {
         @Override
         public void run() {
             if (auction.getTopBidder() != null) {
-                //purchase and deduct money from buyer wallet and add to seller wallet
+                try {
+                    PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(auction.getTopBidder());
+                    BusinessAccount businessAccount = YaDataManager.getSellerWithUserName(auction.getOwnerUsername());
+                    Objects.requireNonNull(personalAccount).addToCredit(-auction.getTopBid());
+                    int depositPrice = auction.getTopBid();
+                    int wage = (int) Math.round((Statistics.updatedStats.getWage() * depositPrice) / 100);
+                    int pureDepositPrice = depositPrice - wage;
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socketB.getOutputStream()));
+                    String token;
+                    dos.writeUTF("get_token bank bank");
+                    dos.flush();
+                    DataInputStream dis = new DataInputStream(socketB.getInputStream());
+                    token = dis.readUTF();
+                    dos.writeUTF("create_receipt " + token + " move " + depositPrice + " " + personalAccount.getAccountID() + " 1 ");
+                    dos.flush();
+                    String receipt = dis.readUTF();
+                    dos.writeUTF("pay " + receipt);
+                    dos.flush();
+                    Objects.requireNonNull(businessAccount).addToCredit(pureDepositPrice);
+                    YaDataManager.removeBusiness(businessAccount);
+                    YaDataManager.addBusiness(businessAccount);
+                    HashSet<Integer> auctionCart = new HashSet<>();
+                    auctionCart.add(auction.getCommodityId());
+                    BuyLog buyLog = new BuyLog(auction.getDeadline(), auctionCart, depositPrice, depositPrice, "No discount");
+                    personalAccount.addBuyLog(buyLog);
+                    Commodity commodity = YaDataManager.getCommodityById(auction.getCommodityId());
+                    commodity.setInventory(commodity.getInventory() - 1);
+                    YaDataManager.removePerson(personalAccount);
+                    YaDataManager.addPerson(personalAccount);
+                    businessAccount.addSellLog(new SellLog(auction.getDeadline(), pureDepositPrice, 0, auctionCart, personalAccount.getUsername()));
+                    YaDataManager.removeBusiness(businessAccount);
+                    YaDataManager.addBusiness(businessAccount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             try {
                 YaDataManager.removeAuction(this.auction);
