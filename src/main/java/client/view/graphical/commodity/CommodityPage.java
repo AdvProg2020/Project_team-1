@@ -28,7 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

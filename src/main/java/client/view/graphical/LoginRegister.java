@@ -39,8 +39,6 @@ import static client.Main.socket;
 
 public class LoginRegister implements Initializable {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-    private final LoginRegisterMenu loginRegisterMenu = View.loginRegisterMenu;
-    private final ClientLoginRegisterMenu clientLoginRegisterMenu = new ClientLoginRegisterMenu();
     public TextField registerBusinessNameTf;
     public ChoiceBox<String> accountType;
     public Label loginMessageLabel;
@@ -76,7 +74,7 @@ public class LoginRegister implements Initializable {
     }
 
     public void onBackButtonClick(MouseEvent mouseEvent) {
-        loginRegisterMenu.goToPreviousMenu();
+        View.loginRegisterPanel.goToPreviousMenu();
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 

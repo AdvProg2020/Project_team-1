@@ -1,7 +1,5 @@
 package client.controller.reseller;
 
-import client.controller.reseller.ClientResellerMenu;
-import client.view.commandline.View;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
@@ -10,7 +8,7 @@ import common.model.commodity.Commodity;
 import common.model.commodity.Off;
 import common.model.share.Request;
 import server.controller.comparator.Sort;
-import server.controller.share.Menu;
+import client.controller.share.Menu;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

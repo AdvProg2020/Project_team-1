@@ -6,7 +6,8 @@ import client.controller.customer.Chat;
 import client.controller.customer.CustomerPanel;
 import client.controller.manager.*;
 import client.controller.reseller.SellerPanel;
-import server.controller.SupportMenu;
+import client.controller.share.*;
+import client.controller.support.SupportMenu;
 import server.controller.customer.CartMenu;
 import server.controller.customer.CustomerMenu;
 import server.controller.manager.*;
@@ -18,6 +19,8 @@ import server.controller.share.*;
 
 public class View {
     public static final ManagerPanel managerPanel = new ManagerPanel();
+    public static final PersonalInfoPanel personalInfoPanel = new PersonalInfoPanel();
+    public static final LoginRegisterPanel loginRegisterPanel = new LoginRegisterPanel();
     public static final SellerPanel sellerPanel = new SellerPanel();
     public static final ManageUsersPanel manageUsersPanel = new ManageUsersPanel();
     public static final MainMenu mainMenu = new MainMenu();

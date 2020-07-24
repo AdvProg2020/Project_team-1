@@ -1,7 +1,7 @@
 package client.view.graphical;
 
-import server.controller.share.Menu;
-import server.controller.share.MenuHandler;
+import client.controller.share.Menu;
+import client.controller.share.MenuHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

@@ -57,7 +57,7 @@ public class AddCommoditiesToCategory implements Initializable {
     public void addCommodities(ActionEvent actionEvent) {
         for (CheckBox item : checkBoxListView.getItems()) {
             try {
-                commodities.add(View.productsMenu.getProducts(Integer.parseInt(item.getId())));
+                commodities.add(View.productsMenu.getProduct(Integer.parseInt(item.getId())));
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

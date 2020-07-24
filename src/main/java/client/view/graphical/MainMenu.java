@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 import server.dataManager.YaDataManager;
 
 import java.io.IOException;
@@ -32,8 +32,8 @@ public class MainMenu implements Initializable {
 
     public static void goToUserPanel(ActionEvent actionEvent) {
         if (Session.getOnlineAccount() == null) {
-            View.loginRegisterMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-            MenuHandler.getInstance().setCurrentMenu(View.loginRegisterMenu);
+            View.loginRegisterPanel.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+            MenuHandler.getInstance().setCurrentMenu(View.loginRegisterPanel);
             Session.getSceneHandler().updateScene((Stage) ((Node) (actionEvent.getSource())).getScene().getWindow());
         } else if (Session.getOnlineAccount() instanceof ManagerAccount) {
             View.managerPanel.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());

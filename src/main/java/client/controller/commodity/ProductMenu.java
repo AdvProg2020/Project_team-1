@@ -11,8 +11,8 @@ import common.model.commodity.Commodity;
 import common.model.commodity.Score;
 import common.model.log.BuyLog;
 import common.model.share.Request;
-import server.controller.share.Menu;
-import server.controller.share.MenuHandler;
+import client.controller.share.Menu;
+import client.controller.share.MenuHandler;
 
 import java.io.IOException;
 
@@ -70,8 +70,8 @@ public class ProductMenu extends Menu {
 
     public void addToCart() throws Exception {
         if (Session.getOnlineAccount() == null) {
-            MenuHandler.getInstance().setCurrentMenu(View.loginRegisterMenu);
-            View.loginRegisterMenu.setPreviousMenu(this);
+            MenuHandler.getInstance().setCurrentMenu(View.loginRegisterPanel);
+            View.loginRegisterPanel.setPreviousMenu(this);
             throw new Exception("you have to login or register first");
         }
         PersonalAccount personalAccount = ((PersonalAccount) Session.getOnlineAccount());

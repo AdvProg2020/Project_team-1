@@ -58,7 +58,7 @@ public class Main {
         try {
             Integer.parseInt(tmp);
             bankAccountID = tmp;
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         System.out.println(bankAccountID + " = bank id");
@@ -205,15 +205,17 @@ public class Main {
         } else if (input.startsWith("get discount with code")) {
             sendDiscountWithCode(socket, input.split(" ", 5)[4]);
         } else if (input.startsWith("update person ")) {
-            updatePerson(socket, yaGson.fromJson(input.split(" ", 3)[2], new TypeToken<PersonalAccount>() {
+            updatePerson(yaGson.fromJson(input.split(" ", 3)[2], new TypeToken<PersonalAccount>() {
             }.getType()));
         } else if (input.startsWith("add manager ")) {
             YaDataManager.addManager(yaGson.fromJson(input.split(" ", 3)[2], new TypeToken<ManagerAccount>() {
             }.getType()));
+        } else if (input.equals("logout")) {
+            onlineAccountsUserNames.remove(socket);
         }
     }
 
-    private static void updatePerson(Socket socket, PersonalAccount person) throws IOException {
+    private static void updatePerson(PersonalAccount person) throws IOException {
         YaDataManager.removePerson(person);
         YaDataManager.addPerson(person);
     }
@@ -531,8 +533,8 @@ public class Main {
         long counter = 0;
         while (counter < fileSize) {
             dis.read(buffer);
-             file.write(buffer);
-            counter+= Constants.FILE_BUFFER_SIZE;
+            file.write(buffer);
+            counter += Constants.FILE_BUFFER_SIZE;
         }
         file.close();
         System.out.println(request.toString());

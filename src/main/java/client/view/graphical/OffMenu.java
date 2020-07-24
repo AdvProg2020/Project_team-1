@@ -22,7 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -166,7 +166,7 @@ public class OffMenu extends HolyManager {
     public void setCommodities(Pane root) throws Exception {
         int i = 0;
         int j = 100;
-        ArrayList<Commodity> commodities = View.productsMenu.getProducts();
+        ArrayList<Commodity> commodities = View.productsMenu.getProduct();
         for (Commodity commodity : commodities) {
             if (checkCommodity(commodity)) {
                 Off off = getOffWithCommodity(commodity);

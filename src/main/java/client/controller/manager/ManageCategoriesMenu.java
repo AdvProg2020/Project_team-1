@@ -6,8 +6,7 @@ import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import common.model.commodity.Category;
 import common.model.commodity.CategorySpecification;
 import common.model.commodity.Commodity;
-import server.controller.share.Menu;
-import server.dataManager.YaDataManager;
+import client.controller.share.Menu;
 
 import java.io.IOException;
 import java.util.ArrayList;

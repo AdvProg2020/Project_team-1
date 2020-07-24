@@ -11,9 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 import static client.Main.socket;
-import static client.Main.socketB;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -24,10 +23,9 @@ public class HolyManager {
     public Label error;
 
     public void viewPersonalInfo(ActionEvent actionEvent) {
-        View.viewPersonalInfoMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.viewPersonalInfoMenu);
+        View.personalInfoPanel.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.personalInfoPanel);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
-
     }
 
     public void manageUsers(ActionEvent actionEvent) {

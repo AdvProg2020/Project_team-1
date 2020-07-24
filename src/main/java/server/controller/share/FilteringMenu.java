@@ -1,5 +1,6 @@
 package server.controller.share;
 
+import client.controller.share.Menu;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
@@ -8,8 +9,6 @@ import common.model.commodity.Commodity;
 import common.model.filter.Filter;
 
 import static client.Main.socket;
-
-import server.dataManager.YaDataManager;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -82,10 +81,10 @@ public class FilteringMenu extends Menu {
         int pictureName = 0;
         byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
         new File("tmp").mkdir();
-        int commodityRecievedAmount = Integer.parseInt(inputStream.readUTF());
-        System.out.println(commodityRecievedAmount);
+        int commodityReceivedAmount = Integer.parseInt(inputStream.readUTF());
+        System.out.println(commodityReceivedAmount);
         System.out.println("salam");
-        while (commodityRecievedAmount > 0) {
+        while (commodityReceivedAmount > 0) {
             pictureName = Integer.parseInt(inputStream.readUTF());
             System.out.println(pictureName);
             FileOutputStream file = new FileOutputStream("tmp\\" + pictureName + ".png" );
@@ -97,7 +96,7 @@ public class FilteringMenu extends Menu {
                 file.write(buffer);
                 counter += Constants.FILE_BUFFER_SIZE;
             }
-            commodityRecievedAmount--;
+            commodityReceivedAmount--;
             file.close();
         }
     }

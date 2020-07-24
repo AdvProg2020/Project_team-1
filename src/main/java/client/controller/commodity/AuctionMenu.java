@@ -1,7 +1,7 @@
 package client.controller.commodity;
 
 import common.model.commodity.Auction;
-import server.controller.share.Menu;
+import client.controller.share.Menu;
 
 public class AuctionMenu extends Menu {
     private Auction auction;

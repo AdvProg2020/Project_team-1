@@ -1,6 +1,6 @@
 package client.controller.customer;
 
-import server.controller.share.Menu;
+import client.controller.share.Menu;
 
 public class Chat extends Menu {
     public Chat() {

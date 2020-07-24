@@ -1,6 +1,6 @@
 package client.controller.manager;
 
-import server.controller.share.Menu;
+import client.controller.share.Menu;
 
 public class ManagerPanel extends Menu {
     public ManagerPanel() {

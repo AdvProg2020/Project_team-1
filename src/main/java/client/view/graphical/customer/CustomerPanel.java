@@ -1,7 +1,6 @@
 package client.view.graphical.customer;
 
-import javafx.fxml.FXML;
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

@@ -1,12 +1,11 @@
 package server.controller.share;
 
-
 import common.model.account.*;
 import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 
-public class ViewPersonalInfoMenu extends Menu{
+public class ViewPersonalInfoMenu {
     public void editFirstName(String newFirstName, SimpleAccount account) throws Exception {
         account.changeFirstName(newFirstName);
         updateFile(account);
@@ -28,21 +27,22 @@ public class ViewPersonalInfoMenu extends Menu{
         account.changePassword(newPassword);
         updateFile(account);
     }
+
     public void editPhoneNumber(String newPhoneNumber, SimpleAccount account) throws Exception {
         account.changePhoneNumber(newPhoneNumber);
         updateFile(account);
     }
 
     public void updateFile(SimpleAccount simpleAccount) throws Exception {
-        if (simpleAccount instanceof BusinessAccount){
+        if (simpleAccount instanceof BusinessAccount) {
             YaDataManager.deleteAccountWithUserName(simpleAccount.getUsername());
             YaDataManager.addBusiness((BusinessAccount) simpleAccount);
         }
-        if (simpleAccount instanceof PersonalAccount){
+        if (simpleAccount instanceof PersonalAccount) {
             YaDataManager.deleteAccountWithUserName(simpleAccount.getUsername());
             YaDataManager.addPerson((PersonalAccount) simpleAccount);
         }
-        if (simpleAccount instanceof ManagerAccount){
+        if (simpleAccount instanceof ManagerAccount) {
             YaDataManager.deleteAccountWithUserName(simpleAccount.getUsername());
             YaDataManager.addManager((ManagerAccount) simpleAccount);
         }
@@ -65,12 +65,6 @@ public class ViewPersonalInfoMenu extends Menu{
             if (supportAccount.getEmail().equals(newEmail))
                 return false;
         }
-
         return true;
-
-    }
-
-    public ViewPersonalInfoMenu() {
-        fxmlFileAddress = "../../../fxml/HolyManager/ViewPersonalInfo.fxml";
     }
 }

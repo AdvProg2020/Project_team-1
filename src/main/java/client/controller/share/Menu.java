@@ -1,16 +1,19 @@
-package server.controller.share;
+package client.controller.share;
 
-import javafx.event.ActionEvent;
 import client.Session;
 import client.view.commandline.View;
+import javafx.event.ActionEvent;
+
+import static client.Main.outputStream;
 
 public class Menu {
-
-    public CommandProcess commandProcess;
-
     protected Menu previousMenu;
-
     protected String fxmlFileAddress;
+    protected String stageTitle;
+
+    public Menu() {
+        previousMenu = null;
+    }
 
     public String getFxmlFileAddress() {
         return fxmlFileAddress;
@@ -18,13 +21,6 @@ public class Menu {
 
     public String getStageTitle() {
         return stageTitle;
-    }
-
-    protected String stageTitle;
-
-    public Menu() {
-        commandProcess = null;
-        previousMenu = null;
     }
 
     public void setPreviousMenu(Menu previousMenu) {
@@ -38,11 +34,7 @@ public class Menu {
         }
     }
 
-    public void setLoginAndRegisterMenu(){
-        MenuHandler.getInstance().setCurrentMenu(View.loginRegisterMenu);
-    }
-
-    public void products(){
+    public void products() {
         View.productsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.productsMenu);
     }
@@ -52,16 +44,14 @@ public class Menu {
             throw new Exception("You are not logged in");
         }
         Session.setOnlineAccount(null);
-        MenuHandler.getInstance().setCurrentMenu(View.loginRegisterMenu);
+        MenuHandler.getInstance().setCurrentMenu(View.loginRegisterPanel);
         MenuHandler.getInstance().getCurrentMenu().setPreviousMenu(null);
+        outputStream.writeUTF("logout");
+        outputStream.flush();
     }
 
-    public void commandProcess(String command) throws Exception {
-        commandProcess.commandProcessor(command);
-    }
-
-    public void goToMainMenu(ActionEvent actionEvent){
+    public void goToMainMenu(ActionEvent actionEvent) {
         View.mainMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.mainMenu);
-      }
+    }
 }

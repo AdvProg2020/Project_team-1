@@ -1,4 +1,4 @@
-package server.controller.share;
+package client.controller.share;
 
 
 public class MainMenu extends Menu {

@@ -1,6 +1,6 @@
 package client.controller.reseller;
 
-import server.controller.share.Menu;
+import client.controller.share.Menu;
 
 public class SellerPanel extends Menu {
     public SellerPanel() {

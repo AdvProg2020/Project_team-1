@@ -14,8 +14,8 @@ import common.model.field.Field;
 import common.model.log.SellLog;
 import common.model.share.Request;
 import server.controller.comparator.Sort;
-import server.controller.share.Menu;
-import server.controller.share.MenuHandler;
+import client.controller.share.Menu;
+import client.controller.share.MenuHandler;
 
 import java.io.*;
 import java.util.ArrayList;

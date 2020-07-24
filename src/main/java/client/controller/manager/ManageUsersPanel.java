@@ -7,7 +7,7 @@ import common.model.account.BusinessAccount;
 import common.model.account.ManagerAccount;
 import common.model.account.PersonalAccount;
 import common.model.account.SupportAccount;
-import server.controller.share.Menu;
+import client.controller.share.Menu;
 import server.dataManager.YaDataManager;
 
 import java.io.IOException;

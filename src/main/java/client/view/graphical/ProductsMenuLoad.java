@@ -19,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import server.controller.share.FilteringMenu;
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -120,7 +120,7 @@ public class ProductsMenuLoad {
     public void setCommodities(Pane root) throws Exception {
         int i = 0;
         int j = 100;
-        ArrayList<Commodity> commodities = View.productsMenu.getProducts();
+        ArrayList<Commodity> commodities = View.productsMenu.getProduct();
         //int end = Math.min(count + blockIncrement, commodities.size());
         for (Commodity commodity :commodities) {
             commodity.setImagePath("tmp\\" + commodity.getCommodityId() + ".png");

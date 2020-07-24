@@ -21,7 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import client.controller.reseller.ManageResellerProductsMenu;
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 
 import java.io.FileInputStream;
 import java.io.IOException;

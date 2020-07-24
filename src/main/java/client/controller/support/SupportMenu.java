@@ -1,6 +1,6 @@
-package server.controller;
+package client.controller.support;
 
-import server.controller.share.Menu;
+import client.controller.share.Menu;
 
 public class SupportMenu extends Menu {
     public SupportMenu() {

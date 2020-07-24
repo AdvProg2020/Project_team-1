@@ -17,7 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import client.controller.reseller.ManageResellerOffsMenu;
 import server.controller.reseller.ResellerMenu;
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 
 import java.io.IOException;
 import java.net.URL;

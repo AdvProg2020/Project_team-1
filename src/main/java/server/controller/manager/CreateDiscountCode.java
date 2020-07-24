@@ -2,7 +2,6 @@ package server.controller.manager;
 
 import common.model.account.PersonalAccount;
 import server.dataManager.YaDataManager;
-import server.controller.share.Menu;
 import common.model.commodity.DiscountCode;
 import client.view.graphical.holyManager.AddPersonToDiscountCode;
 

@@ -1,6 +1,6 @@
 package client.view.graphical;
 
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import client.Session;

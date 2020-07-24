@@ -1,6 +1,6 @@
 package client.view.graphical;
 
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;

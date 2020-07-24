@@ -14,7 +14,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 import server.dataManager.YaDataManager;
 
 import java.io.*;

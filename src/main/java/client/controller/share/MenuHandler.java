@@ -1,15 +1,12 @@
-package server.controller.share;
-
-import client.view.AudioPlayer;
-import javafx.scene.media.MediaPlayer;
+package client.controller.share;
 
 public class MenuHandler {
-
     private static final MenuHandler singletonInstance = new MenuHandler();
 
     private Menu currentMenu;
 
-    private MenuHandler() {}
+    private MenuHandler() {
+    }
 
     public static MenuHandler getInstance() {
         return singletonInstance;
@@ -27,6 +24,6 @@ public class MenuHandler {
           else AudioPlayer.count = 1;
           AudioPlayer.music();
       }*/
-      this.currentMenu = currentMenu;
+        this.currentMenu = currentMenu;
     }
 }

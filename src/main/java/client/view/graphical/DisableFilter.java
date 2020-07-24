@@ -1,7 +1,7 @@
 package client.view.graphical;
 
 import server.controller.share.FilteringMenu;
-import server.controller.share.MenuHandler;
+import client.controller.share.MenuHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
