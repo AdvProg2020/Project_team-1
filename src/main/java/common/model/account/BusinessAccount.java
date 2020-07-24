@@ -10,6 +10,7 @@ import server.dataManager.YaDataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BusinessAccount extends SimpleAccount implements Requestable {
     private final transient String VALID_BUSINESS_NAME = "^\\w{4,20}$";
@@ -62,7 +63,11 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
     }
 
     public void removeCommodity(Commodity commodity) {
-        commoditiesId.remove(commodity.getCommodityId());
+        commoditiesId.remove(commoditiesId.indexOf(commodity.getCommodityId()));
+    }
+
+    public void removeCommodity(int commodityId) {
+        commoditiesId.remove(commoditiesId.indexOf(commodityId));
     }
 
     public void addCommodity(Commodity commodity) {

@@ -89,7 +89,7 @@ public class Main {
                 try {
                     DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                     String input = dataInputStream.readUTF();
-                    System.out.println(input);
+                    System.out.println("request : " + input);
                     handleInput(input, socket);
                 } catch (IOException | ClassNotFoundException e) {
                     deleteSocketAndAccount(socket);
@@ -188,6 +188,7 @@ public class Main {
         } else if (input.startsWith("send off with id ")) {
             sendOffWithId(socket, Integer.parseInt(input.split(" ")[4]));
         } else if (input.startsWith("remove commodity with id ")) {
+            System.out.println("injaim");
             removeCommodity(Integer.parseInt(input.split(" ")[4]));
         } else if (input.equals("has an auction?")) {
             hasAnAuction(socket);
@@ -938,9 +939,11 @@ public class Main {
     }
 
     private static void removeCommodity(int id) throws Exception {
+        System.out.println("**omad to remove product");
         Commodity commodity = YaDataManager.getCommodityById(id);
         BusinessAccount seller = YaDataManager.getSellerWithUserName(commodity.getSellerUsername());
         YaDataManager.removeBusiness(seller);
+        seller.removeCommodity(commodity);
         YaDataManager.addBusiness(seller);
         YaDataManager.removeCommodity(commodity);
     }

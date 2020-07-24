@@ -140,13 +140,9 @@ public class ClientResellerMenu extends Menu {
         }
     }
 
-    public static void removeProduct(int productId) throws Exception {
-        outputStream.writeUTF("send commodity with id " + productId);
-        outputStream.flush();
-        Commodity commodity = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Commodity>() {
-        }.getType());
-        BusinessAccount businessAccount = getBusinessAccount();
-        businessAccount.removeCommodity(commodity);
+    public static void removeProduct(int productId) throws IOException {
+        getBusinessAccount().removeCommodity(productId);
+        System.out.println("remove commodity with id " + productId);
         outputStream.writeUTF("remove commodity with id " + productId);
         outputStream.flush();
     }

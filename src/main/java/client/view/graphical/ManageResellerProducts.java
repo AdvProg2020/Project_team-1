@@ -126,6 +126,7 @@ public class ManageResellerProducts implements Initializable {
                     Optional<ButtonType> result = confirmation.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.YES) {
                         try {
+                            System.out.println("before function call");
                             ClientResellerMenu.removeProduct(commodity.getCommodityId());
                         } catch (Exception e) {
                             // Be Kiram
