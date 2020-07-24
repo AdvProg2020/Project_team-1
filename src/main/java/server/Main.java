@@ -37,7 +37,7 @@ public class Main {
 
     static {
         try {
-            socketB = new Socket("2.tcp.ngrok.io", 18533);
+            socketB = new Socket("127.0.0.1", 9999);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1067,7 +1067,9 @@ public class Main {
         }.getType());
         YaDataManager.removePerson(personalAccount);
         YaDataManager.addPerson(personalAccount);
+        System.out.println("Injam");
         String token = dataInputStream.readUTF();
+        System.out.println("token" + token);
         try {
             if (splitInput.length == 3) {
                 DiscountCode discountCode = View.cartMenu.getDiscountCodeWithCode(splitInput[2], splitInput[1]);

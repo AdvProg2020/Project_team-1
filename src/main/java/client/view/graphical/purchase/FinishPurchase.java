@@ -22,7 +22,7 @@ public class FinishPurchase implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         username.setText(Session.getOnlineAccount().getUsername());
         PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
-        BuyLog buyLog =account.getBuyLogs().get(account.getBuyLogs().size()-1);
+        BuyLog buyLog = account.getBuyLogs().get(account.getBuyLogs().size()-1);
         payedMoney.setText(buyLog.getPayedMoney() + " Rials");
         discountMoney.setText(buyLog.getDeductedMoney() + " Rials");
         if (buyLog.getDiscountCode() != null) {

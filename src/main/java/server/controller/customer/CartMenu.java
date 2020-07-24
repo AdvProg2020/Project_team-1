@@ -123,7 +123,7 @@ public class CartMenu extends Menu {
             dataOutputStream.flush();
             DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
             token = dataInputStream.readUTF();
-            dataOutputStream.writeUTF("create_receipt " + token + " deposit " + wage + " -1 1" );
+            dataOutputStream.writeUTF("create_receipt " + token + " move " + depositPrice + " " + account.getAccountID() + " 1 ");
             dataOutputStream.flush();
             String receipt = dataInputStream.readUTF();
             dataOutputStream.writeUTF("pay " + receipt);
@@ -177,6 +177,7 @@ public class CartMenu extends Menu {
     }
 
     public void purchaseViaBank(DiscountCode discountCode , String username , String token) throws Exception {
+        System.out.println("oomadam toosh");
         PersonalAccount account = YaDataManager.getPersonWithUserName(username);
         int price = calculateTotalPrice(account);
         if (discountCode != null && !discountCode.equals("")) {
@@ -190,10 +191,15 @@ public class CartMenu extends Menu {
             depositPrice += commodity.getPrice() * account.getCart().get(commodityId);
             BusinessAccount businessAccount = YaDataManager.getSellerWithUserName(commodity.getSellerUsername());
             int wage = (int)Math.round((Statistics.updatedStats.getWage()*depositPrice)/100);
+            System.out.println("wage " + wage);
             int pureDepositPrice = depositPrice - wage;
-            dataOutputStream.writeUTF("create_receipt " + token + " move " + wage + account.getAccountID() + " 1 ");
+            dataOutputStream.writeUTF("create_receipt " + token + " move " + depositPrice + " " + account.getAccountID() + " 1 ");
             String receipt = dataInputStream.readUTF();
             dataOutputStream.writeUTF("pay " + receipt);
+            String respond = dataInputStream.readUTF();
+            System.out.println("Respond " + respond);
+            if (!respond.equals("done successfully"))
+                throw new Exception(respond);
             businessAccount.addToCredit(pureDepositPrice);
             YaDataManager.removeBusiness(businessAccount);
             YaDataManager.addBusiness(businessAccount);

@@ -49,8 +49,6 @@ public class GetDiscount {
                 throw new Exception(errorString);
             PersonalAccount personalAccount = yaGson.fromJson(Main.inputStream.readUTF() , new TypeToken<PersonalAccount>(){}.getType());
             Session.setOnlineAccount(personalAccount);
-            //DiscountCode discountCode = cartMenu.getDiscountCodeWithCode(discountField.getText());
-            //cartMenu.purchase(discountCode);
             changePage(actionEvent);
         } catch (Exception e) {
             error.setText(e.getMessage() + '\n' + "please enter a discount code or enter nothing");
@@ -77,8 +75,14 @@ public class GetDiscount {
         String respond = dataInputStream.readUTF();
         System.out.println(respond);
         if (!(respond.equals("invalid username or password")||respond.equals("invalid input"))) {
-            purchaseInCommon();
+            if (discountField.getText().equals(""))
+                Main.outputStream.writeUTF("purchaseBank " + Session.getOnlineAccount().getUsername() + " no discount code");
+            else Main.outputStream.writeUTF("purchaseBank " + Session.getOnlineAccount().getUsername() + " " + discountField.getText());
+            Main.outputStream.flush();
+            Main.outputStream.writeUTF(yaGson.toJson(Session.getOnlineAccount() , new TypeToken<PersonalAccount>(){}.getType()));
+            Main.outputStream.flush();
             Main.outputStream.writeUTF(respond);
+            outputStream.flush();
             String errorString = Main.inputStream.readUTF();
             System.out.println(errorString);
             errorBank.setText(errorString);
