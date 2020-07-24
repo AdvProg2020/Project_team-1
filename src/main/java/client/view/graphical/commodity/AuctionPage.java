@@ -2,6 +2,7 @@ package client.view.graphical.commodity;
 
 import client.Session;
 import client.controller.commodity.AuctionMenu;
+import client.controller.share.MenuHandler;
 import client.view.commandline.View;
 import client.view.graphical.MainMenu;
 import com.gilecode.yagson.YaGson;
@@ -15,16 +16,21 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import client.controller.share.MenuHandler;
+import server.Main;
+import server.dataManager.YaDataManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static client.Main.inputStream;
 import static client.Main.outputStream;
@@ -42,12 +48,19 @@ public class AuctionPage implements Initializable {
     public Label name;
     public ImageView imageView;
     public Button logoutButton;
+    public ListView<String> messages1;
+    public TextField textArea;
     private Auction auction;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             setUpPane();
+            Date date = auction.getDeadline();
+            new Thread(() -> {
+                Timer timer = new Timer();
+                timer.schedule(new AuctionPage.AuctionCloser(submitButton), date);
+            }).start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,13 +109,17 @@ public class AuctionPage implements Initializable {
         outputStream.flush();
         int blocked = inputStream.read();
         PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
-        if (bid < auction.getTopBid() || (double) (bid - blocked) > personalAccount.getCredit()) {
+        if (auction.getTopBidder().equals(personalAccount.getUsername())) {
+            blocked -= auction.getTopBid();
+        }
+        if (bid < auction.getTopBid() || ((double) (bid - blocked)) > personalAccount.getCredit()) {
             error.setText("Your offer is not valid");
         } else {
             auction.newBid(Session.getOnlineAccount().getUsername(), bid);
             auctionMenu.setAuction(auction);
             outputStream.writeUTF("new bid " + bid + " for " + auction.getCommodityId());
             outputStream.flush();
+            error.setText("Your bid was successful");
             setUpPane();
         }
     }
@@ -127,13 +144,29 @@ public class AuctionPage implements Initializable {
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
-    public void userPanel(ActionEvent actionEvent) {
+    public void userPanel(ActionEvent actionEvent) throws IOException {
         MainMenu.goToUserPanel(actionEvent);
     }
 
-    public void mainMenu(ActionEvent actionEvent) {
+    public void mainMenu(ActionEvent actionEvent) throws IOException {
         View.mainMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
         MenuHandler.getInstance().setCurrentMenu(View.mainMenu);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
+    public void send(ActionEvent actionEvent) throws IOException {
+    }
+
+    private static class AuctionCloser extends TimerTask {
+        private Button button;
+
+        public AuctionCloser(Button button) {
+            this.button = button;
+        }
+
+        @Override
+        public void run() {
+            button.setDisable(true);
+        }
     }
 }

@@ -10,6 +10,8 @@ import common.model.commodity.*;
 import common.model.exception.InvalidAccessException;
 import common.model.exception.InvalidAccountInfoException;
 import common.model.exception.InvalidLoginInformationException;
+import common.model.log.BuyLog;
+import common.model.log.SellLog;
 import common.model.share.Request;
 import server.controller.Statistics;
 import server.dataManager.YaDataManager;
@@ -71,7 +73,41 @@ public class Main {
                     timer.schedule(new AuctionCloser(auction), auction.getDeadline());
                 }).start();
             } else {
-                //purchase
+                try {
+                    PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(auction.getTopBidder());
+                    BusinessAccount businessAccount = YaDataManager.getSellerWithUserName(auction.getOwnerUsername());
+                    Objects.requireNonNull(personalAccount).addToCredit(-auction.getTopBid());
+                    int depositPrice = auction.getTopBid();
+                    int wage = (int) Math.round((Statistics.updatedStats.getWage() * depositPrice) / 100);
+                    int pureDepositPrice = depositPrice - wage;
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socketB.getOutputStream()));
+                    String token;
+                    dos.writeUTF("get_token bank bank");
+                    dos.flush();
+                    DataInputStream dis = new DataInputStream(socketB.getInputStream());
+                    token = dis.readUTF();
+                    dos.writeUTF("create_receipt " + token + " move " + depositPrice + " " + personalAccount.getAccountID() + " 1 ");
+                    dos.flush();
+                    String receipt = dis.readUTF();
+                    dos.writeUTF("pay " + receipt);
+                    dos.flush();
+                    Objects.requireNonNull(businessAccount).addToCredit(pureDepositPrice);
+                    YaDataManager.removeBusiness(businessAccount);
+                    YaDataManager.addBusiness(businessAccount);
+                    HashSet<Integer> auctionCart = new HashSet<>();
+                    auctionCart.add(auction.getCommodityId());
+                    BuyLog buyLog = new BuyLog(auction.getDeadline(), auctionCart, depositPrice, depositPrice, "No discount");
+                    personalAccount.addBuyLog(buyLog);
+                    Commodity commodity = YaDataManager.getCommodityById(auction.getCommodityId());
+                    commodity.setInventory(commodity.getInventory() - 1);
+                    YaDataManager.removePerson(personalAccount);
+                    YaDataManager.addPerson(personalAccount);
+                    businessAccount.addSellLog(new SellLog(auction.getDeadline(), pureDepositPrice, 0, auctionCart, personalAccount.getUsername()));
+                    YaDataManager.removeBusiness(businessAccount);
+                    YaDataManager.addBusiness(businessAccount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 YaDataManager.removeAuction(auction);
             }
         }
@@ -219,7 +255,23 @@ public class Main {
             purchaseWallet(socket, input);
         } else if (input.startsWith("purchaseBank")) {
             purchaseViaBank(socket, input);
+        } else if (input.equals("send all auctions")) {
+            sendAllAuctions(socket);
+        } else if (input.startsWith("get person with username ")) {
+            sendPersonWithUsername(socket, input.split(" ")[4]);
         }
+    }
+
+    private static void sendPersonWithUsername(Socket socket, String username) throws Exception {
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+        dos.writeUTF(yaGson.toJson(YaDataManager.getPersonWithUserName(username), new TypeToken<PersonalAccount>() {
+        }.getType()));
+    }
+
+    private static void sendAllAuctions(Socket socket) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getAuctions(), new TypeToken<ArrayList<Auction>>() {
+        }.getType()));
     }
 
     private static void updatePerson(PersonalAccount person) throws IOException {
@@ -744,7 +796,6 @@ public class Main {
         } finally {
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
             dos.writeUTF("deleted");
-
         }
     }
 
@@ -755,7 +806,6 @@ public class Main {
         } else {
             dos.writeUTF("no");
         }
-
     }
 
     private static void addCategory(Socket socket, String json) throws IOException {
@@ -814,7 +864,6 @@ public class Main {
         DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         dos.writeUTF(yaGson.toJson(YaDataManager.getCommodityById(id), new TypeToken<Commodity>() {
         }.getType()));
-
     }
 
     private static void sendAllOffs(Socket socket) throws IOException {
@@ -972,6 +1021,53 @@ public class Main {
         YaDataManager.addAuction(auction);
     }
 
+    private static void purchaseWallet(Socket socket, String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        PersonalAccount personalAccount = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<PersonalAccount>() {
+        }.getType());
+        YaDataManager.removePerson(personalAccount);
+        YaDataManager.addPerson(personalAccount);
+        try {
+            if (splitInput.length == 3) {
+                DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(splitInput[2]);
+                cartMenu.purchase(discountCode, splitInput[1]);
+            } else cartMenu.purchase(null, splitInput[1]);
+            dataOutputStream.writeUTF("You purchased successfully");
+            dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getPersonWithUserName(splitInput[1]), new TypeToken<PersonalAccount>() {
+            }.getType()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataOutputStream.writeUTF(e.getMessage());
+        }
+    }
+
+    private static void purchaseViaBank(Socket socket, String input) throws IOException {
+        String[] splitInput = input.split(" ");
+        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        PersonalAccount personalAccount = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<PersonalAccount>() {
+        }.getType());
+        YaDataManager.removePerson(personalAccount);
+        YaDataManager.addPerson(personalAccount);
+        System.out.println("Injam");
+        String token = dataInputStream.readUTF();
+        System.out.println("token" + token);
+        try {
+            if (splitInput.length == 3) {
+                DiscountCode discountCode = YaDataManager.getDiscountCodeWithCode(splitInput[2]);
+                cartMenu.purchaseViaBank(discountCode, splitInput[1], token);
+            } else cartMenu.purchaseViaBank(null, splitInput[1], token);
+            dataOutputStream.writeUTF("You purchased successfully");
+            dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getPersonWithUserName(splitInput[1]), new TypeToken<PersonalAccount>() {
+            }.getType()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataOutputStream.writeUTF(e.getMessage());
+        }
+    }
+
     private static class AuctionCloser extends TimerTask {
         private Auction auction;
 
@@ -982,7 +1078,41 @@ public class Main {
         @Override
         public void run() {
             if (auction.getTopBidder() != null) {
-                //purchase and deduct money from buyer wallet and add to seller wallet
+                try {
+                    PersonalAccount personalAccount = YaDataManager.getPersonWithUserName(auction.getTopBidder());
+                    BusinessAccount businessAccount = YaDataManager.getSellerWithUserName(auction.getOwnerUsername());
+                    Objects.requireNonNull(personalAccount).addToCredit(-auction.getTopBid());
+                    int depositPrice = auction.getTopBid();
+                    int wage = (int) Math.round((Statistics.updatedStats.getWage() * depositPrice) / 100);
+                    int pureDepositPrice = depositPrice - wage;
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socketB.getOutputStream()));
+                    String token;
+                    dos.writeUTF("get_token bank bank");
+                    dos.flush();
+                    DataInputStream dis = new DataInputStream(socketB.getInputStream());
+                    token = dis.readUTF();
+                    dos.writeUTF("create_receipt " + token + " move " + depositPrice + " " + personalAccount.getAccountID() + " 1 ");
+                    dos.flush();
+                    String receipt = dis.readUTF();
+                    dos.writeUTF("pay " + receipt);
+                    dos.flush();
+                    Objects.requireNonNull(businessAccount).addToCredit(pureDepositPrice);
+                    YaDataManager.removeBusiness(businessAccount);
+                    YaDataManager.addBusiness(businessAccount);
+                    HashSet<Integer> auctionCart = new HashSet<>();
+                    auctionCart.add(auction.getCommodityId());
+                    BuyLog buyLog = new BuyLog(auction.getDeadline(), auctionCart, depositPrice, depositPrice, "No discount");
+                    personalAccount.addBuyLog(buyLog);
+                    Commodity commodity = YaDataManager.getCommodityById(auction.getCommodityId());
+                    commodity.setInventory(commodity.getInventory() - 1);
+                    YaDataManager.removePerson(personalAccount);
+                    YaDataManager.addPerson(personalAccount);
+                    businessAccount.addSellLog(new SellLog(auction.getDeadline(), pureDepositPrice, 0, auctionCart, personalAccount.getUsername()));
+                    YaDataManager.removeBusiness(businessAccount);
+                    YaDataManager.addBusiness(businessAccount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             try {
                 YaDataManager.removeAuction(this.auction);
@@ -1050,53 +1180,6 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-        }
-    }
-
-    private static void purchaseWallet(Socket socket, String input) throws Exception {
-        String[] splitInput = input.split(" ");
-        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        PersonalAccount personalAccount = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<PersonalAccount>() {
-        }.getType());
-        YaDataManager.removePerson(personalAccount);
-        YaDataManager.addPerson(personalAccount);
-        try {
-            if (splitInput.length == 3) {
-                DiscountCode discountCode = View.cartMenu.getDiscountCodeWithCode(splitInput[2], splitInput[1]);
-                cartMenu.purchase(discountCode, splitInput[1]);
-            } else cartMenu.purchase(null, splitInput[1]);
-            dataOutputStream.writeUTF("You purchased successfully");
-            dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getPersonWithUserName(splitInput[1]), new TypeToken<PersonalAccount>() {
-            }.getType()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            dataOutputStream.writeUTF(e.getMessage());
-        }
-    }
-
-    private static void purchaseViaBank(Socket socket, String input) throws IOException {
-        String[] splitInput = input.split(" ");
-        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        PersonalAccount personalAccount = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<PersonalAccount>() {
-        }.getType());
-        YaDataManager.removePerson(personalAccount);
-        YaDataManager.addPerson(personalAccount);
-        System.out.println("Injam");
-        String token = dataInputStream.readUTF();
-        System.out.println("token" + token);
-        try {
-            if (splitInput.length == 3) {
-                DiscountCode discountCode = View.cartMenu.getDiscountCodeWithCode(splitInput[2], splitInput[1]);
-                cartMenu.purchaseViaBank(discountCode, splitInput[1] , token);
-            } else cartMenu.purchaseViaBank(null, splitInput[1] , token);
-            dataOutputStream.writeUTF("You purchased successfully");
-            dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getPersonWithUserName(splitInput[1]), new TypeToken<PersonalAccount>() {
-            }.getType()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            dataOutputStream.writeUTF(e.getMessage());
         }
     }
 }

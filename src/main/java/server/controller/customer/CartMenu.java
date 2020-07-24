@@ -1,9 +1,5 @@
 package server.controller.customer;
 
-import client.Session;
-import com.gilecode.yagson.YaGson;
-import com.gilecode.yagson.YaGsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import common.model.account.BusinessAccount;
 import common.model.account.PersonalAccount;
 import common.model.commodity.Commodity;
@@ -11,75 +7,22 @@ import common.model.commodity.DiscountCode;
 import common.model.commodity.Off;
 import common.model.log.BuyLog;
 import common.model.log.SellLog;
-import client.controller.share.Menu;
 import server.controller.Statistics;
 import server.dataManager.YaDataManager;
-import static server.Main.socketB;
 
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-import static client.Main.inputStream;
-import static client.Main.outputStream;
 import static client.view.commandline.View.cartMenu;
+import static server.Main.socketB;
 
-public class CartMenu extends Menu {
-    private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-    private BuyLog buyLog;
-
-    public CartMenu() {
-        fxmlFileAddress = "../../../fxml/customer/Cart.fxml";
-    }
-
-    public BuyLog getBuyLog() {
-        return buyLog;
-    }
-
-    public int calculateTotalPrice(PersonalAccount account) throws Exception {
-        int price = 0;
-        HashMap<Integer, Integer> cart = account.getCart();
-        for (int commodityId : cart.keySet()) {
-            Commodity commodity = YaDataManager.getCommodityById(commodityId);
-            price += commodity.getPrice() * cart.get(commodityId);
-        }
-        return price;
-    }
-
-    public void decrease(int id) throws Exception {
-        PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
-        personalAccount.removeFromCart(id);
-        outputStream.writeUTF("remove from cart " + id);
-        outputStream.flush();
-    }
-
-    public void increase(int id) throws Exception {
-        PersonalAccount personalAccount = (PersonalAccount) Session.getOnlineAccount();
-        personalAccount.addToCart(id);
-        outputStream.writeUTF("add to cart " + id);
-        outputStream.flush();
-    }
-
-    public DiscountCode getDiscountCodeWithCode(String code , String username) throws Exception {
-        PersonalAccount account = YaDataManager.getPersonWithUserName(username);
-        if (!code.equals("")) {
-            outputStream.writeUTF("send discount with code " + code);
-            outputStream.flush();
-            DiscountCode discountCode = yaGson.fromJson(inputStream.readUTF(), new TypeToken<DiscountCode>() {
-            }.getType());
-            account.doesHaveThisDiscount(discountCode);
-            discountCode.isActive();
-            account.useThisDiscount(discountCode);
-            outputStream.writeUTF("update person " + yaGson.toJson(Session.getOnlineAccount(), new TypeToken<PersonalAccount>() {
-                    }.getType()));
-            outputStream.flush();
-            return discountCode;
-        }
-        return null;
-    }
-
+public class CartMenu {
     private int getDiscountPercentage(Commodity commodity) throws IOException {
         for (Off off : YaDataManager.getOffs()) {
             if (off.isActive()) {
@@ -98,7 +41,17 @@ public class CartMenu extends Menu {
         return price;
     }
 
-    public void purchase(DiscountCode discountCode , String username) throws Exception { // FIXME: 07/24/2020
+    public int calculateTotalPrice(PersonalAccount account) throws Exception {
+        int price = 0;
+        HashMap<Integer, Integer> cart = account.getCart();
+        for (int commodityId : cart.keySet()) {
+            Commodity commodity = YaDataManager.getCommodityById(commodityId);
+            price += commodity.getPrice() * cart.get(commodityId);
+        }
+        return price;
+    }
+
+    public void purchase(DiscountCode discountCode, String username) throws Exception {
         PersonalAccount account = YaDataManager.getPersonWithUserName(username);
         int price = calculateTotalPrice(account);
         if (discountCode != null && !discountCode.equals(""))
@@ -115,7 +68,7 @@ public class CartMenu extends Menu {
             Commodity commodity = YaDataManager.getCommodityById(commodityId);
             depositPrice += commodity.getPrice() * account.getCart().get(commodityId);
             BusinessAccount businessAccount = YaDataManager.getSellerWithUserName(commodity.getSellerUsername());
-            int wage = (int)Math.round((Statistics.updatedStats.getWage()*depositPrice)/100);
+            int wage = (int) Math.round((Statistics.updatedStats.getWage() * depositPrice) / 100);
             int pureDepositPrice = depositPrice - wage;
             DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socketB.getOutputStream()));
             String token;
@@ -141,7 +94,6 @@ public class CartMenu extends Menu {
         YaDataManager.removePerson(account);
         YaDataManager.addPerson(account);
         makeSellLogs(buyLog.getSellersUsername(), account);
-        this.buyLog = buyLog;
     }
 
     private void reduceCommodityAmount(HashMap<Integer, Integer> cart) throws Exception {
@@ -176,7 +128,7 @@ public class CartMenu extends Menu {
         }
     }
 
-    public void purchaseViaBank(DiscountCode discountCode , String username , String token) throws Exception {
+    public void purchaseViaBank(DiscountCode discountCode, String username, String token) throws Exception {
         System.out.println("oomadam toosh");
         PersonalAccount account = YaDataManager.getPersonWithUserName(username);
         int price = calculateTotalPrice(account);
@@ -190,7 +142,7 @@ public class CartMenu extends Menu {
             Commodity commodity = YaDataManager.getCommodityById(commodityId);
             depositPrice += commodity.getPrice() * account.getCart().get(commodityId);
             BusinessAccount businessAccount = YaDataManager.getSellerWithUserName(commodity.getSellerUsername());
-            int wage = (int)Math.round((Statistics.updatedStats.getWage()*depositPrice)/100);
+            int wage = (int) Math.round((Statistics.updatedStats.getWage() * depositPrice) / 100);
             System.out.println("wage " + wage);
             int pureDepositPrice = depositPrice - wage;
             dataOutputStream.writeUTF("create_receipt " + token + " move " + depositPrice + " " + account.getAccountID() + " 1 ");

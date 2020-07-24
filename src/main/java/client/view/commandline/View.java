@@ -2,6 +2,7 @@ package client.view.commandline;
 
 import client.controller.commodity.AuctionMenu;
 import client.controller.commodity.ProductMenu;
+import client.controller.customer.CartPanel;
 import client.controller.customer.Chat;
 import client.controller.customer.CustomerPanel;
 import client.controller.manager.*;
@@ -18,6 +19,8 @@ import server.controller.reseller.ResellerMenu;
 import server.controller.share.*;
 
 public class View {
+    public static final CartPanel cartPanel = new CartPanel();
+    public static final AuctionsMenu auctionsMenu = new AuctionsMenu();
     public static final ManagerPanel managerPanel = new ManagerPanel();
     public static final PersonalInfoPanel personalInfoPanel = new PersonalInfoPanel();
     public static final LoginRegisterPanel loginRegisterPanel = new LoginRegisterPanel();

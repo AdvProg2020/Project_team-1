@@ -57,8 +57,8 @@ public class CustomerPanel {
     }
 
     public void gotoCartMenu(ActionEvent actionEvent) {
-        View.cartMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.cartMenu);
+        View.cartPanel.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.cartPanel);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
@@ -118,5 +118,11 @@ public class CustomerPanel {
         }
         popupMenu.getContent().add(parent);
         popupMenu.show((((Node) actionEvent.getSource()).getScene().getWindow()));
+    }
+
+    public void auctions(ActionEvent actionEvent) {
+        View.auctionsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.auctionsMenu);
+        Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 }
