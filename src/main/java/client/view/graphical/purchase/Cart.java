@@ -162,6 +162,7 @@ public class Cart implements Initializable {
         popupMenu.show(((Node) actionEvent.getSource()).getScene().getWindow());
     }
 
+
     private static class ModifiedLabel extends Label {
         public ModifiedLabel(String s) {
             super(s);

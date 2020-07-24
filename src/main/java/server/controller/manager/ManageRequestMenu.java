@@ -41,6 +41,8 @@ public class ManageRequestMenu {
             if (!owner.getOffsId().contains(off.getOffID())) {
                 owner.getOffsId().add(off.getOffID());
             }
+            YaDataManager.removeBusiness(owner);
+            YaDataManager.addBusiness(owner);
         }
         if (request.getObj() instanceof Commodity) {
             Commodity commodity = (Commodity) request.getObj();
@@ -50,6 +52,8 @@ public class ManageRequestMenu {
             if (!owner.getCommoditiesId().contains(commodity.getCommodityId())) {
                 owner.getCommoditiesId().add(commodity.getCommodityId());
             }
+            YaDataManager.removeBusiness(owner);
+            YaDataManager.addBusiness(owner);
         }
     }
 
