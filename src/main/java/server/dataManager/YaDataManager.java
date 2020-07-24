@@ -519,9 +519,11 @@ public class YaDataManager {
     }
 
     public static boolean deletePersonalAccount(String username) throws IOException {
-        for (PersonalAccount person : getPersons()) {
+        ArrayList<PersonalAccount> persons = getPersons();
+        for (PersonalAccount person : persons) {
             if (person.getUsername().equals(username)) {
                 removePerson(person);
+                updatePersons(persons);
                 return true;
             }
         }
@@ -529,9 +531,11 @@ public class YaDataManager {
     }
 
     public static boolean deleteManagerAccount(String username) throws IOException {
-        for (ManagerAccount manager : getManagers()) {
+        ArrayList<ManagerAccount> managers = getManagers();
+        for (ManagerAccount manager : managers) {
             if (manager.getUsername().equals(username)) {
                 removeManager(manager);
+                updateManagers(managers);
                 return true;
             }
         }
@@ -539,9 +543,11 @@ public class YaDataManager {
     }
 
     public static boolean deleteSupportAccount(String username) throws IOException {
-        for (SupportAccount support : getSupports()) {
+        ArrayList<SupportAccount> supports = getSupports();
+        for (SupportAccount support : supports) {
             if (support.getUsername().equals(username)) {
                 removeSupport(support);
+                updateSupports(supports);
                 return true;
             }
         }
@@ -549,9 +555,11 @@ public class YaDataManager {
     }
 
     public static boolean deleteBusinessAccount(String username) throws IOException {
-        for (BusinessAccount business : getBusinesses()) {
+        ArrayList<BusinessAccount> businessAccounts = getBusinesses();
+        for (BusinessAccount business: businessAccounts) {
             if (business.getUsername().equals(username)) {
                 removeBusiness(business);
+                updateBusinesses(businessAccounts);
                 return true;
             }
         }

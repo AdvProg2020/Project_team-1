@@ -35,10 +35,9 @@ public class ClientResellerMenu extends Menu {
     }
 
     public static ArrayList<Commodity> manageCommodities() throws Exception {
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         dos.writeUTF("send seller commodities");
-        dos.flush();
-        DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        DataInputStream dis = new DataInputStream(socket.getInputStream());
         ArrayList<Commodity> commodityArrayList = yaGson.fromJson(dis.readUTF(), new TypeToken<ArrayList<Commodity>>() {
         }.getType());
         int commoditiesCount = commodityArrayList.size();
