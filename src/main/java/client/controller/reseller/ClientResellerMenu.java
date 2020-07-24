@@ -13,7 +13,7 @@ import common.model.commodity.Off;
 import common.model.field.Field;
 import common.model.log.SellLog;
 import common.model.share.Request;
-import server.controller.comparator.Sort;
+import client.controller.comparator.Sort;
 import client.controller.share.Menu;
 import client.controller.share.MenuHandler;
 

@@ -8,7 +8,7 @@ import common.model.commodity.Category;
 import common.model.commodity.Commodity;
 import common.model.field.Field;
 import common.model.share.Request;
-import server.controller.comparator.Sort;
+import client.controller.comparator.Sort;
 import client.controller.share.Menu;
 
 import java.util.ArrayList;

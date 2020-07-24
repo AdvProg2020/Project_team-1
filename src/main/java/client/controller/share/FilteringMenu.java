@@ -19,7 +19,7 @@ import static client.Main.socket;
 
 public class FilteringMenu extends Menu {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-    public static ArrayList<Filter> currentFilters = new ArrayList<Filter>();
+    public static ArrayList<Filter> currentFilters = new ArrayList<>();
     private static ArrayList<Commodity> filteredCommodities;
 
    /* static {
