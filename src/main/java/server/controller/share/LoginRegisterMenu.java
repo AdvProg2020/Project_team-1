@@ -18,6 +18,12 @@ public class LoginRegisterMenu {
             if (YaDataManager.getAccountWithUserName(username) != null) {
                 throw new InvalidLoginInformationException("This username is taken");
             }
+            for (Request request : YaDataManager.getRequests()) {
+                if (request.getObj() instanceof BusinessAccount
+                        && ((BusinessAccount) request.getObj()).getUsername().equals(username)) {
+                    throw new InvalidLoginInformationException("This username is taken");
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
