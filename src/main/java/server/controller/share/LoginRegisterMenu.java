@@ -91,7 +91,7 @@ public class LoginRegisterMenu {
 
     public void setAccountId(SimpleAccount simpleAccount, String accountID) throws Exception {
         simpleAccount.setAccountID(accountID);
-        YaDataManager.deleteAccountWithUserName(simpleAccount.getUsername());
+        YaDataManager.removePerson((PersonalAccount) simpleAccount);
         YaDataManager.addPerson((PersonalAccount) simpleAccount);
     }
 

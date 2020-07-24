@@ -101,6 +101,10 @@ public class MoHoBank {
         }
 
         private void getBalance(String[] separatedInput) throws SQLException {
+            if (separatedInput.length != 2) {
+                sendInvalidInput();
+                return;
+            }
             AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
             if (authToken == null) {
                 sendTokenIsInvalid();
@@ -130,6 +134,10 @@ public class MoHoBank {
         }
 
         private void pay(String[] separatedInput) throws SQLException {
+            if (separatedInput.length != 2) {
+                sendInvalidInput();
+                return;
+            }
             int receiptId;
             try {
                 receiptId = Integer.parseInt(separatedInput[1]);
@@ -168,6 +176,10 @@ public class MoHoBank {
         }
 
         private void getTransactions(String[] separatedInput) throws SQLException {
+            if (separatedInput.length != 3) {
+                sendInvalidInput();
+                return;
+            }
             AuthenticationToken authToken = bankDataBase.getAuthTokenByUuid(separatedInput[1]);
             if (authToken == null) {
                 sendTokenIsInvalid();
@@ -288,6 +300,10 @@ public class MoHoBank {
         }
 
         private void getToken(String[] separatedInput) throws SQLException {
+            if (separatedInput.length != 3) {
+                sendInvalidInput();
+                return;
+            }
             BankAccount bankAccount = bankDataBase.getAccount(separatedInput[1]);
             if (bankAccount == null || !bankAccount.getPassword().equals(separatedInput[2])) {
                 sendResponse("invalid username or password");
@@ -314,6 +330,10 @@ public class MoHoBank {
         }
 
         private void createAccount(String[] separatedInput) throws SQLException {
+            if (separatedInput.length != 6) {
+                sendInvalidInput();
+                return;
+            }
             if (!separatedInput[4].equals(separatedInput[5])) {
                 sendResponse("password do not match");
                 return;

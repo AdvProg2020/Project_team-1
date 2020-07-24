@@ -356,6 +356,7 @@ public class YaDataManager {
         for (Request req : requests) {
             if (req.getId() == request.getId()) {
                 requests.remove(req);
+                System.out.println("salam");
                 break;
             }
         }
