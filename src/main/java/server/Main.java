@@ -214,8 +214,8 @@ public class Main {
             }.getType()));
         } else if (input.equals("logout")) {
             onlineAccountsUserNames.remove(socket);
-        } else if (input.startsWith("purchase")){
-
+        } else if (input.startsWith("purchase")) {
+            purchase(socket, input);
         }
     }
 
@@ -632,7 +632,17 @@ public class Main {
             }
             dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>() {
             }.getType()));
-
+            for (Commodity commodity : commodities) {
+                dos.writeUTF(Integer.toString(commodity.getCommodityId()));
+                File file = new File("data\\media\\products\\" + commodity.getCommodityId());
+                dos.writeUTF(String.valueOf(file.length()));
+                FileInputStream fileInputStream = new FileInputStream(file);
+                byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+                while (fileInputStream.read(buffer) > 0) {
+                    dos.write(buffer);
+                }
+                fileInputStream.close();
+            }
         } catch (Exception e) {
             dos.writeUTF("error:" + e.getMessage());
 
@@ -1025,21 +1035,28 @@ public class Main {
             }
         }
     }
-    private static void purchase(Socket socket , String input) throws Exception {
+
+    private static void purchase(Socket socket, String input) throws Exception {
+        System.out.println("salam");
         String[] splitInput = input.split(" ");
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        PersonalAccount personalAccount = yaGson.fromJson(dataInputStream.readUTF() , new TypeToken<PersonalAccount>(){}.getType());
+        PersonalAccount personalAccount = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<PersonalAccount>() {
+        }.getType());
+        System.out.println("salam2");
         YaDataManager.removePerson(personalAccount);
         YaDataManager.addPerson(personalAccount);
         try {
-            if (splitInput.length <= 3) {
+            if (splitInput.length == 3) {
                 DiscountCode discountCode = View.cartMenu.getDiscountCodeWithCode(splitInput[2], splitInput[1]);
                 cartMenu.purchase(discountCode, splitInput[1]);
             } else cartMenu.purchase(null, splitInput[1]);
             dataOutputStream.writeUTF("You purchased successfully");
-            dataOutputStream.writeUTF(yaGson.toJson(personalAccount , new TypeToken<PersonalAccount>(){}.getType()));
-        }catch (Exception e){
+            dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getPersonWithUserName(splitInput[1]), new TypeToken<PersonalAccount>() {
+            }.getType()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("salam");
             dataOutputStream.writeUTF(e.getMessage());
         }
     }

@@ -32,13 +32,14 @@ public class GetDiscount {
 
     public void purchase(ActionEvent actionEvent) {
         try {
-            if (!discountField.getText().equals(""))
-                 Main.outputStream.writeUTF("purchase " + Session.getOnlineAccount() + " no discount code");
-            else Main.outputStream.writeUTF("purchase " + Session.getOnlineAccount() + " " + discountField.getText());
+            if (discountField.getText().equals(""))
+                 Main.outputStream.writeUTF("purchase " + Session.getOnlineAccount().getUsername() + " no discount code");
+            else Main.outputStream.writeUTF("purchase " + Session.getOnlineAccount().getUsername() + " " + discountField.getText());
             Main.outputStream.flush();
             Main.outputStream.writeUTF(yaGson.toJson(Session.getOnlineAccount() , new TypeToken<PersonalAccount>(){}.getType()));
             Main.outputStream.flush();
             String errorString = Main.inputStream.readUTF();
+            System.out.println(errorString);
             error.setText(errorString);
             if (!errorString.equals("You purchased successfully"))
                 throw new Exception(errorString);
