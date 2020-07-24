@@ -33,7 +33,6 @@ import static client.Main.outputStream;
 
 public class Cart implements Initializable {
     private static final YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-    private final CartMenu cartMenu = View.cartMenu;
     public Label totalPrice;
     public GridPane cartGridPane;
     public Label error;
@@ -98,7 +97,7 @@ public class Cart implements Initializable {
                 plusButton.setFitHeight(32);
                 plusButton.setOnMouseClicked(actionEvent -> {
                     try {
-                        cartMenu.increase(commodity.getCommodityId());
+                        View.cartPanel.increase(commodity.getCommodityId());
                         scrollPane.setContent(null);
                         initialize(url, resourceBundle);
                         error.setText("Increased successfully");
@@ -112,7 +111,7 @@ public class Cart implements Initializable {
                 minusButton.setFitWidth(32);
                 minusButton.setOnMouseClicked(actionEvent -> {
                     try {
-                        cartMenu.decrease(commodity.getCommodityId());
+                        View.cartPanel.decrease(commodity.getCommodityId());
                         scrollPane.setContent(null);
                         initialize(url, resourceBundle);
                         error.setText("Decreased successfully");

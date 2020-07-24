@@ -57,8 +57,8 @@ public class CustomerPanel {
     }
 
     public void gotoCartMenu(ActionEvent actionEvent) {
-        View.cartMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
-        MenuHandler.getInstance().setCurrentMenu(View.cartMenu);
+        View.cartPanel.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
+        MenuHandler.getInstance().setCurrentMenu(View.cartPanel);
         Session.getSceneHandler().updateScene((Stage) (((Node) actionEvent.getSource()).getScene().getWindow()));
     }
 
