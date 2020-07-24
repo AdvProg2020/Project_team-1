@@ -15,7 +15,7 @@ public class Main {
     static {
         try {
             socket = new Socket("127.0.0.1",8888);
-            socketB = new Socket("127.0.0.1" , 9999);
+            socketB = new Socket( "2.tcp.ngrok.io", 18533);
             DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
             dataInputStream.readUTF();
             inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));

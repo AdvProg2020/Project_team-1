@@ -138,4 +138,6 @@ public class HolyManager {
             error.setText("Invalid minimum currency or wage.");
         }
     }
+    public void manageAllProducts(ActionEvent actionEvent) {
+    }
 }

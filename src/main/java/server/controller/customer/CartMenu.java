@@ -12,8 +12,13 @@ import common.model.commodity.Off;
 import common.model.log.BuyLog;
 import common.model.log.SellLog;
 import client.controller.share.Menu;
+import server.controller.Statistics;
 import server.dataManager.YaDataManager;
+import static server.Main.socketB;
 
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -57,8 +62,8 @@ public class CartMenu extends Menu {
         outputStream.flush();
     }
 
-    public DiscountCode getDiscountCodeWithCode(String code) throws Exception {
-        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+    public DiscountCode getDiscountCodeWithCode(String code , String username) throws Exception {
+        PersonalAccount account = YaDataManager.getPersonWithUserName(username);
         if (!code.equals("")) {
             outputStream.writeUTF("send discount with code " + code);
             outputStream.flush();
@@ -93,8 +98,8 @@ public class CartMenu extends Menu {
         return price;
     }
 
-    public void purchase(DiscountCode discountCode) throws Exception { // FIXME: 07/24/2020
-        PersonalAccount account = (PersonalAccount) Session.getOnlineAccount();
+    public void purchase(DiscountCode discountCode , String username) throws Exception { // FIXME: 07/24/2020
+        PersonalAccount account = YaDataManager.getPersonWithUserName(username);
         int price = calculateTotalPrice(account);
         if (discountCode != null && !discountCode.equals(""))
             price = cartMenu.useDiscountCode(price, discountCode);
@@ -105,6 +110,28 @@ public class CartMenu extends Menu {
             throw new Exception("you don't have enough money to pay");
         }
         account.addToCredit(-price);
+        for (int commodityId : account.getCart().keySet()) {
+            int depositPrice = 0;
+            Commodity commodity = YaDataManager.getCommodityById(commodityId);
+            depositPrice += commodity.getPrice() * account.getCart().get(commodityId);
+            BusinessAccount businessAccount = YaDataManager.getSellerWithUserName(commodity.getSellerUsername());
+            Double wage = (Statistics.updatedStats.getWage()*depositPrice)/100;
+            Double pureDepositPrice = depositPrice - wage;
+            DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socketB.getOutputStream()));
+            String token;
+            dataOutputStream.writeUTF("get_token bank bank");
+            dataOutputStream.flush();
+            DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
+            token = dataInputStream.readUTF();
+            dataOutputStream.writeUTF("create_receipt " + token + " deposit " + wage + " -1 1" );
+            dataOutputStream.flush();
+            String receipt = dataInputStream.readUTF();
+            dataOutputStream.writeUTF("pay " + receipt);
+            dataOutputStream.flush();
+            businessAccount.addToCredit(pureDepositPrice);
+            YaDataManager.removeBusiness(businessAccount);
+            YaDataManager.addBusiness(businessAccount);
+        }
         BuyLog buyLog = new BuyLog(new Date(), new HashSet<>(account.getCart().keySet()), price,
                 calculateTotalPrice(account) - price,
                 discountCode == null ? "No discount" : discountCode.getCode());
