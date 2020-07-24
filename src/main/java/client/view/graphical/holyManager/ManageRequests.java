@@ -130,4 +130,7 @@ public class ManageRequests extends HolyManager implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void manageAllProducts(ActionEvent actionEvent) {
+    }
 }

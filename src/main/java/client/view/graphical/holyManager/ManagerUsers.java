@@ -94,4 +94,8 @@ public class ManagerUsers extends HolyManager implements Initializable {
     public void addSupportAccount(ActionEvent actionEvent) {
         newPopup(actionEvent, "../../../../fxml/HolyManager/AddSupportAccount.fxml");
     }
+
+
+    public void manageAllProducts(ActionEvent actionEvent) {
+    }
 }

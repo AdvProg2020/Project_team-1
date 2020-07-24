@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static client.view.commandline.View.cartMenu;
 import static client.view.commandline.View.loginRegisterMenu;
 
 
@@ -36,7 +37,7 @@ public class Main {
 
     static {
         try {
-            socketB = new Socket("127.0.0.1", 9999);
+            socketB = new Socket("2.tcp.ngrok.io", 18533);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,6 +62,7 @@ public class Main {
         } catch (Exception e) {
 
         }
+        bankAccountID = "1";
         System.out.println(bankAccountID + " = bank id");
         System.out.println(bankAccountID);
         for (Auction auction : YaDataManager.getAuctions()) {
@@ -212,6 +214,8 @@ public class Main {
             }.getType()));
         } else if (input.equals("logout")) {
             onlineAccountsUserNames.remove(socket);
+        } else if (input.startsWith("purchase")){
+
         }
     }
 
@@ -1021,6 +1025,24 @@ public class Main {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+    private static void purchase(Socket socket , String input) throws Exception {
+        String[] splitInput = input.split(" ");
+        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        PersonalAccount personalAccount = yaGson.fromJson(dataInputStream.readUTF() , new TypeToken<PersonalAccount>(){}.getType());
+        YaDataManager.removePerson(personalAccount);
+        YaDataManager.addPerson(personalAccount);
+        try {
+            if (splitInput.length <= 3) {
+                DiscountCode discountCode = View.cartMenu.getDiscountCodeWithCode(splitInput[2], splitInput[1]);
+                cartMenu.purchase(discountCode, splitInput[1]);
+            } else cartMenu.purchase(null, splitInput[1]);
+            dataOutputStream.writeUTF("You purchased successfully");
+            dataOutputStream.writeUTF(yaGson.toJson(personalAccount , new TypeToken<PersonalAccount>(){}.getType()));
+        }catch (Exception e){
+            dataOutputStream.writeUTF(e.getMessage());
         }
     }
 }
