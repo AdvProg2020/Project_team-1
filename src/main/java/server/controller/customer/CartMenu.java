@@ -115,8 +115,8 @@ public class CartMenu extends Menu {
             Commodity commodity = YaDataManager.getCommodityById(commodityId);
             depositPrice += commodity.getPrice() * account.getCart().get(commodityId);
             BusinessAccount businessAccount = YaDataManager.getSellerWithUserName(commodity.getSellerUsername());
-            Double wage = (Statistics.updatedStats.getWage()*depositPrice)/100;
-            Double pureDepositPrice = depositPrice - wage;
+            int wage = (int)Math.round((Statistics.updatedStats.getWage()*depositPrice)/100);
+            int pureDepositPrice = depositPrice - wage;
             DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socketB.getOutputStream()));
             String token;
             dataOutputStream.writeUTF("get_token bank bank");
