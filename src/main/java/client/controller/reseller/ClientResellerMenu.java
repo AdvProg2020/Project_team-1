@@ -40,8 +40,19 @@ public class ClientResellerMenu extends Menu {
         dos.flush();
         DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         ArrayList<Commodity> commodityArrayList = yaGson.fromJson(dis.readUTF(), new TypeToken<ArrayList<Commodity>>() {
+        }.getType());
+        int commoditiesCount = commodityArrayList.size();
+        for (int i = 0; i < commoditiesCount; i++) {
+            String fileName = "tmp\\" + dis.readUTF() + ".jpg";
+            FileOutputStream file = new FileOutputStream(fileName);
+            long remainFileSize = Long.parseLong(dis.readUTF());
+            byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+            while (dis.read(buffer) > 0 && remainFileSize > 0) {
+                file.write(buffer);
+                remainFileSize -= Constants.FILE_BUFFER_SIZE;
+            }
+            file.close();
         }
-                .getType());
         if (MenuHandler.getInstance().getCurrentMenu() != View.manageResellerProductsMenu) {
             View.manageResellerProductsMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
             MenuHandler.getInstance().setCurrentMenu(View.manageResellerProductsMenu);

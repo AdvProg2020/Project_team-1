@@ -632,7 +632,17 @@ public class Main {
             }
             dos.writeUTF(yaGson.toJson(commodities, new TypeToken<ArrayList<Commodity>>() {
             }.getType()));
-
+            for (Commodity commodity : commodities) {
+                dos.writeUTF(Integer.toString(commodity.getCommodityId()));
+                File file = new File("data\\media\\products\\" + commodity.getCommodityId());
+                dos.writeUTF(String.valueOf(file.length()));
+                FileInputStream fileInputStream = new FileInputStream(file);
+                byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+                while (fileInputStream.read(buffer) > 0) {
+                    dos.write(buffer);
+                }
+                fileInputStream.close();
+            }
         } catch (Exception e) {
             dos.writeUTF("error:" + e.getMessage());
 
