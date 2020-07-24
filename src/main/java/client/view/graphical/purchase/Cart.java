@@ -70,7 +70,10 @@ public class Cart implements Initializable {
                 Commodity commodity = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Commodity>() {
                 }.getType());
                 GridPane commodityGridPane = new GridPane();
-                ImageView imageView = new ImageView(new Image(new FileInputStream(commodity.getImagePath())));
+                commodity.setImagePath("tmp\\" + commodity.getCommodityId() + ".png");
+                FileInputStream inputStream = new FileInputStream(commodity.getImagePath());
+                Image image = new Image(inputStream);
+                ImageView imageView = new ImageView(image);
                 imageView.setOnMouseClicked(mouseEvent -> {
                     View.productMenu.setPreviousMenu(MenuHandler.getInstance().getCurrentMenu());
                     View.productMenu.setCommodity(commodity);

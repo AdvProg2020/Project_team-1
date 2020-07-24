@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -72,15 +73,9 @@ public class Auction implements Initializable {
             infoLabel.setText("Enter a valid deadline");
             return;
         }
-        int day = Integer.parseInt(date.split(" ")[0].split("-")[0]);
-        int month = Integer.parseInt(date.split(" ")[0].split("-")[1]);
-        int year = Integer.parseInt(date.split(" ")[0].split("-")[2]);
-        int hour = Integer.parseInt(date.split(" ")[1].split(":")[0]);
-        int minute = Integer.parseInt(date.split(" ")[1].split(":")[1]);
-        int second = Integer.parseInt(date.split(" ")[1].split(":")[2]);
         Date deadline;
         try {
-            deadline = new Date(year, month, day, hour, minute, second);
+            deadline = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(date);
         } catch (Exception e) {
             infoLabel.setText("Enter a valid deadline");
             return;

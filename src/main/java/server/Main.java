@@ -70,6 +70,7 @@ public class Main {
                 }).start();
             } else {
                 //purchase
+                YaDataManager.removeAuction(auction);
             }
         }
         while (true) {
@@ -234,6 +235,8 @@ public class Main {
         for (Auction auction : YaDataManager.getAuctions()) {
             if (auction.getCommodityId() == id) {
                 auction.newBid(onlineAccountsUserNames.get(socket), money);
+                YaDataManager.removeAuction(auction);
+                YaDataManager.addAuction(auction);
                 return;
             }
         }
@@ -266,12 +269,10 @@ public class Main {
         for (Auction auction : YaDataManager.getAuctions()) {
             if (auction.getCommodityId() == id) {
                 dataOutputStream.writeUTF("yes");
-
                 return;
             }
         }
         dataOutputStream.writeUTF("no");
-
     }
 
     private static void login(String input, Socket socket) throws IOException {
@@ -921,12 +922,10 @@ public class Main {
         for (Auction auction : YaDataManager.getAuctions()) {
             if (auction.getOwnerUsername().equals(onlineAccountsUserNames.get(socket))) {
                 dos.writeUTF("yes");
-
                 return;
             }
         }
         dos.writeUTF("no");
-
     }
 
     private static void makeNewAuction(Socket socket, String input) throws Exception {
