@@ -34,22 +34,33 @@ public class ClientResellerMenu extends Menu {
         return (BusinessAccount) Session.getOnlineAccount();
     }
 
-    public static ArrayList<Commodity> manageCommodities() throws Exception {
+    public static ArrayList<Commodity> manageCommodities() throws IOException {
         DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         dos.writeUTF("send seller commodities");
         DataInputStream dis = new DataInputStream(socket.getInputStream());
         ArrayList<Commodity> commodityArrayList = yaGson.fromJson(dis.readUTF(), new TypeToken<ArrayList<Commodity>>() {
         }.getType());
-        int commoditiesCount = commodityArrayList.size();
-        for (int i = 0; i < commoditiesCount; i++) {
-            String fileName = "tmp\\" + dis.readUTF() + ".jpg";
-            FileOutputStream file = new FileOutputStream(fileName);
-            long remainFileSize = Long.parseLong(dis.readUTF());
-            byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
-            while (dis.read(buffer) > 0 && remainFileSize > 0) {
+        dos.writeUTF("send pictures");
+        System.out.println(commodityArrayList.size());
+        int pictureName = 0;
+        byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+        new File("tmp").mkdir();
+        int commodityReceivedAmount = Integer.parseInt(inputStream.readUTF());
+        System.out.println(commodityReceivedAmount);
+        System.out.println("salam");
+        while (commodityReceivedAmount > 0) {
+            pictureName = Integer.parseInt(inputStream.readUTF());
+            System.out.println(pictureName);
+            FileOutputStream file = new FileOutputStream("tmp\\" + pictureName + ".png");
+            long counter = 0;
+            long fileSize = Long.parseLong(inputStream.readUTF());
+            System.out.println(fileSize);
+            while (counter < fileSize) {
+                inputStream.read(buffer);
                 file.write(buffer);
-                remainFileSize -= Constants.FILE_BUFFER_SIZE;
+                counter += Constants.FILE_BUFFER_SIZE;
             }
+            commodityReceivedAmount--;
             file.close();
         }
         if (MenuHandler.getInstance().getCurrentMenu() != View.manageResellerProductsMenu) {

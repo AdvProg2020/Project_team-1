@@ -75,6 +75,8 @@ public class ManageResellerProducts implements Initializable {
                 } else {
                     commodities = manageResellerProductsMenu.sort(manageProductsSortField.getValue());
                 }
+                System.out.println(commodities.toString());
+                System.out.println(commodities.size());
             } catch (Exception e) {
                 // Be Tokhmam
             }
@@ -84,7 +86,7 @@ public class ManageResellerProducts implements Initializable {
                 AnchorPane productAnchorPane = new AnchorPane();
                 productAnchorPane.setMaxHeight(318);
                 productAnchorPane.setMaxWidth(318);
-                commodity.setImagePath("tmp\\" + commodity.getCommodityId() + ".jpg");
+                commodity.setImagePath("tmp\\" + commodity.getCommodityId() + ".png");
                 ImageView productImage = new ImageView(new Image(new FileInputStream(commodity.getImagePath())));
                 productImage.setPreserveRatio(true);
                 productImage.setFitHeight(250);
