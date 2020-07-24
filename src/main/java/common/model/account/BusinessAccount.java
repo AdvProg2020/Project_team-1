@@ -75,6 +75,7 @@ public class BusinessAccount extends SimpleAccount implements Requestable {
         System.out.println("mikhad mano add kone");
     }
 
+
     public ArrayList<Integer> getOffsId() {
         return offsId;
     }
