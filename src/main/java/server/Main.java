@@ -49,9 +49,9 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(Constants.FILE_SERVER_PORT); // for p2p file transfer
+        ServerSocket serverSocket = new ServerSocket(Constants.FILE_SERVER_PORT_LOCAL); // for p2p file transfer
         new FileTransferMetadataServer(serverSocket).start();
-        ServerSocket server = new ServerSocket(Constants.SERVER_PORT); // for clients request
+        ServerSocket server = new ServerSocket(Constants.SERVER_PORT_LOCAL); // for clients request
         DataOutputStream dataOutputStream = new DataOutputStream(socketB.getOutputStream());
         DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
         System.out.println(dataInputStream.readUTF());

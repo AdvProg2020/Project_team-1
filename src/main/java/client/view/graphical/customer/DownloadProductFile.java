@@ -39,7 +39,7 @@ public class DownloadProductFile {
                 return;
             }
             ServerSocket fileReceiver = new ServerSocket(port);
-            Socket fileDataSocket = new Socket(Constants.SERVER_IP, Constants.FILE_SERVER_PORT);
+            Socket fileDataSocket = new Socket(Constants.FILE_SERVER_IP, Constants.FILE_SERVER_PORT);
             DataOutputStream outputStream = new DataOutputStream(fileDataSocket.getOutputStream());
             DataInputStream inputStream = new DataInputStream(fileDataSocket.getInputStream());
             outputStream.writeUTF("get file #" + commodity.getProductFilePathOnSellerClient()

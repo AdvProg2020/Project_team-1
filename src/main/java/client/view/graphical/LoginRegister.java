@@ -181,7 +181,7 @@ public class LoginRegister implements Initializable {
         @Override
         public void run() {
             try {
-                Socket fileTransferSocket = new Socket(Constants.SERVER_IP, Constants.FILE_SERVER_PORT);
+                Socket fileTransferSocket = new Socket(Constants.FILE_SERVER_IP, Constants.FILE_SERVER_PORT);
                 DataOutputStream outputStream = new DataOutputStream(fileTransferSocket.getOutputStream());
                 DataInputStream inputStream = new DataInputStream(fileTransferSocket.getInputStream());
                 outputStream.writeUTF("add me " + simpleAccount.getUsername());
