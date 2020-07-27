@@ -45,6 +45,8 @@ public class ManagerUsers extends HolyManager implements Initializable {
                     , new TypeToken<ArrayList<PersonalAccount>>(){}.getType());
             ArrayList<BusinessAccount> businessAccounts =  yaGson.fromJson(dataInputStream.readUTF()
                     , new TypeToken<ArrayList<BusinessAccount>>(){}.getType());
+            ArrayList<SupportAccount> supportAccounts = yaGson.fromJson(dataInputStream.readUTF()
+                    , new TypeToken<ArrayList<SupportAccount>>(){}.getType());
             for (ManagerAccount managerAccount : managerAccounts) {
                 if (isAccountOnline(managerAccount, simpleAccounts))
                     item.add(managerAccount.getInformation() + "\n online");
@@ -60,7 +62,7 @@ public class ManagerUsers extends HolyManager implements Initializable {
                     item.add(person.getInformation() + "\n online");
                 else item.add(person.getInformation() + "\n offline");
             }
-            for (SupportAccount support : YaDataManager.getSupports()) {
+            for (SupportAccount support : supportAccounts) {
                 if (isAccountOnline(support, simpleAccounts))
                     item.add(support.getInformation() + "\n online");
                 else  item.add(support.getInformation() + "\n offline");

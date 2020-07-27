@@ -765,7 +765,8 @@ public class Main {
         dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getBusinesses(),
                 new TypeToken<ArrayList<BusinessAccount>>() {
                 }.getType()));
-
+        dataOutputStream.writeUTF(yaGson.toJson(YaDataManager.getSupports()
+        , new TypeToken<ArrayList<SupportAccount>>(){}.getType()));
     }
 
     private static void deleteSocketAndAccount(Socket socket) {
