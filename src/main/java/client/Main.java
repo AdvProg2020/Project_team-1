@@ -1,21 +1,21 @@
 package client;
 
-import client.view.commandline.View;
+import common.Constants;
 
 import java.io.*;
 import java.net.Socket;
 
 public class Main {
 
-   public static Socket socket;
-   public static Socket socketB;
-   public static DataInputStream inputStream;
-   public static DataOutputStream outputStream;
+    public static Socket socket;
+    public static Socket socketB;
+    public static DataInputStream inputStream;
+    public static DataOutputStream outputStream;
 
     static {
         try {
-            socket = new Socket("127.0.0.1",8888);
-            socketB = new Socket( "127.0.0.1", 9999);
+            socket = new Socket(Constants.SERVER_IP, Constants.SERVER_PORT);
+            socketB = new Socket(Constants.BANK_SERVER_IP, Constants.BANK_SERVER_PORT);
             DataInputStream dataInputStream = new DataInputStream(socketB.getInputStream());
             dataInputStream.readUTF();
             inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));

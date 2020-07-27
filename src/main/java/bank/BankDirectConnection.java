@@ -1,5 +1,7 @@
 package bank;
 
+import common.Constants;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -8,9 +10,8 @@ import java.util.Scanner;
 
 public class BankDirectConnection {
     public static void main(String[] args) throws IOException {
-        int port = 12346;
         Scanner scanner = new Scanner(System.in);
-        Socket socket = new Socket("127.0.0.1", port);
+        Socket socket = new Socket(Constants.BANK_SERVER_IP, Constants.BANK_SERVER_PORT);
         DataInputStream inputStream = new DataInputStream(socket.getInputStream());
         DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
         String input;

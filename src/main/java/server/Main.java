@@ -39,7 +39,7 @@ public class Main {
 
     static {
         try {
-            socketB = new Socket("127.0.0.1", 9999);
+            socketB = new Socket(Constants.BANK_SERVER_IP, Constants.BANK_SERVER_PORT);
         } catch (IOException e) {
             e.printStackTrace();
         }
