@@ -42,6 +42,8 @@ public class Compare implements Initializable {
         assert comparingCommodity != null;
         secondCommodityBrand.setText(comparingCommodity.getBrand());
         try {
+            View.productMenu.getCommodity().setImagePath("tmp\\" + View.productMenu.getCommodity().getCommodityId() + ".png");
+            comparingCommodity.setImagePath("tmp\\" + comparingCommodity.getCommodityId() + ".png");
             commodityImage.setImage(new Image(new FileInputStream(View.productMenu.getCommodity().getImagePath())));
             secondCommodityImage.setImage(new Image(new FileInputStream(comparingCommodity.getImagePath())));
         } catch (FileNotFoundException e) {

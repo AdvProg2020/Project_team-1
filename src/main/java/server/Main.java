@@ -200,6 +200,10 @@ public class Main {
             YaDataManager.removeCategory(YaDataManager.getCategoryWithName(input.split(" ", 3)[2]));
         } else if (input.startsWith("send commodity with id ")) {
             sendCommodityWithId(socket, Integer.parseInt(input.split(" ")[4]));
+        } else if (input.startsWith("get commodity with id ")) {
+            sendCommodityWithId(socket, Integer.parseInt(input.split(" ")[4]));
+            DataOutputStream stream = new DataOutputStream(socket.getOutputStream());
+            stream.writeUTF("next");
         } else if (input.equals("send all offs")) {
             sendAllOffs(socket);
         } else if (input.startsWith("Deposit to wallet")) {

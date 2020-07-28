@@ -1,6 +1,7 @@
 package client.view.graphical.commodity;
 
 import client.Session;
+import client.controller.share.MenuHandler;
 import client.view.AudioPlayer;
 import client.view.commandline.View;
 import client.view.graphical.MainMenu;
@@ -28,7 +29,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import client.controller.share.MenuHandler;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -168,18 +168,26 @@ public class CommodityPage implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("bah bah");
         List<String> commoditiesList = new ArrayList<>();
         try {
             outputStream.writeUTF("name of category is " + commodity.getCategoryName());
             outputStream.flush();
-            Category category = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Category>() {
+            String input = inputStream.readUTF();
+            System.out.println(input);
+            Category category = yaGson.fromJson(input, new TypeToken<Category>() {
             }.getType());
+            System.out.println(category);
             for (int commodityId : category.getCommoditiesId()) {
-                outputStream.writeUTF("send commodity with id " + commodityId);
+                System.out.println("babaei");
+                outputStream.writeUTF("get commodity with id " + commodityId);
                 outputStream.flush();
                 Commodity commodity1 = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Commodity>() {
                 }.getType());
-                commoditiesList.add("Name: " + commodity1.getName() + ", Brand: " + commodity1.getBrand());
+                if (commodity.getCommodityId() != commodity1.getCommodityId()) {
+                    commoditiesList.add("Name: " + commodity1.getName() + ", Brand: " + commodity1.getBrand());
+                }
+                inputStream.readUTF();
             }
         } catch (IOException e) {
             e.printStackTrace();

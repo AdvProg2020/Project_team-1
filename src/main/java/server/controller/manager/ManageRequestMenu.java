@@ -1,6 +1,7 @@
 package server.controller.manager;
 
 import common.model.account.BusinessAccount;
+import common.model.commodity.Category;
 import common.model.commodity.Comment;
 import common.model.commodity.Commodity;
 import common.model.commodity.Off;
@@ -52,6 +53,10 @@ public class ManageRequestMenu {
             if (!owner.getCommoditiesId().contains(commodity.getCommodityId())) {
                 owner.getCommoditiesId().add(commodity.getCommodityId());
             }
+            Category category = YaDataManager.getCategoryWithName(commodity.getCategoryName());
+            category.getCommoditiesId().add(commodity.getCommodityId());
+            YaDataManager.removeCategory(category);
+            YaDataManager.addCategory(category);
             YaDataManager.removeBusiness(owner);
             YaDataManager.addBusiness(owner);
         }
