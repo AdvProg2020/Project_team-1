@@ -52,6 +52,8 @@ public class Auction implements Initializable {
             for (Commodity commodity : commodities) {
                 commoditiesInfo.add("Name: " + commodity.getName() + " ,Brand: " + commodity.getBrand());
             }
+            outputStream.writeUTF("tof");
+            outputStream.flush();
             ObservableList<String> observableList = FXCollections.observableList(commoditiesInfo);
             commoditiesList.setItems(observableList);
         } catch (IOException e) {
@@ -69,7 +71,7 @@ public class Auction implements Initializable {
             return;
         }
         String date = deadlineTF.getText();
-        if (!date.matches("(([0-2]\\d)|(3[01]))|-((0[1-9])|(1[0-2]))-202\\d (([01]\\d)|(2[0-3])):(([0-5]\\d)|(60)):(([0-5]\\d)|(60))")) {
+        if (!date.matches("(([0-2]\\d)|(3[01]))-((0[1-9])|(1[0-2]))-202\\d (([01]\\d)|(2[0-3])):([0-5]\\d):([0-5]\\d)")) {
             infoLabel.setText("Enter a valid deadline");
             return;
         }
