@@ -117,26 +117,38 @@ public class ClientResellerMenu extends Menu {
                            ArrayList<Field> categorySpecifications, String description, int amount,
                            String productFilePath, String imagePath) throws Exception {
         BusinessAccount businessAccount = getBusinessAccount();
+        System.out.println("BAR");
         Commodity newCommodity = new Commodity(brand, name, price, businessAccount.getUsername(), true,
                 category.getName(), categorySpecifications, description, amount);
+        System.out.println("MCI");
         newCommodity.setProductFilePathOnSellerClient(productFilePath);
+        System.out.println("MUN");
         Request request = new Request(newCommodity, businessAccount.getUsername());
         DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         DataInputStream dis = new DataInputStream(socket.getInputStream());
         dos.writeUTF("New Commodity");
+        System.out.println("CHE");
         dis.readUTF();
+        System.out.println("DOR");
         dos.writeUTF(yaGson.toJson(request, new TypeToken<Request>() {
         }.getType()));
+        System.out.println("JUV");
         if (dis.readUTF().equals("send picture")) {
+            System.out.println("INT");
             long fileSize = new File(imagePath).length();
+            System.out.println("LIV");
             dos.writeUTF(fileSize + "");
+            System.out.println("MIL");
             FileInputStream file = new FileInputStream(imagePath);
-
+            System.out.println("AJA");
             byte[] buffer = new byte[Constants.FILE_BUFFER_SIZE];
+            System.out.println("LAZ");
             while (file.read(buffer) > 0) {
                 dos.write(buffer);
+                System.out.println("ATL");
             }
             file.close();
+            System.out.println("SCH");
         }
     }
 

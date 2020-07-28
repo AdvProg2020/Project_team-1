@@ -71,16 +71,20 @@ public class ManageResellerProducts implements Initializable {
             ArrayList<Commodity> commodities = null;
             try {
                 if (manageProductsSortField.getValue() == null) {
+                    System.out.println("Tokhme sag");
                     commodities = ClientResellerMenu.manageCommodities();
+                    System.out.println("Tokhme sage 2");
                 } else {
+                    System.out.println("Kire Khar");
                     commodities = manageResellerProductsMenu.sort(manageProductsSortField.getValue());
+                    System.out.println("kire khar");
                 }
                 System.out.println(commodities.toString());
                 System.out.println(commodities.size());
             } catch (Exception e) {
-                // Be Tokhmam
+                e.printStackTrace();
             }
-            for (int i = 0; i < Objects.requireNonNull(commodities).size(); i++) {
+            for (int i = 0; i < commodities.size(); i++) {
                 Commodity commodity = manageProductsSortOrderToggleButton.isSelected() ?
                         commodities.get(commodities.size() - 1 - i) : commodities.get(i);
                 AnchorPane productAnchorPane = new AnchorPane();

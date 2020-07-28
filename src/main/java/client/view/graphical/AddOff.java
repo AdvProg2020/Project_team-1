@@ -38,7 +38,7 @@ public class AddOff implements Initializable {
         for (int commodityId : ClientResellerMenu.getBusinessAccount().getCommoditiesId()) {
             CheckBox checkBox = null;
             try {
-                outputStream.writeUTF("send commodity with id ");
+                outputStream.writeUTF("send commodity with id " + commodityId);
                 outputStream.flush();
                 Commodity commodity = yaGson.fromJson(inputStream.readUTF(), new TypeToken<Commodity>() {
                 }.getType());

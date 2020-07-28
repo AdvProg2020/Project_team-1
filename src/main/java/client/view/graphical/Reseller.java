@@ -72,11 +72,6 @@ public class Reseller implements Initializable {
     }
 
     public void onManageProductsClick(MouseEvent mouseEvent) {
-        try {
-            ClientResellerMenu.manageCommodities();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         Session.getSceneHandler().updateScene((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
     }
 

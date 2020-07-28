@@ -53,9 +53,11 @@ public class CreateDiscountCode extends HolyManager implements Initializable {
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream.writeUTF("new discount code");
             dataOutputStream.flush();
+            dataInputStream.readUTF();
             dataOutputStream.writeUTF(code.getText() + " " + startDate.getText() + " " + finishDate.getText() + " " +
                     maximumDiscountPercentage.getText() + " " + maximumDiscountPrice.getText() + " " + maximumNumberOfUses.getText());
             dataOutputStream.flush();
+            dataInputStream.readUTF();
             dataOutputStream.writeUTF(yaGson.toJson(AddPersonToDiscountCode.getAccounts(),
                     new TypeToken<ArrayList<PersonalAccount>>() {
                     }.getType()));

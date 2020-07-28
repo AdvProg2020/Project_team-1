@@ -2,7 +2,7 @@ package common;
 
 public class Constants {
     public static String SERVER_IP = "0.tcp.ngrok.io";
-    public static int SERVER_PORT = 14763;
+    public static int SERVER_PORT = 12570;
     public static int SERVER_PORT_LOCAL = 8888;
     public static String FILE_SERVER_IP = "2.tcp.ngrok.io";
     public static int FILE_SERVER_PORT = 17590;

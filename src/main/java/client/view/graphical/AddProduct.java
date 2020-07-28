@@ -93,10 +93,12 @@ public class AddProduct implements Initializable {
                 throw new Exception("Choose a photo");
             }
             String imagePath = photosPath.getChildren().get(0).getValue();
+            System.out.println("FCB");
             ClientResellerMenu.addProduct(brandTf.getText(), nameTf.getText(), Integer.parseInt(priceTf.getText()),
                     ClientResellerMenu.getCategoryByName(categoryCb.getValue()),
                     productCategorySpecification, descriptionTextArea.getText(),
                     Integer.parseInt(amountTf.getText()), productFilePath, imagePath);
+            System.out.println("RMA");
             onCancelClick(mouseEvent);
         } catch (Exception e) {
             errorMessageLabel.setText(e.getMessage());

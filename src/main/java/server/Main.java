@@ -602,7 +602,9 @@ public class Main {
     private static void createDiscountCode(Socket socket) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        dataOutputStream.writeUTF("send");
         String discountCodeInfo = dataInputStream.readUTF();
+        dataOutputStream.writeUTF("accounts");
         ArrayList<PersonalAccount> accounts = yaGson.fromJson(dataInputStream.readUTF(), new TypeToken<ArrayList<PersonalAccount>>() {
         }.getType());
         String[] splitDiscountCodeInfo = discountCodeInfo.split(" ");
